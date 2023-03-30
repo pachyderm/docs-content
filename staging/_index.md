@@ -1,16 +1,17 @@
 ---
+# metadata # 
 title: Staging
-description:
-author:
+description: Pachyderm Version 2.5.x 
+date: 
+# taxonomy #
 tags:
-categories:
-products:
-date:
-weight: 0
-hidden: true
-mermaid: true
+series:
+seriesPart:
+cascade:
+    latestPatch: 2.6.0
+    majorMinor: 2.6
+    clientPython: 7.3
+    extensionJupyterLab: 2.6.0
+    mountServerBinary: 2.6.0
+    release: staging  # used by sitemap.xml in themes folder
 ---
-
-this is a test to see if this content is updated and the word {{%productName%}} is replaced with MLDM. 
-
-{{%productName%}} {{%productName%}} {{%productName%}}! pachyderm! {{%productName%}}! {{%productName%}}! here we go again. more testing.
