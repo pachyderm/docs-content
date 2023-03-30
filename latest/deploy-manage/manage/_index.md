@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Manage
-description: Learn how to backup, restore, upgrade, and manage clusters running {{%productName%}}.
+description: Learn how to backup, restore, upgrade, and manage clusters.
 date: 
 # taxonomy #
 tags: 

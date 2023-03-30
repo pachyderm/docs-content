@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Check IdP User
-description: Learn how to check which IdP user you are logged in as using pachctl. 
+description: Learn how to check which IdP user you are logged in as using PachCTL. 
 date: 
 # taxonomy #
 tags: ["workflows", "permissions", "management"]

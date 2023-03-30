@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Join Input
-description: Learn about the concept of a join input in {{%productName%}}. 
+description: Learn about the concept of a join input. 
 date: 
 # taxonomy #
 tags: ["concepts", "pachctl", "datums","pipelines", "data-operations"]

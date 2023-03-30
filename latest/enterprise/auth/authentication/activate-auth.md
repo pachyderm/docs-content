@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Activate Authorization
-description: Learn how to activate Authorization (User Access Management) in {{%productName%}}.
+description: Learn how to activate Authorization (User Access Management).
 date: 
 # taxonomy #
 tags: 

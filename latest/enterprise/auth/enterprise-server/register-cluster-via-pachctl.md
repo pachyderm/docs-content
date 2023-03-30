@@ -1,7 +1,7 @@
 ---
 # metadata # 
-title: Register a Cluster via Pachctl
-description: Learn how to register a pachd cluster to your Enterprise Server using Pachctl.
+title: Register a Cluster via PachCTL
+description: Learn how to register a pachd cluster to your Enterprise Server using PachCTL.
 date: 
 # taxonomy #
 tags: ["enterprise", "deployment", "pachctl"]

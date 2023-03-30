@@ -1,7 +1,7 @@
 ---
 # metadata #
 title:  Grant Project Access
-description: Learn how to grant a user access to a project in {{%productName%}}.
+description: Learn how to grant a user access to a project.
 date:
 # taxonomy #
 tags: ["projects"]

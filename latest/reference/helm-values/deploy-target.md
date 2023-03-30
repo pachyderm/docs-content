@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Deploy Target HCVs
-description: Define where you're deploying {{%productName%}} (Local, Cloud).
+description: Define where you'd like to deploy (Local, Cloud).
 date: 
 # taxonomy #
 tags: ["helm"]

@@ -1,7 +1,7 @@
 ---
 # metadata # 
-title: Uninstall {{%productName%}}
-description: Learn how to uninstall {{%productName%}}.
+title: Uninstall
+description: Learn how to uninstall.
 date: 
 # taxonomy #
 tags: 

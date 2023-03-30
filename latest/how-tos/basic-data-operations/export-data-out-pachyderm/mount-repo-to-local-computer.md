@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Mount a Repo Locally
-description: Learn how to mount a repository as a local filesystem using the pachctl mount command. 
+description: Learn how to mount a repository as a local filesystem using the PachCTL mount command. 
 date: 
 # taxonomy #
 tags: ["pachctl", "data-operations", "export"]

@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Monitor with Prometheus
-description: Learn how to monitor a {{%productName%}} cluster using Prometheus. 
+description: Learn how to monitor a cluster using Prometheus. 
 date: 
 # taxonomy #
 tags: 

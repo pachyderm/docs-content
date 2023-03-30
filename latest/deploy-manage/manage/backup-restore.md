@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Backup & Restore Your Cluster
-description: Learn how to back-up and restore the state of a production {{%productName%}} cluster.
+description: Learn how to back-up and restore the state of a production cluster.
 date: 
 # taxonomy #
 tags: ["management", "backups"]

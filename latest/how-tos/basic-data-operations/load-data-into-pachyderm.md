@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Ingest Data
-description: Learn how to ingest data using the pachctl put command.
+description: Learn how to ingest data using the PachCTL put command.
 date: 
 # taxonomy #
 tags: ["ingest"]

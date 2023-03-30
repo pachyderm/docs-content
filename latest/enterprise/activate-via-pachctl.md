@@ -1,7 +1,7 @@
 ---
 # metadata # 
-title: Activate Enterprise via Pachctl
-description: Learn how to deploy the Enterprise edition of {{%productName%}} using the pachctl CLI for an existing cluster.
+title: Activate Enterprise via PachCTL
+description: Learn how to deploy the Enterprise edition using the PachCTL CLI for an existing cluster.
 date: 
 # taxonomy #
 tags: ["enterprise"]

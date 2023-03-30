@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Authentication & Authorization
-description: Learn how to {{%productName%}}'s user access management works.
+description: Learn how user access management works.
 date: 
 # taxonomy #
 tags: 

@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: S3 Gateway
-description: Learn about {{%productName%}}'s embedded S3 gateway, which is compatible with MinIO, AWS S3 CLI, and boto3. 
+description: Learn about the embedded S3 gateway, which is compatible with MinIO, AWS S3 CLI, and boto3. 
 date: 
 # taxonomy #
 tags: 

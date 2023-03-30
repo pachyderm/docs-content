@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Group Input
-description: Learn about the concept of a group input in {{%productName%}}. 
+description: Learn about the concept of a group input. 
 date: 
 # taxonomy #
 tags: ["concepts", "pachctl", "datums","pipelines", "data-operations"]

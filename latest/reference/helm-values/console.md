@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Console HCVs
-description:  Configure the {{%productName%}} UI.
+description:  Configure the UI.
 date: 
 # taxonomy #
 tags: ["helm"]

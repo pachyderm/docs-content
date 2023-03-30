@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Authorization
-description: Learn how to set up and manage Role-Based Access Control (RBAC) for {{%productName%}}.
+description: Learn how to set up and manage Role-Based Access Control (RBAC).
 date: 
 # taxonomy #
 tags: 

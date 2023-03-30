@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Deploy & Manage
-description:  Learn how to deploy and manage {{%productName%}} either locally, on-prem, or in the cloud.
+description:  Learn how to deploy and manage either locally, on-prem, or in the cloud.
 date: 
 # taxonomy #
 tags: 

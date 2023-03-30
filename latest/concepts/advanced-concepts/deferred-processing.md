@@ -1,7 +1,7 @@
 ---
 # metadata #
 title: Deferred Processing
-description: Learn about the concept of deferred processing in {{%productName%}}.
+description: Learn about the concept of deferred processing.
 date:
 # taxonomy #
 tags: ["data-operations", "datums", "branch triggers", "trigger"]

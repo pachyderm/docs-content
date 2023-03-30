@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Spout PPS
-description: Ingest streaming data into {{%productName%}} using a spout pipeline.
+description: Ingest streaming data using a spout pipeline.
 date: 
 # taxonomy #
 tags: ["pipelines", "pps"]

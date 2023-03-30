@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Datum
-description: Learn about the concept of a Datum in {{%productName%}}. 
+description: Learn about the concept of a Datum. 
 date: 
 # taxonomy #
 tags: 

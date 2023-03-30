@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Activate Enterprise via Helm
-description: Learn how to deploy the Enterprise edition of {{%productName%}} using Helm.
+description: Learn how to deploy the Enterprise edition using Helm.
 date: 
 # taxonomy #
 tags: ["enterprise"]

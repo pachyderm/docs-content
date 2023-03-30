@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Test Connection HCVs
-description: Used by certain orgs to test connection during installation of {{%productName%}}.
+description: Used by certain orgs to test connection during installation.
 date: 
 # taxonomy #
 tags: ["configuration", "helm"]

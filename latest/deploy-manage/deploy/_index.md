@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Deploy
-description: Learn all the ways you can deploy a {{%productName%}} cluster, be it locally, on-premise, or in the cloud. 
+description: Learn all the ways you can deploy a cluster, be it locally, on-premise, or in the cloud. 
 date: 
 # taxonomy #
 tags: 

@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Set Up IdP Connectors
-description: Learn how to enable users to access a {{%productName%}} cluster using their preferred identity provider. 
+description: Learn how to enable users to access a cluster using their preferred identity provider. 
 date: 
 # taxonomy #
 tags: 

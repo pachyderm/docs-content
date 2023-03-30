@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  PachD HCVs
-description: Configure the core settings of {{%productName%}}.
+description: Configure the core settings.
 date: 
 # taxonomy #
 tags: ["helm"]

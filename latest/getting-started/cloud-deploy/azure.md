@@ -1,7 +1,7 @@
 ---
 # metadata # 
-title:  Azure + {{%productName%}}
-description: Learn how to deploy to {{%productName%}} to the cloud with Azure.
+title:  Azure Deployment
+description: Learn how to deploy to the cloud with Azure.
 date: 
 # taxonomy #
 tags: ["azure", "cloud-deploy"]

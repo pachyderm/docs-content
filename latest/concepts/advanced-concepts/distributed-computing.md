@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Distributed Computing
-description: Learn about the concept of distributed computing in {{%productName%}}. 
+description: Learn about the concept of distributed computing. 
 date: 
 # taxonomy #
 tags:  ["data-operations", "pipelines"]

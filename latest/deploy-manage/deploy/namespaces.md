@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Non-Default Namespaces
-description: Learn how to deploy {{%productName%}} to a non-default namespace for easier admin management.
+description: Learn how to deploy to a non-default namespace for easier admin management.
 date: 
 # taxonomy #
 tags: ["deployment"]

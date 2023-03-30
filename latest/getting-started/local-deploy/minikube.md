@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Minikube 
-description: Learn how to install {{%productName%}} locally with Minikube.
+description: Learn how to install locally with Minikube.
 date: 
 # taxonomy #
 tags:  ["minikube", "getting-started", "local-deploy", "linux", "mac","windows"]

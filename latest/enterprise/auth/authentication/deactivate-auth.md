@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Deactivate Authorization
-description: Learn how to deactivate Authorization (User Access Management) in {{%productName%}}.
+description: Learn how to deactivate Authorization (User Access Management).
 date: 
 # taxonomy #
 tags: 

@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Infrastructure Recommendations
-description: Learn about some of our infrastructure recommendations for running {{%productName%}}.
+description: Learn about some of our infrastructure recommendations.
 date: 
 # taxonomy #
 tags: 

@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: AWS CLI
-description: Learn how to configure AWS CLI for {{%productName%}}'s S3 Gateway
+description: Learn how to configure AWS CLI for the S3 Gateway
 date: 
 # taxonomy #
 tags: 

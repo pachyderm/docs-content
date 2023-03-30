@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Commit
-description: Learn about the concept of a commit in {{%productName%}}. 
+description: Learn about the concept of a commit. 
 glossaryDefinition: An atomic operation that snapshots and preserves the state of files/directories within a repository.
 date: 
 # taxonomy #

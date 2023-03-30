@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Configuration Specification
-description: Learn about the base configuration options available for {{%productName%}}.
+description: Learn about the base configuration options available.
 date: 
 # taxonomy #
 tags: ["configuration"]

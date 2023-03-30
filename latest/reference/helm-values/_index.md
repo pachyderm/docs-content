@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Helm Chart Values (HCVs)
-description: Learn about the configurable helm chart attributes for {{%productName%}}.
+description: Learn about the configurable helm chart attributes.
 date: 
 # taxonomy #
 tags: ["configuration", "helm", "helm chart"]

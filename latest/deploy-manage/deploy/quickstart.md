@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Quickstart
-description: Learn how to deploy the latest version of {{%productName%}} quickly with simplified instructions and pre-set Helm values.
+description: Learn how to deploy the latest release version quickly with simplified instructions and pre-set Helm values.
 date: 
 # taxonomy #
 tags: 

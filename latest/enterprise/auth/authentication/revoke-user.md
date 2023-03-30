@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Revoke User Access
-description: Learn how to revoke user access to a {{%productName%}} cluster.
+description: Learn how to revoke user access to a cluster.
 date: 
 # taxonomy #
 tags: ["workflows", "permissions", "management"]

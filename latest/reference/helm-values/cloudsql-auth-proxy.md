@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: CloudSQL Auth Proxy HCVs
-description: Deploy {{%productName%}} on GCP with CloudSQL.
+description: Deploy on GCP with CloudSQL.
 date: 
 # taxonomy #
 tags: ["helm", "gcp" ]

@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Pipeline Concepts
-description: Learn all of the pipeline-specific concepts used in {{%productName%}}.
+description: Learn all of the pipeline-specific concepts.
 date: 
 # taxonomy #
 tags: 

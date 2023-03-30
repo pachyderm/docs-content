@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Debugging Operations
-description: Learn how to troubleshoot pipelines using pachctl to explore logged user events.
+description: Learn how to troubleshoot pipelines using PachCTL to explore logged user events.
 date: 
 # taxonomy #
 tags: 

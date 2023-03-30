@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Basic Data Operations
-description:  Learn how to mount, ingest, push, pull, and expose data with {{%productName%}}.
+description:  Learn how to mount, ingest, push, pull, and expose data.
 date: 
 # taxonomy #
 tags: ["data-operations"]

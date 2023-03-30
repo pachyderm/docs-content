@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Manage Cluster Access
-description: Learn how to manage Kubernetes cluster access using {{%productName%}} Contexts.
+description: Learn how to manage Kubernetes cluster access using Contexts.
 date: 
 # taxonomy #
 tags: ["management", "permissions"]

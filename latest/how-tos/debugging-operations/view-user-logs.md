@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  View Audit Logs
-description: View a list of user-entered commands using pachctl.
+description: View a list of user-entered commands using PachCTL.
 date: 
 # taxonomy #
 tags: 
