@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Supported Releases & Features
-description: Check which versions of Pachyderm are actively supported using this guide.
+description: Check which release versions are actively supported using this guide.
 date: 
 # taxonomy #
 tags: 
@@ -10,11 +10,11 @@ seriesPart:
 directory: true 
 ---
 
-Pachyderm lists the status for each release and feature, so that you can understand expectations for support and stability.
+{{% productName %}} lists the status for each release and feature, so that you can understand expectations for support and stability.
  
 ## Supported Releases
 
-Pachyderm supports the latest Generally Available (GA) release and the previous two major and minor GA releases. Releases three or more major and minor versions back are considered End of Life (EOL).
+{{% productName %}} supports the latest Generally Available (GA) release and the previous two major and minor GA releases. Releases three or more major and minor versions back are considered End of Life (EOL).
 
 ## Release Status by Version
 
@@ -35,7 +35,7 @@ Pachyderm supports the latest Generally Available (GA) release and the previous 
 
 ## Releases Under Development
 
-A release under development may undergo several pre-release stages before becoming Generally Available (GA). These pre-releases enable the Pachyderm team to do development and testing in partnership with our users before a release is considered ready for a Generally Availability (GA).
+A release under development may undergo several pre-release stages before becoming Generally Available (GA). These pre-releases enable the {{% productName %}} team to do development and testing in partnership with our users before a release is considered ready for a Generally Availability (GA).
 
 `alpha > beta > Release Candidate (RC) > Generally Available (GA)`
 
@@ -58,7 +58,7 @@ A release under development may undergo several pre-release stages before becomi
 `Generally Available` or `GA` releases are considered stable and intended for production usage.
 
 - Contain new features, fixed defects, and patched security vulnerabilities.
-- Support is available from Pachyderm.
+- Support is available from {{% productName %}}.
 
 ### End of Life (EOL)
 
@@ -72,27 +72,27 @@ A release under development may undergo several pre-release stages before becomi
 
 ### Stable
 
-`stable` indicates that the Pachyderm team believes the feature is ready for use in a production environment.
+`stable` indicates that the {{% productName %}} team believes the feature is ready for use in a production environment.
 
 - The feature's API is stable and unlikely to change.
 - There are no major defects for the feature.
-- The Pachyderm team believes there is a sufficient amount of testing, including automated tests, community testing, and user production environments.
-- Support is available from Pachyderm.
+- The {{% productName %}} team believes there is a sufficient amount of testing, including automated tests, community testing, and user production environments.
+- Support is available from {{% productName %}}.
 
 ### Experimental
 
-`experimental` indicates that a feature has not met the Pachyderm team's criteria for production use. Therefore, these features should be used with caution in production environments. `experimental` features are likely to change, have outstanding defects, and/or missing documentation. Users considering using `experimental` features should contact Pachyderm for guidance.
+`experimental` indicates that a feature has not met the {{% productName %}} team's criteria for production use. Therefore, these features should be used with caution in production environments. `experimental` features are likely to change, have outstanding defects, and/or missing documentation. Users considering using `experimental` features should contact {{% productName %}} for guidance.
 
-- Production use is not recommended without guidance from Pachyderm.
+- Production use is not recommended without guidance from {{% productName %}}.
 - These features may have missing documentation, lack of examples, and lack of content.
-- Support is available from Pachyderm, which may be limited in scope based on our guidance.
+- Support is available from {{% productName %}}, which may be limited in scope based on our guidance.
 
 ### Deprecated
 
 `deprecated` indicates that a feature is no longer developed. Users of deprecated features are encouraged to upgrade or migrate to newer versions or compatible features. `deprecated` features become `End of Life` (EOL) features after 6 months.
 
 - Users continuing to use deprecated features should contact support to migrate to features.
-- Support is available from Pachyderm. 
+- Support is available from {{% productName %}}. 
 
 ### End of Life (EOL) Features
 

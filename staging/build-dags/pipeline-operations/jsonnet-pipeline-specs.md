@@ -13,7 +13,7 @@ seriesPart:
 `Jsonnet pipeline specifications` is an [experimental feature](../../../reference/supported-releases/#experimental).
 {{% /notice %}}
 
-Pachyderm [pipeline's specification](../../../reference/pipeline-spec) files are intuitive, simple, and language agnostic.
+{{% productName %}} [pipeline's specification](../../../reference/pipeline-spec) files are intuitive, simple, and language agnostic.
 They are, however, very static.
 
 A **jsonnet pipeline specification file** is a thin wrapping layer atop of your JSON file, 
@@ -25,7 +25,7 @@ while experimenting with various values of given fields.
 
 ## Jsonnet Specs
 
-Pachyderm's Jsonnet pipeline specs are written in 
+{{% productName %}}'s Jsonnet pipeline specs are written in 
 the open-source templating language [jsonnet](https://jsonnet.org/).
 Jsonnet wraps the baseline of a JSON file into a function, 
 allowing the injection of parameters to a pipeline specification file. 
@@ -99,7 +99,7 @@ Read Jsonnet's complete [standard library documentation](https://jsonnet.org/ref
 
 
 At the minimum, your function should always have a parameter that acts as a name modifier. 
-Pachyderm's pipeline names are unique. 
+{{% productName %}}'s pipeline names are unique. 
 You can quickly generate several pipelines from the same jsonnet pipeline specification file
 by adding a prefix or a suffix to its generic name.
 

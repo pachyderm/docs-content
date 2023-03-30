@@ -1,7 +1,7 @@
 ---
 # metadata # 
-title: Uninstall Pachyderm
-description: Learn how to uninstall Pachyderm.
+title: Uninstall
+description: Learn how to uninstall our platform.
 date: 
 # taxonomy #
 tags: 
@@ -10,7 +10,7 @@ seriesPart:
 directory: true
 ---
 
-## Uninstall Pachyderm
+## Uninstall {{% productName %}}
 
 ```s
 helm uninstall pachd 

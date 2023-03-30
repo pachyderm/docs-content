@@ -1,7 +1,7 @@
 ---
 # metadata # 
-title: Register a Cluster via Pachctl
-description: Learn how to register a pachd cluster to your Enterprise Server using Pachctl.
+title: Register a Cluster via PachCTL
+description: Learn how to register a pachd cluster to your Enterprise Server using PachCTL.
 date: 
 # taxonomy #
 tags: ["enterprise", "deployment", "pachctl"]
@@ -12,8 +12,8 @@ seriesPart:
 ## Before You Start 
 
 - You must have an [Enterprise license key](../../../)
-- You must have an active Pachyderm cluster
-- You must have the Pachyderm Helm repo downloaded.
+- You must have an active {{% productName %}} cluster
+- You must have the {{% productName %}} Helm repo downloaded.
 
 ## How to Register a Cluster 
 

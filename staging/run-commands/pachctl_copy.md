@@ -1,10 +1,10 @@
 ## pachctl copy
 
-Copy a Pachyderm resource.
+Copy a {{% productName %}} resource.
 
 ### Synopsis
 
-Copy a Pachyderm resource.
+Copy a {{% productName %}} resource.
 
 ### Options
 

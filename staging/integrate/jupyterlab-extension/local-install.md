@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Local Installation Guide
-description: Learn how to locally install and use the JupyterLab Mount Extension with Pachyderm.
+description: Learn how to locally install and use the JupyterLab Mount Extension with {{% productName %}}.
 date: 
 # taxonomy #
 tags: ["integrations", "jupyterlab", "notebooks"]
@@ -13,7 +13,7 @@ beta: true
 
 ## Before You Start
 
-- You must have a Pachyderm cluster running.
+- You must have a {{% productName %}} cluster running.
 - Install [Jupyter Lab](https://jupyterlab.readthedocs.io/en/stable/getting_started/installation.html) (`pip install jupyterlab`)
 - Install [FUSE](https://osxfuse.github.io/)
   {{% notice warning %}}

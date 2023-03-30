@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Connect to Existing Instance
-description: New to using Pachyderm? Start Here.
+description: New to using {{% productName %}}? Start Here.
 date: 
 # taxonomy #
 tags: 

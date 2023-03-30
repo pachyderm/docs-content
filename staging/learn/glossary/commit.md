@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Commit
-description: Learn about the concept of a commit in Pachyderm. 
+description: Learn about the concept of a commit, which is an atomic operation that snapshots and preserves the state of files/directories within a repository.
 glossaryDefinition: An atomic operation that snapshots and preserves the state of files/directories within a repository.
 date: 
 # taxonomy #
@@ -10,11 +10,11 @@ series: ["glossary"]
 seriesPart:
 --- 
 {{% notice note %}}
-Pachyderm uses the term `commit` at two different levels: a global level and commits on a repository's branch.
+{{% productName %}} uses the term `commit` at two different levels: a global level and commits on a repository's branch.
 {{% /notice %}}
 
-In Pachyderm, commits snapshot and preserve the state of files and directories in a repository at a point in time.
-Unlike Git, Pachyderm commits are centralized and transactional. You can create a commit with `pachctl start commit` and save it with `pachctl finish commit`.
+In {{% productName %}}, commits snapshot and preserve the state of files and directories in a repository at a point in time.
+Unlike Git, {{% productName %}} commits are centralized and transactional. You can create a commit with `pachctl start commit` and save it with `pachctl finish commit`.
 
 All commits have an alphanumeric ID, and you can reference a commit with `<repo>@<commitID>`. Each commit has an origin that indicates why it was produced (USER, AUTO, or ALIAS).
 

@@ -1,7 +1,7 @@
 ---
 # metadata # 
-title: Upgrade Pachyderm
-description: Learn how to upgrade Pachyderm's pachctl and pachd. 
+title: Upgrade
+description: Learn how to upgrade PachCTLand & PachD. 
 date: 
 # taxonomy #
 tags: ["management", "upgrades", "pachctl","pachd"]
@@ -10,7 +10,7 @@ seriesPart:
 directory: true
 ---
 
-Learn how to upgrade Pachyderm to access new features and performance enhancements.
+Learn how to upgrade {{% productName %}} to access new features and performance enhancements.
 
 ## Before You Start 
 
@@ -18,7 +18,7 @@ Learn how to upgrade Pachyderm to access new features and performance enhancemen
 - [Back up your cluster](../backup-restore/) 
 - Update your Helm chart values if applicable
 
-## How to Upgrade Pachyderm 
+## How to Upgrade {{% productName %}} 
 
 1. Run the following brew command or [download & install the latest release assets](https://github.com/pachyderm/pachyderm/releases/latest):
 ```s  

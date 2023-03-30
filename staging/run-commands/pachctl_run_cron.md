@@ -1,10 +1,10 @@
 ## pachctl run cron
 
-Run an existing Pachyderm cron pipeline now
+Run an existing {{% productName %}} cron pipeline now
 
 ### Synopsis
 
-Run an existing Pachyderm cron pipeline now
+Run an existing {{% productName %}} cron pipeline now
 
 ```
 pachctl run cron <pipeline> [flags]

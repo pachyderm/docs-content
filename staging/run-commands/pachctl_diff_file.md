@@ -1,10 +1,10 @@
 ## pachctl diff file
 
-Return a diff of two file trees stored in Pachyderm
+Return a diff of two file trees stored in {{% productName %}}
 
 ### Synopsis
 
-Return a diff of two file trees stored in Pachyderm
+Return a diff of two file trees stored in {{% productName %}}
 
 ```
 pachctl diff file <new-repo>@<new-branch-or-commit>:<new-path> [<old-repo>@<old-branch-or-commit>:<old-path>] [flags]

@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Export Data
-description: Export transformed data from Pachyderm using data egress and other methods.
+description: Export transformed data using data egress and other methods.
 date: 
 # taxonomy #
 tags: 

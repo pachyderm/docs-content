@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: SQL Ingest
-description: Learn how to set up the SQL Ingest Tool to import data into Pachyderm.
+description: Learn how to set up the SQL Ingest Tool to import data.
 date: 
 # taxonomy #
 tags: ["sql","ingest", "data-operations"]
@@ -13,12 +13,12 @@ seriesPart:
 SQL Ingest is an [experimental feature](../../../reference/supported-releases/#experimental).
 {{%/notice%}}
 
-You can inject database content, collected by your data warehouse, by pulling the result of a given query into Pachyderm and saving it as a CSV or JSON file.
+You can inject database content, collected by your data warehouse, by pulling the result of a given query into {{% productName %}} and saving it as a CSV or JSON file.
 
 ## Before You Start 
 
 - You should be familiar with [Jsonnet](https://jsonnet.org/learning/tutorial.html).
-- You should be familiar with creating [Jsonnet pipeline specs](https://docs.pachyderm.com/latest/how-tos/pipeline-operations/jsonnet-pipeline-specs/#jsonnet-pipeline-specifications) in Pachyderm.
+- You should be familiar with creating [Jsonnet pipeline specs](https://docs.pachyderm.com/latest/how-tos/pipeline-operations/jsonnet-pipeline-specs/#jsonnet-pipeline-specifications) in {{% productName %}}.
 - You should be familiar with [managing Kubernetes secrets](https://kubernetes.io/docs/tasks/configmap-secret/managing-secret-using-kubectl/). 
 
 ---
@@ -44,12 +44,12 @@ You must generate a secret that contains the password granting user access to th
 7. Confirm secret by running `pachctl list secret`. 
    
 {{% notice note %}}
-Not all secret formats are the same. For a full walkthrough on how to create, edit, and view different types of secrets, see [Create and Manage Secrets in Pachyderm](../../advanced-data-operations/secrets/#create-a-secret).
+Not all secret formats are the same. For a full walkthrough on how to create, edit, and view different types of secrets, see [Create and Manage Secrets in {{% productName %}}](../../advanced-data-operations/secrets/#create-a-secret).
 {{% /notice %}}
 
 ### 2. Create a Database Connection String
 
-Pachyderm's SQL Ingest requires a connection string defined as a [Jsonnet URL parameter](#url-parameter-details) to connect to your database; the URL is structured as follows:
+{{% productName %}}'s SQL Ingest requires a connection string defined as a [Jsonnet URL parameter](#url-parameter-details) to connect to your database; the URL is structured as follows:
 
 ```s
 <protocol>://<username>@<host>:<port>/<database>?<param1>=<value1>&<param2>=<value2>
@@ -57,7 +57,7 @@ Pachyderm's SQL Ingest requires a connection string defined as a [Jsonnet URL pa
 
 ### 3. Create a Pipeline Spec 
 
-Pachyderm provides a [default Jsonnet template](https://raw.githubusercontent.com/pachyderm/pachyderm/{{% majorMinorVersion %}}/src/templates/sql_ingest_cron.jsonnet) that has key parameters built in. To use it, you must pass an argument for each [parameter](#parameters). 
+{{% productName %}} provides a [default Jsonnet template](https://raw.githubusercontent.com/pachyderm/pachyderm/{{% majorMinorVersion %}}/src/templates/sql_ingest_cron.jsonnet) that has key parameters built in. To use it, you must pass an argument for each [parameter](#parameters). 
 
 1. Copy the following:
    ```s
@@ -156,7 +156,7 @@ pachctl update pipeline --jsonnet https://raw.githubusercontent.com/pachyderm/pa
 | `name`        | The name of output repo where query results will materialize.|
 | `url`         | The connection string to the database.|  
 | `query`       | The SQL query to be run against the connected database. |
-| `hasHeader`   | Adds a header to your CSV file if set to `true`. Ignored if `format="json"` (JSON files always display (header,value) pairs for each returned row). Defaults to `false`. <br><br>Pachyderm creates the header after each element of the comma separated list of your SELECT clause or their aliases (if any). <br>For example `country.country_name_eng` will have `country.country_name_eng` as header while `country.country_name_eng as country_name` will have `country_name`. |
+| `hasHeader`   | Adds a header to your CSV file if set to `true`. Ignored if `format="json"` (JSON files always display (header,value) pairs for each returned row). Defaults to `false`. <br><br>{{% productName %}} creates the header after each element of the comma separated list of your SELECT clause or their aliases (if any). <br>For example `country.country_name_eng` will have `country.country_name_eng` as header while `country.country_name_eng as country_name` will have `country_name`. |
 | `cronSpec`    | How often to run the query. For example `"@every 60s"`.|
 | `format`      | The type of your output file containing the results of your query (either `json` or `csv`).|
 | `secretName`  | The Kubernetes secret name that contains the password to the database.|
@@ -181,7 +181,7 @@ pachctl update pipeline --jsonnet https://raw.githubusercontent.com/pachyderm/pa
 
 ##### Snowflake 
 
- Pachyderm supports two connection URL patterns to query Snowflake:
+ {{% productName %}} supports two connection URL patterns to query Snowflake:
 
   ```s
   snowflake://username@<account_identifier>/<db_name>/<schema_name>?warehouse=<warehouse_name>

@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Secrets
-description: Learn how to create and manage Kubernetes secrets in Pachyderm.
+description: Learn how to create and manage Kubernetes secrets.
 date: 
 # taxonomy #
 tags: ["secrets", "management", "kubernetes"]
@@ -10,20 +10,20 @@ seriesPart:
 directory: true
 ---
 
-Pachyderm uses Kubernetes' *Secrets* to store and manage sensitive data, such as passwords, OAuth tokens, or ssh keys. You can use any of [Kubernetes' types of Secrets](https://kubernetes.io/docs/concepts/configuration/secret/#secret-types) that match your use case. 
+{{% productName %}} uses Kubernetes' *Secrets* to store and manage sensitive data, such as passwords, OAuth tokens, or ssh keys. You can use any of [Kubernetes' types of Secrets](https://kubernetes.io/docs/concepts/configuration/secret/#secret-types) that match your use case. 
 Namely, `generic` (or Opaque), `tls`, or `docker-registry`.
 
 {{% notice warning %}}
-As of today, Pachyderm *only supports the JSON format for Kubernetes' Secrets files*.
+As of today, {{% productName %}} *only supports the JSON format for Kubernetes' Secrets files*.
 {{%/notice %}}
 
-To use a Secret in Pachyderm, you need to:
+To use a Secret in {{% productName %}}, you need to:
 
 1. Create it.
 1. Reference it in your pipeline's specification file.
 
 ## Create A Secret
-The creation of a Secret in Pachyderm *requires a JSON configuration file*.
+The creation of a Secret in {{% productName %}} *requires a JSON configuration file*.
 
 A good way to create this file is:
 
@@ -68,8 +68,8 @@ Let's first generate your secret configuration file using the `kubectl` command.
 ```
 Find more detailed information on the [creation of Secrets](https://kubernetes.io/docs/tasks/configmap-secret/managing-secret-using-kubectl/) in Kubernetes documentation.
 
-### Create your Secret in Pachyderm
-Next, run the following to actually create the secret in the Pachyderm Kubernetes cluster:
+### Create your Secret in {{% productName %}}
+Next, run the following to actually create the secret in the {{% productName %}} Kubernetes cluster:
 ```s
 pachctl create secret -f myfirstsecret.json 
 ```
@@ -87,13 +87,13 @@ Use `pachctl delete secret` to delete a secret given its name,  `pachctl inspect
 {{% /notice %}}
 
 You can now edit your pipeline specification file as follow.
-## Reference a Secret in Pachyderm's specification file
-Now that your secret is created on Pachyderm cluster, you will need to notify your pipeline by updating your pipeline [specification file](https://docs.pachyderm.com/latest/reference/pipeline-spec/#manifest-format).
-In Pachyderm, a Secret can be used in three different ways:
+## Reference a Secret in {{% productName %}}'s specification file
+Now that your secret is created on {{% productName %}} cluster, you will need to notify your pipeline by updating your pipeline [specification file](https://docs.pachyderm.com/latest/reference/pipeline-spec/#manifest-format).
+In {{% productName %}}, a Secret can be used in three different ways:
 
 1. **As a container environment variable**:
 
-      In this case, in Pachyderm's pipeline specification file, you need to reference Kubernetes' Secret by its:
+      In this case, in {{% productName %}}'s pipeline specification file, you need to reference Kubernetes' Secret by its:
 
       - **`name`**
       - and specify an environment variable named **`env_var`** that the value of your  **`key`** should be bound to. 
@@ -158,12 +158,12 @@ In Pachyderm, a Secret can be used in three different ways:
 
 2. **As a file in a volume mounted on a container**:
 
-      In this case, in Pachyderm's pipeline specification file, you need to reference Kubernetes' Secret by its:
+      In this case, in {{% productName %}}'s pipeline specification file, you need to reference Kubernetes' Secret by its:
 
       -  **`name`**
       - and specify the mount point (**`mount_path`**) to the secret (ex: `"/var/my-app-secret"`).
 
-      Pachyderm mounts all of the keys in the secret with file names corresponding to the keys.
+      {{% productName %}} mounts all of the keys in the secret with file names corresponding to the keys.
       This is useful for secure configuration files.
 
       ```json

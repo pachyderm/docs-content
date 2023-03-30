@@ -1,6 +1,6 @@
   type: oidc
   id: auth0-test
-  name: Pachyderm
+  name: {{% productName %}}
   version: 1
   config:
       issuer: dev-ps2tkwpgxblc1ozs.us.auth0.com

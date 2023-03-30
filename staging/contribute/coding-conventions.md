@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Coding Conventions
-description: Learn the coding conventions contributors to Pachyderm's code base follow.
+description: Learn the coding conventions contributors to {{% productName %}}'s code base follow.
 date: 
 # taxonomy #
 tags:  ["developers"]
@@ -10,11 +10,11 @@ seriesPart:
 directory: true 
 --- 
 
-Interested in contributing to Pachyderm's code? Learn the conventions here! For setup instructions, see [Setup for Contributors](../setup).
+Interested in contributing to {{% productName %}}'s code? Learn the conventions here! For setup instructions, see [Setup for Contributors](../setup).
 
 ## Languages 
 
-The Pachyderm repository is written using **Go**, **Shell**, and **Make**. Exceptions to this are:
+The {{% productName %}} repository is written using **Go**, **Shell**, and **Make**. Exceptions to this are:
 
 - `/examples`: For showcasing how to use the product in various languages.
 - `/doc`: For building documentation using a python-based static site generator ([MkDocs](https://www.mkdocs.org/)).

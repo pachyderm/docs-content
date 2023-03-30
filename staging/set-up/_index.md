@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Set Up
-description: Set up Pachyderm locally, in the cloud, or on-premises.
+description: Set up locally, in the cloud, or on-premises.
 date: 
 # taxonomy #
 tags: 

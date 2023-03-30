@@ -1,7 +1,7 @@
 ---
 # metadata #
 title: Datum
-description:  
+description: Learn about datums, the smallest indivisible unit of computation within a job.
 date:
 # taxonomy #
 tags: 

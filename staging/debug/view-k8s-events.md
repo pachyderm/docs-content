@@ -11,7 +11,7 @@ weight:
 directory: true
 ---
 
-The `kube-event-tail` pod in your Pachyderm cluster stores Kubernetes logs which are discarded after a certain amount of time. You can view these logs to obtain insights on key events. There are three event types: informational, warning, and error.
+The `kube-event-tail` pod in your {{% productName %}} cluster stores Kubernetes logs which are discarded after a certain amount of time. You can view these logs to obtain insights on key events. There are three event types: informational, warning, and error.
 
 ## How to View Kubernetes Logs
 

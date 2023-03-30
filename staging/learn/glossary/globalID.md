@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Global Identifier
-description: Learn about the concept of a global identifier in Pachyderm. 
+description: Learn about the concept of a global identifier, which is a unique identifier for a DAG.
 date: 
 # taxonomy #
 tags:  ["data-operations", "pipelines"]
@@ -11,7 +11,7 @@ seriesPart:
 
 Global Identifiers provide a simple way to follow the [provenance](TBD) or [subvenance](TBD) of a DAG. Commits and jobs sharing the same Global ID represent a logically-related set of objects.
 
-When a new commit is made, Pachyderm creates an associated commit ID; all resulting downstream **commits** and **jobs** in your DAG will then share that same ID (the Global Identifier). 
+When a new commit is made, {{% productName %}} creates an associated commit ID; all resulting downstream **commits** and **jobs** in your DAG will then share that same ID (the Global Identifier). 
 
 ## Actions
 

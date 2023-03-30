@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Job
-description: Learn about the concept of a Job in Pachyderm. 
+description: Learn about the concept of a Job, which is a unit of work that is created by a pipeline.
 date: 
 # taxonomy #
 tags: ["concepts", "pachctl", "data-operations", "pipelines"]

@@ -1,10 +1,10 @@
 ## pachctl auth whoami
 
-Print your Pachyderm identity
+Print your {{% productName %}} identity
 
 ### Synopsis
 
-Print your Pachyderm identity.
+Print your {{% productName %}} identity.
 
 ```
 pachctl auth whoami [flags]

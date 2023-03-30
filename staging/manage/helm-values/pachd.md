@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  PachD HCVs
-description: Configure the core settings of Pachyderm.
+description: Configure the core settings.
 date: 
 # taxonomy #
 tags: ["helm"]
@@ -39,7 +39,7 @@ pachd:
     enabled: true # runs kube validation preflight checks.
   affinity: {}
   annotations: {}
-  clusterDeploymentID: "" # sets Pachyderm cluster ID.
+  clusterDeploymentID: "" # sets {{% productName %}} cluster ID.
   configJob:
     annotations: {}
   goMaxProcs: 0 # passed as GOMAXPROCS to the pachd container.
@@ -220,7 +220,7 @@ pachd:
     enabled: true
   affinity: {}
   annotations: {}
-  # clusterDeploymentID sets the Pachyderm cluster ID.
+  # clusterDeploymentID sets the {{% productName %}} cluster ID.
   clusterDeploymentID: ""
   configJob:
     annotations: {}
@@ -234,7 +234,7 @@ pachd:
     tag: ""
   logFormat: "json"
   logLevel: "info"
-  # If lokiDeploy is true, a Pachyderm-specific instance of Loki will
+  # If lokiDeploy is true, a {{% productName %}}-specific instance of Loki will
   # be deployed.
   lokiDeploy: true
   # lokiLogging enables Loki logging if set.
@@ -363,7 +363,7 @@ pachd:
       # and token, it implements the functionality of the
       # --credentials argument to pachctl deploy.
       id: ""
-      # logOptions sets various log options in Pachyderm’s internal S3
+      # logOptions sets various log options in {{% productName %}}’s internal S3
       # client.  Comma-separated list containing zero or more of:
       # 'Debug', 'Signing', 'HTTPBody', 'RequestRetries',
       # 'RequestErrors', 'EventStreamBody', or 'all'

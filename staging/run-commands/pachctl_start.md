@@ -1,10 +1,10 @@
 ## pachctl start
 
-Start a Pachyderm resource.
+Start a {{% productName %}} resource.
 
 ### Synopsis
 
-Start a Pachyderm resource.
+Start a {{% productName %}} resource.
 
 ### Options
 

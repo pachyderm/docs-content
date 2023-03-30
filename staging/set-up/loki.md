@@ -34,8 +34,8 @@ This is controlled by the helm value `pachd.lokiLogging`, which can be set by ad
         lokiLogging: true
 ```
 
-Pachyderm reads logs from the Loki API Server with a particular set of tags. 
-The URI at which Pachyderm reads from the Loki API Server is determined by the `LOKI_SERVICE_HOST` and `LOKI_SERVICE_PORT` environment values **automatically added by Loki Kubernetes service**. 
+{{% productName %}} reads logs from the Loki API Server with a particular set of tags. 
+The URI at which {{% productName %}} reads from the Loki API Server is determined by the `LOKI_SERVICE_HOST` and `LOKI_SERVICE_PORT` environment values **automatically added by Loki Kubernetes service**. 
 
 If Loki is deployed after the `pachd` container,
 the `pachd` container will need to be redeployed to receive these connection parameters.
@@ -43,13 +43,13 @@ the `pachd` container will need to be redeployed to receive these connection par
 {{% notice note %}}
  
 If you are not running Promtail on the node 
-where your Pachyderm pods are located, you
+where your {{% productName %}} pods are located, you
 will be unable to get logs for pipelines running on that node via `pachctl logs -p pipelineName`.
 {{% /notice %}}
 
 ## Default Loki Bundle 
 
-Per default, Pachyderm ships with an embedded version of Loki that can be deployed by adding the `lokiDeploy: true` next to the existing [`lokiLogging: true`](#fetching-logs).
+Per default, {{% productName %}} ships with an embedded version of Loki that can be deployed by adding the `lokiDeploy: true` next to the existing [`lokiLogging: true`](#fetching-logs).
 
 ```yaml
 pachd:

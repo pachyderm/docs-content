@@ -1,7 +1,7 @@
 ---
 # metadata #
 title: Pipeline
-description: 
+description: Learn about the concept of a pipeline, which is a primitive responsible for reading data from a specified source, transforming it according to the pipeline specification, and writing the result to an output repo.
 date:
 # taxonomy #
 tags: 
@@ -9,7 +9,7 @@ series: ["glossary"]
 seriesPart:
 ---
 
-A pipeline is a Pachyderm primitive responsible for reading data from a specified source, such as a Pachyderm repo, transforming it according to the [pipeline specification](PPS), and writing the result to an output repo. 
+A pipeline is a {{% productName %}} primitive responsible for reading data from a specified source, such as a {{% productName %}} repo, transforming it according to the [pipeline specification](PPS), and writing the result to an output repo. 
 
 Pipelines subscribe to a branch in one or more input repositories, and every time the branch has a new [commit](TBD), the pipeline executes a job that runs [user code](TBD) to completion and writes the results to a commit in the output repository.
 

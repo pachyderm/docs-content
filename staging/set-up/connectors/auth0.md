@@ -20,12 +20,12 @@ seriesPart:
 
 1. Log in to your Auth0 account.
 2. In **Applications**, click **Create Application**.
-3. Type the name of your application, such as **Pachyderm**.
+3. Type the name of your application, such as **{{% productName %}}**.
 4. In the application type, select **Regular Web Application**.
 5. Click **Create**.
 6. Go to the application settings.
 7. Scroll down to **Application URIs**.
-8. In the **Allowed Callback URLs**, add the Pachyderm callback link in the
+8. In the **Allowed Callback URLs**, add the {{% productName %}} callback link in the
    following format:
  ```s
  # Dex's issuer URL + "/callback"
@@ -91,7 +91,7 @@ seriesPart:
       - login_hint
 ```
 {{% notice note %}}
-Note that Pachyderm's YAML format is **a simplified version** of Dex's [sample config](https://dexidp.io/docs/connectors/oidc/).
+Note that {{% productName %}}'s YAML format is **a simplified version** of Dex's [sample config](https://dexidp.io/docs/connectors/oidc/).
 {{% /notice %}}
 {{% /wizardResult %}}
 
@@ -109,14 +109,14 @@ Note that Pachyderm's YAML format is **a simplified version** of Dex's [sample c
 |type|The type of connector. (oidc, saml).|
 |version| The version of your connector (integer - default to 0 when creating a new connector)|
 |issuer| The domain of your application (here in Auth0). For example, `https://dev-k34x5yjn.us.auth0.com/`. **Note the trailing slash**.|
-|client_id| The Pachyderm **Client ID** (here in Auth0). The client ID consists of alphanumeric characters and can be found on the application
+|client_id| The {{% productName %}} **Client ID** (here in Auth0). The client ID consists of alphanumeric characters and can be found on the application
 settings page.|
-|client_secret| The Pachyderm client secret (here in Auth0) located on the application settings page.
-|redirect_uri|This parameter should match what you have added to **Allowed Callback URLs** when registering Pachyderm on your IdP website.|
+|client_secret| The {{% productName %}} client secret (here in Auth0) located on the application settings page.
+|redirect_uri|This parameter should match what you have added to **Allowed Callback URLs** when registering {{% productName %}} on your IdP website.|
 
 3. Open your Helm `values.yml` file.
 4. Find the [oidc.upstreamIDPs](https://github.com/pachyderm/pachyderm/blob/{{% majorMinorVersion %}}/etc/helm/pachyderm/values.yaml#L774) section.
-5. Input your connector info; Pachyderm stores this value in the platform secret `pachyderm-identity` in the key `upstream-idps`.
+5. Input your connector info; {{% productName %}} stores this value in the platform secret `pachyderm-identity` in the key `upstream-idps`.
 ```yaml
 stringData:
 upstream-idps: |
@@ -138,7 +138,7 @@ Alternatively, you can [create a secret](../../../../how-tos/advanced-data-opera
 
  
 ### 3. Login
-The users registered with your IdP are now ready to [Log in to Pachyderm](../login)
+The users registered with your IdP are now ready to [Log in to {{% productName %}}](../login)
 
 ## Considerations 
 

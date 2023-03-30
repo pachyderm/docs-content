@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  On-Prem Setup 
-description: Learn how to install Pachyderm on your premises. 
+description: Learn how to install on your premises. 
 date: 
 # taxonomy #
 tags:  ["deployment"]
@@ -11,17 +11,17 @@ weight:
 ---
 ## Before you start 
 
-Before you can deploy Pachyderm, you will need to perform the following actions:
+Before you can deploy {{% productName %}}, you will need to perform the following actions:
 
 1. [Install kubectl](https://kubernetes.io/docs/tasks/tools/)
 2. [Install Helm]()
 3. [Deploy Kubernetes on-premises](https://kubernetes.io/docs/setup/).
-4. [Deploy two Kubernetes persistent volumes for Pachyderm metadata storage](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#class-1). 
+4. [Deploy two Kubernetes persistent volumes for {{% productName %}} metadata storage](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#class-1). 
 5. Deploy an on-premises object store  using a storage provider like [MinIO](https://min.io), [EMC's ECS](https://www.delltechnologies.com/en-us/storage/ecs/index.htm), or [SwiftStack](https://www.swiftstack.com/) to provide S3-compatible access to your data storage.
 
-## How to Deploy Pachyderm On-Premises
+## How to Deploy {{% productName %}} On-Premises
 
-### 1. Install Pachyderm via Helm
+### 1. Install {{% productName %}} via Helm
 
 ```s
 helm repo add pach https://helm.pachyderm.com
@@ -46,9 +46,9 @@ postgresql:
 ### 3. Size & Configure Object Store
 
 1. Determine the endpoint of your object store, for example `minio-server:9000`.
-2. Choose a unique name for the bucket you will dedicate to Pachyderm.
-3. Create a new access key ID and secret key for Pachyderm to use when accessing the object store.
-4. Update the Pachyderm Helm values file with the endpoint, bucket name, access key ID, and secret key.
+2. Choose a unique name for the bucket you will dedicate to {{% productName %}}.
+3. Create a new access key ID and secret key for {{% productName %}} to use when accessing the object store.
+4. Update the {{% productName %}} Helm values file with the endpoint, bucket name, access key ID, and secret key.
 
 ```s
 pachd:

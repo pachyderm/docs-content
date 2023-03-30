@@ -1,7 +1,7 @@
 ---
 # metadata #
 title: Pipeline Inputs
-description: Learn about the concept of a pipeline input.
+description: Learn about the concept of a pipeline input, which is the source of the data that the pipeline reads and processes.
 date:
 # taxonomy #
 tags: 
@@ -9,7 +9,7 @@ series: ["glossary"]
 seriesPart:
 ---
 
-In Pachyderm, pipeline inputs are defined as the source of the data that the [pipeline](TBD) reads and processes. The input for a pipeline can be a Pachyderm repository ([input repo](TBD)) or an external data source, such as a file in a cloud storage service.
+In {{% productName %}}, pipeline inputs are defined as the source of the data that the [pipeline](TBD) reads and processes. The input for a pipeline can be a {{% productName %}} repository ([input repo](TBD)) or an external data source, such as a file in a cloud storage service.
 
 To define a pipeline input, you need to specify the source of the data and how the data is organized. This is done in the `input` section of the [pipeline specification](TBD) file, which is a YAML or JSON file that defines the configuration of the pipeline.
 

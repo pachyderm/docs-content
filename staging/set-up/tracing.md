@@ -11,14 +11,14 @@ weight:
 directory: true 
 --- 
 
-Pachyderm has the ability to trace requests using Jaeger. This
+{{% productName %}} has the ability to trace requests using Jaeger. This
 can be useful when diagnosing slow clusters.
 
 ![Successful Trace](/images/healthy.png)
 
 # Collecting Traces
 
-To use tracing in Pachyderm, complete the following steps:
+To use tracing in {{% productName %}}, complete the following steps:
 
 1. Run Jaeger in Kubernetes
 
@@ -26,7 +26,7 @@ To use tracing in Pachyderm, complete the following steps:
     kubectl apply -f https://raw.githubusercontent.com/pachyderm/pachyderm/v{{% latestPatchNumber %}}/etc/deploy/tracing/jaeger-all-in-one.yaml
     ```
 
-2. Point Pachyderm at Jaeger
+2. Point {{% productName %}} at Jaeger
 
    * For `pachctl`, run:
 
@@ -51,7 +51,7 @@ To use tracing in Pachyderm, complete the following steps:
      created by the `jaeger-all-in-one.yaml` manifest). Killing the pods
      restarts them, which causes them to connect to Jaeger.
 
-3. Send Pachyderm a traced request by setting the `PACH_TRACE`
+3. Send {{% productName %}} a traced request by setting the `PACH_TRACE`
    environment variable to "true" before running any `pachctl`
    command (note that `JAEGER_ENDPOINT` must also be
    set/exported):
@@ -60,13 +60,13 @@ To use tracing in Pachyderm, complete the following steps:
    PACH_TRACE=true pachctl list job # for example
    ```
 
-   Pachyderm does not recommend exporting `PACH_TRACE` because
+   {{% productName %}} does not recommend exporting `PACH_TRACE` because
    tracing calls can slow them down and make interesting traces hard
    to find in Jaeger. Therefore, you might want to set this variable for
    the specific calls you want to trace.
 
-   However, Pachyderm's client library reads this variable and implements the
-   relevant tracing, so any binary that uses Pachyderm's go client library can
+   However, {{% productName %}}'s client library reads this variable and implements the
+   relevant tracing, so any binary that uses {{% productName %}}'s go client library can
    trace calls if these variables are set.
 
 ## View Traces

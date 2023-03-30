@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Input Join PPS
-description: Join files that are stored in separate Pachyderm repositories.
+description: Join files that are stored in separate {{% productName %}} repositories.
 date: 
 # taxonomy #
 tags: ["pipelines", "pps"]

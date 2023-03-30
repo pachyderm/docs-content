@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Get Started
-description: New to using Pachyderm? Start Here.
+description: Start Here.
 date: 
 # taxonomy #
 tags: 

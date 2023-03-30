@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Authorization
-description: Learn how to set up and manage Role-Based Access Control (RBAC) for Pachyderm.
+description: Learn how to set up and manage Role-Based Access Control (RBAC).
 date: 
 # taxonomy #
 tags: 
@@ -9,21 +9,21 @@ series:
 seriesPart:
 ---
 
-You can use Pachyderm's Role-Based Access Control (RBAC) model to configure authorization for your users. Users can be assigned roles that grant certain permissions for interacting with Pachyderm's resources. 
+You can use {{% productName %}}'s Role-Based Access Control (RBAC) model to configure authorization for your users. Users can be assigned roles that grant certain permissions for interacting with {{% productName %}}'s resources. 
 
 
 ## Users Types
-Pachyderm has 5 user types:
+{{% productName %}} has 5 user types:
 
 |User Type| Description|
 |-|-|
 |clusterAdmin| |
-|IdP User| Any user or group of users authenticated by your Identity Provider to access Pachyderm.|
-|Robot User|A Service account used for third party applications/systems integrating with Pachyderm APIs/Clients.|
-|Pipeline User| An internal Service Account used for Pipelines when interacting with Pachyderm resources.|
+|IdP User| Any user or group of users authenticated by your Identity Provider to access {{% productName %}}.|
+|Robot User|A Service account used for third party applications/systems integrating with {{% productName %}} APIs/Clients.|
+|Pipeline User| An internal Service Account used for Pipelines when interacting with {{% productName %}} resources.|
 |All Cluster Users|A general subject that represents **everyone who has logged in to a cluster**.|
 
-  Pachyderm defines 4 prefixes depending on the type of user:
+  {{% productName %}} defines 4 prefixes depending on the type of user:
 
   - robot
   - user
@@ -33,7 +33,7 @@ Pachyderm has 5 user types:
   Aditionnally, the "everyone" user `allClusterUsers` has no specific prefix. See the example below to learn how to assign repoReader access to `allClusterUsers` on a repo.
 
 ## Resource Types
-Pachyderm has 3 resource types:
+{{% productName %}} has 3 resource types:
 
 |Resource Type| Description|
 |-|-|
@@ -42,7 +42,7 @@ Pachyderm has 3 resource types:
 |Repo| A repository is where data is stored and contains both files and folders. Repos tracks all changes to the data and creates a history of data changes.|
 
 ## Role Types 
-Pachyderm has 3 role  types:
+{{% productName %}} has 3 role  types:
 
 |Role Type| Description|
 |-|-|

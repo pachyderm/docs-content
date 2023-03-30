@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  RBAC
-description: Learn how Pachyderm supports Kubernetes' Role-Base Access Controls (RBAC).
+description: Learn how our platform supports Kubernetes' Role-Base Access Controls (RBAC).
 date: 
 # taxonomy #
 tags: ["configuration", "permissions"]
@@ -10,11 +10,11 @@ seriesPart:
 directory: true 
 --- 
 
-Pachyderm has support for Kubernetes Role-Based Access
+{{% productName %}} has support for Kubernetes Role-Based Access
 Controls (RBAC), which is a default part of all
-Pachyderm deployments. In most use cases, Pachyderm
+{{% productName %}} deployments. In most use cases, {{% productName %}}
 sets all the RBAC permissions automatically. However,
-if you are deploying Pachyderm on a cluster that your
+if you are deploying {{% productName %}} on a cluster that your
 company owns, security policies might not allow certain
 RBAC permissions by default. Therefore, you need to
 contact your Kubernetes administrator and provide the
@@ -37,12 +37,12 @@ Rules: []rbacv1.PolicyRule{{
 		}},
 ```
 
-The following table explains how Pachyderm uses those permissions:
+The following table explains how {{% productName %}} uses those permissions:
 
 | Permission       | Description   |
 | ---------------- | ------------- |
-| Access to nodes    | Used for metrics reporting, disabling should not affect Pachyderm's operation. |
-| Access to pods, replica controllers, and services | Pachyderm uses this permission to monitor the created pipelines. The permissions related to `replicationcontrollers` and `services` are used in the setup and deletion of pipelines. Each pipeline has its own RC and service in addition to the pods.
+| Access to nodes    | Used for metrics reporting, disabling should not affect {{% productName %}}'s operation. |
+| Access to pods, replica controllers, and services | {{% productName %}} uses this permission to monitor the created pipelines. The permissions related to `replicationcontrollers` and `services` are used in the setup and deletion of pipelines. Each pipeline has its own RC and service in addition to the pods.
 | Access to secrets | Required to give various kinds of credentials to pipelines, including storage credentials to access S3 or other object storage backends, Docker credentials to pull from a private registry, and others. |
 
 ## RBAC and DNS
@@ -92,14 +92,14 @@ does not use it until you run the above commands.
 
 ## Resolving RBAC Permissions on GKE
 
-When you deploy Pachyderm on GKE, you might see the following error:
+When you deploy {{% productName %}} on GKE, you might see the following error:
 
 ```s
 Error from server (Forbidden): error when creating "STDIN": clusterroles.rbac.authorization.k8s.io "pachyderm" is forbidden: attempt to grant extra privileges:
 ```
 
 To fix this issue, run the following command and redeploy
-Pachyderm:
+{{% productName %}}:
 
 ```s
 kubectl create clusterrolebinding cluster-admin-binding --clusterrole=cluster-admin --user=$(gcloud config get-value account)

@@ -1,6 +1,6 @@
 ---
 title: "Key Features"
-description: Learn about the key features and benefits of Pachyderm, a powerful data processing platform. 
+description: Learn about the key features and benefits of our powerful data processing platform. 
 date: 2023-01-30T16:17:44-06:00
 weight: 1
 tags:
@@ -11,7 +11,7 @@ directory: true
 ---
 
 ## Key Features and Benefits
-The following are the key features of Pachyderm that make it a powerful data processing platform. 
+The following are the key features of {{% productName %}} that make it a powerful data processing platform. 
 
 ### Data-driven Pipelines
 - Automatically trigger pipelines based on changes in the data.
