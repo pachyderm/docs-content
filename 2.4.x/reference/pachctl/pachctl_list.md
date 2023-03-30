@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  pachctl list
-description: "Print a list of Pachyderm resources of a specific type."
+description: "Print a list of {{%productName%}} resources of a specific type."
 date:  2022-10-14T09:34:42-04:00
 tags:
   - list-branch
@@ -18,7 +18,7 @@ cliGlossary:  l
 
 ### Synopsis
 
-Print a list of Pachyderm resources of a specific type.
+Print a list of {{%productName%}} resources of a specific type.
 
 ### Options
 

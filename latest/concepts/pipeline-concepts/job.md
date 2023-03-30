@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Job
-description: Learn about the concept of a Job in Pachyderm. 
+description: Learn about the concept of a Job in {{%productName%}}. 
 date: 
 # taxonomy #
 tags: ["concepts", "pachctl", "data-operations", "pipelines"]
@@ -10,7 +10,7 @@ seriesPart:
 --- 
 
 {{% notice warning %}}
-Note that Pachyderm uses two different scopes when referring to a `job`. 
+Note that {{%productName%}} uses two different scopes when referring to a `job`. 
 
 - A "global" scope tracking down your entire provenance chain. Refer to [GlobalID](../../advanced-concepts/globalID) for more details.
 - And a "local" scope in which a job (also referred to as sub job) is an execution of one particular pipeline. 
@@ -20,7 +20,7 @@ The following page details the latter.
 
 ## Definition
 
-A Pachyderm job is an execution of a pipeline that triggers
+A {{%productName%}} job is an execution of a pipeline that triggers
 when new data is detected in an input repository. 
 
 {{% notice note %}}
@@ -56,7 +56,7 @@ Below, the state transition diagram of a job:
 ![Job State Diagram](/images/job-state-diagram.png)
 
 ## List Jobs
-They are various ways to list jobs in Pachyderm, depending on the expected outcome:
+They are various ways to list jobs in {{%productName%}}, depending on the expected outcome:
 
 - The `pachctl list jobs` command returns [the list of all global jobs](../../advanced-concepts/globalID/#list-all-global-commits-and-global-jobs). 
 
@@ -80,7 +80,7 @@ fd9454d06d8e4fa38a75c8cd20b39538 edges    20 hours ago 5 seconds          0     
 7dcd77a2f7f34ff384a6096d1139e922 edges    20 hours ago Less than a second 0       0 + 0 / 0 0B       0B       success
 ```
 
-For each (sub) job, Pachyderm shows the time the pipeline started, its duration, data downloaded and uploaded, the `STATE` of the pipeline execution, and the number of datums in the `PROGRESS` section. The format of the progress column is `DATUMS PROCESSED + DATUMS SKIPPED / TOTAL DATUMS`.
+For each (sub) job, {{%productName%}} shows the time the pipeline started, its duration, data downloaded and uploaded, the `STATE` of the pipeline execution, and the number of datums in the `PROGRESS` section. The format of the progress column is `DATUMS PROCESSED + DATUMS SKIPPED / TOTAL DATUMS`.
 
 See [Datum Processing States](../../../concepts/pipeline-concepts/datum/datum-processing-states/) for details on Datum states.
 

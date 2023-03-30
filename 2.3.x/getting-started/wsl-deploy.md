@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Deploy on Windows
-description: Learn how to deploy Pachyderm locally on a Windows machine.
+description: Learn how to deploy {{%productName%}} locally on a Windows machine.
 date: 
 # taxonomy #
 tags: ["windows", "deployment"]
@@ -9,17 +9,17 @@ series:
 seriesPart:
 ---
 
-You can deploy Pachyderm locally on your Microsoft Windows computer to
-try out Pachyderm. However, currently Pachyderm has limited support for
-Windows. This document provides guidelines that enable you to run Pachyderm
+You can deploy {{%productName%}} locally on your Microsoft Windows computer to
+try out {{%productName%}}. However, currently {{%productName%}} has limited support for
+Windows. This document provides guidelines that enable you to run {{%productName%}}
 on a Windows machine for preview. You might need to troubleshoot these
 instructions further to make this work. To test full functionality, we
-encourage you to run Pachyderm in a UNIX environment.
+encourage you to run {{%productName%}} in a UNIX environment.
 
 ## Prerequisites
 
 You need to have the following components installed on your Microsoft Windows
-computer to deploy Pachyderm:
+computer to deploy {{%productName%}}:
 
 * Microsoft Windows 10 or later
 * Microsoft PowerShell™
@@ -29,13 +29,13 @@ computer to deploy Pachyderm:
 * `kubectl`
 
 While PowerShell is included with your standard Windows tools, other components
-might not be included or enabled. Pachyderm recommends that you install Ubuntu
+might not be included or enabled. {{%productName%}} recommends that you install Ubuntu
 WSL because it was tested and verified by our team.
 
 ## Install Ubuntu WSL
 
-`pachctl` is a Pachyderm command-line interface that enables you to interact
-with Pachyderm. It requires a UNIX environment to run correctly. Therefore,
+`pachctl` is a {{%productName%}} command-line interface that enables you to interact
+with {{%productName%}}. It requires a UNIX environment to run correctly. Therefore,
 you need a WSL to run `pachctl` commands. We recommend that you install an
 Ubuntu WSL. To install WSL, follow the steps in the
 [Microsoft documentation](https://docs.microsoft.com/en-us/windows/wsl/install).
@@ -43,7 +43,7 @@ Ubuntu WSL. To install WSL, follow the steps in the
 ## Enable Hyper-V
 
 You need to install Hyper-V on your host Windows machine so that Minikube can
-use it to create a virtual machine on which your Pachyderm containerized cluster
+use it to create a virtual machine on which your {{%productName%}} containerized cluster
 will run. You also need to adjust the amount of CPU and memory allocated to
 Hyper-V so that your Minikube machines do not crash with an out-of-memory error.
 
@@ -141,7 +141,7 @@ curl -o /tmp/pachctl.deb -L https://github.com/pachyderm/pachyderm/releases/down
 100 25.9M  100 25.9M    0     0  10.0M      0  0:00:02  0:00:02 --:--:-- 13.0M
 ```
 
-## Deploy Pachyderm
+## Deploy {{%productName%}}
 
 After you complete all the steps above, start your Minikube VM by running
 `minikube start` and follow the steps in our [Local Deployment](../local-installation/) page.

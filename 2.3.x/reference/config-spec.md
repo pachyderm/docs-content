@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Configuration Specification
-description: Learn about the base configuration options available for Pachyderm.
+description: Learn about the base configuration options available for {{%productName%}}.
 date: 
 # taxonomy #
 tags: ["configuration"]
@@ -80,7 +80,7 @@ context, as specified in `v2.contexts`.
 
 ### Contexts
 
-A map of context names to their configurations. Pachyderm contexts are akin to
+A map of context names to their configurations. {{%productName%}} contexts are akin to
 kubernetes contexts (and in fact reference the kubernetes context that they're
 associated with.)
 

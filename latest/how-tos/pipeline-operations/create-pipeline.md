@@ -28,7 +28,7 @@ A basic pipeline must have all of the following:
 
 1. Define a [pipeline specification](../../../reference/pipeline-spec/) in YAML, JSON, or Jsonnet.
 
-2. Pass the pipeline configuration to Pachyderm:
+2. Pass the pipeline configuration to {{%productName%}}:
 
     ```s
     pachctl create pipeline -f <pipeline_spec>
@@ -37,7 +37,7 @@ A basic pipeline must have all of the following:
 ### Via URL 
 
 1. Find a pipeline specification hosted in a public or internal repository.
-2. Pass the pipeline configuration to Pachyderm:
+2. Pass the pipeline configuration to {{%productName%}}:
   ```s
   pachctl create pipeline -f https://raw.githubusercontent.com/pachyderm/pachyderm/{{% majorMinorVersion %}}/examples/opencv/edges.json
   ```
@@ -100,7 +100,7 @@ input:
 
 ## Considerations
 
-- When you create a pipeline, Pachyderm automatically creates an eponymous output
+- When you create a pipeline, {{%productName%}} automatically creates an eponymous output
 repository. However, if such a repo already exists, your pipeline will take
 over the master branch. The files that were stored in the repo before
 will still be in the `HEAD` of the branch.

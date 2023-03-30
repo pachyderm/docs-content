@@ -1,14 +1,14 @@
 ---
 # metadata # 
 title:  pachctl
-description: "Access the Pachyderm API."
+description: "Access the {{%productName%}} API."
 date:  2022-10-11T14:56:32-04:00
 layout: glossary
 ---
 
 ### Synopsis
 
-Access the Pachyderm API.
+Access the {{%productName%}} API.
 
 Environment variables:
 

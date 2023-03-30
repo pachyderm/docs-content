@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  pachctl subscribe
-description: "Wait for notifications of changes to a Pachyderm resource."
+description: "Wait for notifications of changes to a {{%productName%}} resource."
 date:  2022-10-14T09:34:42-04:00
 tags:
   - subscribe-commit
@@ -10,7 +10,7 @@ cliGlossary:  s
 
 ### Synopsis
 
-Wait for notifications of changes to a Pachyderm resource.
+Wait for notifications of changes to a {{%productName%}} resource.
 
 ### Options
 

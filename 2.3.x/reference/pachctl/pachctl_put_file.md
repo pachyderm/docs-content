@@ -50,7 +50,7 @@ $ pachctl put file repo@branch -i file
 
 # Put several files or URLs that are listed at URL.
 # NOTE this URL can reference local files, so it could cause you to put sensitive
-# files into your Pachyderm cluster.
+# files into your {{%productName%}} cluster.
 $ pachctl put file repo@branch -i http://host/path
 ```
 
@@ -58,7 +58,7 @@ $ pachctl put file repo@branch -i http://host/path
 
 ```
   -a, --append              Append to the existing content of the file, either from previous commits or previous calls to 'put file' within this commit.
-      --compress            Compress data during upload. This parameter might help you upload your uncompressed data, such as CSV files, to Pachyderm faster. Use 'compress' with caution, because if your data is already compressed, this parameter might slow down the upload speed instead of increasing.
+      --compress            Compress data during upload. This parameter might help you upload your uncompressed data, such as CSV files, to {{%productName%}} faster. Use 'compress' with caution, because if your data is already compressed, this parameter might slow down the upload speed instead of increasing.
   -f, --file strings        The file to be put, it can be a local file or a URL. (default [-])
       --full-path           If true, use the entire path provided to -f as the target filename in PFS. By default only the base of the path is used.
   -h, --help                help for file

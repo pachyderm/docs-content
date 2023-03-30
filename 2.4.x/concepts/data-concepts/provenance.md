@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Provenance
-description: Learn about the concept of provenance in Pachyderm. 
+description: Learn about the concept of provenance in {{%productName%}}. 
 glossaryDefinition: The recorded data lineage that tracks the dependencies and relationships between datasets. 
 date: 
 # taxonomy #
@@ -10,14 +10,14 @@ series:
 seriesPart:
 --- 
 
-**Data versioning** ([History](../history/)) enables Pachyderm users to go back in time and see the state of a dataset or repository at a particular moment. 
+**Data versioning** ([History](../history/)) enables {{%productName%}} users to go back in time and see the state of a dataset or repository at a particular moment. 
 
 **Data provenance** (from the French noun *provenance* which means *the place of origin*),
 also known as **data lineage**, tracks the dependencies and relationships
 between datasets. It answers the question
 *"Where does the data come from?"*, but also *"How was the data transformed along the way?"*. 
 
-Pachyderm enables its users
+{{%productName%}} enables its users
 to have both: track all revisions of their data **and**
 understand the connection between the data stored in one repository
 and the results in the other repository.
@@ -45,9 +45,9 @@ Here, the ID1 is shared by all commits and jobs involved in creating the final s
 A simple `pachctl list commit ID1` (`pachctl list job ID1`) will return that list at once.
 
 
-## Tracking Direct Provenance in Pachyderm
+## Tracking Direct Provenance in {{%productName%}}
 
-Pachyderm provides the `pachctl inspect` command that enables you to track
+{{%productName%}} provides the `pachctl inspect` command that enables you to track
 the direct provenance of your commits and learn where the data in the repository
 originates in.
 
@@ -114,7 +114,7 @@ pachctl inspect commit edges@71c791f3252c492a8f8ad9a51e5a5cd5 --raw
 
 ## Traversing Provenance and Subvenance
 
-In Pachyderm, **all the related steps in a DAG share the same identifier**,
+In {{%productName%}}, **all the related steps in a DAG share the same identifier**,
 making it easy to traverse the provenance and subvenance in any commit.
 
 All it takes is to run `pachctl list commit <commitID>`

@@ -1,7 +1,7 @@
 ---
 # metadata # 
-title:  Deploy Pachyderm with TLS (SSL, HTTPS)
-description: Learn how to deploy a Pachyderm cluster with Transport Layer Security (TLS).
+title:  Deploy {{%productName%}} with TLS (SSL, HTTPS)
+description: Learn how to deploy a {{%productName%}} cluster with Transport Layer Security (TLS).
 date: 
 # taxonomy #
 tags: ["deployment"]
@@ -11,7 +11,7 @@ seriesPart:
 
 ## Obtain A Certificate And Enable TLS
 
-You can deploy your Pachyderm cluster with Transport Layer Security (TLS)
+You can deploy your {{%productName%}} cluster with Transport Layer Security (TLS)
 enabled to secure internet browser connections and transactions through data encryption by means of a trusted certificate and a private key. 
 
 Before you can enable TLS:
@@ -53,15 +53,15 @@ In this example, you terminate tls at the cluster level by enabling tls directly
 Et voila!
 
 {{% notice note %}}
-When using self signed certificates or custom certificate authority, you will need to set `global.customCaCerts` to true to add Pachyderm's certificate and CA to the list of trusted authorities for console and enterprise, allowing Pachyderm components (pachd, Console, Enterprise Server) to communicate over SSL. 
+When using self signed certificates or custom certificate authority, you will need to set `global.customCaCerts` to true to add {{%productName%}}'s certificate and CA to the list of trusted authorities for console and enterprise, allowing {{%productName%}} components (pachd, Console, Enterprise Server) to communicate over SSL. 
 
 If you are using a custom ca-signed cert, **you must include the full certificate chain in the root.crt file**.
 {{% /notice %}}
 
 {{% notice warning %}}
-We are now shipping Pachyderm with an **embedded proxy**  allowing your cluster to expose one single port externally. This deployment setup is optional.
+We are now shipping {{%productName%}} with an **embedded proxy**  allowing your cluster to expose one single port externally. This deployment setup is optional.
 
-If you choose to deploy Pachyderm with a proxy (see the [deployment instructions](../deploy-w-proxy/) and new recommended architecture), the setup of **tls is set in the proxy section of your values.yaml** only (i.e., tls terminates inside the proxy).
+If you choose to deploy {{%productName%}} with a proxy (see the [deployment instructions](../deploy-w-proxy/) and new recommended architecture), the setup of **tls is set in the proxy section of your values.yaml** only (i.e., tls terminates inside the proxy).
 
 The setup of TLS at the proxy level is intended for the case where the proxy is exposed directly to the Internet.
 
@@ -73,11 +73,11 @@ The setup of TLS at the proxy level is intended for the case where the proxy is 
 ```
 {{% /notice%}}
 
-## Connect to Pachyderm Via SSL
+## Connect to {{%productName%}} Via SSL
 
-After you deploy Pachyderm, to connect through `pachctl` by using a
+After you deploy {{%productName%}}, to connect through `pachctl` by using a
 trusted certificate, you will need to set the `pachd_address` in the
-Pachyderm context with the cluster IP address that starts with `grpcs://`.
+{{%productName%}} context with the cluster IP address that starts with `grpcs://`.
 You can do so by running the following command:
 
 ### Example 
@@ -97,5 +97,5 @@ pachctl config set active-context "grpcs-context"
 {{% /notice %}}
 
 {{% notice info %}}
-[Connect by using a Pachyderm context](../connect-to-cluster/#connect-by-using-a-pachyderm-context)
+[Connect by using a {{%productName%}} context](../connect-to-cluster/#connect-by-using-a-pachyderm-context)
 {{% /notice %}}

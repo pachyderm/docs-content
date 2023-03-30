@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  pachctl auth get-config
-description: "Retrieve Pachyderm's current auth configuration"
+description: "Retrieve {{%productName%}}'s current auth configuration"
 date:  2022-10-14T09:34:42-04:00
 tags:
   - auth
@@ -10,7 +10,7 @@ cliGlossary:  a
 
 ### Synopsis
 
-Retrieve Pachyderm's current auth configuration
+Retrieve {{%productName%}}'s current auth configuration
 
 ```
 pachctl auth get-config [flags]

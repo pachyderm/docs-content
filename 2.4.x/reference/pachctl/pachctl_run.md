@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  pachctl run
-description: "Manually run a Pachyderm resource."
+description: "Manually run a {{%productName%}} resource."
 date:  2022-10-14T09:34:42-04:00
 tags:
   - run-cron
@@ -12,7 +12,7 @@ cliGlossary:  r
 
 ### Synopsis
 
-Manually run a Pachyderm resource.
+Manually run a {{%productName%}} resource.
 
 ### Options
 

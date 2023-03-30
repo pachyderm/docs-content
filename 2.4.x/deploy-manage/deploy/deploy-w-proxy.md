@@ -1,7 +1,7 @@
 ---
 # metadata # 
-title:  Deploy Pachyderm via Proxy (One Port)
-description: Learn how to deploy Pachyderm using an embedded proxy, exposing only one external port. 
+title:  Deploy {{%productName%}} via Proxy (One Port)
+description: Learn how to deploy {{%productName%}} using an embedded proxy, exposing only one external port. 
 date: 
 # taxonomy #
 tags: ["deployment"]
@@ -10,15 +10,15 @@ seriesPart:
 --- 
 
 
-We are now shipping Pachyderm with an **optional embedded proxy** allowing Pachyderm to expose one single port externally (whether you access `pachd` over gRPC using `pachctl`, or `console` over HTTP, for example).
+We are now shipping {{%productName%}} with an **optional embedded proxy** allowing {{%productName%}} to expose one single port externally (whether you access `pachd` over gRPC using `pachctl`, or `console` over HTTP, for example).
 
-See Pachyderm new high-level architecture diagram:
+See {{%productName%}} new high-level architecture diagram:
 ![High level architecture](/images/arch-diagram-high-level-with-proxy.svg)
 
-This page is an add-on to existing installation instructions in the case where you chose to deploy Pachyderm with an embedded proxy. The steps below replace all or parts of the existing installation documentation. We will let you know when to use them and which section they overwrite.
+This page is an add-on to existing installation instructions in the case where you chose to deploy {{%productName%}} with an embedded proxy. The steps below replace all or parts of the existing installation documentation. We will let you know when to use them and which section they overwrite.
 
 {{% notice note %}}
-- When the proxy option is activated, Pachyderm is reachable through **one TCP port for all incoming grpc (grpcs), console (HTTP/HTTPS), s3 gateway, OIDC, and dex traffic**, then routes each call to the appropriate backend microservice without any additional configuration.
+- When the proxy option is activated, {{%productName%}} is reachable through **one TCP port for all incoming grpc (grpcs), console (HTTP/HTTPS), s3 gateway, OIDC, and dex traffic**, then routes each call to the appropriate backend microservice without any additional configuration.
 - Enable the proxy as follow:
 
   ```yaml
@@ -30,10 +30,10 @@ This page is an add-on to existing installation instructions in the case where y
 {{% /notice %}}
 
 {{% notice warning %}}
-The deployment of Pachyderm with a proxy is optional at the moment and will become permanent in the next minor release of Pachyderm.
+The deployment of {{%productName%}} with a proxy is optional at the moment and will become permanent in the next minor release of {{%productName%}}.
 {{% /notice %}}
 
-The diagram below gives a quick overview of the layout of services and pods when using a proxy. In particular, it details how Pachyderm listens to all inbound traffic on one port, then routes each call to the appropriate backend:![Infrastruture Recommendation](/images/infra-recommendations-with-proxy.png)
+The diagram below gives a quick overview of the layout of services and pods when using a proxy. In particular, it details how {{%productName%}} listens to all inbound traffic on one port, then routes each call to the appropriate backend:![Infrastruture Recommendation](/images/infra-recommendations-with-proxy.png)
 
 {{% notice note %}}
 See our [reference values.yaml](https://github.com/pachyderm/pachyderm/blob/{{% majorMinorVersion %}}/etc/helm/pachyderm/values.yaml#L827) for all available configurable fields of the proxy.
@@ -41,16 +41,16 @@ See our [reference values.yaml](https://github.com/pachyderm/pachyderm/blob/{{% 
 
 Before any deployment in production, we recommend reading the following section to [set up your production infrastructure](#deploy-pachyderm-in-production-with-a-proxy). 
 
-Alternatively, you can skip those infrastructure prerequisites and make a [quick cloud installation](#quick-cloud-deployment-with-a-proxy) or jump to our [local deployment](#deploy-pachyderm-locally-with-a-proxy) section for a first encounter with Pachyderm.
+Alternatively, you can skip those infrastructure prerequisites and make a [quick cloud installation](#quick-cloud-deployment-with-a-proxy) or jump to our [local deployment](#deploy-pachyderm-locally-with-a-proxy) section for a first encounter with {{%productName%}}.
 
-## Pachyderm General Infrastructure Recommendations
+## {{%productName%}} General Infrastructure Recommendations
 
 For production deployments, we recommend that you:
 
 * **Provision a TCP load balancer** for all HTTP/HTTPS, gRPC/gRPCs, aws s3, /dex incoming traffic.
 The TCP load balancer (load balanced at L4 of the OSI model) will have port `80/443` forwarding to the `pachyderm-proxy` service entry point. Please take a look at the diagram above.
         
-    When a proxy is enabled with `type:LoadBalancer` (see the snippet of values.yaml enabling the proxy), Pachyderm creates a `pachyderm-proxy` service allowing your cloud platform (AWS, GKE...) to **provision a TCP Load Balancer automatically**.
+    When a proxy is enabled with `type:LoadBalancer` (see the snippet of values.yaml enabling the proxy), {{%productName%}} creates a `pachyderm-proxy` service allowing your cloud platform (AWS, GKE...) to **provision a TCP Load Balancer automatically**.
         
   {{% notice note %}}
   - You can optionally attach any additional Load Balancer configuration information to the metadata of your service by adding the appropriate `annotations` in the `proxy.service` of your values.yaml.
@@ -70,9 +70,9 @@ The TCP load balancer (load balanced at L4 of the OSI model) will have port `80/
 
     Make sure that you have [Transport Layer Security (TLS)](../deploy-w-tls) enabled for your incoming traffic. 
    
-* **Use Pachyderm authentication/authorization**
+* **Use {{%productName%}} authentication/authorization**
 
-    Pachyderm authentication is an additional
+    {{%productName%}} authentication is an additional
     security layer to protect your data from unauthorized access.
     See the [authentication and authorization section](../../../enterprise/auth/) to activate access control and set up an Identity Provider (IdP).
 
@@ -80,7 +80,7 @@ The TCP load balancer (load balanced at L4 of the OSI model) will have port `80/
 
 * (Optional) **Create a DNS entry for your public IP**
 
-## Deploy Pachyderm in Production With a Proxy
+## Deploy {{%productName%}} in Production With a Proxy
 
 Once you have your networking infrastructure setup, 
 check the [deployment page that matches your cloud provider](../../) and 
@@ -95,13 +95,13 @@ proxy:
     annotations: {see examples below}
 ```
 
-Once your cluster is provisioned, and Pachyderm installed, 
+Once your cluster is provisioned, and {{%productName%}} installed, 
 replace the instructions in section 7 (Have 'pachctl' And Your Cluster Communicate) by this [new set of instructions](#to-connect-your-pachctl-client-to-your-cluster).
 
 {{% notice warning %}}
 If you plan to deploy Console in Production, read the following and adjust your values.yaml accordingly.
 
-Deploying Pachyderm with a proxy simplifies the setup of Console (No more dedicated DNS and ingress needed in front of Console). In a production environment, you will need to:
+Deploying {{%productName%}} with a proxy simplifies the setup of Console (No more dedicated DNS and ingress needed in front of Console). In a production environment, you will need to:
 
 - [Activate Authentication](../../../enterprise/auth/).Although, if you are an Helm user, setting up your License Key in your values.yaml will activate Authentication by default. This instruction applies to users activating auth by using pachctl.
 - Update the values in the highlighted fields below.
@@ -174,7 +174,7 @@ Follow your regular [QUICK Cloud Deploy documentation](../quickstart/), but for 
 
 
 ### AWS
-####  Deploy Pachyderm without Console
+####  Deploy {{%productName%}} without Console
 
 ```yaml hl_lines="3-6"
 deployTarget: "AMAZON"
@@ -194,7 +194,7 @@ pachd:
       secret: "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
       region: "us-east-2"          
 ```
-####  Deploy Pachyderm with Console and Enterprise
+####  Deploy {{%productName%}} with Console and Enterprise
 
 ```yaml hl_lines="3-9 21-26"
 deployTarget: "AMAZON"
@@ -223,7 +223,7 @@ pachd:
 
 ### Google
 
-#### Deploy Pachyderm without Console
+#### Deploy {{%productName%}} without Console
 
 ```yaml hl_lines="3-6"
 deployTarget: "GOOGLE"
@@ -242,7 +242,7 @@ pachd:
   externalService:
     enabled: true
 ```
-####  Deploy Pachyderm with Console and Enterprise
+####  Deploy {{%productName%}} with Console and Enterprise
 
 ```yaml hl_lines="3-9 18-19"
 deployTarget: "GOOGLE"
@@ -268,7 +268,7 @@ pachd:
 
 ### Azure
 
-#### Deploy Pachyderm without Console
+#### Deploy {{%productName%}} without Console
 
 ```yaml hl_lines="3-6"
 deployTarget: "MICROSOFT"
@@ -288,7 +288,7 @@ pachd:
       # storage account key
       secret: "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
 ```
-####  Deploy Pachyderm with Console and Enterprise
+####  Deploy {{%productName%}} with Console and Enterprise
 
 ```yaml hl_lines="3-9 22-23"
 deployTarget: "MICROSOFT"
@@ -316,13 +316,13 @@ pachd:
   localhostIssuer: "true"
 ```
 
-## Deploy Pachyderm Locally With a Proxy
+## Deploy {{%productName%}} Locally With a Proxy
 
 This section is an alternative to the default [local deployment instructions](../../../getting-started/local-deploy). It uses a variant of the original one line command to enable a proxy. 
 
-Follow the [Prerequisites](#prerequisites) before [deploying Pachyderm](#deploy-pachyderm-community-edition-or-enterprise) (with or without Console) on your local cluster, then [Connect 'pachctl' To Your Cluster](#connect-pachctl-to-your-cluster).
+Follow the [Prerequisites](#prerequisites) before [deploying {{%productName%}}](#deploy-pachyderm-community-edition-or-enterprise) (with or without Console) on your local cluster, then [Connect 'pachctl' To Your Cluster](#connect-pachctl-to-your-cluster).
 
-JupyterLab users, [**you can also install Pachyderm JupyterLab Mount Extension**](../../../how-tos/jupyterlab-extension#pachyderm-jupyterlab-mount-extension) on your local Pachyderm cluster to experience Pachyderm from your familiar notebooks. 
+JupyterLab users, [**you can also install {{%productName%}} JupyterLab Mount Extension**](../../../how-tos/jupyterlab-extension#pachyderm-jupyterlab-mount-extension) on your local {{%productName%}} cluster to experience {{%productName%}} from your familiar notebooks. 
 
 Note that you can run both Console and JupyterLab on your local installation.
 ### Prerequisites
@@ -368,11 +368,11 @@ Check [Minikube's documentation](https://minikube.sigs.k8s.io/docs/) for details
 ```
 
 The extraPortMappings will make NodePorts in the cluster available on localhost; NodePort 30080 becomes localhost:80.
-This will make Pachyderm available at `localhost:80` as long as this kind cluster is running.
+This will make {{%productName%}} available at `localhost:80` as long as this kind cluster is running.
 
 Check [Kind's documentation](https://kind.sigs.k8s.io/) for details.
 
-### Deploy Pachyderm Community Edition Or Enterprise
+### Deploy {{%productName%}} Community Edition Or Enterprise
 
 * Get the Repo Info:  
 
@@ -382,7 +382,7 @@ Check [Kind's documentation](https://kind.sigs.k8s.io/) for details.
   ```  
 
 
-* Install Pachyderm by running the following command:  
+* Install {{%productName%}} by running the following command:  
  
 
 {{% notice warning %}} 
@@ -406,7 +406,7 @@ helm install pachyderm pach/pachyderm --set deployTarget=LOCAL --set proxy.enabl
 This command will unlock your enterprise features and install Console Enterprise. Note that Console Enterprise requires authentication. By default, we create a default mock user (username:admin, password: password) to authenticate to Console without having to connect your Identity Provider.
 
 - Create a license.txt file in which you paste your [Enterprise Key](../../../enterprise/) .
-- Then, run the following helm command to install Pachyderm's latest Enterprise Edition:
+- Then, run the following helm command to install {{%productName%}}'s latest Enterprise Edition:
 
   ```s 
   helm install pachyderm pach/pachyderm --set deployTarget=LOCAL --set proxy.enabled=true --set proxy.service.type=LoadBalancer --set pachd.enterpriseLicenseKey=$(cat license.txt) --set ingress.host=localhost
@@ -416,9 +416,9 @@ This command will unlock your enterprise features and install Console Enterprise
 
 * Check Your Install
 
-Check the status of the Pachyderm pods by periodically
-running `kubectl get pods`. When Pachyderm is ready for use,
-all Pachyderm pods must be in the **Running** status.
+Check the status of the {{%productName%}} pods by periodically
+running `kubectl get pods`. When {{%productName%}} is ready for use,
+all {{%productName%}} pods must be in the **Running** status.
 
 
 ```s
@@ -449,7 +449,7 @@ Minikube users
 Open a new tab in your terminal and run `minikube tunnel` (the command creates a network route on your host to `pachyderm-proxy` service deployed with type LoadBalancer, and set its ingress to its ClusterIP, here `127.0.0.1`). You will be prompted to enter your password.
 {{% /notice %}}
 
-- To connect `pachctl` to your new Pachyderm instance, run:
+- To connect `pachctl` to your new {{%productName%}} instance, run:
 
     ```s
     echo '{"pachd_address":"grpc://127.0.0.1:80"}' | pachctl config set context local --overwrite && pachctl config set active-context local
@@ -466,16 +466,16 @@ Open a new tab in your terminal and run `minikube tunnel` (the command creates a
       ```  
       You are all set!  
 
-- To connect to your Console (Pachyderm UI), point your browser to **`localhost`** (no port number needed)
+- To connect to your Console ({{%productName%}} UI), point your browser to **`localhost`** (no port number needed)
 and authenticate using the mock User (username: `admin`, password: `password`).
 
 - To use `pachctl`, run `pachctl auth login` then
-authenticate again (to Pachyderm this time) with the mock User (username: `admin`, password: `password`).
+authenticate again (to {{%productName%}} this time) with the mock User (username: `admin`, password: `password`).
 
 ## Changes to the S3 Gateway
 
-The `pachyderm-proxy` service also routes Pachyderm's [**S3 gateway**](../../manage/s3gateway/) (allowing you to
-**access Pachyderm's repo through the S3 protocol**) on port 80 (note the endpoint in the diagram below).
+The `pachyderm-proxy` service also routes {{%productName%}}'s [**S3 gateway**](../../manage/s3gateway/) (allowing you to
+**access {{%productName%}}'s repo through the S3 protocol**) on port 80 (note the endpoint in the diagram below).
 
 ![Global S3 Gateway with Proxy](/images/main-s3-gateway-with-proxy.png)
 

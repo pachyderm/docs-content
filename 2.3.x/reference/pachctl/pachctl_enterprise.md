@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  pachctl enterprise
-description: "Enterprise commands enable Pachyderm Enterprise features"
+description: "Enterprise commands enable {{%productName%}} Enterprise features"
 date:  2022-10-14T09:34:42-04:00
 tags:
   - enterprise-deactivate
@@ -17,7 +17,7 @@ cliGlossary:  e
 
 ### Synopsis
 
-Enterprise commands enable Pachyderm Enterprise features
+Enterprise commands enable {{%productName%}} Enterprise features
 
 ### Options
 

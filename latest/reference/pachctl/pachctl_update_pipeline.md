@@ -1,10 +1,10 @@
 ## pachctl update pipeline
 
-Update an existing Pachyderm pipeline.
+Update an existing {{%productName%}} pipeline.
 
 ### Synopsis
 
-Update a Pachyderm pipeline with a new pipeline specification. For details on the format, see https://docs.pachyderm.com/latest/reference/pipeline-spec/.
+Update a {{%productName%}} pipeline with a new pipeline specification. For details on the format, see https://docs.pachyderm.com/latest/reference/pipeline-spec/.
 
 ```
 pachctl update pipeline [flags]

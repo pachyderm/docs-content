@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Activate Enterprise via Helm
-description: Learn how to deploy the Enterprise edition of Pachyderm using Helm.
+description: Learn how to deploy the Enterprise edition of {{%productName%}} using Helm.
 date: 
 # taxonomy #
 tags: ["enterprise"]
@@ -12,11 +12,11 @@ directory: true
 
 ## Before You Start 
 
-- You must have a Pachyderm [Enterprise License Key](https://www.pachyderm.com/trial/).
-- You must have pachctl and Pachyderm installed. 
-- You must have the Pachyderm Helm repo downloaded.
+- You must have a {{%productName%}} [Enterprise License Key](https://www.pachyderm.com/trial/).
+- You must have pachctl and {{%productName%}} installed. 
+- You must have the {{%productName%}} Helm repo downloaded.
 
-## How to Activate Enterprise Pachyderm via Helm
+## How to Activate Enterprise {{%productName%}} via Helm
 
 {{<stack type="wizard">}}
 {{% wizardRow id="Activation Method" %}}
@@ -33,7 +33,7 @@ directory: true
 ```s
 helm upgrade pachyderm pachyderm/pachyderm -f values.yml
 ```
-Once deployed, Pachyderm stores your provided Enterprise license as the platform secret `pachyderm-license` in the key `enterprise-license-key`.
+Once deployed, {{%productName%}} stores your provided Enterprise license as the platform secret `pachyderm-license` in the key `enterprise-license-key`.
 
 {{% /wizardResult%}}
 {{% wizardResult val1="activation-method/license-secret" %}}

@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Non-Default Namespaces
-description: Learn how to deploy Pachyderm to a non-default namespace for easier admin management.
+description: Learn how to deploy {{%productName%}} to a non-default namespace for easier admin management.
 date: 
 # taxonomy #
 tags: ["deployment"]
@@ -9,9 +9,9 @@ series:
 seriesPart:
 --- 
 
-Often, production deploys of Pachyderm involve deploying Pachyderm to a non-default namespace. This helps administrators of the cluster more easily manage Pachyderm components alongside other things that might be running inside of Kubernetes (DataDog, TensorFlow Serving, etc.).
+Often, production deploys of {{%productName%}} involve deploying {{%productName%}} to a non-default namespace. This helps administrators of the cluster more easily manage {{%productName%}} components alongside other things that might be running inside of Kubernetes (DataDog, TensorFlow Serving, etc.).
 
-* To deploy Pachyderm to a non-default namespace, 
+* To deploy {{%productName%}} to a non-default namespace, 
 you need to add the `-n` or `--namespace` flag when deploying. 
     If the namespace does not already exist, 
     you can have [Helm](../helm-install/) create it with `--create-namespace`.
@@ -21,7 +21,7 @@ you need to add the `-n` or `--namespace` flag when deploying.
     helm install <args> --namespace pachyderm --create-namespace
     ```
 
-* To talk to your Pachyderm cluster:
+* To talk to your {{%productName%}} cluster:
 
     - You can either modify an existing pachctl context
         ```s

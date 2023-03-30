@@ -9,7 +9,7 @@ series:
 seriesPart:
 --- 
  
-You can check the list of filesystem objects in your Pachyderm repository by running an S3 client `ls` command.
+You can check the list of filesystem objects in your {{%productName%}} repository by running an S3 client `ls` command.
 
 {{<stack type="wizard" >}}
 

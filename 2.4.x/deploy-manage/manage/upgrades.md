@@ -1,7 +1,7 @@
 ---
 # metadata # 
-title: Upgrade Pachyderm
-description: Learn how to upgrade Pachyderm's pachctl and pachd. 
+title: Upgrade {{%productName%}}
+description: Learn how to upgrade {{%productName%}}'s pachctl and pachd. 
 date: 
 # taxonomy #
 tags: ["management", "upgrades", "pachctl","pachd"]
@@ -9,7 +9,7 @@ series:
 seriesPart:
 ---
 
-Learn how to upgrade Pachyderm to access new features and performance enhancements.
+Learn how to upgrade {{%productName%}} to access new features and performance enhancements.
 
 ## Before You Start 
 
@@ -17,7 +17,7 @@ Learn how to upgrade Pachyderm to access new features and performance enhancemen
 - [Back up your cluster](../backup-restore/) 
 - Update your Helm chart values if applicable
 
-## How to Upgrade Pachyderm 
+## How to Upgrade {{%productName%}} 
 
 1. Run the following brew command or [download & install the latest release assets](https://github.com/pachyderm/pachyderm/releases/latest):
 ```s  
@@ -39,7 +39,7 @@ helm repo update
 helm upgrade pachyderm pachyderm/pachyderm -f my_pachyderm_values.yaml  --set proxy.enabled=true --set proxy.service.type=LoadBalancer 
 ```
 
-You can also pass in a specific version (e.g., `--version 2.5.0-alpha.4`) if you are testing a pre-released version of Pachyderm.
+You can also pass in a specific version (e.g., `--version 2.5.0-alpha.4`) if you are testing a pre-released version of {{%productName%}}.
 {{% /wizardResult %}}
 
 {{% wizardResult val1="deploy-method/local-personal-machine"%}}

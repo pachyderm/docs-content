@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Google Cloud Platform
-description: Learn how to deploy a Pachyderm cluster on Google's GKE. 
+description: Learn how to deploy a {{%productName%}} cluster on Google's GKE. 
 date: 
 # taxonomy #
 tags: ["gcp"]
@@ -10,7 +10,7 @@ seriesPart:
 --- 
 
 
-This article  walks you through deploying a Pachyderm cluster on [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine/) (GKE). 
+This article  walks you through deploying a {{%productName%}} cluster on [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine/) (GKE). 
  
 ## Before You Start
 
@@ -35,7 +35,7 @@ This article  walks you through deploying a Pachyderm cluster on [Google Kuberne
 ## 1. Deploy Kubernetes
 
 {{% notice warning %}}
-Pachyderm recommends running your cluster on Kubernetes 1.19.0 and above.
+{{%productName%}} recommends running your cluster on Kubernetes 1.19.0 and above.
 {{%/notice%}}
 
 To create a new Kubernetes cluster by using GKE, run:
@@ -130,12 +130,12 @@ the following command:
 # Update your kubeconfig to point at your newly created cluster.
 gcloud container clusters get-credentials ${CLUSTER_NAME}
 ```
-Once your Kubernetes cluster is up, and your infrastructure configured, you are ready to prepare for the installation of Pachyderm. Some of the steps below will require you to keep updating the values.yaml started during the setup of the recommended infrastructure:
+Once your Kubernetes cluster is up, and your infrastructure configured, you are ready to prepare for the installation of {{%productName%}}. Some of the steps below will require you to keep updating the values.yaml started during the setup of the recommended infrastructure:
 ## 2. Create a GCS Bucket
 
 ### Create an GCS object store bucket for your data
 
-Pachyderm needs a [GCS bucket](https://cloud.google.com/storage/docs/) (Object store) to store your data. You can create the bucket by running the following commands:
+{{%productName%}} needs a [GCS bucket](https://cloud.google.com/storage/docs/) (Object store) to store your data. You can create the bucket by running the following commands:
 
 1. Set up the following system variables:
    * `BUCKET_NAME` — A globally unique GCP bucket name where your data will be stored.
@@ -153,10 +153,10 @@ Pachyderm needs a [GCS bucket](https://cloud.google.com/storage/docs/) (Object s
      # You should see the bucket you created.
      ```
 
-You now need to **give Pachyderm access to your GCP resources**.
+You now need to **give {{%productName%}} access to your GCP resources**.
 
 ### Set Up Your GCP Service Account
-To access your GCP resources, Pachyderm uses a GCP Project Service Account with permissioned access to your desired resources. 
+To access your GCP resources, {{%productName%}} uses a GCP Project Service Account with permissioned access to your desired resources. 
 
 You can create a Service Account with Google Cloud Console:
    
@@ -170,7 +170,7 @@ More information about the creation and management of a Service account on [GCP 
 
 ### Configure Your Service Account Permissions
 
-For Pachyderm to access your Google Cloud Resources, run the following:
+For {{%productName%}} to access your Google Cloud Resources, run the following:
 
 1. Create the following set of variables
 
@@ -199,7 +199,7 @@ For Pachyderm to access your Google Cloud Resources, run the following:
         --role="roles/storage.admin"
     ```
 
-3. Use [Workload Identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity) to run Pachyderm Services as the Service Account 
+3. Use [Workload Identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity) to run {{%productName%}} Services as the Service Account 
 
     Workload Identity is the recommended way to access Google Cloud services from applications running within GKE. 
 
@@ -223,10 +223,10 @@ For a set of standard roles, read the [GCP IAM permissions documentation](https:
 
 etcd and PostgreSQL (metadata storage) each claim the creation of a [persistent disk](https://cloud.google.com/compute/docs/disks/). 
 
-If you plan to deploy Pachyderm with its default bundled PostgreSQL instance, read the warning below, and jump to the [deployment section](#6-deploy-pachyderm): 
+If you plan to deploy {{%productName%}} with its default bundled PostgreSQL instance, read the warning below, and jump to the [deployment section](#6-deploy-pachyderm): 
 
 {{% notice info %}}   
-When deploying Pachyderm on GCP, your persistent volumes are automatically created and assigned the **default disk size of 50 GBs**. Note that StatefulSets is a default as well.
+When deploying {{%productName%}} on GCP, your persistent volumes are automatically created and assigned the **default disk size of 50 GBs**. Note that StatefulSets is a default as well.
 {{%/notice%}}
 
 {{% notice warning %}} 
@@ -236,7 +236,7 @@ Each persistent disk generally requires a small persistent volume size but **hig
 If you plan to deploy a managed PostgreSQL instance (CloudSQL), read the following section. Note that this is the **recommended setup in production**. 
 ## 4. Create a GCP Managed PostgreSQL Database
 
-By default, Pachyderm runs with a bundled version of PostgreSQL. 
+By default, {{%productName%}} runs with a bundled version of PostgreSQL. 
 For production environments, it is **strongly recommended that you disable the bundled version and use a CloudSQL instance**. 
 
  
@@ -265,15 +265,15 @@ gcloud sql instances create ${INSTANCE_NAME} \
 --root-password="<InstanceRootPassword>"
 ```
 
-When you create a new Cloud SQL for PostgreSQL instance, a [default admin user](https://cloud.google.com/sql/docs/postgres/users#default-users) `Username: "postgres"` is created. It will later be used by Pachyderm to access its databases. Note that the `--root-password` flag above sets the password for this user.
+When you create a new Cloud SQL for PostgreSQL instance, a [default admin user](https://cloud.google.com/sql/docs/postgres/users#default-users) `Username: "postgres"` is created. It will later be used by {{%productName%}} to access its databases. Note that the `--root-password` flag above sets the password for this user.
 
 Check out Google documentation for more information on how to [Create and Manage PostgreSQL Users](https://cloud.google.com/sql/docs/postgres/create-manage-users).
 
 ### Create Your Databases
 
-After your instance is created, you will need to create Pachyderm's database(s).
+After your instance is created, you will need to create {{%productName%}}'s database(s).
       
-If you plan to deploy a standalone cluster (i.e., if you do not plan to register your cluster with a separate [enterprise server](../../../enterprise/auth/enterprise-server/setup)), you will need to create a second database named "dex" in your Cloud SQL instance for Pachyderm's authentication service. Note that the database **must be named `dex`**. This second database is not needed when your cluster is managed by an enterprise server.
+If you plan to deploy a standalone cluster (i.e., if you do not plan to register your cluster with a separate [enterprise server](../../../enterprise/auth/enterprise-server/setup)), you will need to create a second database named "dex" in your Cloud SQL instance for {{%productName%}}'s authentication service. Note that the database **must be named `dex`**. This second database is not needed when your cluster is managed by an enterprise server.
 
 {{% notice note %}}
 
@@ -286,7 +286,7 @@ Run the first or both commands depending on your use case.
 gcloud sql databases create pachyderm -i ${INSTANCE_NAME}
 gcloud sql databases create dex -i ${INSTANCE_NAME}
 ```
-Pachyderm will use the same user "postgres" to connect to `pachyderm` as well as to `dex`. 
+{{%productName%}} will use the same user "postgres" to connect to `pachyderm` as well as to `dex`. 
 
 ### Update your values.yaml 
 Once your databases have been created, add the following fields to your Helm values:
@@ -331,8 +331,8 @@ global:
     postgresqlPassword: "<InstanceRootPassword>"
 ```
 
-## 5. Deploy Pachyderm
-You have set up your infrastructure, created your GCP bucket and a CloudSQL instance, and granted your cluster access to both: you can now finalize your values.yaml and deploy Pachyderm.
+## 5. Deploy {{%productName%}}
+You have set up your infrastructure, created your GCP bucket and a CloudSQL instance, and granted your cluster access to both: you can now finalize your values.yaml and deploy {{%productName%}}.
 
 ### Update Your Values.yaml   
 
@@ -404,9 +404,9 @@ global:
     postgresqlPassword: "<InstanceRootPassword>"
 ```
 
-### Deploy Pachyderm on the Kubernetes cluster
+### Deploy {{%productName%}} on the Kubernetes cluster
 
-- You can now deploy a Pachyderm cluster by running this command:
+- You can now deploy a {{%productName%}} cluster by running this command:
 
   ```s
   helm repo add pach https://helm.pachyderm.com
@@ -428,9 +428,9 @@ global:
   If RBAC authorization is a requirement or you run into any RBAC errors see [Configure RBAC](../rbac).
   {{% /notice %}}
 
-  It may take a few minutes for the pachd nodes to be running because Pachyderm
+  It may take a few minutes for the pachd nodes to be running because {{%productName%}}
   pulls containers from DockerHub. You can see the cluster status with
-  `kubectl`, which should output the following when Pachyderm is up and running:
+  `kubectl`, which should output the following when {{%productName%}} is up and running:
 
   ```s
   kubectl get pods
@@ -505,7 +505,7 @@ You are done! You can make sure that your cluster is working
 by running `pachctl version` or creating a new repo.
 
 {{% notice warning %}}
-If Authentication is activated (When you deploy with an enterprise key, for example), you will need to run `pachct auth login`, then authenticate to Pachyderm with your User, before you use `pachctl`. 
+If Authentication is activated (When you deploy with an enterprise key, for example), you will need to run `pachct auth login`, then authenticate to {{%productName%}} with your User, before you use `pachctl`. 
 {{% /notice %}}
 
 ```s

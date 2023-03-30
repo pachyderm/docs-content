@@ -12,20 +12,20 @@ weight:
 mermaid: true
 ---
 
-Projects are logical collections of related work (such as repos and pipelines). Each Pachyderm cluster ships with an initial project named `default`. PachCTL supports all Project operations, such as adding/removing team members, resources, etc. Pachyderm Console can be used to view and access Projects. Pachyderm's integrations with JupyterLab, Seldon, S3 Gateway, and DeterminedAI also support
+Projects are logical collections of related work (such as repos and pipelines). Each {{%productName%}} cluster ships with an initial project named `default`. PachCTL supports all Project operations, such as adding/removing team members, resources, etc. {{%productName%}} Console can be used to view and access Projects. {{%productName%}}'s integrations with JupyterLab, Seldon, S3 Gateway, and DeterminedAI also support
 projects. 
 
 ## Benefits of Projects
 
-- **Logical Organization of DAGs**: Similar to a file system, you can organize your work  within a Pachyderm instance.
+- **Logical Organization of DAGs**: Similar to a file system, you can organize your work  within a {{%productName%}} instance.
 
 - **Standardizable**: Resources like repos can have the same name if they belong to different projects, making it easier to create and adhere to project templates in a collaborative environment. For example, `ProjectA.Repo1` and `ProjectB.Repo1`.
 
-- **Multi-team Enablement**: With Enterprise Pachyderm, You can grant access to projects based on roles; projects are hidden from users without access by default. 
+- **Multi-team Enablement**: With Enterprise {{%productName%}}, You can grant access to projects based on roles; projects are hidden from users without access by default. 
 
 ## Example
 
-In the following example there are two projects: `DOGS` and `CATS`. They have similarly named repositories and pipelines. With Enterprise Pachyderm, you could scope access to each project by user or user group.
+In the following example there are two projects: `DOGS` and `CATS`. They have similarly named repositories and pipelines. With Enterprise {{%productName%}}, you could scope access to each project by user or user group.
 
 ```mermaid
 graph TD

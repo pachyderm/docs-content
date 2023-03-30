@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  pachctl auth set-config
-description: "Set Pachyderm's current auth configuration"
+description: "Set {{%productName%}}'s current auth configuration"
 date:  2022-10-14T09:34:42-04:00
 tags:
   - auth
@@ -10,7 +10,7 @@ cliGlossary:  a
 
 ### Synopsis
 
-Set Pachyderm's current auth configuration
+Set {{%productName%}}'s current auth configuration
 
 ```
 pachctl auth set-config [flags]

@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  pachctl create
-description: "Create a new instance of a Pachyderm resource."
+description: "Create a new instance of a {{%productName%}} resource."
 date:  2022-10-14T09:34:42-04:00
 tags:
   - create-branch
@@ -14,7 +14,7 @@ cliGlossary:  c
 
 ### Synopsis
 
-Create a new instance of a Pachyderm resource.
+Create a new instance of a {{%productName%}} resource.
 
 ### Options
 

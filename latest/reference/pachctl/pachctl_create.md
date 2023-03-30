@@ -1,10 +1,10 @@
 ## pachctl create
 
-Create a new instance of a Pachyderm resource.
+Create a new instance of a {{%productName%}} resource.
 
 ### Synopsis
 
-Create a new instance of a Pachyderm resource.
+Create a new instance of a {{%productName%}} resource.
 
 ### Options
 

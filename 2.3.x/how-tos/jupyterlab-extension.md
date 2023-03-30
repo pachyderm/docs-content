@@ -1,7 +1,7 @@
 ---
 # metadata # 
-title:  Pachyderm JupyterLab Mount Extension
-description: Learn how to install and use the JupyterLab Mount Extension with Pachyderm.
+title: JupyterLab Mount Extension
+description: Learn how to install and use the JupyterLab Mount Extension with {{%productName%}}.
 date: 
 # taxonomy #
 tags: ["integrations", "jupyterlab", "notebooks"]
@@ -13,8 +13,8 @@ beta: true
 
 Use the [JupyterLab extension](https://pypi.org/project/jupyterlab-pachyderm/) to:
 
-- Connect your Notebook to a Pachyderm cluster
-- Browse, explore, and analyze data stored in Pachyderm directly from your Notebook
+- Connect your Notebook to a {{%productName%}} cluster
+- Browse, explore, and analyze data stored in {{%productName%}} directly from your Notebook
 - Run and test out your pipeline code before creating a Docker image
 
 {{% notice danger %}}
@@ -25,7 +25,7 @@ The JupyterLab Mount Extension is an [experimental feature](../../reference/supp
 
 ## Before You Start 
 
-- You must have a Pachyderm cluster running.
+- You must have a {{%productName%}} cluster running.
 
 ## Install the Extension 
 
@@ -70,7 +70,7 @@ If you have an existing pachyderm config file at `~/.pachyderm/config.json`, the
 
 ### Install to Existing Docker Image 
 
-You can choose between Pachyderm's pre-built image (a custom version of [`jupyter/scipy-notebook`](https://jupyter-docker-stacks.readthedocs.io/en/latest/using/selecting.html#jupyter-scipy-notebook)) or add the extension to your own image. Pachyderm's image includes:
+You can choose between {{%productName%}}'s pre-built image (a custom version of [`jupyter/scipy-notebook`](https://jupyter-docker-stacks.readthedocs.io/en/latest/using/selecting.html#jupyter-scipy-notebook)) or add the extension to your own image. {{%productName%}}'s image includes:
 
 - The extension jupyterlab-pachyderm
 - [FUSE](https://osxfuse.github.io/)
@@ -115,7 +115,7 @@ You can choose between Pachyderm's pre-built image (a custom version of [`jupyte
 
 Replace the following `${PACHCTL_VERSION}` with the version of `pachctl` that matches your cluster's, and update `<version>` with the release number of the extension.
 
-You can find the latest available version of our Pachyderm Mount Extension in [PyPi](https://pypi.org/project/jupyterlab-pachyderm/). 
+You can find the latest available version of our {{%productName%}} Mount Extension in [PyPi](https://pypi.org/project/jupyterlab-pachyderm/). 
 
 ```s
 # This runs the following section as root; if adding to an existing Dockerfile, set the user back to whatever you need. 
@@ -178,7 +178,7 @@ Then, [build, tag, and push your image](../developer-workflow/working-with-pipel
 
 At the bottom of the **Mounted Repositories** tab, you'll find the file browser. 
 
-- Mounted repositories are nested within the root `/pfs` (Pachyderm's File System)
+- Mounted repositories are nested within the root `/pfs` ({{%productName%}}'s File System)
 - These repositories are **read-only**
 - Mounted repositories have a `/` glob pattern applied to their directories and files
 - Files only downloaded locally when you access them (saving you time)
@@ -187,7 +187,7 @@ Using the previous example, while the **Demo** repository is mounted, you can se
 
 ### Examples 
 
-Make sure to check our [data science notebook examples](https://github.com/pachyderm/examples) running on Pachyderm, from a market sentiment NLP implementation using a FinBERT model to pipelines training a regression model on the Boston Housing Dataset. You will also find integration examples with open-source products, such as labeling or model serving applications. 
+Make sure to check our [data science notebook examples](https://github.com/pachyderm/examples) running on {{%productName%}}, from a market sentiment NLP implementation using a FinBERT model to pipelines training a regression model on the Boston Housing Dataset. You will also find integration examples with open-source products, such as labeling or model serving applications. 
 
 --- 
 

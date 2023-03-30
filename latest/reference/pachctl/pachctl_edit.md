@@ -1,10 +1,10 @@
 ## pachctl edit
 
-Edit the value of an existing Pachyderm resource.
+Edit the value of an existing {{%productName%}} resource.
 
 ### Synopsis
 
-Edit the value of an existing Pachyderm resource.
+Edit the value of an existing {{%productName%}} resource.
 
 ### Options
 

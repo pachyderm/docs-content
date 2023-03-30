@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Minikube 
-description: Learn how to install Pachyderm locally with Minikube.
+description: Learn how to install {{%productName%}} locally with Minikube.
 date: 
 # taxonomy #
 tags:  ["minikube", "getting-started", "local-deploy", "linux", "mac","windows"]
@@ -10,7 +10,7 @@ seriesPart:
 weight: 2
 ---
 
-Minikube is a tool that quickly sets up a local Kubernetes cluster on macOS, Linux, and Windows. It's a great solution for trying out Pachyderm locally.
+Minikube is a tool that quickly sets up a local Kubernetes cluster on macOS, Linux, and Windows. It's a great solution for trying out {{%productName%}} locally.
 
 ## Before You Start
 
@@ -116,7 +116,7 @@ brew tap pachyderm/tap && brew install pachyderm/tap/pachctl@{{% majorMinorNumbe
 ```s
 brew install helm
 ```
-2. Add the Pachyderm repo to Helm:
+2. Add the {{%productName%}} repo to Helm:
 ```s
 helm repo add pachyderm https://helm.pachyderm.com  
 helm repo update  
@@ -136,7 +136,7 @@ helm install pachd pachyderm/pachyderm --set deployTarget=LOCAL --set proxy.enab
 ```
 {{% /wizardResult %}}
 {{% wizardResult val1="version/enterprise" %}}
-Are you using an [Enterprise](../../../enterprise) trial key? If so, you can set up Enterprise Pachyderm locally by storing your trial key in a `license.txt` file and passing it into the following Helm command: 
+Are you using an [Enterprise](../../../enterprise) trial key? If so, you can set up Enterprise {{%productName%}} locally by storing your trial key in a `license.txt` file and passing it into the following Helm command: 
 
 ```s  
 helm install pachd pachyderm/pachyderm --set deployTarget=LOCAL --set proxy.enabled=true --set proxy.service.type=LoadBalancer --set pachd.enterpriseLicenseKey=$(cat license.txt) --set ingress.host=localhost
@@ -187,7 +187,7 @@ If the connection commands did not work together, run each separately.
 Optionally open your browser and navigate to the [Console UI](http://localhost).
 
 {{% notice tip %}}
-You can check your Pachyderm version and connection to `pachd` at any time with the following command:
+You can check your {{%productName%}} version and connection to `pachd` at any time with the following command:
    ```s
    pachctl version
    ```

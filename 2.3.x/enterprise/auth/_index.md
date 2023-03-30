@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Authentication & Authorization
-description: Learn how to Pachyderm's user access management works.
+description: Learn how to {{%productName%}}'s user access management works.
 date: 
 # taxonomy #
 tags: 
@@ -13,13 +13,13 @@ seriesPart:
 User Access Management is an [enterprise feature](../../enterprise/) that requires an active enterprise token.
 {{% /notice %}}
 
-Pachyderm delegates its authentication to third party Identity Providers.
+{{%productName%}} delegates its authentication to third party Identity Providers.
 
 We embed an **Open ID Connect** identity service based on [**Dex**](https://dexidp.io/docs/) allowing for a vendor-neutral authentication (i.e., a pluggable authentication against many different identity providers).
 
 As a result, users can authenticate **using their existing credentials from various back-ends**, including LDAP, other OIDC providers, or SAML. 
 
-Setting up Pachyderm's User Access Management (also referred to as "Authentication and Authorization" or "Auth" in this documentation) requires to follow those 3 simple steps:
+Setting up {{%productName%}}'s User Access Management (also referred to as "Authentication and Authorization" or "Auth" in this documentation) requires to follow those 3 simple steps:
 
 1. [Activate the feature](#activate-user-access-management).
 
@@ -34,10 +34,10 @@ In this case, a `pachyderm-auth` k8s secret is automatically created containing 
 ``` 
 {{% /notice %}}
 
-1. Create a connector and [connect the IdP of your choice to Pachyderm (Dex)](./authentication/idp-dex). 
-1. Optional: Manage your Authorization. i.e.,[assign specific Roles to IdP users](./authorization/role-binding) on given Pachyderm resources. 
+1. Create a connector and [connect the IdP of your choice to {{%productName%}} (Dex)](./authentication/idp-dex). 
+1. Optional: Manage your Authorization. i.e.,[assign specific Roles to IdP users](./authorization/role-binding) on given {{%productName%}} resources. 
 
-Any registered IdP user will then be able to log into their IdP and access Pachyderm resources according to the privileges they were granted.
+Any registered IdP user will then be able to log into their IdP and access {{%productName%}} resources according to the privileges they were granted.
 
 See the Identity Provider High Level Diagram below:
 
@@ -50,7 +50,7 @@ by running `pachctl enterprise get-state`. The command should return an `ACTIVE`
 status along with the expiration date of the Enterprise License.   
 {{% /notice %}}
 
-To activate Pachyderm's authentication and authorization features,
+To activate {{%productName%}}'s authentication and authorization features,
 run the following command in your terminal:
 
 ```s
@@ -59,13 +59,13 @@ pachctl auth activate
 The enablement of the User Access Management **creates
 an initial `Root user` and returns a `Root token`**.
 This `Root user` (or initial admin) has irrevokable `clusterAdmin` privileges on
-Pachyderm's cluster. More on the various types of Users, Roles, and resources [here](../auth/authorization/#users-types).
+{{%productName%}}'s cluster. More on the various types of Users, Roles, and resources [here](../auth/authorization/#users-types).
 
 
 **System Response**
 
 ```s
-Pachyderm root token:
+{{%productName%}} root token:
 54778a770c554d0fb84563033c9cb808
 ```
 
@@ -81,33 +81,33 @@ pachctl auth use-auth-token
 {{% /notice %}}
 
 As a *Root User* (or initial admin), 
-you can now configure Pachyderm to work with
+you can now configure {{%productName%}} to work with
 the identity management provider (IdP) of your choice.
 
-Next: [Connect the IdP of your choice to Pachyderm (Dex)](./authentication/idp-dex)
+Next: [Connect the IdP of your choice to {{%productName%}} (Dex)](./authentication/idp-dex)
 
 ## Deactivating User Access Management
-The deactivation of the User Access Management on a Pachyderm cluster
+The deactivation of the User Access Management on a {{%productName%}} cluster
 (as a `clusterAdmin`, run `pachctl auth deactivate`), 
 returns the cluster to being a blank slate with regards to
 access control.
 
-This implies that all permissions granted to users on Pachyderm resources are removed. Everyone that can connect
-to Pachyderm is back to being a `clusterAdmin` (can access and modify all data in all repos).
+This implies that all permissions granted to users on {{%productName%}} resources are removed. Everyone that can connect
+to {{%productName%}} is back to being a `clusterAdmin` (can access and modify all data in all repos).
 
 
 ## User Access Management and Enterprise License expiration
 When an Enterprise License expires, a
-Pachyderm cluster with enabled User Access Management goes into an
+{{%productName%}} cluster with enabled User Access Management goes into an
 `admin-only` state. In this state, only `ClusterAdmins` have
-access to the data stored in Pachyderm.
+access to the data stored in {{%productName%}}.
 
 This safety measure keeps sensitive data protected, even when
 an enterprise subscription becomes stale. 
 
 As soon as the enterprise
 activation code is updated (As a 'clusterAdmin', run `pachctl license activate` and submit your new code), the
-Pachyderm cluster returns to its previous state.
+{{%productName%}} cluster returns to its previous state.
 
 ## Auth Token Duration
 

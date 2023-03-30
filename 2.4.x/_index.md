@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  2.4.x
-description: Pachyderm Version 2.4.x 
+description: Version 2.4.x 
 date: 
 # taxonomy #
 tags:

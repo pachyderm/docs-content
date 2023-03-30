@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  pachctl auth activate
-description: "Activate Pachyderm's auth system, and restrict access to existing data to the root user"
+description: "Activate {{%productName%}}'s auth system, and restrict access to existing data to the root user"
 date:  2022-10-14T09:34:42-04:00
 tags:
   - auth
@@ -10,7 +10,7 @@ cliGlossary:  a
 
 ### Synopsis
 
-Activate Pachyderm's auth system, and restrict access to existing data to the root user
+Activate {{%productName%}}'s auth system, and restrict access to existing data to the root user
 
 ```
 pachctl auth activate [flags]

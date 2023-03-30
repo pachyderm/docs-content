@@ -17,7 +17,7 @@ This chapter will detail how to:
  Default Privileges.
 - Root User: The activation of the Authentication and Authorization feature generates a **Root User** with **unalterable and unrevokable `clusterAdmin` privileges**. 
 - Robot User: **Robot users do not have any permission by default**. They will need to be set by a `clusterAdmin`.
-- The case of the Pipeline User: In Pachyderm, **you do not explicitly grant users access to pipelines**, they get set for you when you create or update a pipeline. 
+- The case of the Pipeline User: In {{%productName%}}, **you do not explicitly grant users access to pipelines**, they get set for you when you create or update a pipeline. 
 {{% /notice %}}
 
 {{% notice warning %}} 
@@ -30,7 +30,7 @@ Rules to keep in mind
     and `repoWriter`-level access to the pipeline output. 
     This is because pipelines read from their input repos and write
     to their output repos.
-- When a user subscribes a pipeline to a repo, Pachyderm sets
+- When a user subscribes a pipeline to a repo, {{%productName%}} sets
     that user as an `repoOwner` of that pipeline's output repo.
     If additional users need access to the output repository,
     the initial `repoOwner` of a pipeline's output repo, or a `clusterAdmin`,
@@ -110,7 +110,7 @@ In particular, we will:
 
   {{% notice note %}}
   Note that the user `one-pachyderm-user@gmail.com` has a prefix `user`.
-  Pachyderm defines 4 prefixes depending on the type of user:
+  {{%productName%}} defines 4 prefixes depending on the type of user:
 
   - robot
   - user
@@ -162,14 +162,14 @@ pachctl auth set repo testinput repoReader allClusterUsers
 ## Set Roles to Groups
 
 If your IdP enables group support,
-you can grant access on Pachyderm resources to a group of users.
+you can grant access on {{%productName%}} resources to a group of users.
 
 Let's keep using our Auth0 example as an illustration, and:
 
 1. As a `clusterAdmin`, create a Group in Auth0.
 1. Assign our user to the newly created group.
 1. Update our connector accordingly.
-1. Grant the group an owner access to a specific repo in Pachyderm.
+1. Grant the group an owner access to a specific repo in {{%productName%}}.
 
 {{%notice info %}}
 To enable the Group creation in Auth0, you will need to install an [`Authorization Extension`](https://auth0.com/docs/extensions/authorization-extension) to Auth0:
@@ -254,9 +254,9 @@ To enable the Group creation in Auth0, you will need to install an [`Authorizati
     ```s
     pachctl idp update-connector auth0 --version 2
     ```
-    Your group is all set to receive permissions to Pachyderm's resources.
+    Your group is all set to receive permissions to {{%productName%}}'s resources.
 
-4.  Grant the group an admin access to a specific repo in Pachyderm.
+4.  Grant the group an admin access to a specific repo in {{%productName%}}.
 
     ```s
     pachctl auth set repo testinput repoOwner group:testgroup

@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  pachctl enterprise get-state
-description: "Check whether the Pachyderm cluster has enterprise features activated"
+description: "Check whether the {{%productName%}} cluster has enterprise features activated"
 date:  2022-10-14T09:34:42-04:00
 tags:
   - enterprise
@@ -10,7 +10,7 @@ cliGlossary:  e
 
 ### Synopsis
 
-Check whether the Pachyderm cluster has enterprise features activated
+Check whether the {{%productName%}} cluster has enterprise features activated
 
 ```
 pachctl enterprise get-state [flags]

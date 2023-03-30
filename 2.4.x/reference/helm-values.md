@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Helm Chart Values
-description: Learn about the configurable helm chart attributes for Pachyderm.
+description: Learn about the configurable helm chart attributes for {{%productName%}}.
 date: 
 # taxonomy #
 tags: ["configuration", "helm"]
@@ -27,7 +27,7 @@ The following section displays the complete list of fields available in the [val
 Each section is further detailed in its own sub-chapter. 
 
 ```yaml
-# SPDX-FileCopyrightText: Pachyderm, Inc. <info@pachyderm.com>
+# SPDX-FileCopyrightText: {{%productName%}}, Inc. <info@pachyderm.com>
 # SPDX-License-Identifier: Apache-2.0
 
 # Deploy Target configures the storage backend to use and cloud provider
@@ -46,11 +46,11 @@ global:
     # facilitate easy upgrades when testing locally.  Any sort of install that needs to be secure
     # must specify a secure password here, or provide the postgresqlExistingSecretName and
     # postgresqlExistingSecretKey secret.  If using an external Postgres instance (CloudSQL / RDS /
-    # etc.), this is the password that Pachyderm will use to connect to it.
+    # etc.), this is the password that {{%productName%}} will use to connect to it.
     postgresqlPassword: "insecure-user-password"
     # When installing a local Postgres instance, postgresqlPostgresPassword defines the root
     # ('postgres') user's password.  It must remain consistent between upgrades, and must be
-    # explicitly set to a value if security is desired.  Pachyderm does not use this account; this
+    # explicitly set to a value if security is desired.  {{%productName%}} does not use this account; this
     # password is only required so that administrators can manually perform administrative tasks.
     postgresqlPostgresPassword: "insecure-root-password"
     # If you want to supply the postgresql password in an existing secret, leave Password blank and
@@ -388,7 +388,7 @@ pachd:
     enabled: true
   affinity: {}
   annotations: {}
-  # clusterDeploymentID sets the Pachyderm cluster ID.
+  # clusterDeploymentID sets the {{%productName%}} cluster ID.
   clusterDeploymentID: ""
   configJob:
     annotations: {}
@@ -402,7 +402,7 @@ pachd:
     tag: ""
   logFormat: "json"
   logLevel: "info"
-  # If lokiDeploy is true, a Pachyderm-specific instance of Loki will
+  # If lokiDeploy is true, a {{%productName%}}-specific instance of Loki will
   # be deployed.
   lokiDeploy: true
   # lokiLogging enables Loki logging if set.
@@ -541,7 +541,7 @@ pachd:
       # and token, it implements the functionality of the
       # --credentials argument to pachctl deploy.
       id: ""
-      # logOptions sets various log options in Pachyderm’s internal S3
+      # logOptions sets various log options in {{%productName%}}’s internal S3
       # client.  Comma-separated list containing zero or more of:
       # 'Debug', 'Signing', 'HTTPBody', 'RequestRetries',
       # 'RequestErrors', 'EventStreamBody', or 'all'
@@ -869,7 +869,7 @@ testConnection:
     repository: alpine
     tag: latest
 
-# The proxy is a service to handle all Pachyderm traffic (S3, Console, OIDC, Dex, GRPC) on a single
+# The proxy is a service to handle all {{%productName%}} traffic (S3, Console, OIDC, Dex, GRPC) on a single
 # port; good for exposing directly to the Internet.
 proxy:
   # If enabled, create a proxy deployment (based on the Envoy proxy) and a service to expose it.  If
@@ -990,7 +990,7 @@ Example:
 ```
 ### console
 
-This section is to configure the Pachyderm UI (`console`). It is enabled by default.
+This section is to configure the {{%productName%}} UI (`console`). It is enabled by default.
 
 - `console.enabled` turns on the deployment of the UI.
 
@@ -1065,7 +1065,7 @@ There are three options for configuring TLS on the Enterprise Server under `ente
 ### ingress
 
 {{% notice warning %}}
-`ingress` will be removed from the helm chart once the deployment of Pachyderm with a proxy becomes mandatory.
+`ingress` will be removed from the helm chart once the deployment of {{%productName%}} with a proxy becomes mandatory.
 {{% /notice %}}
 
 This section is to configure an ingress resource for an existing ingress controller.
@@ -1129,7 +1129,7 @@ This section is to configure the pachd deployment.
 - `pachd.service.type` specifies the Kubernetes type of the pachd service. The default is `ClusterIP`.
 
 {{% notice warning %}}
-`pachd.externalService` will be removed from the helm chart once the deployment of Pachyderm with a proxy becomes mandatory.
+`pachd.externalService` will be removed from the helm chart once the deployment of {{%productName%}} with a proxy becomes mandatory.
 {{%/notice%}}
 
 - `pachd.externalService.enabled` creates a kubernetes service of type `loadBalancer` that is safe to expose externally.
@@ -1205,7 +1205,7 @@ If you're using Amazon S3 as your storage backend, configure it here.
 
 - `storage.amazon.id` sets the Amazon access key ID to use.
 
-- `storage.amazon.logOptions` sets various log options in Pachyderm’s internal S3 client.  Comma-separated list containing zero or more of: 'Debug', 'Signing', 'HTTPBody', 'RequestRetries','RequestErrors', 'EventStreamBody', or 'all' (case-insensitive).  See 'AWS SDK for Go' docs for details.
+- `storage.amazon.logOptions` sets various log options in {{%productName%}}’s internal S3 client.  Comma-separated list containing zero or more of: 'Debug', 'Signing', 'HTTPBody', 'RequestRetries','RequestErrors', 'EventStreamBody', or 'all' (case-insensitive).  See 'AWS SDK for Go' docs for details.
 
 - `storage.amazon.maxUploadParts` sets the maximum number of upload parts. Default is `10000`.
 
@@ -1335,7 +1335,7 @@ This section is to configure the PostgresQL Subchart, if used.
 
 ### cloudsqlAuthProxy
 
-This section is to configure the CloudSQL Auth Proxy for deploying Pachyderm on GCP with CloudSQL.
+This section is to configure the CloudSQL Auth Proxy for deploying {{%productName%}} on GCP with CloudSQL.
 
 - `connectionName` may be found by running `gcloud sql instances describe INSTANCE_NAME --project PROJECT_ID`
 
@@ -1368,7 +1368,7 @@ This section is to configure the oidc settings within pachyderm.
 
 ### proxy
 
-The proxy is a service to handle all Pachyderm traffic (S3, Console, OIDC, Dex, GRPC) on a single
+The proxy is a service to handle all {{%productName%}} traffic (S3, Console, OIDC, Dex, GRPC) on a single
 port exposed directly to the Internet.
 
   - `proxy.enabled` when set to `true`, create a proxy deployment and a service to expose it. If

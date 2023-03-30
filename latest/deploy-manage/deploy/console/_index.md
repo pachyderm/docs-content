@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Console 
-description: Learn how to use Pachyderm's user interface, Console. 
+description: Learn how to use {{%productName%}}'s user interface, Console. 
 date: 
 # taxonomy #
 tags: 
@@ -9,14 +9,14 @@ series:
 seriesPart:
 --- 
 
-Pachyderm **Console is a complete web UI for visualizing running pipelines and exploring your data**. By clicking on individual pipeline segments, users can check their jobs' status, visualize their commits' content, access logs, and much more! It is a valuable companion when troubleshooting pipelines.
+{{%productName%}} **Console is a complete web UI for visualizing running pipelines and exploring your data**. By clicking on individual pipeline segments, users can check their jobs' status, visualize their commits' content, access logs, and much more! It is a valuable companion when troubleshooting pipelines.
 
 ![Console in action](/images/console/console-input-repo.png)
 
 ## Enterprise Edition
-Pachyderm Community Edition comes with Console per default. Upon upgrading to Enterprise, you will be able to:
+{{%productName%}} Community Edition comes with Console per default. Upon upgrading to Enterprise, you will be able to:
 
-- Benefit from our Authentication/Authorization features and control which users, groups, or roles have access to specific Pachyderm resources.
+- Benefit from our Authentication/Authorization features and control which users, groups, or roles have access to specific {{%productName%}} resources.
 - Lift all [CE scaling limits](../../../reference/scaling-limits/).
 
 {{% notice note %}}

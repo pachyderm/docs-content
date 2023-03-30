@@ -1,7 +1,7 @@
 ---
 # metadata # 
-title: Upgrade Pachyderm
-description: Learn how to upgrade Pachyderm's pachctl and pachd. 
+title: Upgrade {{%productName%}}
+description: Learn how to upgrade {{%productName%}}'s pachctl and pachd. 
 date: 
 # taxonomy #
 tags: ["management", "upgrades", "pachctl","pachd"]
@@ -15,7 +15,7 @@ Upgrading to a minor release (e.g., `2.3.5 > 2.3.6`) is simple and requires litt
 Do not use these steps to upgrade between major versions as it might result in data corruption.
 {{% /notice %}}
 
-Complete the following steps to upgrade Pachyderm from one minor release to another.
+Complete the following steps to upgrade {{%productName%}} from one minor release to another.
 ## 1. Backup Your Cluster
 
 As a general good practice, start with the backup of your cluster as described in the [Backup and Restore](../backup-restore/) section of this documentation.
@@ -24,14 +24,14 @@ As a general good practice, start with the backup of your cluster as described i
 
 This phase depends on whether you need to modify your existing configuration (for example, enter an enterprise key, plug an identity provider, reference an enterprise server, etc...).
 
-In the case of a simple upgrade of version on a cluster, and provided that you do not need to change any additional configuration, no change in the values.yaml should be required. The new version of Pachyderm will be directly set in the `helm upgrade` command.
+In the case of a simple upgrade of version on a cluster, and provided that you do not need to change any additional configuration, no change in the values.yaml should be required. The new version of {{%productName%}} will be directly set in the `helm upgrade` command.
 
 ## 3. Upgrade `pachctl` Version
   {{% notice warning %}}
   Upgrading from a **pachd** version older than 2.3.0? Do not skip this step.
   {{% /notice %}}
  
- - To update to the latest version of Pachyderm, run the steps below depending on your operating system:
+ - To update to the latest version of {{%productName%}}, run the steps below depending on your operating system:
   
       * For macOS, run:  
   
@@ -72,7 +72,7 @@ For a specific target release, specify the targeted major/minor version of `pach
 
 ## 4. Helm Upgrade
 
-- Redeploy Pachyderm by running the [helm upgrade](https://helm.sh/docs/helm/helm_upgrade/) command with your updated values.yaml:
+- Redeploy {{%productName%}} by running the [helm upgrade](https://helm.sh/docs/helm/helm_upgrade/) command with your updated values.yaml:
 
   ```s
   helm repo add pach https://helm.pachyderm.com
@@ -81,10 +81,10 @@ For a specific target release, specify the targeted major/minor version of `pach
   ```
 
 {{% notice note %}}
-Each chart version is associated with a given version of Pachyderm. You will find the list of all available chart versions and their associated version of Pachyderm on [Artifacthub](https://artifacthub.io/packages/helm/pachyderm/pachyderm).
+Each chart version is associated with a given version of {{%productName%}}. You will find the list of all available chart versions and their associated version of {{%productName%}} on [Artifacthub](https://artifacthub.io/packages/helm/pachyderm/pachyderm).
 {{% /notice %}}
 
-- The upgrade can take some time. You can run `kubectl get pods` periodically in a separate tab to check the status of the deployment. When Pachyderm is deployed, the command shows all pods as `READY`:
+- The upgrade can take some time. You can run `kubectl get pods` periodically in a separate tab to check the status of the deployment. When {{%productName%}} is deployed, the command shows all pods as `READY`:
 
   ```s
   kubectl get pods

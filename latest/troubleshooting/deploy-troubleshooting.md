@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Troubleshooting Deployments
-description: Learn how to troubleshoot deployments of Pachyderm.
+description: Learn how to troubleshoot deployments of {{%productName%}}.
 date: 
 # taxonomy #
 tags: ["deployment"]
@@ -82,7 +82,7 @@ This would indicate that the [persistent volume claim](https://kubernetes.io/doc
 
 Your best bet is to manually detach the volume and restart the pod.  
 
-For example, to resolve this issue when Pachyderm is deployed to AWS, pull up your AWS web console and look up the node mentioned in the error message (ip-172-20-44-17.us-west-2.compute.internal in our case). Then on the bottom pane for the attached volume. Follow the link to the attached volume, and detach the volume. You may need to "Force Detach" it.
+For example, to resolve this issue when {{%productName%}} is deployed to AWS, pull up your AWS web console and look up the node mentioned in the error message (ip-172-20-44-17.us-west-2.compute.internal in our case). Then on the bottom pane for the attached volume. Follow the link to the attached volume, and detach the volume. You may need to "Force Detach" it.
 
 Once it's detached (and marked as available). Restart the pod by killing it, e.g:
 

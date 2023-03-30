@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  pachctl copy
-description: "Copy a Pachyderm resource."
+description: "Copy a {{%productName%}} resource."
 date:  2022-10-14T09:34:42-04:00
 tags:
   - copy-file
@@ -10,7 +10,7 @@ cliGlossary:  c
 
 ### Synopsis
 
-Copy a Pachyderm resource.
+Copy a {{%productName%}} resource.
 
 ### Options
 

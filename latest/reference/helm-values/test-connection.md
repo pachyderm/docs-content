@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Test Connection HCVs
-description: Used by certain orgs to test connection during installation of Pachyderm.
+description: Used by certain orgs to test connection during installation of {{%productName%}}.
 date: 
 # taxonomy #
 tags: ["configuration", "helm"]
@@ -17,7 +17,7 @@ Looking for a comprehensive list of all attributes and comments? [View a complet
 
 ## About 
 
-The Test Connection section is used by Pachyderm to test the connection during installation. This config is used by organizations that do not have permission to pull Docker images directly from the Internet, and instead need to mirror locally. 
+The Test Connection section is used by {{%productName%}} to test the connection during installation. This config is used by organizations that do not have permission to pull Docker images directly from the Internet, and instead need to mirror locally. 
 
 ## Values
 

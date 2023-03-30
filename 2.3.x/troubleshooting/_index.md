@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Troubleshooting Guides
-description: Learn how to resolve issues with deploying, configuring, or running Pachyderm.
+description: Learn how to resolve issues with deploying, configuring, or running {{%productName%}}.
 date: 
 # taxonomy #
 tags: 
@@ -15,8 +15,8 @@ weight: 7
 This section describe troubleshooting guidelines that should
 help you in troubleshooting your deployment and pipelines.
 
-Pachyderm has a built-in logging system that collects
-information about events in your Pachyderm environment at
+{{%productName%}} has a built-in logging system that collects
+information about events in your {{%productName%}} environment at
 pipeline, datum, and job level.
 
 To troubleshoot the cluster itself, use the `kubectl` tool

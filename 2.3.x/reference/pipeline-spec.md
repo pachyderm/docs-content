@@ -13,8 +13,8 @@ This document discusses each of the fields present in a pipeline specification.
 To see how to use a pipeline spec to create a pipeline, refer to the [create pipeline](../../how-tos/pipeline-operations/create-pipeline/#create-a-pipeline) section.
 
 {{% notice info %}}
-- Pachyderm's pipeline specifications can be written in JSON or YAML.
-- Pachyderm uses its json parser if the first character is `{`.
+- {{%productName%}}'s pipeline specifications can be written in JSON or YAML.
+- {{%productName%}} uses its json parser if the first character is `{`.
 {{% /notice %}}
 
 {{% notice tip %}}
@@ -350,7 +350,7 @@ on `stdin`.
 Lines do not have to end in newline characters.
 
 `transform.env` is a key-value map of environment variables that
-Pachyderm injects into the container. There are also environment variables
+{{%productName%}} injects into the container. There are also environment variables
 that are automatically injected into the container, such as:
 
 * `PACH_JOB_ID` – the ID of the current job.
@@ -400,9 +400,9 @@ can also specify the `WORKDIR` directive in your `Dockerfile`.
 
 ### Parallelism Spec (optional)
 
-`parallelism_spec` describes how Pachyderm parallelizes your pipeline.
+`parallelism_spec` describes how {{%productName%}} parallelizes your pipeline.
 
-Pachyderm starts the number of workers that you specify. For example, set
+{{%productName%}} starts the number of workers that you specify. For example, set
 `"constant":10` to use 10 workers.
 
 The default value is "constant=1".
@@ -414,11 +414,11 @@ modify the default `parallism_spec` value for these pipelines.
 
 `resource_requests` describes the amount of resources that the pipeline
 workers will consume. Knowing this in advance
-enables Pachyderm to schedule big jobs on separate machines, so that they
+enables {{%productName%}} to schedule big jobs on separate machines, so that they
 do not conflict, slow down, or terminate.
 
 This parameter is optional, and if you do not explicitly add it in
-the pipeline spec, Pachyderm creates Kubernetes containers with the
+the pipeline spec, {{%productName%}} creates Kubernetes containers with the
 following default resources: 
 
 - The user and storage containers request 0 CPU, 0 disk space, and 64MB of memory.
@@ -485,8 +485,8 @@ on the subject.
 allocated to the sidecar containers.
 
 This field can be useful in deployments where Kubernetes automatically
-applies resource limits to containers, which might conflict with Pachyderm
-pipelines' resource requests. Such a deployment might fail if Pachyderm
+applies resource limits to containers, which might conflict with {{%productName%}}
+pipelines' resource requests. Such a deployment might fail if {{%productName%}}
 requests more than the default Kubernetes limit. The `sidecar_resource_limits`
 enables you to explicitly specify these resources to fix the issue.
 
@@ -528,7 +528,7 @@ parameter is not set, the job will run indefinitely until it succeeds or fails.
 
 `s3_out` allows your pipeline code to write results out to an S3 gateway
 endpoint instead of the typical `pfs/out` directory. When this parameter
-is set to `true`, Pachyderm includes a sidecar S3 gateway instance
+is set to `true`, {{%productName%}} includes a sidecar S3 gateway instance
 container in the same pod as the pipeline container. The address of the
 output repository will be `s3://<output_repo>`. 
 
@@ -597,11 +597,11 @@ specified, it defaults to the name of the repo. Therefore, if you have two
 crossed inputs from the same repo, you must give at least one of them a
 unique name.
 
-`input.pfs.repo` is the name of the Pachyderm repository with the data that
+`input.pfs.repo` is the name of the {{%productName%}} repository with the data that
 you want to join with other data.
 
 `input.pfs.branch` is the `branch` to watch for commits. If left blank,
-Pachyderm sets this value to `master`.
+{{%productName%}} sets this value to `master`.
 
 `input.pfs.glob` is a glob pattern that is used to determine how the
 input data is partitioned.
@@ -632,7 +632,7 @@ files and reorganize them by using symlinks.
 should include a sidecar S3 gateway instance. This option enables an S3 gateway
 to serve on a pipeline-level basis and, therefore, ensure provenance tracking
 for pipelines that integrate with external systems, such as Kubeflow. When
-this option is set to `true`, Pachyderm deploys an S3 gateway instance
+this option is set to `true`, {{%productName%}} deploys an S3 gateway instance
 alongside the pipeline container and creates an S3 bucket for the pipeline
 input repo. The address of the
 input repository will be `s3://<input_repo>`. When you enable this
@@ -674,7 +674,7 @@ sub-inputs. In the example above, you would see files under
 `/pfs/inputA/...` or `/pfs/inputB/...`, but never both at the same time.
 When you write code to address this behavior, make sure that
 your code first determines which input directory is present. Starting
-with Pachyderm 1.5.3, we recommend that you give your inputs the
+with {{%productName%}} 1.5.3, we recommend that you give your inputs the
 same `Name`. That way your code only needs to handle data being present
 in that directory. This only works if your code does not need to be
 aware of which of the underlying inputs the data comes from.
@@ -739,9 +739,9 @@ those of `input.pfs.name`. Except that it is not optional.
 `input.cron.spec` is a cron expression which specifies the schedule on
 which to trigger the pipeline. To learn more about how to write schedules,
 see the [Wikipedia page on cron](https://en.wikipedia.org/wiki/Cron).
-Pachyderm supports non-standard schedules, such as `"@daily"`.
+{{%productName%}} supports non-standard schedules, such as `"@daily"`.
 
-`input.cron.repo` is the repo which Pachyderm creates for the input. This
+`input.cron.repo` is the repo which {{%productName%}} creates for the input. This
 parameter is optional. If you do not specify this parameter, then
 `"<pipeline-name>_<input-name>"` is used by default.
 
@@ -757,7 +757,7 @@ on matching times in the future. Format the time value according to [RFC
 to be overwritten on each tick. This parameter is optional, and if you do not
 specify it, it defaults to simply writing new files on each tick. By default,
 when `"overwrite"` is disabled, ticks accumulate in the cron input repo. When
-`"overwrite"` is enabled, Pachyderm erases the old ticks and adds new ticks
+`"overwrite"` is enabled, {{%productName%}} erases the old ticks and adds new ticks
 with each commit. If you do not add any manual ticks or run
 `pachctl run cron`, only one tick file per commit (for the latest tick)
 is added to the input repo.
@@ -765,7 +765,7 @@ is added to the input repo.
 #### Join Input
 
 A join input enables you to join files that are stored in separate
-Pachyderm repositories and that match a configured glob
+{{%productName%}} repositories and that match a configured glob
 pattern. A join input must have the `glob` and `join_on` parameters configured
 to work properly. A join can combine multiple PFS inputs.
 
@@ -780,15 +780,15 @@ You can specify the following parameters for the `join` input.
 If an input name is not specified, it defaults to the name of the repo.
 
 * `input.pfs.repo` — see the description in [PFS Input](#pfs-input).
-the name of the Pachyderm repository with the data that
+the name of the {{%productName%}} repository with the data that
 you want to join with other data.
 
 * `input.pfs.branch` — see the description in [PFS Input](#pfs-input).
 
 * `input.pfs.glob` — a wildcard pattern that defines how a dataset is **broken
   up into datums** for further processing. When you use a glob pattern in joins,
-  it creates a naming convention that Pachyderm uses to join files. In other
-  words, Pachyderm joins the files that are named according to the glob
+  it creates a naming convention that {{%productName%}} uses to join files. In other
+  words, {{%productName%}} joins the files that are named according to the glob
   pattern and skips those that are not.
 
     You can specify the glob pattern for joins in a parenthesis to create
@@ -799,14 +799,14 @@ you want to join with other data.
     - `?` — matches a single character in a filepath. For example, you
     have files named `file000.txt`, `file001.txt`, `file002.txt`, and so on.
     You can set the glob pattern to `/file(?)(?)(?)` and the `join_on` key to
-    `$2`, so that Pachyderm matches only the files that have same second
+    `$2`, so that {{%productName%}} matches only the files that have same second
     character.
 
     - `*` — any number of characters in the filepath. For example, if you set
-    your capture group to `/(*)`, Pachyderm matches all files in the root
+    your capture group to `/(*)`, {{%productName%}} matches all files in the root
     directory.
 
-    If you do not specify a correct `glob` pattern, Pachyderm performs the
+    If you do not specify a correct `glob` pattern, {{%productName%}} performs the
     `cross` input operation instead of `join`.
 
 * `input.pfs.outer_join`- Set to `true`, your PFS input will see datums even if there is no match. 
@@ -818,7 +818,7 @@ you want to join with other data.
 #### Group Input
 
 A group input lets you group files that are stored in one or multiple
-Pachyderm repositories by a configured glob
+{{%productName%}} repositories by a configured glob
 pattern. A group input must have the `glob` and `group_by` parameters configured
 to work properly. A group can combine multiple inputs, as long as all the base inputs are PFS inputs.
 
@@ -829,14 +829,14 @@ You can specify the following parameters for the `group` input.
 If an input name is not specified, it defaults to the name of the repo.
 
 * `input.pfs.repo` — see the description in [PFS Input](#pfs-input).
-the name of the Pachyderm repository with the data that
+the name of the {{%productName%}} repository with the data that
 you want to join with other data.
 
 * `input.pfs.branch` — see the description in [PFS Input](#pfs-input).
 
 * `input.pfs.glob` — a wildcard pattern that defines how a dataset is broken
   up into datums for further processing. When you use a glob pattern in a group input,
-  it creates a naming convention that Pachyderm uses to group the files.
+  it creates a naming convention that {{%productName%}} uses to group the files.
   
 
     You need specify in the glob pattern parenthesis to create
@@ -847,13 +847,13 @@ you want to join with other data.
     * `?` — matches a single character in a filepath. For example, you
     have files named `file000.txt`, `file001.txt`, `file002.txt`, and so on.
    You can set the glob pattern to `/file(?)(?)(?)` and the `group_by` key to
-    `$2`, so that Pachyderm groups the files by just their second
+    `$2`, so that {{%productName%}} groups the files by just their second
     characters.
 
     * `*` — any number of characters in the filepath. For example, if you set
-    your capture group to `/(*)`, Pachyderm will group the files by their filenames.
+    your capture group to `/(*)`, {{%productName%}} will group the files by their filenames.
 
-    If you do not specify a correct `glob` pattern, Pachyderm will place all of the files in a single group.
+    If you do not specify a correct `glob` pattern, {{%productName%}} will place all of the files in a single group.
 
   Joins and groups can be used simultaneously; generally, you would use the join inside the group.
   The join will then essentially filter the files, and then the group will group by the remaining files (but will lose the join structure).
@@ -885,12 +885,12 @@ thus will consume no resources.
 
 ### Reprocess Datums (optional)
 
-Per default, Pachyderm avoids repeated processing of unchanged datums (i.e., it processes only the datums that have changed and skip the unchanged datums). This [**incremental behavior**](https://docs.pachyderm.com/latest/concepts/pipeline-concepts/datum/relationship-between-datums/#example-1-one-file-in-the-input-datum-one-file-in-the-output-datum) ensures efficient resource utilization. However, you might need to alter this behavior for specific use cases and **force the reprocessing of all of your datums systematically**. This is especially useful when your pipeline makes an external call to other resources, such as a deployment or triggering an external pipeline system.  Set `"reprocess_spec": "every_job"` in order to enable this behavior. 
+Per default, {{%productName%}} avoids repeated processing of unchanged datums (i.e., it processes only the datums that have changed and skip the unchanged datums). This [**incremental behavior**](https://docs.pachyderm.com/latest/concepts/pipeline-concepts/datum/relationship-between-datums/#example-1-one-file-in-the-input-datum-one-file-in-the-output-datum) ensures efficient resource utilization. However, you might need to alter this behavior for specific use cases and **force the reprocessing of all of your datums systematically**. This is especially useful when your pipeline makes an external call to other resources, such as a deployment or triggering an external pipeline system.  Set `"reprocess_spec": "every_job"` in order to enable this behavior. 
 
 {{% notice note %}}
  About the default behavior.
 
-`"reprocess_spec": "until_success"` is the default behavior. To mitigate datums failing for transient connection reasons, Pachyderm automatically [retries user code three (3) times before marking a datum as failed](https://docs.pachyderm.com/latest/troubleshooting/pipeline-troubleshooting/#introduction). Additionally, you can [set the  `datum_tries`](https://docs.pachyderm.com/latest/reference/pipeline-spec/#datum-tries-optional) field to determine the number of times a job attempts to run on a datum when a failure occurs.
+`"reprocess_spec": "until_success"` is the default behavior. To mitigate datums failing for transient connection reasons, {{%productName%}} automatically [retries user code three (3) times before marking a datum as failed](https://docs.pachyderm.com/latest/troubleshooting/pipeline-troubleshooting/#introduction). Additionally, you can [set the  `datum_tries`](https://docs.pachyderm.com/latest/reference/pipeline-spec/#datum-tries-optional) field to determine the number of times a job attempts to run on a datum when a failure occurs.
 
 Let's compare `"until_success"` and `"every_job"`:
 
@@ -904,7 +904,7 @@ Both use the same input repo and have a glob pattern set to `/*`.
 {{% /notice %}}
 
 {{% notice warning %}}
-`"reprocess_spec": "every_job` will not take advantage of Pachyderm's default de-duplication. In effect, this can lead to slower pipeline performance. Before using this setting, consider other options such as including metadata in your file, naming your files with a timestamp, UUID, or other unique identifiers in order to take advantage of de-duplication. Review how [datum processing](https://docs.pachyderm.com/latest/concepts/pipeline-concepts/datum/relationship-between-datums/) works to understand more.
+`"reprocess_spec": "every_job` will not take advantage of {{%productName%}}'s default de-duplication. In effect, this can lead to slower pipeline performance. Before using this setting, consider other options such as including metadata in your file, naming your files with a timestamp, UUID, or other unique identifiers in order to take advantage of de-duplication. Review how [datum processing](https://docs.pachyderm.com/latest/concepts/pipeline-concepts/datum/relationship-between-datums/) works to understand more.
 {{% /notice %}}
 
 ### Service (optional)
@@ -1001,10 +1001,10 @@ formatted patch by diffing the two pod specs.
 
 Each PFS input needs to **specify a [glob pattern](../../concepts/pipeline-concepts/datum/glob-pattern/)**.
 
-Pachyderm uses the glob pattern to determine how many "datums" an input
-consists of.  [Datums](https://docs.pachyderm.com/latest/concepts/pipeline-concepts/datum/#datum) are the *unit of parallelism* in Pachyderm.  
+{{%productName%}} uses the glob pattern to determine how many "datums" an input
+consists of.  [Datums](https://docs.pachyderm.com/latest/concepts/pipeline-concepts/datum/#datum) are the *unit of parallelism* in {{%productName%}}.  
 Per default,
-Pachyderm auto-scales its workers to process datums in parallel. 
+{{%productName%}} auto-scales its workers to process datums in parallel. 
 You can override this behaviour by setting your own parameter
 (see [Distributed Computing](https://docs.pachyderm.com/latest/concepts/advanced-concepts/distributed-computing/)).
 

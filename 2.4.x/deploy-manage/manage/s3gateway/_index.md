@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Global S3 Gateway
-description: Learn about Pachyderm's embedded S3 gateway, which is compatible with MinIO, AWS S3 CLI, and boto3. 
+description: Learn about the embedded S3 gateway, which is compatible with MinIO, AWS S3 CLI, and boto3. 
 date: 
 # taxonomy #
 tags: 
@@ -9,8 +9,8 @@ series:
 seriesPart:
 ---
 
-Pachyderm comes with an embedded **S3 gateway**, deployed in the `pachd` pod, that allows you to
-**access Pachyderm's repo through the S3 protocol**.  
+{{%productName%}} comes with an embedded **S3 gateway**, deployed in the `pachd` pod, that allows you to
+**access {{%productName%}}'s repo through the S3 protocol**.  
 
 The S3 Gateway is designed to work with any S3 Client, among which: 
 
@@ -31,7 +31,7 @@ Make sure to install and configure the S3 client of your choice as documented [h
 {{%/notice %}}
 
 ## Quick Start
-The S3 gateway presents **each branch from every Pachyderm repository as an S3 bucket**.
+The S3 gateway presents **each branch from every {{%productName%}} repository as an S3 bucket**.
 Buckets are represented via `branch.repo` or (since 1.13.3) `commit.branch.repo`.  
 
 ### Example
@@ -48,11 +48,11 @@ and the equivalent call to a real s3 Bucket.
 
 Find the exhaustive list of:
 
-- [all of Pachyderm's supported `aws s3` commands](./supported-operations).
+- [all of {{%productName%}}'s supported `aws s3` commands](./supported-operations).
 - and the [unsupported ones](./unsupported-operations).
 
 ## If Authentication Is Enabled
-If [auth is enabled](../../../enterprise/auth/) on the Pachyderm cluster, credentials must be passed with
+If [auth is enabled](../../../enterprise/auth/) on the {{%productName%}} cluster, credentials must be passed with
 each S3 gateway endpoint as mentioned in the [**Configure Your S3 Client**](./configure-s3client/#set-your-credentials) page.
 
 {{% notice warning %}}

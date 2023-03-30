@@ -1,10 +1,10 @@
 ## pachctl subscribe
 
-Wait for notifications of changes to a Pachyderm resource.
+Wait for notifications of changes to a {{%productName%}} resource.
 
 ### Synopsis
 
-Wait for notifications of changes to a Pachyderm resource.
+Wait for notifications of changes to a {{%productName%}} resource.
 
 ### Options
 

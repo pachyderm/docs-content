@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  pachctl squash
-description: "Squash an existing Pachyderm resource."
+description: "Squash an existing {{%productName%}} resource."
 date:  2022-10-14T09:34:42-04:00
 tags:
   - squash-commit
@@ -10,7 +10,7 @@ cliGlossary:  s
 
 ### Synopsis
 
-Squash an existing Pachyderm resource.
+Squash an existing {{%productName%}} resource.
 
 ### Options
 

@@ -1,14 +1,14 @@
 ---
 # metadata # 
 title: Authentication & Authorization
-description: Learn how to Pachyderm's user access management works.
+description: Learn how to {{%productName%}}'s user access management works.
 date: 
 # taxonomy #
 tags: 
 series:
 seriesPart:
 ---
-Pachyderm has an embedded **Open ID Connect** based on [**Dex**](https://dexidp.io/docs/), allowing for vendor-neutral authentication using your existing credentials from various back-ends. [See compatible connectors.](https://dexidp.io/docs/connectors/)
+{{%productName%}} has an embedded **Open ID Connect** based on [**Dex**](https://dexidp.io/docs/), allowing for vendor-neutral authentication using your existing credentials from various back-ends. [See compatible connectors.](https://dexidp.io/docs/connectors/)
 
 ## Auth Token Duration
 

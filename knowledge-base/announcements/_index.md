@@ -1,6 +1,6 @@
 ---
 # metadata # 
 title:  Announcements
-description: General release announcements from Pachyderm
+description: General release announcements from {{%productName%}}
 date: 
 ---

@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Backup & Restore Your Cluster
-description: Learn how to back-up and restore the state of a production Pachyderm cluster.
+description: Learn how to back-up and restore the state of a production {{%productName%}} cluster.
 date: 
 # taxonomy #
 tags: ["management", "backups"]
@@ -10,7 +10,7 @@ seriesPart:
 ---
 
 This page will walk you through the main steps required
-to manually back up and restore the state of a Pachyderm cluster in production.
+to manually back up and restore the state of a {{%productName%}} cluster in production.
 
 Details on how to perform those steps might vary depending
 on your infrastructure and cloud provider / on-premises setup. 
@@ -19,24 +19,24 @@ Refer to your provider's documentation.
 
 ## Overview
 
-Pachyderm state is stored in two main places
+{{%productName%}} state is stored in two main places
 (See our high-level [architecture diagram](../../../deploy-manage#overview)):
 
-- an **object-store** holding Pachyderm's data.
-- a PostgreSQL instance made up of **one or two databases**: `pachyderm` holding Pachyderm's metadata and `dex` holding authentication data. 
+- an **object-store** holding {{%productName%}}'s data.
+- a PostgreSQL instance made up of **one or two databases**: `pachyderm` holding {{%productName%}}'s metadata and `dex` holding authentication data. 
 
-Backing up a Pachyderm cluster involves snapshotting both
+Backing up a {{%productName%}} cluster involves snapshotting both
 the object store and the PostgreSQL database(s) (see above),
 in a consistent state, at a given point in time.
 
-Restoring it involves re-populating the database(s) and the object store using those backups, then recreating a Pachyderm cluster.
+Restoring it involves re-populating the database(s) and the object store using those backups, then recreating a {{%productName%}} cluster.
 
 {{% notice note %}}
 - Make sure that you have a bucket for backup use,  separate from the object store used by your cluster.
 - Depending on the reasons behind your cluster recovery, you might choose to use an existing vs. a new instance of PostgreSQL and/or the object store.
 {{% /notice %}}
 
-## Manual Back Up Of A Pachyderm Cluster
+## Manual Back Up Of A {{%productName%}} Cluster
 
 Before any manual backup:
 
@@ -45,14 +45,14 @@ Before any manual backup:
 
 {{% notice note %}}
 - **Backups incur downtime** until operations are resumed.
-- Operational best practices include notifying Pachyderm users of the outage and providing an estimated time when downtime will cease.  
+- Operational best practices include notifying {{%productName%}} users of the outage and providing an estimated time when downtime will cease.  
 - Downtime duration is a function of the size of the data be to backed up and the
 networks involved; Testing before going into production and monitoring backup times on an ongoing basis might help make accurate predictions.
 {{% /notice %}}
 
 ### Suspend Operations
 
-- **Pause any external automated process ingressing data to Pachyderm input repos**,
+- **Pause any external automated process ingressing data to {{%productName%}} input repos**,
  or queue/divert those as they will fail to connect to the cluster while the backup occurs.
 
 - **Suspend all mutation of state by scaling `pachd` and the worker pods down**:
@@ -61,7 +61,7 @@ networks involved; Testing before going into production and monitoring backup ti
   Before starting, make sure that your context points to the server you want to pause by running `pachctl config get active-context`. Find more information on how to [set your context](../../deploy/quickstart/#4-have-pachctl-and-your-cluster-communicate) in our deployment section.
   {{% /notice%}}
 
-  To pause Pachyderm:
+  To pause {{%productName%}}:
 
   - If you are an [***Enterprise***](../../../enterprise/) user: **Run the `pachctl enterprise pause` command**. 
 
@@ -87,7 +87,7 @@ networks involved; Testing before going into production and monitoring backup ti
 
 This step is specific to your database and object store hosting. 
 
-- If your PostgreSQL instance is solely dedicated to Pachyderm, 
+- If your PostgreSQL instance is solely dedicated to {{%productName%}}, 
 you can use PostgreSQL's tools, like `pg_dumpall`, to dump your entire PostgreSQL state.  
 
     Alternatively, you can use targeted `pg_dump` commands to dump the
@@ -97,7 +97,7 @@ you can use PostgreSQL's tools, like `pg_dumpall`, to dump your entire PostgreSQ
     choose to use the provider’s method of making PostgreSQL backups.
     
   {{% notice warning %}}
-  A production setting of Pachyderm implies that you are running a managed PostgreSQL instance.
+  A production setting of {{%productName%}} implies that you are running a managed PostgreSQL instance.
   {{% /notice %}}
 
   {{% notice info%}}
@@ -137,22 +137,22 @@ Once your backup is completed, resume your normal operations by scaling `pachd` 
     kubectl scale deployment pachd --replicas 1
     ```
 
-## Restore Pachyderm
+## Restore {{%productName%}}
 
 There are two primary use cases for restoring a cluster:
 
-1. Your data have been corrupted, preventing your cluster from functioning correctly. You want the same version of Pachyderm re-installed on the latest uncorrupted data set. 
-1. You have upgraded a cluster and are encountering problems. You decide to uninstall the current version and restore the latest backup of a previous version of Pachyderm.
+1. Your data have been corrupted, preventing your cluster from functioning correctly. You want the same version of {{%productName%}} re-installed on the latest uncorrupted data set. 
+1. You have upgraded a cluster and are encountering problems. You decide to uninstall the current version and restore the latest backup of a previous version of {{%productName%}}.
 
 Depending on your scenario, pick all or a subset of the following steps:
 
 - Populate new `pachyderm` and `dex` (if required) databases on your PostgreSQL instance
 - Populate a new bucket or use the backed-up object-store (note that, in that case, it will no longer be a backup)
 - Create a new empty Kubernetes cluster and give it access to your databases and bucket
-- Deploy Pachyderm into your new cluster
+- Deploy {{%productName%}} into your new cluster
 
 {{% notice info %}}
-Find the detailed installations instructions of your PostgreSQL instance, bucket, Kubernetes cluster, permissions setup, and Pachyderm deployment for each Cloud Provider in the [Deploy section of our Documentation](../../deploy)
+Find the detailed installations instructions of your PostgreSQL instance, bucket, Kubernetes cluster, permissions setup, and {{%productName%}} deployment for each Cloud Provider in the [Deploy section of our Documentation](../../deploy)
 {{%/notice %}}
 
 ### Restore The Databases And Objects
@@ -161,13 +161,13 @@ Find the detailed installations instructions of your PostgreSQL instance, bucket
 method (this is most straightforward when using a cloud provider).
 - Copy the objects from the backed-up object store to your new bucket or re-use your backup.
 
-### Deploy Pachyderm Into The New Cluster
+### Deploy {{%productName%}} Into The New Cluster
 
-Finally, update the copy of your original Helm values to point Pachyderm to the new databases and the new object store, then use Helm to install
-Pachyderm into the new cluster.
+Finally, update the copy of your original Helm values to point {{%productName%}} to the new databases and the new object store, then use Helm to install
+{{%productName%}} into the new cluster.
 
 {{% notice info %}}
-The values needing an update and deployment instructions are detailed in the Chapter 6 of all our cloud  installation pages. For example, in the case of GCP, [check the `deploy Pachyderm` chapter](../../../deploy-manage/deploy/aws-deploy-pachyderm/#6-deploy-pachyderm)
+The values needing an update and deployment instructions are detailed in the Chapter 6 of all our cloud  installation pages. For example, in the case of GCP, [check the `deploy {{%productName%}}` chapter](../../../deploy-manage/deploy/aws-deploy-pachyderm/#6-deploy-pachyderm)
 {{% /notice %}}
 
 ### [Connect 'pachctl' To Your Restored Cluster](../../../deploy-manage/deploy/aws-deploy-pachyderm/#7-have-pachctl-and-your-cluster-communicate)
@@ -197,7 +197,7 @@ Make sure that `pachctl` and `kubectl` are pointing to the right cluster. Check 
    kubectl scale deployment pach-enterprise --replicas 0 
    ``` 
 
-   There is no need to pause all the Pachyderm clusters registered to the Enterprise Server to backup the enterprise server; however, pausing the Enterprise server will result in your clusters becoming unavailable.
+   There is no need to pause all the {{%productName%}} clusters registered to the Enterprise Server to backup the enterprise server; however, pausing the Enterprise server will result in your clusters becoming unavailable.
   {{% /notice %}}
 
 - As a reminder, the Enterprise Server does not use any object-store. Therefore, the [backup of the Enterprise Server](#back-up-the-databases-and-the-object-store) only consists in backing up the database `dex`.

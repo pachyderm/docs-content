@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  pachctl version
-description: "Print Pachyderm version information."
+description: "Print {{%productName%}} version information."
 date:  2022-10-14T09:34:42-04:00
 tags:
 cliGlossary:  v
@@ -9,7 +9,7 @@ cliGlossary:  v
 
 ### Synopsis
 
-Print Pachyderm version information.
+Print {{%productName%}} version information.
 
 ```
 pachctl version [flags]

@@ -1,10 +1,10 @@
 ## pachctl draw
 
-Draw an ASCII representation of an existing Pachyderm resource.
+Draw an ASCII representation of an existing {{%productName%}} resource.
 
 ### Synopsis
 
-Draw an ASCII representation of an existing Pachyderm resource.
+Draw an ASCII representation of an existing {{%productName%}} resource.
 
 ### Options
 

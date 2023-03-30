@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  pachctl diff file
-description: "Return a diff of two file trees stored in Pachyderm"
+description: "Return a diff of two file trees stored in {{%productName%}}"
 date:  2022-10-14T09:34:42-04:00
 tags:
   - diff
@@ -10,7 +10,7 @@ cliGlossary:  d
 
 ### Synopsis
 
-Return a diff of two file trees stored in Pachyderm
+Return a diff of two file trees stored in {{%productName%}}
 
 ```
 pachctl diff file <new-repo>@<new-branch-or-commit>:<new-path> [<old-repo>@<old-branch-or-commit>:<old-path>] [flags]

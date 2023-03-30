@@ -1,7 +1,7 @@
 ---
 # metadata # 
-title:  Pachyderm S3 Gateway Supported Operations
-description: Learn which S3 Gateway operations are supported by Pachyderm. 
+title: S3 Gateway Supported Operations
+description: Learn which S3 Gateway operations are supported. 
 date: 
 # taxonomy #
 tags: 
@@ -9,7 +9,7 @@ series:
 seriesPart:
 --- 
 
-The Pachyderm S3 gateway supports the following operations:
+The {{%productName%}} S3 gateway supports the following operations:
 
 * [Create bucket](#create-bucket): Creates a repo and branch.
 * [Delete bucket](#delete-bucket): Deletes a branch or a repo with all branches.
@@ -31,7 +31,7 @@ aws --endpoint-url http://localhost:30600/ s3 mb s3://master.test --profile <nam
 {{% /notice%}}
 
 ## Create Bucket
-Call the *create an S3 bucket* command on your S3 client to create a branch in a Pachyderm repository. 
+Call the *create an S3 bucket* command on your S3 client to create a branch in a {{%productName%}} repository. 
 For example, let's create the `master` branch of the repo `test`.
 
 1. In MinIO, 
@@ -74,7 +74,7 @@ For example, let's create the `master` branch of the repo `test`.
     
 
 ## Delete Bucket
-Call the *delete an empty S3 bucket* command on your S3 client to delete a Pachyderm repository.
+Call the *delete an empty S3 bucket* command on your S3 client to delete a {{%productName%}} repository.
 
 {{% notice warning %}}
 The repo must be completely empty.
@@ -98,7 +98,7 @@ The repo must be completely empty.
     ```
 
 ## List Buckets
-You can check the list of filesystem objects in your Pachyderm
+You can check the list of filesystem objects in your {{%productName%}}
 repository by running an S3 client `ls` command.
 
 1. In MinIO,

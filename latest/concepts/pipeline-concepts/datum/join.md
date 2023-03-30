@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Join Input
-description: Learn about the concept of a join input in Pachyderm. 
+description: Learn about the concept of a join input in {{%productName%}}. 
 date: 
 # taxonomy #
 tags: ["concepts", "pachctl", "datums","pipelines", "data-operations"]
@@ -10,23 +10,23 @@ seriesPart:
 --- 
 
 A join is a special type of pipeline input that enables you to combine
-files that reside in separate Pachyderm repositories and match a
+files that reside in separate {{%productName%}} repositories and match a
 particular naming pattern. The join operator must be used in combination
 with a [glob pattern](../../datum/glob-pattern) that reflects a specific naming convention.
-Note that in Pachyderm, matches are made on file paths
+Note that in {{%productName%}}, matches are made on file paths
 only, not the files' content. 
 
-Pachyderm supports two types of joins: 
+{{%productName%}} supports two types of joins: 
 
 - A default join setting, similar to a database *equi-join*
 or *inner-join* operation. Unlike the [cross input](../../datum/cross-union),
 which creates datums from every combination of files in each input repository, 
 inner joins **only create datums where there is a *match***. 
-You can use inner joins to combine data from different Pachyderm repositories
+You can use inner joins to combine data from different {{%productName%}} repositories
 and ensure that only specific files from
 each repo are processed together. 
-If Pachyderm does not find any matching files, you get a zero-[datum](../../datum/) job.
-- Pachyderm also supports a join close to a database `outer-join`,
+If {{%productName%}} does not find any matching files, you get a zero-[datum](../../datum/) job.
+- {{%productName%}} also supports a join close to a database `outer-join`,
 allowing you to **create datums for all files in a repo, even if there is no match**. 
 The `outer-join` behavior can be set on any repository in your join.
 
@@ -60,7 +60,7 @@ Also, joins require you to specify a [replacement group](https://www.regular-exp
 in the `join_on` parameter to define which capture groups you want to try
 to match.
 
-For example, `$1` indicates that you want Pachyderm to match based on
+For example, `$1` indicates that you want {{%productName%}} to match based on
 capture group `1`. Similarly, `$2` matches the capture group `2`.
 `$1$2` means that it must match both capture groups `1` and `2`.
 
@@ -107,7 +107,7 @@ structures:
    ├── file8.txt
    ```
 
-Pachyderm runs your code only on the pairs of files that match
+{{%productName%}} runs your code only on the pairs of files that match
 the glob pattern and capture groups.
 
 The following example shows how you can use joins to group
@@ -157,7 +157,7 @@ To experiment further, see the full [joins example](https://github.com/pachyderm
 
 ## Outer Join
 
-Pachyderm also supports outer joins. Outer joins include everything an
+{{%productName%}} also supports outer joins. Outer joins include everything an
 inner join does plus the files that didn't match anything. Inputs can be set to
 outer semantics independently. So while there isn't an explicit notion of
 "left" or "right" outer joins, you can still get those semantics, and even

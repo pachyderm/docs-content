@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Install Pachctl Auto-completion
-description: Learn how to install Pachyderm's auto-completion helper tool (it's great for learning pachctl commands).
+description: Learn how to install {{%productName%}}'s auto-completion helper tool (it's great for learning pachctl commands).
 date: 
 # taxonomy #
 tags: ["deployment"]
@@ -9,14 +9,14 @@ series:
 seriesPart:
 ---
 
-Pachyderm autocompletion allows you to automatically finish
+{{%productName%}} autocompletion allows you to automatically finish
 partially typed commands by pressing `TAB`. Autocompletion needs
 to be installed separately when `pachctl` is already
 available on your client machine.
 
-Pachyderm autocompletion is supported for `bash` and `zsh` shells.
+{{%productName%}} autocompletion is supported for `bash` and `zsh` shells.
 You must have either of them preinstalled
-before installing Pachyderm autocompletion.
+before installing {{%productName%}} autocompletion.
 
 {{% notice tip %}}
 Type `pachctl completion --help` to display help information about the command.
@@ -115,5 +115,5 @@ steps:
 
 {{% notice note %}}
  See Also:
- [Pachyderm Shell](../../deploy-manage/manage/pachctl-shell/)
+ [{{%productName%}} Shell](../../deploy-manage/manage/pachctl-shell/)
 {{% /notice %}}

@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Server Setup
-description: Learn how to set up a Pachyderm enterprise server.
+description: Learn how to set up a {{%productName%}} enterprise server.
 date: 
 # taxonomy #
 tags: ["enterprise", "deployment", "helm"]
@@ -9,32 +9,32 @@ series:
 seriesPart:
 ---
 
-The **Enterprise Server** is a component in Pachyderm which manages Enterprise Licensing
+The **Enterprise Server** is a component in {{%productName%}} which manages Enterprise Licensing
 and the integration with a company's Identity Providers (IDPs).
 
-An organization can have **many Pachyderm clusters registered with one single Enterprise Server**. Administrators activate the Enterprise Server with an **Enterprise License Key** from Pachyderm sales, and optionally configure authentication with their IDP via SAML, OIDC, LDAP, etc...
+An organization can have **many {{%productName%}} clusters registered with one single Enterprise Server**. Administrators activate the Enterprise Server with an **Enterprise License Key** from {{%productName%}} sales, and optionally configure authentication with their IDP via SAML, OIDC, LDAP, etc...
 
-An Enterprise Server uses the same binary/images as a regular Pachyderm cluster, therefore, it is deployed like a typical cluster (See our [Deploy/Manage](../../../../deploy-manage/) section) with minor differences:
+An Enterprise Server uses the same binary/images as a regular {{%productName%}} cluster, therefore, it is deployed like a typical cluster (See our [Deploy/Manage](../../../../deploy-manage/) section) with minor differences:
 
 - **No Object store**: It is **not backed by an object store**. In other words, you won't need to set up an object store, so you don't need any deployment target in your helm chart.
 - **The PostgreSQL Instance requires two databases: `dex` and `pachyderm`**. Note that when the enterprise server is deployed as a standalone cluster as part of a multi-cluster deployment, all the clusters than will be registered to this enterprise server will each require one PostgreSQL database only: `pachyderm` (`dex` being at the enterprise server already).
 
-The following diagram gives you a quick overview of an organization with multiple Pachyderm clusters behind a single Enterprise Server.
+The following diagram gives you a quick overview of an organization with multiple {{%productName%}} clusters behind a single Enterprise Server.
 ![Enterprise Server General Deployment](/images/enterprise-server.png)
 
 {{% notice note %}}
-For POCs and smaller organizations with one single Pachyderm cluster, the **Enterprise Server services can be run embedded in pachd**. A separate deployment is not necessary. An organization with a single Pachyderm cluster can run the Enterprise Server services embedded within pachd.
+For POCs and smaller organizations with one single {{%productName%}} cluster, the **Enterprise Server services can be run embedded in pachd**. A separate deployment is not necessary. An organization with a single {{%productName%}} cluster can run the Enterprise Server services embedded within pachd.
 {{% /notice %}}
 
 The setup of an Enterprise Server requires to:
 
 1. Deploy it.
 2. Activate your Enterprise Key and enable Auth.
-3. Register your newly created or existing Pachyderm clusters with your enterprise server.
+3. Register your newly created or existing {{%productName%}} clusters with your enterprise server.
 4. Optional: Enable Auth on each cluster.
 
 {{% notice warning %}}
-We are now shipping Pachyderm with an **embedded proxy** 
+We are now shipping {{%productName%}} with an **embedded proxy** 
 allowing your nterprise server to expose one single port externally. This deployment setup is optional.
 
 If you choose to deploy your enterprise server with a Proxy, check out our new recommended architecture and [deployment instructions](../../../../deploy-manage/deploy/deploy-w-proxy/) as they alter the instructions below.
@@ -44,9 +44,9 @@ If you choose to deploy your enterprise server with a Proxy, check out our new r
 Deploying and configuring an enterprise server can be done in one of two flavors:
 
 1. Provide all licensing and authentication configurations as a part of the Helm deployment.
-1. Or, [install a bare-bones version of Pachyderm with Helm](../../../../deploy-manage/deploy/helm-install/), then use `pachctl` commands to set up licensing and authentication.
+1. Or, [install a bare-bones version of {{%productName%}} with Helm](../../../../deploy-manage/deploy/helm-install/), then use `pachctl` commands to set up licensing and authentication.
 
-### As Part Of A Regular Pachyderm Helm Deployment
+### As Part Of A Regular {{%productName%}} Helm Deployment
 Update your values.yaml with your enterprise license key and auth configurations ([for an example on localhost, see the example values.yaml here](https://github.com/pachyderm/pachyderm/blob/{{% majorMinorVersion %}}/etc/helm/examples/local-dev-values.yaml)) or check our minimal example below to your values.yaml.
 
 {{% notice warning %}} 
@@ -179,7 +179,7 @@ This results in a single pachd pod, with authentication enabled, and an IDP inte
 {{% notice note %}}
 Update the following values as follows:
 
-`PACHD-IP`: The address of Pachyderm's IP. Retrieve Pachyderm external IP address if necessary.
+`PACHD-IP`: The address of {{%productName%}}'s IP. Retrieve {{%productName%}} external IP address if necessary.
  `ISSUER`, `CLIENT-ID`, `CLIENT-SECRET`: Refer to our [Identity Provider Configuration page](../../authentication/idp-dex#create-a-connector-configuration-file).
 {{% /notice %}}
 
@@ -196,7 +196,7 @@ However, **this secret is only used when configuring through helm**:
 - **Set the helm value `pachd.activateAuth` to false to prevent the automatic bootstrap of auth on the cluster**.
 {{% /notice %}}
 
-### On An Existing Pachyderm Cluster
+### On An Existing {{%productName%}} Cluster
 
 To enable the Enterprise Server on an existing cluster:
 

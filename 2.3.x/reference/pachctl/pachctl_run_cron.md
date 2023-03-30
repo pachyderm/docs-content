@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  pachctl run cron
-description: "Run an existing Pachyderm cron pipeline now"
+description: "Run an existing {{%productName%}} cron pipeline now"
 date:  2022-10-14T09:34:42-04:00
 tags:
   - run
@@ -10,7 +10,7 @@ cliGlossary:  r
 
 ### Synopsis
 
-Run an existing Pachyderm cron pipeline now
+Run an existing {{%productName%}} cron pipeline now
 
 ```
 pachctl run cron <pipeline> [flags]

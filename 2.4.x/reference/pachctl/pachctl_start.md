@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  pachctl start
-description: "Start a Pachyderm resource."
+description: "Start a {{%productName%}} resource."
 date:  2022-10-14T09:34:42-04:00
 tags:
   - start-commit
@@ -12,7 +12,7 @@ cliGlossary:  s
 
 ### Synopsis
 
-Start a Pachyderm resource.
+Start a {{%productName%}} resource.
 
 ### Options
 

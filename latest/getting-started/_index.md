@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Get Started
-description: New to using Pachyderm? Start Here.
+description: New to using our platform? Start Here.
 date: 
 # taxonomy #
 tags: 
@@ -9,9 +9,9 @@ series:
 seriesPart:
 weight: 1
 ---
-## What is Pachyderm? 
+## What is {{%productName%}}? 
 
-Pachyderm is a data-centric pipeline and data versioning application written in [go](https://go.dev/) that runs on top of a Kubernetes cluster.
+{{%productName%}} is a data-centric pipeline and data versioning application written in [go](https://go.dev/) that runs on top of a Kubernetes cluster.
 
 ## Local vs Cloud Installation
 

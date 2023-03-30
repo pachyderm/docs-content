@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  pachctl delete
-description: "Delete an existing Pachyderm resource."
+description: "Delete an existing {{%productName%}} resource."
 date:  2022-10-14T09:34:42-04:00
 tags:
   - delete-all
@@ -18,7 +18,7 @@ cliGlossary:  d
 
 ### Synopsis
 
-Delete an existing Pachyderm resource.
+Delete an existing {{%productName%}} resource.
 
 ### Options
 

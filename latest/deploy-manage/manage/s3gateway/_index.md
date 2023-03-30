@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: S3 Gateway
-description: Learn about Pachyderm's embedded S3 gateway, which is compatible with MinIO, AWS S3 CLI, and boto3. 
+description: Learn about {{%productName%}}'s embedded S3 gateway, which is compatible with MinIO, AWS S3 CLI, and boto3. 
 date: 
 # taxonomy #
 tags: 
@@ -14,7 +14,7 @@ Use the embedded S3 Gateway to send or receive data through the S3 protocol usin
 
 ## S3 Gateway Syntax
 
-The S3 gateway presents each branch from every Pachyderm repository as an S3 bucket. Buckets are represented via `[<commit>.]<branch>.<repo>.<project>`, with the commit being optional. 
+The S3 gateway presents each branch from every {{%productName%}} repository as an S3 bucket. Buckets are represented via `[<commit>.]<branch>.<repo>.<project>`, with the commit being optional. 
 
 - The `master.foo.bar` bucket corresponds to the `master` branch of the repo `foo` within the `bar` project.
 - The `be97b64f110643389f171eb64697d4e1.master.foo.bar` bucket corresponds to the commit `be97b64f110643389f171eb64697d4e1` on the `master` branch of the `foo` repo within the `bar` project.
@@ -26,7 +26,7 @@ each S3 gateway endpoint as mentioned in the [**S3 Client configuration steps**]
 
 The following command examples assume that you have upgraded to use the [embedded proxy](../../deploy/deploy-w-proxy), which will become mandatory in future releases.
 
-#### Put Data Into Pachyderm Repo
+#### Put Data Into {{%productName%}} Repo
 
 {{<stack type="wizard">}}
 
@@ -51,7 +51,7 @@ pachctl put file data@master:/ -f myfile.csv --project bar
 
 {{</stack>}}
 
-#### Retrieve Data From Pachyderm Repo
+#### Retrieve Data From {{%productName%}} Repo
 
 {{<stack type="wizard">}}
 

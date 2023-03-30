@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Server Management
-description: Learn how to manage your Pachyderm Enterprise server. 
+description: Learn how to manage your {{%productName%}} Enterprise server. 
 date: 
 # taxonomy #
 tags: ["enterprise", "management"]
@@ -28,7 +28,7 @@ pachctl config get active-enterprise-context
 
 ## Configuring IDPs
 To configure IDP integrations, use `pachctl idp create-connector` as documented in 
-the [**Pachyderm Integration with Identity Providers**](../../authentication/idp-dex) page.
+the [**{{%productName%}} Integration with Identity Providers**](../../authentication/idp-dex) page.
 
 ## Manage your Enterprise Server
 

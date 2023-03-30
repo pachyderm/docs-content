@@ -1,10 +1,10 @@
 ## pachctl run
 
-Manually run a Pachyderm resource.
+Manually run a {{%productName%}} resource.
 
 ### Synopsis
 
-Manually run a Pachyderm resource.
+Manually run a {{%productName%}} resource.
 
 ### Options
 

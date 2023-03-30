@@ -1,6 +1,6 @@
 ---
 title: "Intro to Data Versioning"
-description: Learn how to interact with versioned data in Pachyderm, including creating and managing data repositories, creating and navigating commits, and branching to manage the evolution of data.
+description: Learn how to interact with versioned data, including creating and managing data repositories, creating and navigating commits, and branching to manage the evolution of data.
 date: 2023-01-30T16:17:44-06:00
 weight: 040
 mermaid: true 
@@ -11,13 +11,13 @@ directory: true
 ---
 
 ## Introduction to Data Versioning
-On this page we want to give a brief overview of how to use and interact with versioned data inside Pachyderm. Collectively, this is often referred to as the **Pachyderm File System (PFS)**.
+On this page we want to give a brief overview of how to use and interact with versioned data inside {{%productName%}}. Collectively, this is often referred to as the **{{%productName%}} File System (PFS)**.
 
 ## Repositories
 
-Data versioning in Pachyderm starts with creating a data repository. Pachyderm data repos are similar to Git repositories in that they provide a place to track changes made to a set of files. 
+Data versioning in {{%productName%}} starts with creating a data repository. {{%productName%}} data repos are similar to Git repositories in that they provide a place to track changes made to a set of files. 
 
-Using the Pachyderm CLI (`pachctl`) we would create a repository called data with the create repo command. 
+Using the {{%productName%}} CLI (`pachctl`) we would create a repository called data with the create repo command. 
 
 ```bash
 pachctl create repo data
@@ -27,7 +27,7 @@ Once a repo is created, data can be added, deleted, or updated to a branch and a
 
 
 ## Commits
-In Pachyderm, commits are made to branches of a repo. For example, in the following session if we add a file to our data repository, that file will be captured in a commit. 
+In {{%productName%}}, commits are made to branches of a repo. For example, in the following session if we add a file to our data repository, that file will be captured in a commit. 
 
 ```bash
 $ pachctl put file data@master -f my_file.bin
@@ -166,7 +166,7 @@ We can reference the commits in numerical order using `.n`, where `n` is the com
 
 ## Branches
 
-In Pachyderm, branches are used to track changes in a repository. You can think of a branch as a tag on a specific commit. Branches are associated with a particular commit and are updated as new commits are made (moving the `HEAD` of that branch to its most recent commit). This also means that at any time, you can change the commit that a branch is associated with, affecting branch history.
+In {{%productName%}}, branches are used to track changes in a repository. You can think of a branch as a tag on a specific commit. Branches are associated with a particular commit and are updated as new commits are made (moving the `HEAD` of that branch to its most recent commit). This also means that at any time, you can change the commit that a branch is associated with, affecting branch history.
 
 Here's an example of a repo with three branches, each with its own history of commits:
 
@@ -247,4 +247,4 @@ Or from the history perspective of the respective branches:
        commit tag:"master:HEAD"  id:"4-41a750b "
 ```
 
-Branches are useful for many reasons, but in Pachyderm they also form the foundation of the pipeline system. New commits on branches can be used to trigger pipelines to run, resulting in one of the key differentiators, data-driven pipelines.
+Branches are useful for many reasons, but in {{%productName%}} they also form the foundation of the pipeline system. New commits on branches can be used to trigger pipelines to run, resulting in one of the key differentiators, data-driven pipelines.

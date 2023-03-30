@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Developing on Windows with VSCode
-description: Learn how to set up your Windows machine to contribute to Pachyderm via VS code.
+description: Learn how to set up your Windows machine to contribute to {{%productName%}} via VS code.
 date: 
 # taxonomy #
 tags:  ["developers", "windows"]
@@ -41,7 +41,7 @@ This path may vary depending on where your `git bash` actually exists.
 
 ## Getting started
 
-1. Open a terminal and navigate to a directory you'd like to store Pachyderm.
+1. Open a terminal and navigate to a directory you'd like to store {{%productName%}}.
 2. Clone the pachyderm repo using `git clone https://github.com/pachyderm/pachyderm`.
 3. Launch Docker Desktop (with Kubernetes enabled) or start minikube.  
 4. Provision  ~10 GB of memory and ~4CPUs.
@@ -51,7 +51,7 @@ This path may vary depending on where your `git bash` actually exists.
       - **Option 1**: Navigate to **Terminal** > **Run Task...**
       - **Option 2**: Press `ctrl+p` and input `task docker-build`
 6. Build and install pachctl.
-7. Launch a Pachyderm cluster by running the task `launch-dev`.  
+7. Launch a {{%productName%}} cluster by running the task `launch-dev`.  
 
  If the service does not come up promptly (the script never says all the pods are ready), see the Debugging section.
 
@@ -61,7 +61,7 @@ This path may vary depending on where your `git bash` actually exists.
 
 ### Common Commands
 
-The following commands are used frequently when working with Pachyderm: 
+The following commands are used frequently when working with {{%productName%}}: 
 
 - `kubectl get all`: lists resources in the 'default' namespace, where we deploy locally. 
 - `kubectl logs -p <pod>`: gets the logs from the previous attempt at running a pod; a good place to find errors.

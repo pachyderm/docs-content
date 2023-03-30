@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Azure
-description: Learn how to deploy a Pachyderm cluster on Microsoft Azure. 
+description: Learn how to deploy a {{%productName%}} cluster on Microsoft Azure. 
 date: 
 # taxonomy #
 tags: ["azure",]
@@ -10,7 +10,7 @@ seriesPart:
 --- 
 
 
-For a quick test installation of Pachyderm on Azure (suitable for development), jump to our [Quickstart page](../quickstart/).
+For a quick test installation of {{%productName%}} on Azure (suitable for development), jump to our [Quickstart page](../quickstart/).
 
 
 {{% notice tip %}}
@@ -18,18 +18,18 @@ Before your start your installation process.
 
 - Refer to our generic ["Helm Install"](../helm-install) page for more information on  how to install and get started with `Helm`.
 - Read our [infrastructure recommendations](../ingress/). You will find instructions on how to set up an ingress controller, a load balancer, or connect an Identity Provider for access control. 
-- Pachyderm comes with a [web UI (Console)](../console) for visualizing running pipelines and exploring your data. Note that, unless your deployment is `LOCAL` (i.e., on a local machine for development only, for example, on Minikube or Docker Desktop), the deployment of Console requires, at a minimum, the set up of an Ingress.
+- {{%productName%}} comes with a [web UI (Console)](../console) for visualizing running pipelines and exploring your data. Note that, unless your deployment is `LOCAL` (i.e., on a local machine for development only, for example, on Minikube or Docker Desktop), the deployment of Console requires, at a minimum, the set up of an Ingress.
 {{% /notice %}}
     
 
 {{% notice warning %}}
-We are now shipping Pachyderm with an **embedded proxy** 
+We are now shipping {{%productName%}} with an **embedded proxy** 
 allowing your cluster to expose one single port externally. This deployment setup is optional.
 
-If you choose to deploy Pachyderm with a Proxy, check out our new recommended architecture and [deployment instructions](../deploy-w-proxy/) as they alter the instructions below.
+If you choose to deploy {{%productName%}} with a Proxy, check out our new recommended architecture and [deployment instructions](../deploy-w-proxy/) as they alter the instructions below.
 {{%/notice %}}
 
-The following section walks you through deploying a Pachyderm cluster on Microsoft® Azure® Kubernetes
+The following section walks you through deploying a {{%productName%}} cluster on Microsoft® Azure® Kubernetes
 Service environment (AKS). 
 
 In particular, you will:
@@ -43,9 +43,9 @@ In particular, you will:
     - [Example](#example)
   - [Create Your Databases](#create-your-databases)
   - [Update your yaml values](#update-your-yaml-values)
-- [6. Deploy Pachyderm](#6-deploy-pachyderm)
+- [6. Deploy {{%productName%}}](#6-deploy-pachyderm)
   - [Update Your Values.yaml](#update-your-valuesyaml)
-  - [Deploy Pachyderm On The Kubernetes Cluster](#deploy-pachyderm-on-the-kubernetes-cluster)
+  - [Deploy {{%productName%}} On The Kubernetes Cluster](#deploy-pachyderm-on-the-kubernetes-cluster)
 - [7. Have 'pachctl' And Your Cluster Communicate](#7-have-pachctl-and-your-cluster-communicate)
 - [8. Check That Your Cluster Is Up And Running](#8-check-that-your-cluster-is-up-and-running)
 
@@ -69,17 +69,17 @@ This page assumes that you have an [Azure Subsciption](https://docs.microsoft.co
 You can deploy Kubernetes on Azure by following the official [Azure Kubernetes Service documentation](https://docs.microsoft.com/en-us/azure/aks/tutorial-kubernetes-deploy-cluster?tabs=azure-cli), [use the quickstart walkthrough](https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough), or follow the steps in this section.
 
 {{% notice warning %}}
-Pachyderm recommends running your cluster on Kubernetes 1.19.0 and above.
+{{%productName%}} recommends running your cluster on Kubernetes 1.19.0 and above.
 {{% /notice %}}
 
 At a minimum, you will need to specify the parameters below:
 
 |Variable|Description|
 |--------|-----------|
-|RESOURCE_GROUP|A unique name for the resource group where Pachyderm is deployed. For example, `pach-resource-group`.|
+|RESOURCE_GROUP|A unique name for the resource group where {{%productName%}} is deployed. For example, `pach-resource-group`.|
 |LOCATION|An Azure availability zone where AKS is available. For example, `centralus`.|
-|NODE_SIZE|The size of the Kubernetes virtual machine (VM) instances. To avoid performance issues, Pachyderm recommends that you set this value to at least `Standard_DS4_v2` which gives you 8 CPUs, 28 Gib of Memory, 56 Gib SSD.<br> <br>In any case, use VMs that support **premium storage**. See [Azure VM sizes](https://docs.microsoft.com/en-us/azure/virtual-machines/sizes)  for details around which sizes support Premium storage.|
-|CLUSTER_NAME|A unique name for the Pachyderm cluster. For example, `pach-aks-cluster`.|
+|NODE_SIZE|The size of the Kubernetes virtual machine (VM) instances. To avoid performance issues, {{%productName%}} recommends that you set this value to at least `Standard_DS4_v2` which gives you 8 CPUs, 28 Gib of Memory, 56 Gib SSD.<br> <br>In any case, use VMs that support **premium storage**. See [Azure VM sizes](https://docs.microsoft.com/en-us/azure/virtual-machines/sizes)  for details around which sizes support Premium storage.|
+|CLUSTER_NAME|A unique name for the {{%productName%}} cluster. For example, `pach-aks-cluster`.|
 
 You can choose to follow the guided steps in [Azure Service Portal's Kubernetes Services](https://portal.azure.com/) or use Azure CLI.
 
@@ -143,14 +143,14 @@ You can choose to follow the guided steps in [Azure Service Portal's Kubernetes 
     - [Azure Virtual Machine sizes](https://docs.microsoft.com/en-us/azure/virtual-machines/sizes-general)
 {{% /notice %}}
 
-Once your Kubernetes cluster is up, and your infrastructure configured, you are ready to prepare for the installation of Pachyderm. Some of the steps below will require you to keep updating the values.yaml started during the setup of the recommended infrastructure:
+Once your Kubernetes cluster is up, and your infrastructure configured, you are ready to prepare for the installation of {{%productName%}}. Some of the steps below will require you to keep updating the values.yaml started during the setup of the recommended infrastructure:
 
 
 ## 3. Create an Azure Storage Container For Your Data
 
-Pachyderm needs an [Azure Storage Container](https://docs.microsoft.com/en-us/azure/databricks/data/data-sources/azure/azure-storage) (Object store) to store your data. 
+{{%productName%}} needs an [Azure Storage Container](https://docs.microsoft.com/en-us/azure/databricks/data/data-sources/azure/azure-storage) (Object store) to store your data. 
 
-To access your data, Pachyderm uses a [Storage Account](https://docs.microsoft.com/en-us/azure/storage/common/storage-account-overview) with permissioned access to your desired container. You can either use an existing account or create a new one in your default subscription, then use the JSON key associated with the account and pass it on to Pachyderm.
+To access your data, {{%productName%}} uses a [Storage Account](https://docs.microsoft.com/en-us/azure/storage/common/storage-account-overview) with permissioned access to your desired container. You can either use an existing account or create a new one in your default subscription, then use the JSON key associated with the account and pass it on to {{%productName%}}.
 
 To create a new storage account, follow the steps below:
 
@@ -194,7 +194,7 @@ The storage account name must be unique in the Azure location.
     and the `kind` parameter is set to `BlockBlobStorage`. This
     configuration results in a storage that uses SSDs rather than
     standard Hard Disk Drives (HDD).
-    If you set this parameter to an HDD-based storage option, your Pachyderm
+    If you set this parameter to an HDD-based storage option, your {{%productName%}}
     cluster will be too slow and might malfunction.
 
 * Verify that your storage account has been successfully created:
@@ -203,7 +203,7 @@ The storage account name must be unique in the Azure location.
     az storage account list
     ```
 
-* Obtain the key for the storage account (`STORAGE_ACCOUNT`) and the resource group to be used to deploy Pachyderm:
+* Obtain the key for the storage account (`STORAGE_ACCOUNT`) and the resource group to be used to deploy {{%productName%}}:
 
     ```s
     STORAGE_KEY="$(az storage account keys list \
@@ -232,7 +232,7 @@ The storage account name must be unique in the Azure location.
 
 etcd and PostgreSQL (metadata storage) each claim the creation of a pv. 
 
-If you plan to deploy Pachyderm with its default bundled PostgreSQL instance, read the warning below and jump to the [deployment section](#6-deploy-pachyderm):
+If you plan to deploy {{%productName%}} with its default bundled PostgreSQL instance, read the warning below and jump to the [deployment section](#6-deploy-pachyderm):
 
 {{% notice warning %}}
 The metadata service (Persistent disk) generally requires a small persistent volume size (i.e. 10GB) but **high IOPS (1500)**, therefore, depending on your disk choice, you may need to oversize the volume significantly to ensure enough IOPS.
@@ -242,7 +242,7 @@ If you plan to deploy a managed PostgreSQL instance (Recommended in production),
 
 ## 5. Create an Azure Managed PostgreSQL Server Database
 
-By default, Pachyderm runs with a bundled version of PostgreSQL. 
+By default, {{%productName%}} runs with a bundled version of PostgreSQL. 
 For production environments, we strongly recommend that you disable the bundled version and use a PostgreSQL Server instance.
 
 This section will provide guidance on the configuration settings you will need to:
@@ -269,8 +269,8 @@ In the Azure console, choose the **Azure Database for PostgreSQL servers** servi
 |:----------------|:--------------------------------------------------------|
 | *subscription*  and *resource group*| Pick your existing [resource group](https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/govern/resource-consistency/resource-access-management#what-is-an-azure-resource-group).<br><br> **Important** Your Cluster and your Database must be deployed in the **same resource group**.|
 |*server name*|Name your instance.|
-|*location*|Create a database **in the region matching your Pachyderm cluster**.|
-|*compute + storage*|The standard instance size (GP_Gen5_4 = Gen5 VMs with 4 cores) should work. Remember that Pachyderm's metadata services require **high IOPS (1500)**. Oversize the disk accordingly |
+|*location*|Create a database **in the region matching your {{%productName%}} cluster**.|
+|*compute + storage*|The standard instance size (GP_Gen5_4 = Gen5 VMs with 4 cores) should work. Remember that {{%productName%}}'s metadata services require **high IOPS (1500)**. Oversize the disk accordingly |
 | *Master username* | Choose your Admin username. ("postgres")|
 | *Master password* | Choose your Admin password.|
 
@@ -317,15 +317,15 @@ Alternativelly, in the **Connection Security** of your newly created server, *Al
 ![Instance overview page](../../images/azure_postgresql_overview.png)
 
 ### Create Your Databases
-After your instance is created, you will need to create Pachyderm's database(s).
+After your instance is created, you will need to create {{%productName%}}'s database(s).
       
-If you plan to deploy a standalone cluster (i.e., if you do not plan to register your cluster with a separate [enterprise server](../../../enterprise/auth/enterprise-server/setup), you will need to create a second database named "dex" in your PostgreSQL Server instance for Pachyderm's authentication service. Note that the database **must be named `dex`**. This second database is not needed when your cluster is managed by an enterprise server.
+If you plan to deploy a standalone cluster (i.e., if you do not plan to register your cluster with a separate [enterprise server](../../../enterprise/auth/enterprise-server/setup), you will need to create a second database named "dex" in your PostgreSQL Server instance for {{%productName%}}'s authentication service. Note that the database **must be named `dex`**. This second database is not needed when your cluster is managed by an enterprise server.
 
 {{% notice note %}}
 Read more about [dex on PostgreSQL in Dex's documentation](https://dexidp.io/docs/storage/#postgres).
 {{% /notice %}}
 
-Pachyderm will use the same user to connect to `pachyderm` as well as to `dex`. 
+{{%productName%}} will use the same user to connect to `pachyderm` as well as to `dex`. 
 
 ### Update your yaml values
 Once your databases have been created, add the following fields to your Helm values:
@@ -350,8 +350,8 @@ postgresql:
   enabled: false
 ```
 
-## 6. Deploy Pachyderm
-You have set up your infrastructure, created your data container and a Managed PostgreSQL instance, and granted your cluster access to both: you can now finalize your values.yaml and deploy Pachyderm.
+## 6. Deploy {{%productName%}}
+You have set up your infrastructure, created your data container and a Managed PostgreSQL instance, and granted your cluster access to both: you can now finalize your values.yaml and deploy {{%productName%}}.
 
 ### Update Your Values.yaml  
 
@@ -359,7 +359,7 @@ You have set up your infrastructure, created your data container and a Managed P
 If you have not created a Managed PostgreSQL Server instance, **replace the Postgresql section below** with `postgresql:enabled: true` in your values.yaml. This setup is **not recommended in production environments**.
 {{% /notice %}}
 
-If you have previously tried to run Pachyderm locally,
+If you have previously tried to run {{%productName%}} locally,
 make sure that you are using the right Kubernetes context first. 
 
 1. Verify cluster context:
@@ -420,9 +420,9 @@ make sure that you are using the right Kubernetes context first.
 
     Check the [list of all available helm values](../../../reference/helm-values/) at your disposal in our reference documentation or on [Github](https://github.com/pachyderm/pachyderm/blob/{{% majorMinorVersion %}}/etc/helm/pachyderm/values.yaml).
 
-### Deploy Pachyderm On The Kubernetes Cluster
+### Deploy {{%productName%}} On The Kubernetes Cluster
 
-- Now you can deploy a Pachyderm cluster by running this command:
+- Now you can deploy a {{%productName%}} cluster by running this command:
 
 
     ```s
@@ -442,7 +442,7 @@ make sure that you are using the right Kubernetes context first.
     ```
     Refer to our generic [Helm documentation](../helm-install/#install-pachyderms-helm-chart) for more information on how to select your chart version. 
 
-    Pachyderm pulls containers from DockerHub. It might take some time
+    {{%productName%}} pulls containers from DockerHub. It might take some time
     before the `pachd` pods start. You can check the status of the
     deployment by periodically running `kubectl get all`.
 
@@ -506,7 +506,7 @@ pachctl port-forward
 ## 8. Check That Your Cluster Is Up And Running
 
 {{% notice warning %}}
-If Authentication is activated (When you deploy with an enterprise key already set, for example), you need to run `pachct auth login`, then authenticate to Pachyderm with your User, before you use `pachctl`. 
+If Authentication is activated (When you deploy with an enterprise key already set, for example), you need to run `pachct auth login`, then authenticate to {{%productName%}} with your User, before you use `pachctl`. 
 {{% /notice %}}
 
 ```s

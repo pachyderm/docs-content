@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Cross & Union Inputs
-description: Learn about the concept of cross and union inputs in Pachyderm. 
+description: Learn about the concept of cross and union inputs in {{%productName%}}. 
 date: 
 # taxonomy #
 tags: ["concepts", "pachctl", "datums","pipelines", "data-operations"]
@@ -10,7 +10,7 @@ seriesPart:
 --- 
 
 
-Pachyderm enables you to combine multiple [PFS inputs](../#pfs-input-and-glob-pattern) by using the `union` and `cross` operators in the pipeline specification.
+{{%productName%}} enables you to combine multiple [PFS inputs](../#pfs-input-and-glob-pattern) by using the `union` and `cross` operators in the pipeline specification.
 
 You can think of union as a *disjoint union binary operator* and cross as a *cartesian product binary operator*. 
 
@@ -66,7 +66,7 @@ in the pipeline spec might have the following structure:
 }
 ```
 
-In this example, each Pachyderm repository has those three files in the root
+In this example, each {{%productName%}} repository has those three files in the root
 directory, so three datums from each input. Therefore, the union of `A` and `B`
 has six datums in total.
 Your pipeline processes the following datums without any specific order:
@@ -132,7 +132,7 @@ Then, in the pipeline, all datums appear in the same directory.
 
 ## Cross Input
 
-In a cross input, Pachyderm exposes every combination of datums,
+In a cross input, {{%productName%}} exposes every combination of datums,
 or a cross-product, from each of your input repositories to your code
 in a single run.
 
@@ -165,7 +165,7 @@ B
 └── 6.txt
 ```
 
-Because you have three datums in each repo, Pachyderm exposes
+Because you have three datums in each repo, {{%productName%}} exposes
 a total of nine combinations of datums to your code.
 
 {{% notice tip %}}

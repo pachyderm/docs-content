@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Language Clients
-description: Learn about Pachyderm's language clients. 
+description: Learn about {{%productName%}}'s language clients. 
 date: 
 # taxonomy #
 tags: ["sdks", "golang", "python","javascript","developers"]
@@ -11,15 +11,15 @@ directory: true
 ---
 
 `pachctl` is the command-line tool you use 
-to interact with a Pachyderm cluster in your terminal. 
+to interact with a {{%productName%}} cluster in your terminal. 
 However,  external applications might need to
-interact with Pachyderm directly through our APIs.
+interact with {{%productName%}} directly through our APIs.
 
-In this case, Pachyderm offers language specific SDKs in Go, Python, and JS.
+In this case, {{%productName%}} offers language specific SDKs in Go, Python, and JS.
 
 ## Go Client
 
-The Pachyderm team officially supports the Go client. It implements most of the functionalities provided with the `pachctl` CLI tool.
+The {{%productName%}} team officially supports the Go client. It implements most of the functionalities provided with the `pachctl` CLI tool.
 
 ### Generate And Serve The godocs Locally
 
@@ -33,7 +33,7 @@ To generate the docs:
 	export PATH=$(go env GOPATH)/bin:$PATH
 	```
 
-- In Pachyderm's root directory, start the godocs server: 
+- In {{%productName%}}'s root directory, start the godocs server: 
 
 	```s
 	go run golang.org/x/tools/cmd/godoc -http=:6060 -goroot="<your go root directory - for example: /Users/yourusername/pachyderm>"
@@ -56,8 +56,8 @@ git checkout v1.29.1
 
 ### Running Go Examples
 
-The Pachyderm godocs reference (see generation instructions above)
-provides examples of how you can use the Go client API. You need to have a running Pachyderm cluster
+The {{%productName%}} godocs reference (see generation instructions above)
+provides examples of how you can use the Go client API. You need to have a running {{%productName%}} cluster
 to run these examples.
 
 Make sure that you use your `pachd_address` in `client.NewFromAddress("<your-pachd-address>:30650")`.
@@ -69,11 +69,11 @@ information.
 
 ## Python Client
 
-The Python client `python-pachyderm` is officially supported by the Pachyderm team. 
+The Python client `python-pachyderm` is officially supported by the {{%productName%}} team. 
 It implements most of the functionalities provided with the `pachctl` CLI tool allowing you to easily integrate operations like `create repo`, `put a file,` or `create pipeline` into your python applications.
 
 {{% notice note %}}
-Use **python-pachyderm {{% pythonClientVersion %}}** with Pachyderm {{% majorMinorVersion %}}. 
+Use **python-pachyderm {{% pythonClientVersion %}}** with {{%productName%}} {{% majorMinorVersion %}}. 
 {{% /notice %}}
 
 You will find all you need to get you started or dive into the details of the available modules and functions in the [API documentation](https://python-pachyderm.readthedocs.io/en/stable/), namely:
@@ -85,7 +85,7 @@ You will find all you need to get you started or dive into the details of the av
 
 ## Node Client
 
-Our Javascript client `node-pachyderm` is a library officially supported by Pachyderm and **used in production by Pachyderm Console**.  
+Our Javascript client `node-pachyderm` is a library officially supported by {{%productName%}} and **used in production by {{%productName%}} Console**.  
 
 Today, we provide only read operations as shown in Console. Over time, we will add additional functionality to the SDK. However, there are no near-term plans to reach parity with python-pachyderm yet.
 
@@ -96,4 +96,4 @@ Check also our [opencv example](https://github.com/pachyderm/node-pachyderm/tree
 
 ## Other languages
 
-Pachyderm uses a simple [protocol buffer API](https://github.com/pachyderm/pachyderm/blob/master/src/pfs/pfs.proto). Protobufs support [other languages](https://developers.google.com/protocol-buffers/), any of which can be used to programmatically use Pachyderm. We have not built clients for them yet. It is an easy way to contribute to Pachyderm if you are looking to get involved.
+{{%productName%}} uses a simple [protocol buffer API](https://github.com/pachyderm/pachyderm/blob/master/src/pfs/pfs.proto). Protobufs support [other languages](https://developers.google.com/protocol-buffers/), any of which can be used to programmatically use {{%productName%}}. We have not built clients for them yet. It is an easy way to contribute to {{%productName%}} if you are looking to get involved.

@@ -11,6 +11,6 @@ hidden: true
 mermaid: true
 ---
 
-this is a test to see if this content is updated and the word Pachyderm is replaced with MLDM. 
+this is a test to see if this content is updated and the word {{%productName%}} is replaced with MLDM. 
 
-Pachyderm Pachyderm Pachyderm! pachyderm! Pachyderm! Pachyderm! here we go again. more testing.
+{{%productName%}} {{%productName%}} {{%productName%}}! pachyderm! {{%productName%}}! {{%productName%}}! here we go again. more testing.

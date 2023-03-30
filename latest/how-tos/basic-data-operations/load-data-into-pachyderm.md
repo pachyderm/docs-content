@@ -15,14 +15,14 @@ seriesPart:
 At any time, run `pachctl put file --help` for the complete list of flags available to you.
 {{% /notice %}}
 
-1. Load your data into Pachyderm by using `pachctl` requires that one or several input repositories have been created. 
+1. Load your data into {{%productName%}} by using `pachctl` requires that one or several input repositories have been created. 
 
     ```s
     pachctl create repo <repo name>
     ```
 
 1. Use the `pachctl put file` command to put your data into the created repository. Select from the following options:
-    - Atomic commit: no open commit exists in your input repo. Pachyderm automatically starts a new commit, adds your data, and finishes the commit.
+    - Atomic commit: no open commit exists in your input repo. {{%productName%}} automatically starts a new commit, adds your data, and finishes the commit.
     ```s
     pachctl put file <repo>@<branch>:</path/to/file1> -f <file1>
     ```
@@ -49,10 +49,10 @@ At any time, run `pachctl put file --help` for the complete list of flags availa
 ## Filepath Formats
 
 {{% notice tip %}}
-Pachyderm uses `*?[]{}!()@+^` as reserved characters for [glob patterns](../../../concepts/pipeline-concepts/datum/glob-pattern/#glob-pattern). Because of this, you cannot use these characters in your filepath.
+{{%productName%}} uses `*?[]{}!()@+^` as reserved characters for [glob patterns](../../../concepts/pipeline-concepts/datum/glob-pattern/#glob-pattern). Because of this, you cannot use these characters in your filepath.
 {{%/notice %}}
 
-In Pachyderm, you specify the path to file by using the `-f` option. A path
+In {{%productName%}}, you specify the path to file by using the `-f` option. A path
 to file can be a **local path or a URL to an external resource**. You can add
 multiple files or directories by using the `-i` option. To add contents
 of a directory, use the `-r` flag.
@@ -74,7 +74,7 @@ in your filepath:
 
 {{% notice note %}}
 If you are configuring a local cluster to access an external bucket,
-make sure that Pachyderm has been given the proper access.
+make sure that {{%productName%}} has been given the proper access.
 {{% /notice %}}
 
 * Add multiple files at once by using the `-i` option or multiple `-f` flags.
@@ -97,12 +97,12 @@ recursive flag, `-r`:
 
 Depending on your use case and the volume of your data, 
 you might decide to keep your dataset in its original source
-and process only a subset in Pachyderm.
+and process only a subset in {{%productName%}}.
 
 Add a metadata file containing a list of URL/path
 to your external data to your repo.
 
 Your pipeline code will retrieve the data following their path
 without the need to preload it all. 
-In this case, Pachyderm will not keep versions of the source file, but it will keep
+In this case, {{%productName%}} will not keep versions of the source file, but it will keep
 track and provenance of the resulting output commits. 

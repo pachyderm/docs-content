@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Identity Providers
-description: Learn how to enable users to log in to Pachyderm using their preferred identity provider. 
+description: Learn how to enable users to log in to {{%productName%}} using their preferred identity provider. 
 date: 
 # taxonomy #
 tags: ["identity-providers", "permissions", "management", "integrations"]
@@ -12,43 +12,43 @@ seriesPart:
 {{% notice note %}}
 - Return to our [Enterprise landing page](https://docs.pachyderm.com/latest/enterprise/) if you do not have an enterprise key.
 - Helm users, **you have the option to set your IdP values directly through Helm (Recommended)**. See below.
-- Alternatively, you can use `pachctl` to connect your IdP to Pachyderm. First, verify that the [Authentication](../../#authentication-and-authorization) is enabled by running `pachctl auth whoami`. The command should return `You are "pach:root" `(i.e., your are the **Root User** with `clusterAdmin` privileges).  Run `pachctl auth use-auth-token` and enter your rootToken to login as a Root User if you are not.
+- Alternatively, you can use `pachctl` to connect your IdP to {{%productName%}}. First, verify that the [Authentication](../../#authentication-and-authorization) is enabled by running `pachctl auth whoami`. The command should return `You are "pach:root" `(i.e., your are the **Root User** with `clusterAdmin` privileges).  Run `pachctl auth use-auth-token` and enter your rootToken to login as a Root User if you are not.
 {{% /notice %}}
     
 {{% notice attention%}}
-We are now shipping Pachyderm with an **optional embedded proxy** 
+We are now shipping {{%productName%}} with an **optional embedded proxy** 
 allowing your cluster to expose one single port externally. This deployment setup is optional.
 
-If you choose to deploy Pachyderm with a Proxy:
+If you choose to deploy {{%productName%}} with a Proxy:
 
 - Check out our new recommended architecture and [deployment instructions](../../../../deploy-manage/deploy/deploy-w-proxy/).
 - **Update your Callback URL**. Details below.
 {{% /notice %}}
     
 
-## Enable your users to authenticate to Pachyderm by logging into their favorite Identity Provider in 3 steps:
+## Enable your users to authenticate to {{%productName%}} by logging into their favorite Identity Provider in 3 steps:
 
-1. [Register the Pachyderm Application with your IdP](#1-register-a-pachyderm-application-with-your-idp).
-1. [Set up and create your Idp-Pachyderm connector](#2-set-up-and-create-an-idp-pachyderm-connector).
+1. [Register the {{%productName%}} Application with your IdP](#1-register-a-pachyderm-application-with-your-idp).
+1. [Set up and create your Idp-{{%productName%}} connector](#2-set-up-and-create-an-idp-pachyderm-connector).
 1. [Login](#3-login).
 
-Your users should now be able to [login to Pachyderm](../login).
+Your users should now be able to [login to {{%productName%}}](../login).
 
 We chose to illustrate those steps
 by using Auth0 as our Identity Provider.
 ([Auth0](https://auth0.com/) is an open source, online authentication platform that
 users can use to log in to various applications).
 
-However, Pachyderm's Identity Service is based on [Dex](https://dexidp.io/docs/)
+However, {{%productName%}}'s Identity Service is based on [Dex](https://dexidp.io/docs/)
 and can therefore provide connectors to a large [variety of IdPs](https://dexidp.io/docs/connectors/) (LDAP, GitHub, SAML, OIDC...). 
 Use the IdP of your choice.
 
 
 
-For now, let's configure Pachyderm so that our
-Pachyderm users can log in through Auth0.
+For now, let's configure {{%productName%}} so that our
+{{%productName%}} users can log in through Auth0.
 
-### 1: Register a Pachyderm Application with your IdP
+### 1: Register a {{%productName%}} Application with your IdP
 
 {{% notice tip %}}
 The one important and invariant element of this step, 
@@ -72,12 +72,12 @@ Then, complete the following steps:
 
 1. Log in to your Auth0 account.
 1. In **Applications**, click **Create Application**.
-1. Type the name of your application, such as **Pachyderm**.
+1. Type the name of your application, such as **{{%productName%}}**.
 1. In the application type, select **Regular Web Application**.
 1. Click **Create**.
 1. Go to the application settings.
 1. Scroll down to **Application URIs**.
-1. In the **Allowed Callback URLs**, add the Pachyderm callback link in the
+1. In the **Allowed Callback URLs**, add the {{%productName%}} callback link in the
    following format:
 
     ```s
@@ -85,8 +85,8 @@ Then, complete the following steps:
     http://<insert-external-ip-or-dns-name>:30658/callback
     ```
 
-    The IP address is the address of your Pachyderm host. For example,
-    if you are running Pachyderm in Minikube, you can find the IP
+    The IP address is the address of your {{%productName%}} host. For example,
+    if you are running {{%productName%}} in Minikube, you can find the IP
     address by running `minikube ip`. 
 
    {{% notice warning %}} 
@@ -102,14 +102,14 @@ Then, complete the following steps:
 
 {{% notice note %}}
 For this Auth0 example, we have created a user in Auth0 in **User Management/Users**.
-We will log in to Pachyderm as this user once our IdP connection is completed.
+We will log in to {{%productName%}} as this user once our IdP connection is completed.
 ![Auth0 Create User](/images/auth0-create-user.png)
 {{% /notice %}}
 
-### 2: Set up and create an Idp-Pachyderm connector
+### 2: Set up and create an Idp-{{%productName%}} connector
 
 #### Create A Connector Configuration File
-To configure your Idp-Pachyderm integration, **create a connector configuration file** corresponding to your IdP. 
+To configure your Idp-{{%productName%}} integration, **create a connector configuration file** corresponding to your IdP. 
 
 {{% notice info %}}
 For a list of available connectors and their configuration options, see [Dex documentation](https://dexidp.io/docs/connectors/).
@@ -118,7 +118,7 @@ For a list of available connectors and their configuration options, see [Dex doc
 In the case of our integration with Auth0, we will use an oidc connector with the following parameters:
 
 {{% notice note %}}
-Pachyderm supports the JSON and YAML formats for its connector files. 
+{{%productName%}} supports the JSON and YAML formats for its connector files. 
 {{% /notice %}}
 
 See our oidc connector example in JSON and YAML formats below.
@@ -175,15 +175,15 @@ You will need to replace the following placeholders with relevant values:
 - `issuer` — The domain of your application (here in Auth0). For example,
 `https://dev-k34x5yjn.us.auth0.com/`. **Note the trailing slash**.
 
-- `client_id` — The Pachyderm **Client ID** (here in Auth0). The client ID
+- `client_id` — The {{%productName%}} **Client ID** (here in Auth0). The client ID
 consists of alphanumeric characters and can be found on the application
 settings page.
 
-- `client_secret` - The Pachyderm client secret (here in Auth0) located
+- `client_secret` - The {{%productName%}} client secret (here in Auth0) located
 on the application settings page.
 
 - `redirect_uri` - This parameter should match what you have added
-to **Allowed Callback URLs** when registering Pachyderm on your IdP website.
+to **Allowed Callback URLs** when registering {{%productName%}} on your IdP website.
 
 {{% notice warning %}}
 **When using an [ingress](../../../../deploy-manage/deploy/ingress/#ingress)**:
@@ -209,17 +209,17 @@ Your `redirect_uri` must be set to `http(s)://<insert-external-ip-or-dns-name>/d
 {{%/notice %}}
 
 {{% notice note %}}
-Note that Pachyderm's YAML format is **a simplified version** of Dex's [sample config](https://dexidp.io/docs/connectors/oidc/).
+Note that {{%productName%}}'s YAML format is **a simplified version** of Dex's [sample config](https://dexidp.io/docs/connectors/oidc/).
 {{% /notice %}}
 
-#### Create Your Idp-Pachyderm Connection
+#### Create Your Idp-{{%productName%}} Connection
 
-Once your Pachyderm application is registered with your IdP (here Auth0), 
-and your IdP-Pachyderm connector config file created (here with the Auth0 parameters), **connect your IdP to Pachyderm** in your Helm values (recommended) or by using `pachctl`:
+Once your {{%productName%}} application is registered with your IdP (here Auth0), 
+and your IdP-{{%productName%}} connector config file created (here with the Auth0 parameters), **connect your IdP to {{%productName%}}** in your Helm values (recommended) or by using `pachctl`:
 
 - Reference your connector in Helm
 
-    Provide your connector info in the [oidc.upstreamIDPs](https://github.com/pachyderm/pachyderm/blob/{{% majorMinorVersion %}}/etc/helm/pachyderm/values.yaml#L774) field of your helm values. Pachyderm will store this value in the platform secret `pachyderm-identity` in the key upstream-idps.
+    Provide your connector info in the [oidc.upstreamIDPs](https://github.com/pachyderm/pachyderm/blob/{{% majorMinorVersion %}}/etc/helm/pachyderm/values.yaml#L774) field of your helm values. {{%productName%}} will store this value in the platform secret `pachyderm-identity` in the key upstream-idps.
 
     Alternatively, you can [create a secret](../../../../how-tos/advanced-data-operations/secrets/#generate-your-secret-configuration-file) containing your dex connectors (Key: upstream-idps) and reference its name in the field [oidc.upstreamIDPsSecretName](https://github.com/pachyderm/pachyderm/blob/{{% majorMinorVersion %}}/etc/helm/pachyderm/values.yaml#L805).
 
@@ -272,20 +272,20 @@ Run `pachctl idp --help` for a full list of commands. In particular, those comma
 {{%/notice%}}
 
 ### 3- Login
-The users registered with your IdP are now ready to [Log in to Pachyderm](../login)
+The users registered with your IdP are now ready to [Log in to {{%productName%}}](../login)
 
 ## User Revocation
 
-Use the `pachctl auth revoke` command to revoke access for an existing Pachyderm user (for example, a robot user accessing your cluster, a team member leaving, etc... ). In particular, you can:
+Use the `pachctl auth revoke` command to revoke access for an existing {{%productName%}} user (for example, a robot user accessing your cluster, a team member leaving, etc... ). In particular, you can:
 
 - revoke a given token: `pachctl auth revoke --token=<pach token>`.
 - revoke all tokens for a given user `pachctl auth revoke --user=idp:usernamen@pachyderm.io` to log that user out forcibly.
 
 {{% notice note %}}
-Note that a user whose Pachyderm token has been revoked can technically log in to Pachyderm again unless **you have removed that user from the user registry of your IdP**.
+Note that a user whose {{%productName%}} token has been revoked can technically log in to {{%productName%}} again unless **you have removed that user from the user registry of your IdP**.
 {{% /notice %}}
 
-For the curious mind: Take a look at the sequence diagram below illustrating the OIDC login flow. It highlights the exchange of the original OIDC ID Token for a Pachyderm Token.
+For the curious mind: Take a look at the sequence diagram below illustrating the OIDC login flow. It highlights the exchange of the original OIDC ID Token for a {{%productName%}} Token.
 
 ![OIDC Login Flow](/images/pachyderm-oidc-dex-flow.png)
 

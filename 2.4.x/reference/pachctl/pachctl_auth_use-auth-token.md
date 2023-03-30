@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  pachctl auth use-auth-token
-description: "Read a Pachyderm auth token from stdin, and write it to the current user's Pachyderm config file"
+description: "Read a {{%productName%}} auth token from stdin, and write it to the current user's {{%productName%}} config file"
 date:  2022-10-14T09:34:42-04:00
 tags:
   - auth
@@ -10,7 +10,7 @@ cliGlossary:  a
 
 ### Synopsis
 
-Read a Pachyderm auth token from stdin, and write it to the current user's Pachyderm config file
+Read a {{%productName%}} auth token from stdin, and write it to the current user's {{%productName%}} config file
 
 ```
 pachctl auth use-auth-token [flags]

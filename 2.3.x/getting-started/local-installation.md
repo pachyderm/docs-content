@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Local Installation  
-description: Learn how to install Pachyderm locally using your favorite container solution.
+description: Learn how to install {{%productName%}} locally using your favorite container solution.
 date: 
 # taxonomy #
 tags:  ["deployment"]
@@ -13,12 +13,12 @@ seriesPart: 1
 Looking to upgrade to **pachd** 2.3.0+ from an older version? Remember to also upgrade **pachctl** for the best experience.
 {{% /notice %}}
   
-This guide covers how you can quickly get started using Pachyderm locally on macOS®, Linux®, or Microsoft® Windows®. To install Pachyderm on Windows, first look at [Deploy Pachyderm on Windows](../wsl-deploy).
+This guide covers how you can quickly get started using {{%productName%}} locally on macOS®, Linux®, or Microsoft® Windows®. To install {{%productName%}} on Windows, first look at [Deploy {{%productName%}} on Windows](../wsl-deploy).
 
-Pachyderm is a data-centric pipeline and data versioning application written in go that runs on top of a Kubernetes cluster. 
-A common way to interact with Pachyderm is by using Pachyderm command-line tool `pachctl`, from a terminal window. To check the state of your deployment, you will also need to install `kubectl`, Kubernetes command-line tool. 
+{{%productName%}} is a data-centric pipeline and data versioning application written in go that runs on top of a Kubernetes cluster. 
+A common way to interact with {{%productName%}} is by using {{%productName%}} command-line tool `pachctl`, from a terminal window. To check the state of your deployment, you will also need to install `kubectl`, Kubernetes command-line tool. 
 
-Additionally, we will show you how to deploy and access Pachyderm UIs **[JupyterLab Mount Extension](../../how-tos/jupyterlab-extension/)** and **[Console](../../deploy-manage/deploy/console)** on your local cluster. 
+Additionally, we will show you how to deploy and access {{%productName%}} UIs **[JupyterLab Mount Extension](../../how-tos/jupyterlab-extension/)** and **[Console](../../deploy-manage/deploy/console)** on your local cluster. 
 
 Note that each web UI addresses different use cases:
 
@@ -27,35 +27,35 @@ Note that each web UI addresses different use cases:
   
 {{% notice warning %}}
 - A local installation is **not designed to be a production  
-environment**. It is meant to help you learn and experiment quickly with Pachyderm.   
+environment**. It is meant to help you learn and experiment quickly with {{%productName%}}.   
 - A local installation is designed for a **single-node cluster**.  
 This cluster uses local storage on disk and does not create  
 Persistent Volumes (PVs). If you want to deploy a production multi-node  
 cluster, follow the instructions for your cloud provider or on-prem  
-installation as described in [Deploy Pachyderm](../../deploy-manage/deploy/).  
+installation as described in [Deploy {{%productName%}}](../../deploy-manage/deploy/).  
 New Kubernetes nodes cannot be added to this single-node cluster.   
 {{% /notice %}}  
 
-Pachyderm uses `Helm` for all deployments.  
+{{%productName%}} uses `Helm` for all deployments.  
 
 {{% notice warning %}}
-We are now shipping Pachyderm with an **optional embedded proxy** 
+We are now shipping {{%productName%}} with an **optional embedded proxy** 
 allowing your cluster to expose one single port externally. This deployment setup is optional.
 
-If you choose to deploy Pachyderm with a Proxy, check out our new recommended architecture and [deployment instructions](../../deploy-manage/deploy/deploy-w-proxy).
+If you choose to deploy {{%productName%}} with a Proxy, check out our new recommended architecture and [deployment instructions](../../deploy-manage/deploy/deploy-w-proxy).
 {{% /notice%}}
 
 ## Prerequisites  
 
-For a successful local deployment of Pachyderm, you will need:  
+For a successful local deployment of {{%productName%}}, you will need:  
   
 - A [Kubernetes cluster](#setup-a-local-kubernetes-cluster) running on your local environment (pick the virtual machine of your choice):   
       - [Docker Desktop](#using-kubernetes-on-docker-desktop),  
       - [Minikube](#using-minikube)  
       - [Kind](#using-kind)  
       - Oracle® VirtualBox™ 
-- [Helm](#install-helm) to deploy Pachyderm on your Kubernetes cluster.  
-- [Pachyderm Command Line Interface (`pachctl`)](#install-pachctl) to interact with your Pachyderm cluster.
+- [Helm](#install-helm) to deploy {{%productName%}} on your Kubernetes cluster.  
+- [{{%productName%}} Command Line Interface (`pachctl`)](#install-pachctl) to interact with your {{%productName%}} cluster.
 - [Kubernetes Command Line Interface (`kubectl`)](https://kubernetes.io/docs/tasks/tools/) to interact with your underlying Kubernetes cluster.
 
 ### Setup A Local Kubernetes Cluster
@@ -64,9 +64,9 @@ Pick the virtual machine of your choice.
 
 #### Using Minikube  
   
-On your local machine, you can run Pachyderm in a minikube virtual machine.  
+On your local machine, you can run {{%productName%}} in a minikube virtual machine.  
 Minikube is a tool that creates a single-node Kubernetes cluster. This limited  
-installation is sufficient to try basic Pachyderm functionality and complete  
+installation is sufficient to try basic {{%productName%}} functionality and complete  
 the Beginner Tutorial.  
   
 To configure Minikube, follow these steps:  
@@ -83,7 +83,7 @@ the [Kubernetes documentation](https://kubernetes.io/docs/setup/).
       minikube start --driver=kvm2
       ```
 {{% notice note %}}
-Any time you want to stop and restart Pachyderm, run `minikube delete`  and `minikube start`. Minikube is not meant to be a production environment and does not handle being restarted well without a full wipe.  
+Any time you want to stop and restart {{%productName%}}, run `minikube delete`  and `minikube start`. Minikube is not meant to be a production environment and does not handle being restarted well without a full wipe.  
 {{% /notice %}}
   
 #### Using Kubernetes on Docker Desktop   
@@ -119,11 +119,11 @@ You can use Kubernetes on Docker Desktop instead of Minikube on macOS or Linux b
 ### Install `pachctl`  
 
 {{% notice note %}}
-`pachctl` is a command-line tool that you can use to interact with a Pachyderm cluster in your terminal.  
+`pachctl` is a command-line tool that you can use to interact with a {{%productName%}} cluster in your terminal.  
 {{% /notice %}}
 
 {{% notice warning %}}
-Pachyderm now offers **universal Multi-Arch docker images that can serve both ARM and AMD users**.
+{{%productName%}} now offers **universal Multi-Arch docker images that can serve both ARM and AMD users**.
 
 - Brew users: The download of the package matching your architecture is automatic—nothing specific to do.
 - Debian-based and other Linux flavors users not relying on [Homebrew](https://docs.brew.sh/Homebrew-on-Linux):
@@ -180,14 +180,14 @@ Run `uname -m` to identify your architecture, then choose the command in the `AM
       ```  
   
       If you run `pachctl version` without the flag `--client-only`, the command times  
-      out. This is expected behavior because Pachyderm has not been deployed yet (`pachd` is not yet running).  
+      out. This is expected behavior because {{%productName%}} has not been deployed yet (`pachd` is not yet running).  
 
 {{% notice tip %}}
-If you are new to Pachyderm, try [Pachyderm Shell](../../deploy-manage/manage/pachctl-shell/). This add-on tool suggests `pachctl` commands as you type. It will help you learn Pachyderm's main commands faster.  
+If you are new to {{%productName%}}, try [{{%productName%}} Shell](../../deploy-manage/manage/pachctl-shell/). This add-on tool suggests `pachctl` commands as you type. It will help you learn {{%productName%}}'s main commands faster.  
 {{% /notice %}}
   
 {{% notice Note  %}}
-A look at [Pachyderm high-level architecture diagram](../../deploy-manage/#overview) will help you build a mental image of Pachyderm various architectural components.  
+A look at [{{%productName%}} high-level architecture diagram](../../deploy-manage/#overview) will help you build a mental image of {{%productName%}} various architectural components.  
 
 For information, you can also check what a production setup looks like in this [infrastructure diagram](../../deploy-manage/deploy/ingress/#deliver-external-traffic-to-pachyderm).  
 {{% /notice %}}
@@ -196,11 +196,11 @@ For information, you can also check what a production setup looks like in this [
   
 Follow Helm's [installation guide](https://helm.sh/docs/intro/install/).  
   
-## Deploy Pachyderm
+## Deploy {{%productName%}}
   
-When done with the [Prerequisites](#prerequisites), deploy Pachyderm on your local cluster by following these steps. Your default installation comes with Console (Pachyderm's Web UI).
+When done with the [Prerequisites](#prerequisites), deploy {{%productName%}} on your local cluster by following these steps. Your default installation comes with Console ({{%productName%}}'s Web UI).
 
-Additionally, for JupyterLab users,  you can [**install Pachyderm JupyterLab Mount Extension**](#notebooks-users-install-pachyderm-jupyterlab-mount-extension) on your local Pachyderm cluster to experience Pachyderm from your familiar notebooks. 
+Additionally, for JupyterLab users,  you can [**install {{%productName%}} JupyterLab Mount Extension**](#notebooks-users-install-pachyderm-jupyterlab-mount-extension) on your local {{%productName%}} cluster to experience {{%productName%}} from your familiar notebooks. 
 
 Note that you can run both Console and JupyterLab on your local installation.
   
@@ -211,15 +211,15 @@ Note that you can run both Console and JupyterLab on your local installation.
     helm repo update 
     ```  
 
-* Install Pachyderm:  
+* Install {{%productName%}}:  
 
 {{% notice warning %}} 
 To request a FREE trial enterprise license key, [click here](../../enterprise). 
 {{% /notice %}}
 
-### Pachyderm Community Edition (Includes Console)
+### {{%productName%}} Community Edition (Includes Console)
 
-This command will install Pachyderm's latest available GA version with Console Community Edition.
+This command will install {{%productName%}}'s latest available GA version with Console Community Edition.
 
  ```s  
  helm install --wait --timeout 10m pachd pach/pachyderm --set deployTarget=LOCAL  
@@ -231,7 +231,7 @@ This command will install Pachyderm's latest available GA version with Console C
 This command will unlock your enterprise features and install Console Enterprise. Note that Console Enterprise requires authentication. By default, **we create a default mock user (username:`admin`, password: `password`)** to [authenticate to Console](../../deploy-manage/deploy/console/#connect-to-console) without having to connect your Identity Provider. 
 
  - Create a `license.txt` file in which you paste your [Enterprise Key](../../enterprise).
- - Then, run the following helm command to **install Pachyderm's latest Enterprise Edition**: 
+ - Then, run the following helm command to **install {{%productName%}}'s latest Enterprise Edition**: 
 
   ```s  
   helm install --wait --timeout 10m pachd pach/pachyderm --set deployTarget=LOCAL  --set pachd.enterpriseLicenseKey=$(cat license.txt) --set console.enabled=true  
@@ -242,7 +242,7 @@ This installation can take several minutes. Run a quick `helm list --all` in a s
 {{% /notice %}}
 
 {{% notice tip %}} 
-To uninstall Pachyderm fully.
+To uninstall {{%productName%}} fully.
 
 Running `helm uninstall pachd` leaves persistent volume claims behind. To wipe your instance clean, run:
 
@@ -253,14 +253,14 @@ kubectl delete pvc -l suite=pachyderm
 {{% /notice %}}
 
 {{% notice info %}}
-More [details on Pachyderm's Helm installation](../../deploy-manage/deploy/helm-install/).
+More [details on {{%productName%}}'s Helm installation](../../deploy-manage/deploy/helm-install/).
 {{%/notice %}}
 
 ## Check Your Install
 
-Check the status of the Pachyderm pods by periodically running `kubectl get pods`. When Pachyderm is ready for use, all Pachyderm pods must be in the **Running** status.
+Check the status of the {{%productName%}} pods by periodically running `kubectl get pods`. When {{%productName%}} is ready for use, all {{%productName%}} pods must be in the **Running** status.
 
-Because Pachyderm needs to pull the Pachyderm Docker images from DockerHub, it might take a few minutes for the Pachyderm pods status to change to `Running`.
+Because {{%productName%}} needs to pull the {{%productName%}} Docker images from DockerHub, it might take a few minutes for the {{%productName%}} pods status to change to `Running`.
 
 ```s
 kubectl get pods
@@ -286,7 +286,7 @@ Kubernetes restarted those pods. Re-run `kubectl get pods`
 
 Assuming your `pachd` is running as shown above, the easiest way to connect `pachctl` to your local cluster is to use the `port-forward` command.
 
-- To connect to your new Pachyderm instance, run:
+- To connect to your new {{%productName%}} instance, run:
   ```s
   pachctl config import-kube local --overwrite
   pachctl config set active-context local
@@ -312,25 +312,25 @@ pachd               {{% latestPatchNumber %}}
 ```  
 You are all set!  
 
-### If You Have Deployed Pachyderm Community Edition
+### If You Have Deployed {{%productName%}} Community Edition
 
 You are ready!
-To connect to your Console (Pachyderm UI), point your browser to **`localhost:4000`**.
-### If You Have Deployed Pachyderm Enterprise
+To connect to your Console ({{%productName%}} UI), point your browser to **`localhost:4000`**.
+### If You Have Deployed {{%productName%}} Enterprise
 
-- To connect to your Console (Pachyderm UI), point your browser to **`localhost:4000`** 
+- To connect to your Console ({{%productName%}} UI), point your browser to **`localhost:4000`** 
 and authenticate using the mock User (username: `admin`, password: `password`).
 
-- Alternatively, you can connect to your Console (Pachyderm UI) directly by
+- Alternatively, you can connect to your Console ({{%productName%}} UI) directly by
 pointing your browser to port `4000` on your minikube IP (run `minikube ip` to retrieve minikube's external IP) or docker desktop IP **`http://<dockerDesktopIdaddress-or-minikube>:4000/`** 
 then authenticate using the mock User (username: `admin`, password: `password`).
 
 - To use `pachctl`, you need to run `pachctl auth login` then
-authenticate again (to Pachyderm this time) with the mock User (username: `admin`, password: `password`).
+authenticate again (to {{%productName%}} this time) with the mock User (username: `admin`, password: `password`).
 
 ## Next Steps  
   
-Complete the [Beginner Tutorial](../beginner-tutorial) to learn the basics of Pachyderm, such as adding data to a repository and building analysis pipelines.  
+Complete the [Beginner Tutorial](../beginner-tutorial) to learn the basics of {{%productName%}}, such as adding data to a repository and building analysis pipelines.  
   
 {{% notice note %}}
 See Also: [General Troubleshooting](../../troubleshooting/general-troubleshooting) 

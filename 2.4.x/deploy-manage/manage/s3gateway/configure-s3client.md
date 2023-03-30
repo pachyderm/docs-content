@@ -124,5 +124,5 @@ Depending on your use case, it might make sense to pass the credentials of a rob
 
 ## Next
 
-Check all the [operations supported by Pachyderm's S3 gateway](../supported-operations)
+Check all the [operations supported by {{%productName%}}'s S3 gateway](../supported-operations)
 

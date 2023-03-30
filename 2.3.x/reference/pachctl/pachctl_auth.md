@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  pachctl auth
-description: "Auth commands manage access to data in a Pachyderm cluster"
+description: "Auth commands manage access to data in a {{%productName%}} cluster"
 date:  2022-10-14T09:34:42-04:00
 tags:
   - auth-activate
@@ -25,7 +25,7 @@ cliGlossary:  a
 
 ### Synopsis
 
-Auth commands manage access to data in a Pachyderm cluster
+Auth commands manage access to data in a {{%productName%}} cluster
 
 ### Options
 

@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Authorization
-description: Learn how to set up and manage Role-Based Access Control (RBAC) for Pachyderm.
+description: Learn how to set up and manage Role-Based Access Control (RBAC) for {{%productName%}}.
 date: 
 # taxonomy #
 tags: 
@@ -12,42 +12,42 @@ seriesPart:
 
 {{% notice note %}}
 Go back to our [Enterprise landing page](https://docs.pachyderm.com/latest/enterprise/) if you do not have a key.
-Before setting up a Role-Based access control to Pachyderm resources, verify that:
+Before setting up a Role-Based access control to {{%productName%}} resources, verify that:
 
 - the User Access Management feature is on by running `pachctl auth whoami`. The command should return `You are "pach:root"` (i.e., your are the **Root User** with `clusterAdmin` privileges). Run `pachctl auth use-auth-token` to login as a Root User.
 - your [IdP connector is set](../authentication/idp-dex).
 {{% /notice%}}
 
-Pachyderm authorization feature follows a **Role Based Access Control** model (RBAC).
-The access control is based on **Roles**  assigned to **Users**, granting them a set of permissions on Pachyderm's **Resources** (**Role Bindings**). 
+{{%productName%}} authorization feature follows a **Role Based Access Control** model (RBAC).
+The access control is based on **Roles**  assigned to **Users**, granting them a set of permissions on {{%productName%}}'s **Resources** (**Role Bindings**). 
 
-In this page we will introduce Pachyderm's various Type of Users, resources, and Roles.
+In this page we will introduce {{%productName%}}'s various Type of Users, resources, and Roles.
 
 This preamble will set the contextual knowledge to better understand how to:
 
-- Grant Users permissions on Pachyderm resources.
+- Grant Users permissions on {{%productName%}} resources.
 - Revoke Users.
 
 in the next [**Role Binding**](./role-binding) page.
 
 
 ## Users Types
-Pachyderm defines 5 type of User: 
+{{%productName%}} defines 5 type of User: 
 
 - A **Root User**: This special user is created when Auth is activated. The root user **always has [clusterAdmin](#roles) permissions on the cluster**.
 
-- An **IdP User**: Any user or group of users authenticated by your Identity Provider to access Pachyderm.
+- An **IdP User**: Any user or group of users authenticated by your Identity Provider to access {{%productName%}}.
 
-- A **Robot User**: A Service account used for third party applications/systems integrating with Pachyderm APIs/Clients.
+- A **Robot User**: A Service account used for third party applications/systems integrating with {{%productName%}} APIs/Clients.
 
-- A **Pipeline User**: An internal Service Account used for Pipelines when interacting with Pachyderm resources.
+- A **Pipeline User**: An internal Service Account used for Pipelines when interacting with {{%productName%}} resources.
 
 - A **All Cluster Users** (`allClusterUsers`) : A general subject that represents **everyone who has logged in to a cluster**.
 ## Resources
-Pachyderm has 2 types of resources: **Repositories**: `repo`, **Clusters**: `cluster`. 
+{{%productName%}} has 2 types of resources: **Repositories**: `repo`, **Clusters**: `cluster`. 
 
 ## Roles
-Pachyderm has a number of predefined roles granting permissions to its Resources.
+{{%productName%}} has a number of predefined roles granting permissions to its Resources.
 Those Roles are listed here in no specific hierarchical order. 
 Some might inherit a set of permissions from another.
 

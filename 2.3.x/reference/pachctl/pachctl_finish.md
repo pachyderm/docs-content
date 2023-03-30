@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  pachctl finish
-description: "Finish a Pachyderm resource."
+description: "Finish a {{%productName%}} resource."
 date:  2022-10-14T09:34:42-04:00
 tags:
   - finish-commit
@@ -11,7 +11,7 @@ cliGlossary:  f
 
 ### Synopsis
 
-Finish a Pachyderm resource.
+Finish a {{%productName%}} resource.
 
 ### Options
 

@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Infrastructure Recommendations
-description: Learn about some of our infrastructure recommendations for running Pachyderm.
+description: Learn about some of our infrastructure recommendations for running {{%productName%}}.
 date: 
 # taxonomy #
 tags: 
@@ -9,25 +9,25 @@ series:
 seriesPart:
 --- 
 
-In the simplest case, such as running a Pachyderm cluster locally, implicit and
-explicit port-forwarding enables you to communicate with `pachd`, the Pachyderm
-API pod, and `console`, the Pachyderm UI. Port-forwarding can be used in
+In the simplest case, such as running a {{%productName%}} cluster locally, implicit and
+explicit port-forwarding enables you to communicate with `pachd`, the {{%productName%}}
+API pod, and `console`, the {{%productName%}} UI. Port-forwarding can be used in
 cloud environments as well, but a production environment might require you to
 define **additional inbound connection rules**.
 
-Before we dive into the delivery of external traffic to Pachyderm, 
+Before we dive into the delivery of external traffic to {{%productName%}}, 
 read the following recommendations to set up your infrastructure in production.
 
 {{% notice note %}}
 Refer to our generic ["Helm Install"](../helm-install/) page for more information on how to install and get started with `Helm`.
 {{% /notice %}}
 
-## Pachyderm Infrastructure Recommendations
+## {{%productName%}} Infrastructure Recommendations
 
 {{% notice warning %}}
-We are now shipping Pachyderm with an **embedded proxy** allowing your cluster to expose one single port externally. This deployment setup is optional.
+We are now shipping {{%productName%}} with an **embedded proxy** allowing your cluster to expose one single port externally. This deployment setup is optional.
 
-If you choose to deploy Pachyderm with a Proxy, our new recommended architecture and [deployment instructions](../deploy-w-proxy) overwrite the following instructions.
+If you choose to deploy {{%productName%}} with a Proxy, our new recommended architecture and [deployment instructions](../deploy-w-proxy) overwrite the following instructions.
 {{%/notice %}}
 For production deployments,
 we recommend that you:
@@ -39,11 +39,11 @@ we recommend that you:
     You can deploy `pachd` and `console` with different certificates
     if required. Self-signed certificates might require additional configuration.
     For instructions on deployment with TLS, 
-    see [Deploy Pachyderm with TLS](../deploy-w-tls/).
+    see [Deploy {{%productName%}} with TLS](../deploy-w-tls/).
    
-* **Use Pachyderm authentication/authorization**
+* **Use {{%productName%}} authentication/authorization**
 
-    Pachyderm authentication is an additional
+    {{%productName%}} authentication is an additional
     security layer to protect your data from unauthorized access.
     See the [authentication and authorization section](../../../enterprise/auth/) to activate access control and set up an IdP (Identity Provider).
 
@@ -58,8 +58,8 @@ Provision a TCP load balancer with port `30650` (gRPC port) and `30600` (s3gatew
 
 Once you have your networking infrastructure setup, check the [deployment page of your cloud provider](../../). The following section comes back to the setup of an Ingress and a TCP Load Balancer in details.
 
-## Deliver External Traffic To Pachyderm
-Pachyderm provides multiple ways to deliver external traffic to services. 
+## Deliver External Traffic To {{%productName%}}
+{{%productName%}} provides multiple ways to deliver external traffic to services. 
 
 However, we recommend to set up the following resources in a production environment:
 
@@ -70,7 +70,7 @@ The diagram below gives a quick overview of those recommendations on AWS EKS:
 ![Infrastruture Recommendation](/images/infra_recommendations.png)
 
 ### `NodePort`
-By default, the local deployment of Pachyderm deploys the `pachd` service as  `type:NodePort`. However, `NodePort` is a limited solution that is not recommended in production deployments. Therefore, Pachyderm services are otherwise exposed on the cluster internal IP (ClusterIP) instead of each node’s IP (Nodeport). 
+By default, the local deployment of {{%productName%}} deploys the `pachd` service as  `type:NodePort`. However, `NodePort` is a limited solution that is not recommended in production deployments. Therefore, {{%productName%}} services are otherwise exposed on the cluster internal IP (ClusterIP) instead of each node’s IP (Nodeport). 
 
 ### `Ingress` 
 An Ingress exposes HTTP and HTTPS routes from outside the cluster to services in the cluster such as Console or Authentication services. 
@@ -84,7 +84,7 @@ To configure the Ingress, enable the `ingress` field in your values.yaml, and ch
 If your `ingress` is enabled: 
 
 - Cloud providers may provision a Load balancer automatically. For example, AWS will provision an Application Load Balancer (ALB) in front of Console.
-- The deployment of Pachyderm (Check our [Helm documentation](../helm-install/)) automatically creates the following set of rules:
+- The deployment of {{%productName%}} (Check our [Helm documentation](../helm-install/)) automatically creates the following set of rules:
 ```yaml
     - host: <your_domain_name>
     http:
@@ -193,7 +193,7 @@ pachd:
 See our [reference values.yaml](https://github.com/pachyderm/pachyderm/blob/42462ba37f23452a5ea764543221bf8946cebf4f/etc/helm/pachyderm/values.yaml#L197) for all available fields.
 
 {{% notice note %}}
-When externalService is enabled, Pachyderm creates a corresponding `pachd-lb` service of `type:LoadBalancer` allowing your cloud platform (AWS, GKE...) to provision a TCP Load Balancer automatically.
+When externalService is enabled, {{%productName%}} creates a corresponding `pachd-lb` service of `type:LoadBalancer` allowing your cloud platform (AWS, GKE...) to provision a TCP Load Balancer automatically.
 {{% /notice %}}
 
 Add the appropriate annotations to attach any Load Balancer configuration information to the metadata of your service.

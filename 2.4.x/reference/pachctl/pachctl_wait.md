@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  pachctl wait
-description: "Wait for the side-effects of a Pachyderm resource to propagate."
+description: "Wait for the side-effects of a {{%productName%}} resource to propagate."
 date:  2022-10-14T09:34:42-04:00
 tags:
   - wait-commit
@@ -11,7 +11,7 @@ cliGlossary:  w
 
 ### Synopsis
 
-Wait for the side-effects of a Pachyderm resource to propagate.
+Wait for the side-effects of a {{%productName%}} resource to propagate.
 
 ### Options
 

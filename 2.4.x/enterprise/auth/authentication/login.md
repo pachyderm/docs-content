@@ -10,7 +10,7 @@ seriesPart:
 ---
 
 {{% notice note %}}
-In order for the users registered with your IdP to log in to Pachyderm,
+In order for the users registered with your IdP to log in to {{%productName%}},
 your [IdP connector must be set](../idp-dex).
 {{% /notice %}}
 
@@ -49,7 +49,7 @@ by login in as the [user created in Auth0](../idp-dex/#1-register-a-pachyderm-ap
 
 Your Authentication is all set. 
 
-Next - (Optional)[Configure the User Access to Pachyderm resources](../../authorization/role-binding).
+Next - (Optional)[Configure the User Access to {{%productName%}} resources](../../authorization/role-binding).
 
 
 

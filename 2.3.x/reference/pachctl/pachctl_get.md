@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  pachctl get
-description: "Get the raw data represented by a Pachyderm resource."
+description: "Get the raw data represented by a {{%productName%}} resource."
 date:  2022-10-14T09:34:42-04:00
 tags:
   - get-file
@@ -10,7 +10,7 @@ cliGlossary:  g
 
 ### Synopsis
 
-Get the raw data represented by a Pachyderm resource.
+Get the raw data represented by a {{%productName%}} resource.
 
 ### Options
 

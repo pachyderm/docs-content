@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Docker Installation Guide
-description: Learn how to install and use the JupyterLab Mount Extension with Pachyderm using a Docker image.
+description: Learn how to install and use the JupyterLab Mount Extension with {{%productName%}} using a Docker image.
 date: 
 # taxonomy #
 tags: ["integrations", "jupyterlab", "notebooks", "docker"]
@@ -14,7 +14,7 @@ beta: true
 
 ## Install to Existing Docker Image 
 
-You can choose between Pachyderm's pre-built image (a custom version of [`jupyter/scipy-notebook`](https://jupyter-docker-stacks.readthedocs.io/en/latest/using/selecting.html#jupyter-scipy-notebook)) or add the extension to your own image. Pachyderm's image includes:
+You can choose between {{%productName%}}'s pre-built image (a custom version of [`jupyter/scipy-notebook`](https://jupyter-docker-stacks.readthedocs.io/en/latest/using/selecting.html#jupyter-scipy-notebook)) or add the extension to your own image. {{%productName%}}'s image includes:
 
 - The extension jupyterlab-pachyderm
 - [FUSE](https://osxfuse.github.io/)
@@ -59,7 +59,7 @@ You can choose between Pachyderm's pre-built image (a custom version of [`jupyte
 
 Replace the following `${PACHCTL_VERSION}` with the version of `pachctl` that matches your cluster's, and update `<version>` with the release number of the extension.
 
-You can find the latest available version of our Pachyderm Mount Extension in [PyPi](https://pypi.org/project/jupyterlab-pachyderm/). 
+You can find the latest available version of our {{%productName%}} Mount Extension in [PyPi](https://pypi.org/project/jupyterlab-pachyderm/). 
 
 ```s
 # This runs the following section as root; if adding to an existing Dockerfile, set the user back to whatever you need. 

@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Monitor with Prometheus
-description: Learn how to monitor a Pachyderm cluster using Prometheus. 
+description: Learn how to monitor a {{%productName%}} cluster using Prometheus. 
 date: 
 # taxonomy #
 tags: 
@@ -10,12 +10,12 @@ seriesPart:
 --- 
 
 {{% notice note %}}
-To monitor a Pachyderm cluster
-with Prometheus, a ***Pachyderm Enterprise License*** is required. 
+To monitor a {{%productName%}} cluster
+with Prometheus, a ***{{%productName%}} Enterprise License*** is required. 
 {{% /notice %}}
 
 
-Pachyderm's deployment manifest exposes Prometheus metrics, 
+{{%productName%}}'s deployment manifest exposes Prometheus metrics, 
 allowing an easy set up of the monitoring of your cluster.
 Only available for self-managed deployments today. 
 
@@ -40,7 +40,7 @@ Prometheus' **Kubernetes cluster monitoring** using the Prometheus Operator:
     helm install <a-release-name> prometheus-community/kube-prometheus-stack
     ```
 
-1. Create a ServiceMonitor for Pachyderm in Kubernetes:
+1. Create a ServiceMonitor for {{%productName%}} in Kubernetes:
     - Create a myprometheusservice.yaml
         ```s
         apiVersion: monitoring.coreos.com/v1
@@ -68,11 +68,11 @@ Prometheus' **Kubernetes cluster monitoring** using the Prometheus Operator:
         and creates a prometheus target so prometheus will scrape the metrics endpoint `prom-metrics`.
 
         In this case, it looks for anything with the label `suite: pachyderm` -
-        which is by default associated with all Pachyderm resources.
+        which is by default associated with all {{%productName%}} resources.
 
     {{% notice note %}}
     Our Service Monitor `pachyderm-scraper` above maps the endpoint port `prom-metrics`
-    to a corresponding `prom-metrics` port described in Pachyderm's deployment manifest.
+    to a corresponding `prom-metrics` port described in {{%productName%}}'s deployment manifest.
     Let's take a quick look at this file:
 
     ```s
@@ -108,7 +108,7 @@ Run a pipeline of your choice. The `pachyderm-scraper` should be visible:
 In the ClassicUI tab, you should be able to see the new pachyderm metrics.
 
 ## References
-<! --* Find the full list of Pachyderm metrics here:
+<! --* Find the full list of {{%productName%}} metrics here:
     - [Pachd metrics](./pachd-metrics)
     - [Pipeline metrics](./job-metrics) ->
 * [Kube Prometheus Stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack) documentation.

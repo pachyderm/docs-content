@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  S3 Gateway API 
-description: Learn about the operations exposed by Pachyderm's S3 Gateway API.
+description: Learn about the operations exposed by {{%productName%}}'s S3 Gateway API.
 date: 
 # taxonomy #
 tags: ["s3"]
@@ -9,7 +9,7 @@ series:
 seriesPart:
 ---
 
-This section outlines the operations exposed by Pachyderm's HTTP API [S3 Gateway](../../deploy-manage/manage/s3gateway/). 
+This section outlines the operations exposed by {{%productName%}}'s HTTP API [S3 Gateway](../../deploy-manage/manage/s3gateway/). 
 
 {{% notice info %}}
 Since 1.13.3, all operations mentioning `<branch>.<repo>` also accept the syntax `<commit>.<repo>` and `<commit>.<branch>.<repo>`.

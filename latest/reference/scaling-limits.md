@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Pipeline Scaling Limits (CE)
-description: Learn about the built-in scaling limitations of Pachyderm's Community Edition.
+description: Learn about the built-in scaling limitations of {{%productName%}}'s Community Edition.
 date: 
 # taxonomy #
 tags: ["community-edition"]
@@ -10,12 +10,12 @@ seriesPart:
 directory: true 
 ---
 
-Our free Pachyderm Community Edition contains **built-in scaling limitations and parallelism thresholds**. To scale beyond these limits, request a [Enterprise trial token](https://www.pachyderm.com/trial/) and enjoy unlimited scaling, and more.
+Our free {{%productName%}} Community Edition contains **built-in scaling limitations and parallelism thresholds**. To scale beyond these limits, request a [Enterprise trial token](https://www.pachyderm.com/trial/) and enjoy unlimited scaling, and more.
 
 {{% notice info %}} 
 You might qualify for a free Enterprise license.
 
-Pachyderm offers activation keys for proofs-of-concept, startups, academic, nonprofit, or open-source projects. [Tell us about your project!](https://www.pachyderm.com/trial/).
+{{%productName%}} offers activation keys for proofs-of-concept, startups, academic, nonprofit, or open-source projects. [Tell us about your project!](https://www.pachyderm.com/trial/).
 {{% /notice %}}
 
 ## Scaling Limits
@@ -26,7 +26,7 @@ Pachyderm offers activation keys for proofs-of-concept, startups, academic, nonp
 
 ## What happens when you exceed those limits?
 
-As a general rule, Pachyderm provides **an error message in the STDERR** whenever a limit is encountered that prevents you from successfully running a command. In that case, the alert message links to a free trial request form.
+As a general rule, {{%productName%}} provides **an error message in the STDERR** whenever a limit is encountered that prevents you from successfully running a command. In that case, the alert message links to a free trial request form.
 
 ### Limit on the number of pipelines
 When exceeding the number of pipelines:
@@ -53,7 +53,7 @@ When `constant` parallelism > 8:
 If your Enterprise License has expired and you have more than 16 pipelines, all existing pipelines **continue to work**. However, **you will not be able to create additional pipelines**. Same behavior if you upgrade your cluster.
 
 {{% notice warning %}}
-Restoring or installing Pachyderm with an expired license will fail.
+Restoring or installing {{%productName%}} with an expired license will fail.
 {{% /notice %}}
 
 {{% notice note %}}
