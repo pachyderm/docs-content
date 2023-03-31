@@ -9,7 +9,7 @@ series: ["glossary"]
 seriesPart:
 --- 
 
-Global Identifiers provide a simple way to follow the [provenance](TBD) or [subvenance](TBD) of a DAG. Commits and jobs sharing the same Global ID represent a logically-related set of objects.
+Global Identifiers provide a simple way to follow the [provenance](../provenance) or [subvenance](../subvenance) of a DAG. Commits and jobs sharing the same Global ID represent a logically-related set of objects.
 
 When a new commit is made, {{% productName %}} creates an associated commit ID; all resulting downstream **commits** and **jobs** in your DAG will then share that same ID (the Global Identifier). 
 

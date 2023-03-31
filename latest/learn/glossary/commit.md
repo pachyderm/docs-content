@@ -18,7 +18,7 @@ Unlike Git, {{% productName %}} commits are centralized and transactional. You c
 
 All commits have an alphanumeric ID, and you can reference a commit with `<repo>@<commitID>`. Each commit has an origin that indicates why it was produced (USER, AUTO, or ALIAS).
 
-To track provenance, each commit must belong to exactly one [branch](TBD). You can view commit information with `pachctl list commit` and `pachctl inspect commit`.
+To track provenance, each commit must belong to exactly one [branch](../branch). You can view commit information with `pachctl list commit` and `pachctl inspect commit`.
 
 You can squash or delete commits with `pachctl squash commit` and `pachctl delete commit`.
 

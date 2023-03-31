@@ -7,6 +7,7 @@ date:
 tags: 
 series:
 seriesPart:
+weight: 6
 ---
 
 In general, the developer workflow for {{%productName%}} involves adding  data to versioned data repositories, creating pipelines to read from those repositories, executing the pipeline's code, and writing the pipeline's output to other data repositories.
@@ -21,11 +22,11 @@ The workflow steps are shown below.
 Adding data to {{%productName%}} is the first step towards building data-driven pipelines. There are multiple ways to add data to a {{%productName%}} repository:
 
 * By using the `pachctl put file` command
-* By using a special type of pipeline, such as a [spout](../../concepts/pipeline-concepts/pipeline/spout/) or [cron](../../concepts/pipeline-concepts/pipeline/cron/) 
-* By using one of the {{%productName%}}'s [language clients](../../reference/clients/)
+* By using a special type of pipeline, such as a [spout](../../build-dags/pipeline-spec/spout/) or [cron](../../build-dags/pipeline-spec/input-cron/) 
+* By using one of the {{%productName%}}'s [language clients](../../get-started/clients/)
 * By using a compatible S3 client
 
-For more information, see [Load Your Data Into {{%productName%}}](../basic-data-operations/load-data-into-pachyderm/).
+For more information, see [Load Your Data Into {{%productName%}}](../../prepare-data/ingest-data/).
 
 ## Pipeline Workflow
 

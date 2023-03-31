@@ -13,5 +13,5 @@ cascade:
     clientPython: 7.3
     extensionJupyterLab: 2.5.3
     mountServerBinary: 2.5.3
-    release: latest  # used by sitemap.xml in themes folder
+    release: 2.5.x  # used by sitemap.xml in themes folder
 ---

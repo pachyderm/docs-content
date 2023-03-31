@@ -9,9 +9,9 @@ series: ["glossary"]
 seriesPart:
 ---
 
-A pipeline specification is a declarative configuration file used to define the behavior of a {{% productName %}} [pipeline](TBD). It is typically written in YAML or JSON format and contains information about the pipeline's input sources, output destinations, Docker image ([user code](TBD)), command, and other metadata.
+A pipeline specification is a declarative configuration file used to define the behavior of a {{% productName %}} [pipeline](../pipeline). It is typically written in YAML or JSON format and contains information about the pipeline's input sources, output destinations, Docker image ([user code](../user-code)), command, and other metadata.
 
 In addition to simply transforming your data, you can also achieve more advanced techniques though the pipeline specification, such as:
 
-- [Deferred professing](TBD)
-- [Distributed computing](TBD)
+- [Deferred professing](../deferred-processing)
+- [Distributed computing](../distributed-computing)

@@ -1,7 +1,7 @@
 ---
 # metadata # 
-title: Staging
-description: Version 2.5.x 
+title: Latest Release
+description: Version 2.6.x 
 date: 
 # taxonomy #
 tags:
@@ -13,5 +13,5 @@ cascade:
     clientPython: 7.3
     extensionJupyterLab: 2.6.0
     mountServerBinary: 2.6.0
-    release: staging  # used by sitemap.xml in themes folder
+    release: latest  # used by sitemap.xml in themes folder
 ---

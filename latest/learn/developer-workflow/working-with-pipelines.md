@@ -12,10 +12,6 @@ seriesPart:
 A typical {{%productName%}} workflow involves multiple iterations of
 experimenting with your code and pipeline specs.
 
-{{% notice info %}}
-Before you read this section, make sure that you understand basic {{%productName%}} pipeline concepts described in [Concepts](../../../concepts/pipeline-concepts).
-{{% /notice %}}
-
 In general, there are five steps to working with a pipeline. The stages can be summarized in the image below. 
 
 ![Developer workflow](/images/d_steps_analysis_pipeline.svg)
@@ -105,7 +101,7 @@ a public or private image registry, such as
 Alternatively, you can use the {{%productName%}}'s built-in functionality to
 tag, and push images by running the `pachctl update pipeline` command
 with the `--push-images` flag. For more information, see
-[Update a pipeline](../../pipeline-operations/updating-pipelines).
+[Update a pipeline](../../../build-dags/pipeline-operations/updating-pipelines).
 
 1. Log in to an image registry.
 
@@ -146,7 +142,7 @@ require you to specify all of these parameters.
 Spout pipelines, for example, do not have input repos.
 {{% /notice %}}
 
-Check our reference [pipeline specification](../../../reference/pipeline-spec) page, for a list of all available fields in a pipeline specification file.
+Check our reference [pipeline specification](../../../build-dags/pipeline-spec) page, for a list of all available fields in a pipeline specification file.
 
 You can store your pipeline specifications locally or in a remote location, such
 as a GitHub repository.
@@ -196,10 +192,3 @@ parameter, as well as many others, in the pipeline specification.
      ```s
      pachctl update pipeline -f my-pipeline.json
      ```
-
-{{% notice note %}}
- "See Also:"
-    - [Updating Pipelines](../../pipeline-operations/updating-pipelines)
-    - Advanced users, parameterize your pipeline specifications with [Jsonnet pipeline specification files](../../pipeline-operations/jsonnet-pipeline-specs).
-{{% /notice %}}
-
