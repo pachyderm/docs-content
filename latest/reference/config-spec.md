@@ -10,7 +10,7 @@ seriesPart:
 directory: true 
 ---
 
-This document outlines the fields in pachyderm configs. This should act as a
+This document outlines the fields in {{% productName %}}configs. This should act as a
 reference. If you wish to change a config value, you should do so via
 `pachctl config`.
 
@@ -131,7 +131,7 @@ context.
 
 #### Cluster Deployment ID
 
-The pachyderm cluster deployment ID that is used to ensure the operations run on the
+The {{% productName %}}cluster deployment ID that is used to ensure the operations run on the
 expected cluster.
 
 #### Enterprise Server

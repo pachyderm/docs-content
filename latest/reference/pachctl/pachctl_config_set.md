@@ -1,10 +1,10 @@
 ## pachctl config set
 
-Commands for setting pachyderm config values
+Commands for setting {{% productName %}}config values
 
 ### Synopsis
 
-Commands for setting pachyderm config values
+Commands for setting {{% productName %}}config values
 
 ### Options
 

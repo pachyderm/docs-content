@@ -39,7 +39,7 @@ Deploying and configuring an enterprise server can be done in one of two flavors
 Update your values.yaml with your enterprise license key and auth configurations ([for an example on localhost, see the example values.yaml here](https://github.com/pachyderm/pachyderm/blob/{{% majorMinorVersion %}}/etc/helm/examples/local-dev-values.yaml)) or check our minimal example below to your values.yaml.
 
 {{% notice warning %}} 
-   - If a pachyderm cluster will also be installed in the same kubernetes cluster, they should be installed in **different namespaces**:
+   - If a {{% productName %}}cluster will also be installed in the same kubernetes cluster, they should be installed in **different namespaces**:
 
    ```s
    kubectl create namespace enterprise
@@ -213,7 +213,7 @@ deploy your cluster(s) [`helm install...`](../../../../deploy-manage/deploy/helm
 You might want to expose your cluster(s) to the internet. Check the setup of a Load Balancer in our [deployment section](../../../../deploy-manage/deploy/ingress#loadbalancer).
 
 ## 3. Register Your Cluster With The Enterprise Server
-Similarly to the enterprise server, we can configure our pachyderm clusters to leverage Helm for licensing and authentication in one of two flavors:
+Similarly to the enterprise server, we can configure our {{% productName %}}clusters to leverage Helm for licensing and authentication in one of two flavors:
 
 1. Provide enterprise registration information as a part of the Helm deployment of a cluster.
 1. Register a cluster with the Enterprise Server using pachctl commands.

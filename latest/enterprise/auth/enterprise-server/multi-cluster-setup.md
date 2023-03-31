@@ -17,7 +17,7 @@ There are a few minor differences to note when deploying an Enterprise Server wh
 
 - No deployment target is necessary in your Helm chart since there is no object store
 - The Enterprise Server cluster contains the `dex` database
-- Each registered cluster requires its own PostgresSQL `pachyderm` database
+- Each registered cluster requires its own PostgresSQL `{{% productName %}}`database
   
 ##  How to Activate Enterprise for Multi-Cluster 
 

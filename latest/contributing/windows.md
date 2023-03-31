@@ -43,12 +43,12 @@ This path may vary depending on where your `git bash` actually exists.
 ## Getting started
 
 1. Open a terminal and navigate to a directory you'd like to store {{%productName%}}.
-2. Clone the pachyderm repo using `git clone https://github.com/pachyderm/pachyderm`.
+2. Clone the {{% productName %}}repo using `git clone https://github.com/pachyderm/pachyderm`.
 3. Launch Docker Desktop (with Kubernetes enabled) or start minikube.  
 4. Provision  ~10 GB of memory and ~4CPUs.
       - **Via minikube**:  `minikube start --memory=10000mb --cpus=4 --disk-size=40000mb --driver=hyperv`
       - **Via Docker Desktop**: Open Docker Desktop and navigate to **Preferences** > **Resources** > **Advanced**. 
-5. Build your pachyderm `pachd` and `worker` images via the task `docker-build`.
+5. Build your {{% productName %}}`pachd` and `worker` images via the task `docker-build`.
       - **Option 1**: Navigate to **Terminal** > **Run Task...**
       - **Option 2**: Press `ctrl+p` and input `task docker-build`
 6. Build and install pachctl.

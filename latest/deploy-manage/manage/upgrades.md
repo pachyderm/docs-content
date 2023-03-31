@@ -36,7 +36,7 @@ brew tap pachyderm/tap && brew install pachyderm/tap/pachctl@{{% majorMinorNumbe
 Note that the repo name input (`pachyderm`) must match the name you provided upon first install.
 ```s
 helm repo update
-helm upgrade pachyderm pachyderm/pachyderm -f my_pachyderm_values.yaml  --set proxy.enabled=true --set proxy.service.type=LoadBalancer 
+helm upgrade {{% productName %}}pachyderm/pachyderm -f my_pachyderm_values.yaml  --set proxy.enabled=true --set proxy.service.type=LoadBalancer 
 ```
 {{% /wizardResult %}}
 
@@ -44,7 +44,7 @@ helm upgrade pachyderm pachyderm/pachyderm -f my_pachyderm_values.yaml  --set pr
 Note that the repo name input (`pachyderm`) must match the name you provided upon first install.
 ```s
 helm repo update
-helm upgrade pachyderm pachyderm/pachyderm --set deployTarget=LOCAL --set proxy.enabled=true --set proxy.service.type=LoadBalancer 
+helm upgrade {{% productName %}}pachyderm/pachyderm --set deployTarget=LOCAL --set proxy.enabled=true --set proxy.service.type=LoadBalancer 
 ```
 {{% /wizardResult %}} 
 {{% /wizardResults %}} 

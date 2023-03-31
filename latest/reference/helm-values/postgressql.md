@@ -55,7 +55,7 @@ postgresql:
   enabled: true # if false, you must specify a PostgreSQL database server connection @ global.postgresql
   image:
     tag: "13.3.0"
-  # DEPRECATED from pachyderm 2.1.5
+  # DEPRECATED from {{% productName %}}2.1.5
   initdbScripts:
     dex.sh: |
       #!/bin/bash

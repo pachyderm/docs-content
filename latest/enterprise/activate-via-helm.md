@@ -31,7 +31,7 @@ directory: true
 3. Input your enterprise key.
 4. Upgrade your cluster by running the following command:
 ```s
-helm upgrade pachyderm pachyderm/pachyderm -f values.yml
+helm upgrade {{% productName %}}pachyderm/pachyderm -f values.yml
 ```
 Once deployed, {{%productName%}} stores your provided Enterprise license as the platform secret `pachyderm-license` in the key `enterprise-license-key`.
 
@@ -43,7 +43,7 @@ Once deployed, {{%productName%}} stores your provided Enterprise license as the 
 4. Input your license's secret name.
 5. Upgrade your cluster by running the following command:
 ```s
-helm upgrade pachyderm pachyderm/pachyderm -f values.yml
+helm upgrade {{% productName %}}pachyderm/pachyderm -f values.yml
 ```
 {{% /wizardResult%}}
 {{% /wizardResults %}}

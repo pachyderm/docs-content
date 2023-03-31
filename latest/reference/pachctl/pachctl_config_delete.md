@@ -1,10 +1,10 @@
 ## pachctl config delete
 
-Commands for deleting pachyderm config values
+Commands for deleting {{% productName %}}config values
 
 ### Synopsis
 
-Commands for deleting pachyderm config values
+Commands for deleting {{% productName %}}config values
 
 ### Options
 

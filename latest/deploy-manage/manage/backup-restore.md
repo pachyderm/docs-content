@@ -23,7 +23,7 @@ Refer to your provider's documentation.
 (See our high-level [architecture diagram](../../../deploy-manage#overview)):
 
 - an **object-store** holding {{%productName%}}'s data.
-- a PostgreSQL instance made up of **one or two databases**: `pachyderm` holding {{%productName%}}'s metadata and `dex` holding authentication data. 
+- a PostgreSQL instance made up of **one or two databases**: `{{% productName %}}`holding {{%productName%}}'s metadata and `dex` holding authentication data. 
 
 Backing up a {{%productName%}} cluster involves snapshotting both
 the object store and the PostgreSQL database(s) (see above),
@@ -91,7 +91,7 @@ This step is specific to your database and object store hosting.
 you can use PostgreSQL's tools, like `pg_dumpall`, to dump your entire PostgreSQL state.  
 
     Alternatively, you can use targeted `pg_dump` commands to dump the
-    `pachyderm` and `dex` databases, or use your Cloud Provider's backup product.  
+    `{{% productName %}}`and `dex` databases, or use your Cloud Provider's backup product.  
     In any case, make sure to use TLS.
     Note that if you are using a cloud provider, you might
     choose to use the provider’s method of making PostgreSQL backups.
@@ -146,7 +146,7 @@ There are two primary use cases for restoring a cluster:
 
 Depending on your scenario, pick all or a subset of the following steps:
 
-- Populate new `pachyderm` and `dex` (if required) databases on your PostgreSQL instance
+- Populate new `{{% productName %}}`and `dex` (if required) databases on your PostgreSQL instance
 - Populate a new bucket or use the backed-up object-store (note that, in that case, it will no longer be a backup)
 - Create a new empty Kubernetes cluster and give it access to your databases and bucket
 - Deploy {{%productName%}} into your new cluster

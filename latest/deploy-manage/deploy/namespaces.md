@@ -18,7 +18,7 @@ you need to add the `-n` or `--namespace` flag when deploying.
 
 
     ```s
-    helm install <args> --namespace pachyderm --create-namespace
+    helm install <args> --namespace {{% productName %}}--create-namespace
     ```
 
 * To talk to your {{%productName%}} cluster:

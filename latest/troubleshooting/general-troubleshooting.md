@@ -14,7 +14,7 @@ directory: true
 
 ### Symptom
 
-You may be using the pachd address config value or environment variable to specify how `pachctl` talks to your {{%productName%}} cluster, or you may be forwarding the pachyderm port.  In any event, you might see something similar to:
+You may be using the pachd address config value or environment variable to specify how `pachctl` talks to your {{%productName%}} cluster, or you may be forwarding the {{% productName %}}port.  In any event, you might see something similar to:
 
 ```s
 pachctl version

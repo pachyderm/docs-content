@@ -62,7 +62,7 @@ When there’s an error in user code, the typical error message you’ll see is
 failed to process datum <UUID> with error: <user code error>
 ```
 
-This means pachyderm successfully got to the point where it was running user code, but that code exited with a non-zero error code. If any datum in a pipeline fails, the entire job will be marked as failed, but datums that did not fail will not need to be reprocessed on future jobs. You can use `pachctl inspect datum <job-id> <datum-id>` or `pachctl logs` with the `--pipeline`, `--job` or `--datum` flags to get more details.
+This means {{% productName %}}successfully got to the point where it was running user code, but that code exited with a non-zero error code. If any datum in a pipeline fails, the entire job will be marked as failed, but datums that did not fail will not need to be reprocessed on future jobs. You can use `pachctl inspect datum <job-id> <datum-id>` or `pachctl logs` with the `--pipeline`, `--job` or `--datum` flags to get more details.
 
 There are some cases where users may want mark a datum as successful even for a non-zero error code by setting the `transform.accept_return_code` field in the pipeline config .
 
@@ -74,7 +74,7 @@ There are some cases where users may want mark a datum as successful even for a 
 
 `pachctl logs --job=<job_ID>` or `pachctl logs --pipeline=<pipeline_name>` will print out any logs from your user code to help you triage the issue. Kubernetes will rotate logs occasionally so if nothing is being returned, you’ll need to make sure that you have a persistent log collection tool running in your cluster.
 
-In cases where user code is failing, changes first need to be made to the code and followed by updating the pachyderm pipeline. This involves building a new docker container with the corrected code, modifying the pachyderm pipeline config to use the new image, and then calling `pachctl update pipeline -f updated_pipeline_config.json`. Depending on the issue/error, user may or may not want to also include the `--reprocess` flag with `update pipeline`.
+In cases where user code is failing, changes first need to be made to the code and followed by updating the {{% productName %}}pipeline. This involves building a new docker container with the corrected code, modifying the {{% productName %}}pipeline config to use the new image, and then calling `pachctl update pipeline -f updated_pipeline_config.json`. Depending on the issue/error, user may or may not want to also include the `--reprocess` flag with `update pipeline`.
 
 ### Data Failures
 
@@ -84,7 +84,7 @@ When there’s an error in the data, this will typically manifest in a user code
 failed to process datum <UUID> with error: <user code error>
 ```
 
-This means pachyderm successfully got to the point where it was running user code, but that code exited with a non-zero error code, usually due to being unable to find a file or a path, a misformatted file, or incorrect fields/data within a file. If any datum in a pipeline fails, the entire job will be marked as failed. Datums that did not fail will not need to be reprocessed on future jobs.
+This means {{% productName %}}successfully got to the point where it was running user code, but that code exited with a non-zero error code, usually due to being unable to find a file or a path, a misformatted file, or incorrect fields/data within a file. If any datum in a pipeline fails, the entire job will be marked as failed. Datums that did not fail will not need to be reprocessed on future jobs.
 
 #### Retries
 
@@ -94,7 +94,7 @@ Just like with user code failures, {{%productName%}} will automatically retry ru
 
 Data failures can be triaged in a few different way depending on the nature of the failure and design of the pipeline.
 
-In some cases, where malformed datums are expected to happen occasionally, they can be “swallowed” (e.g. marked as successful using `transform.accept_return_codes` or written out to a “failed_datums” directory and handled within user code). This would simply require the necessary updates to the user code and pipeline config as described above. For cases where your code detects bad input data, a "dead letter queue" design pattern may be needed. Many pachyderm developers use a special directory in each output repo for "bad data" and pipelines with globs for detecting bad data direct that data for automated and manual intervention.
+In some cases, where malformed datums are expected to happen occasionally, they can be “swallowed” (e.g. marked as successful using `transform.accept_return_codes` or written out to a “failed_datums” directory and handled within user code). This would simply require the necessary updates to the user code and pipeline config as described above. For cases where your code detects bad input data, a "dead letter queue" design pattern may be needed. Many {{% productName %}}developers use a special directory in each output repo for "bad data" and pipelines with globs for detecting bad data direct that data for automated and manual intervention.
 
 If a few files as part of the input commit are causing the failure, they can simply be removed from the HEAD commit with `start commit`, `delete file`, `finish commit`. The files can also be corrected in this manner as well. This method is similar to a revert in Git -- the “bad” data will still live in the older commits in {{%productName%}}, but will not be part of the HEAD commit and therefore not processed by the pipeline.
 

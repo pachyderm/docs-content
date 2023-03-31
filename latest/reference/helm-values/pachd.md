@@ -313,7 +313,7 @@ pachd:
   enterpriseRootToken: ""
  
   # enterpriseServerToken represents a token that can authenticate to a separate Enterprise server,
-  # and is used to complete the enterprise member registration process for this pachyderm cluster.
+  # and is used to complete the enterprise member registration process for this {{% productName %}}cluster.
   # The user backing this token should have either the licenseAdmin & identityAdmin roles assigned, or
   # the clusterAdmin role.
   # NOTE: only used if pachd.activateEnterpriseMember == true
@@ -326,7 +326,7 @@ pachd:
   enterpriseCallbackAddress: ""
   # Indicates to pachd whether dex is embedded in its process.
   localhostIssuer: "" # "true", "false", or "" (used string as bool doesn't support empty value)
-  # set the initial pachyderm cluster role bindings, mapping a user to their list of roles
+  # set the initial {{% productName %}}cluster role bindings, mapping a user to their list of roles
   # ex.
   # pachAuthClusterRoleBindings:
   #   robot:wallie:

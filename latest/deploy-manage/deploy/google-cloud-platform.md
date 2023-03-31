@@ -82,7 +82,7 @@ gcloud container clusters create ${CLUSTER_NAME} \
 #
 # Note that this command is simple and concise, but gives your user account more privileges than necessary. See
 # https://docs.pachyderm.io/en/latest/deploy-manage/deploy/rbac/ for the complete list of privileges that the
-# pachyderm serviceaccount needs.
+# {{% productName %}}serviceaccount needs.
 kubectl create clusterrolebinding cluster-admin-binding --clusterrole=cluster-admin --user=$(gcloud config get-value account)
 ```
 
@@ -283,10 +283,10 @@ Read more about [dex on PostgreSQL in Dex's documentation](https://dexidp.io/doc
 Run the first or both commands depending on your use case.
 
 ```s
-gcloud sql databases create pachyderm -i ${INSTANCE_NAME}
+gcloud sql databases create {{% productName %}}-i ${INSTANCE_NAME}
 gcloud sql databases create dex -i ${INSTANCE_NAME}
 ```
-{{%productName%}} will use the same user "postgres" to connect to `pachyderm` as well as to `dex`. 
+{{%productName%}} will use the same user "postgres" to connect to `{{% productName %}}`as well as to `dex`. 
 
 ### Update your values.yaml 
 Once your databases have been created, add the following fields to your Helm values:
@@ -411,7 +411,7 @@ global:
   ```s
   helm repo add pach https://helm.pachyderm.com
   helm repo update
-  helm install pachyderm -f my_values.yaml pach/pachyderm
+  helm install {{% productName %}}-f my_values.yaml pach/pachyderm
   ```
 
   **System Response:**

@@ -41,4 +41,4 @@ beta: true
    ```
 7. Run `jupyter lab`. 
 
-If you have an existing pachyderm config file at `~/.pachyderm/config.json`, the extension automatically connects to the active context. Otherwise, you must enter the cluster address manually in the extension UI.
+If you have an existing {{% productName %}}config file at `~/.pachyderm/config.json`, the extension automatically connects to the active context. Otherwise, you must enter the cluster address manually in the extension UI.

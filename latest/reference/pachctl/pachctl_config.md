@@ -1,10 +1,10 @@
 ## pachctl config
 
-Manages the pachyderm config.
+Manages the {{% productName %}}config.
 
 ### Synopsis
 
-Gets/sets pachyderm config values.
+Gets/sets {{% productName %}}config values.
 
 ### Options
 

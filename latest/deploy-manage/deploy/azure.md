@@ -253,7 +253,7 @@ If you plan to deploy a standalone cluster (i.e., if you do not plan to register
 Read more about [dex on PostgreSQL in Dex's documentation](https://dexidp.io/docs/storage/#postgres).
 {{% /notice %}}
 
-{{%productName%}} will use the same user to connect to `pachyderm` as well as to `dex`. 
+{{%productName%}} will use the same user to connect to `{{% productName %}}`as well as to `dex`. 
 
 ### Update your yaml values
 Once your databases have been created, add the following fields to your Helm values:
@@ -374,7 +374,7 @@ make sure that you are using the right Kubernetes context first.
     before the `pachd` pods start. You can check the status of the
     deployment by periodically running `kubectl get all`.
 
-    When pachyderm is up and running, get the information about the pods:
+    When {{% productName %}}is up and running, get the information about the pods:
 
     ```s
     kubectl get pods

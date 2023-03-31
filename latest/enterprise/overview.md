@@ -20,7 +20,7 @@ Want to try Enterprise, or simply have a few questions? Get in touch with us at 
 ## Additional Features
 
 - [**Authentication**](../auth/authentication/idp-dex): Authenticate against your favorite OIDC providers.
-- [**Role-Based Access Control (RBAC)**](../auth/authorization/): Use RBAC on pachyderm resources (clusters, projects, repos), silo data, and prevent unintended changes on production pipelines.
+- [**Role-Based Access Control (RBAC)**](../auth/authorization/): Use RBAC on {{% productName %}}resources (clusters, projects, repos), silo data, and prevent unintended changes on production pipelines.
 - [**Enterprise Server**](../auth/enterprise-server/setup/): Simplify licensing and Identity Provider management by using one Enterprise server to register many {{%productName%}} clusters.
 - Additionally, you have access to a pachctl command that [pauses (`pachctl enterprise pause`) and unpauses (`pachctl enterprise unpause`) your cluster](../../deploy-manage/manage/backup-restore) for a backup and restore.
 

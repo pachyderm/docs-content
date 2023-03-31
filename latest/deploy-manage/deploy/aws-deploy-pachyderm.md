@@ -250,12 +250,12 @@ Find the details of all the steps highlighted below in [AWS Documentation: "Gett
 | *Public access* | Set the Public access to `No` for production environments. |
 | *VPC security group* | Create a new VPC security group and open the postgreSQL port or use an existing one. |
 | *Password authentication* or *Password and IAM database authentication* | Choose one or the other. |
-| *Database name* | In the *Database options* section, enter {{%productName%}}'s Database name (We are using `pachyderm` in this example.) and click *Create database* to create your PostgreSQL service. Your instance is running. <br>Warning: If you do not specify a database name, Amazon RDS does not create a database.|
+| *Database name* | In the *Database options* section, enter {{%productName%}}'s Database name (We are using `{{% productName %}}`in this example.) and click *Create database* to create your PostgreSQL service. Your instance is running. <br>Warning: If you do not specify a database name, Amazon RDS does not create a database.|
 
 
 1. If you plan to deploy a standalone cluster (i.e., if you do not plan to register your cluster with a separate [enterprise server](../../../enterprise/auth/enterprise-server/setup), you must create a second database named `dex` in your RDS instance for {{%productName%}}'s authentication service.  Read more about [dex on PostgreSQL in Dex's documentation](https://dexidp.io/docs/storage/#postgres). 
    
-2. Additionally, create a new user account and **grant it full CRUD permissions to both `pachyderm` and (when applicable) `dex` databases**. Read about managing PostgreSQL users and roles in this [blog](https://aws.amazon.com/blogs/database/managing-postgresql-users-and-roles/). {{%productName%}} will use the same username to connect to `pachyderm` as well as to `dex`. 
+2. Additionally, create a new user account and **grant it full CRUD permissions to both `{{% productName %}}`and (when applicable) `dex` databases**. Read about managing PostgreSQL users and roles in this [blog](https://aws.amazon.com/blogs/database/managing-postgresql-users-and-roles/). {{%productName%}} will use the same username to connect to `{{% productName %}}`as well as to `dex`. 
 
 
 ### Update your values.yaml 
@@ -406,7 +406,7 @@ Retain (ideally in version control) a copy of the Helm values used to deploy you
   ```s
   helm repo add pach https://helm.pachyderm.com
   helm repo update
-  helm install pachyderm -f values.yaml pach/pachyderm --version <version-of-the-chart>
+  helm install {{% productName %}}-f values.yaml pach/pachyderm --version <version-of-the-chart>
   ```
 
   **System Response:**

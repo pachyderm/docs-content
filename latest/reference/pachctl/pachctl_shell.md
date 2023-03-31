@@ -1,10 +1,10 @@
 ## pachctl shell
 
-Run the pachyderm shell.
+Run the {{% productName %}}shell.
 
 ### Synopsis
 
-Run the pachyderm shell.
+Run the {{% productName %}}shell.
 
 ```
 pachctl shell [flags]

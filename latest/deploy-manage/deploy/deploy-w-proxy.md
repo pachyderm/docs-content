@@ -47,7 +47,7 @@ proxy:
 3. Upgrade your cluster: 
 ```s
 helm repo update
-helm upgrade pachyderm pachyderm/pachyderm -f values.yml
+helm upgrade {{% productName %}}pachyderm/pachyderm -f values.yml
 ```
 4. Connect to your cluster:
 ```s

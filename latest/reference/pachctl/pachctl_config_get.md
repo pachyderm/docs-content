@@ -1,10 +1,10 @@
 ## pachctl config get
 
-Commands for getting pachyderm config values
+Commands for getting {{% productName %}}config values
 
 ### Synopsis
 
-Commands for getting pachyderm config values
+Commands for getting {{% productName %}}config values
 
 ### Options
 

@@ -1,10 +1,10 @@
 ## pachctl config list
 
-Commands for listing pachyderm config values
+Commands for listing {{% productName %}}config values
 
 ### Synopsis
 
-Commands for listing pachyderm config values
+Commands for listing {{% productName %}}config values
 
 ### Options
 

@@ -31,5 +31,5 @@ enterpriseServerTokenSecretName: "<Name of you secret containing enterpriseServe
 ```
 3. Upgrade the cluster:
 ```s
-helm upgrade pachyderm pachyderm/pachyderm -f values.yml
+helm upgrade {{% productName %}}pachyderm/pachyderm -f values.yml
 ```

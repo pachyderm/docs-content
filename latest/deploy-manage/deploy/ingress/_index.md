@@ -123,7 +123,7 @@ ingress:
     enabled: true
     annotations: 
         alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:region:account-id:certificate/aaaa-bbbb-cccc
-        alb.ingress.kubernetes.io/group.name: pachyderm # lets multiple ingress resources be configured into one load balancer
+        alb.ingress.kubernetes.io/group.name: {{% productName %}}# lets multiple ingress resources be configured into one load balancer
         alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 443}]'
         alb.ingress.kubernetes.io/scheme: internal
         alb.ingress.kubernetes.io/security-groups: sg-aaaa

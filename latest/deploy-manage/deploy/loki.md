@@ -85,7 +85,7 @@ loki-stack:
 
 ## Using Loki in Another Namespace
 
-Instead of deploying a local loki instance in your pachyderm namespace, you can configure pachyderm to use a loki running in another namespace. To do so, you must set lokiHost and lokiPort. You should also set lokiDeploy: false to prevent the chart from deploying a local loki instance.:
+Instead of deploying a local loki instance in your {{% productName %}}namespace, you can configure {{% productName %}}to use a loki running in another namespace. To do so, you must set lokiHost and lokiPort. You should also set lokiDeploy: false to prevent the chart from deploying a local loki instance.:
 
 ```yaml
 pachd:
