@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Working with Pipelines
-description: Learn about the steps involved in building, testing, and deploying data-transformation pipelines in {{%productName%}}. 
+description: Learn about the steps involved in building, testing, and deploying data-transformation pipelines. 
 date: 
 # taxonomy #
 tags: ["pipelines"]

@@ -1,8 +1,8 @@
 ---
 # metadata # 
 title: Repository
-description: Learn about the concept of a repository in {{%productName%}}. 
-glossaryDefinition: A top-level data object inside {{%productName%}} that behaves as a location where data is stored.
+description: Learn about the concept of a repository. 
+glossaryDefinition: A top-level data object that behaves as a location where data is stored.
 date: 
 # taxonomy #
 tags: ["concepts", "pachctl", "data-operations"]

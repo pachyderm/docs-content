@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Azure
-description: Learn how to deploy a {{%productName%}} cluster on Microsoft Azure. 
+description: Learn how to deploy a cluster on Microsoft Azure. 
 date: 
 # taxonomy #
 tags: ["azure",]
@@ -43,9 +43,9 @@ In particular, you will:
     - [Example](#example)
   - [Create Your Databases](#create-your-databases)
   - [Update your yaml values](#update-your-yaml-values)
-- [6. Deploy {{%productName%}}](#6-deploy-pachyderm)
+- [6. Deploy {{%productName%}}](#6-deploy-productname)
   - [Update Your Values.yaml](#update-your-valuesyaml)
-  - [Deploy {{%productName%}} On The Kubernetes Cluster](#deploy-pachyderm-on-the-kubernetes-cluster)
+  - [Deploy {{%productName%}} On The Kubernetes Cluster](#deploy-productname-on-the-kubernetes-cluster)
 - [7. Have 'pachctl' And Your Cluster Communicate](#7-have-pachctl-and-your-cluster-communicate)
 - [8. Check That Your Cluster Is Up And Running](#8-check-that-your-cluster-is-up-and-running)
 

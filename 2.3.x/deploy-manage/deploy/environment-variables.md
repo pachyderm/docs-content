@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Configure Environment Variables
-description: Learn how to configure environment variables for {{%productName%}}. 
+description: Learn how to configure environment variables. 
 date: 
 # taxonomy #
 tags: ["configuration"]

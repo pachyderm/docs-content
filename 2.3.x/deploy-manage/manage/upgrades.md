@@ -1,7 +1,7 @@
 ---
 # metadata # 
-title: Upgrade {{%productName%}}
-description: Learn how to upgrade {{%productName%}}'s pachctl and pachd. 
+title: Upgrade
+description: Learn how to upgrade PachCTL and PachD. 
 date: 
 # taxonomy #
 tags: ["management", "upgrades", "pachctl","pachd"]

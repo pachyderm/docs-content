@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  On Premises
-description: Learn how to deploy {{%productName%}} on-premises. 
+description: Learn how to deploy on-premises. 
 date: 
 # taxonomy #
 tags: ["deployment"]

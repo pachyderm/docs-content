@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Deploy
-description: Learn how to deploy the Enterprise edition of {{%productName%}}.
+description: Learn how to deploy the Enterprise edition.
 date: 
 # taxonomy #
 tags: ["enterprise"]

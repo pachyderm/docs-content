@@ -1,7 +1,7 @@
 ---
 # metadata # 
-title:  Deploy {{%productName%}} with TLS (SSL, HTTPS)
-description: Learn how to deploy a {{%productName%}} cluster with Transport Layer Security (TLS).
+title:  Deploy with TLS (SSL, HTTPS)
+description: Learn how to deploy a cluster with Transport Layer Security (TLS).
 date: 
 # taxonomy #
 tags: ["deployment"]

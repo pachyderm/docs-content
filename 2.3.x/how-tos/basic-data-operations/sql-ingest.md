@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: SQL Ingest
-description: Learn how to set up the SQL Ingest Tool to import data into {{%productName%}}.
+description: Learn how to set up the SQL Ingest Tool to import data.
 date: 
 # taxonomy #
 tags: ["sql","ingest", "data-operations"]

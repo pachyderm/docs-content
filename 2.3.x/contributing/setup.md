@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Contributor Setup
-description: Learn how to set up your machine to contribute code to {{%productName%}}.
+description: Learn how to set up your machine to contribute code.
 date: 
 # taxonomy #
 tags:  ["developers"]

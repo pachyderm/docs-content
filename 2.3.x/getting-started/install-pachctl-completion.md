@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Install Pachctl Auto-completion
-description: Learn how to install {{%productName%}}'s auto-completion helper tool (it's great for learning pachctl commands).
+description: Learn how to install Pachctl's auto-completion helper tool (it's great for learning pachctl commands).
 date: 
 # taxonomy #
 tags: ["deployment"]

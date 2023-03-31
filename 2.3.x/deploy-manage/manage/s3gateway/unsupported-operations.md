@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Unsupported operations
-description: Learn which S3 operations are not supported by {{%productName%}}. 
+description: Learn which S3 operations are not supported. 
 date: 
 # taxonomy #
 tags: 

@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Cron Pipeline
-description: Learn about the concept of a cron pipeline in {{%productName%}}. 
+description: Learn about the concept of a cron pipeline. 
 date: 
 # taxonomy #
 tags: ["concepts", "pachctl", "data-operations", "pipelines"]

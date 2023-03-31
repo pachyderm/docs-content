@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Import a Kubernetes Context
-description: Learn how to import and embed a Kubernetes Context into a {{%productName%}} context. 
+description: Learn how to import and embed a Kubernetes Context into a context. 
 date: 
 # taxonomy #
 tags: ["kubernetes"]

@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Troubleshooting Deployments
-description: Learn how to troubleshoot deployments of {{%productName%}}.
+description: Learn how to troubleshoot deployments.
 date: 
 # taxonomy #
 tags: ["deployment"]

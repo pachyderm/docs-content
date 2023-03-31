@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  RBAC
-description: Learn how {{%productName%}} supports Kubernetes' Role-Base Access Controls (RBAC).
+description: Learn how our platform supports Kubernetes' Role-Base Access Controls (RBAC).
 date: 
 # taxonomy #
 tags: ["configuration", "permissions"]

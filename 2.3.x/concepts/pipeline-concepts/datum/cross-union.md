@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Cross & Union Inputs
-description: Learn about the concept of cross and union inputs in {{%productName%}}. 
+description: Learn about the concept of cross and union inputs. 
 date: 
 # taxonomy #
 tags: ["concepts", "pachctl", "datums","pipelines", "data-operations"]

@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: S3 Gateway Supported Operations
-description: Learn which S3 Gateway operations are supported by {{%productName%}}. 
+description: Learn which S3 Gateway operations are supported. 
 date: 
 # taxonomy #
 tags: 

@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Deploy on Windows
-description: Learn how to deploy {{%productName%}} locally on a Windows machine.
+description: Learn how to deploy locally on a Windows machine.
 date: 
 # taxonomy #
 tags: ["windows", "deployment"]

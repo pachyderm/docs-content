@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Console 
-description: Learn how to use {{%productName%}}'s user interface, Console. 
+description: Learn how to use the user interface, Console. 
 date: 
 # taxonomy #
 tags: 

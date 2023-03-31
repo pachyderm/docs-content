@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Language Clients
-description: Learn about {{%productName%}}'s language clients. 
+description: Learn about our language clients. 
 date: 
 # taxonomy #
 tags: ["sdks", "golang", "python","javascript","developers"]

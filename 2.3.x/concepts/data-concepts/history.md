@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: History
-description: Learn about the concept of history (version control) in {{%productName%}}. 
+description: Learn about the concept of history (version control). 
 glossaryDefinition: The collective record of version-controlled commits for pipelines and jobs.
 date: 
 # taxonomy #

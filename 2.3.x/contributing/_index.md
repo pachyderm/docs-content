@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Contributing
-description: Interested in being a contributor to {{%productName%}}'s docs and tutorials? Learn how here.
+description: Interested in being a contributor to the docs and tutorials? Learn how here.
 date: 
 # taxonomy #
 tags: 

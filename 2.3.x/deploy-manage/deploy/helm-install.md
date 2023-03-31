@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Helm Deployment
-description: Learn how to install {{%productName%}} using a Helm chart.
+description: Learn how to install using a Helm chart.
 date: 
 # taxonomy #
 tags: ["helm"]

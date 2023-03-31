@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Upgrades & Migrations
-description: Learn about {{%productName%}} upgrades and migrations. 
+description: Learn about upgrades and migrations. 
 date: 
 # taxonomy #
 tags: ["management", "upgrades"]

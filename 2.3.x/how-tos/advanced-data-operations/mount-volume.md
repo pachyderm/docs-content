@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Mount a Volume in a Pipeline
-description: Learn how to mount local or network-attached storage and use its data in {{%productName%}} pipelines
+description: Learn how to mount local or network-attached storage and use its data in pipelines
 date: 
 # taxonomy #
 tags: ["data-operations"]

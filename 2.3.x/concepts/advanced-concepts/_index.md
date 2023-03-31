@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Advanced Concepts
-description: Learn about the more advanced concepts used in {{%productName%}}. 
+description: Learn about the more advanced concepts. 
 date: 
 # taxonomy #
 tags: 

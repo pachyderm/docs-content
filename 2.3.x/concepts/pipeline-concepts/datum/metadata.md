@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Metadata
-description: Learn about the concept of a metadata in {{%productName%}}. 
+description: Learn about the concept of a metadata. 
 date: 
 # taxonomy #
 tags: ["concepts", "pachctl", "data-operations", "pipelines"]

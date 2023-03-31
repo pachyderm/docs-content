@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Enterprise Edition
-description: Learn about the unique features and settings specific to the Enterprise edition of {{%productName%}}.
+description: Learn about the unique features and settings specific to the Enterprise edition.
 date: 
 # taxonomy #
 tags: 

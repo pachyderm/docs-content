@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Manage Secrets
-description: Learn how to create and manage Kubernetes secrets in {{%productName%}}.
+description: Learn how to create and manage Kubernetes secrets.
 date: 
 # taxonomy #
 tags: ["secrets", "management", "kubernetes"]

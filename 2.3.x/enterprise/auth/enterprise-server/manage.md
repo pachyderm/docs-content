@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Server Management
-description: Learn how to manage your {{%productName%}} Enterprise server. 
+description: Learn how to manage your Enterprise Server. 
 date: 
 # taxonomy #
 tags: ["enterprise", "management"]

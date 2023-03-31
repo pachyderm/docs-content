@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Production Recommendations 
-description: Learn which pieces of networking infrastructure {{%productName%}} recommends setting up for production use. 
+description: Learn which pieces of networking infrastructure we recommend setting up for production use. 
 date: 
 # taxonomy #
 tags: ["deployment"]

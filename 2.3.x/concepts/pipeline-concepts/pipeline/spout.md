@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Spout
-description: Learn about the concept of a spout pipeline in {{%productName%}}. 
+description: Learn about the concept of a spout pipeline. 
 date: 
 # taxonomy #
 tags: ["concepts", "pachctl", "data-operations", "pipelines"]

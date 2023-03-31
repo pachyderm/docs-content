@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Glob Pattern
-description: Learn about the concept of a glob pattern in {{%productName%}}. 
+description: Learn about the concept of a glob pattern. 
 date: 
 # taxonomy #
 tags: ["concepts", "pachctl", "datums","pipelines", "data-operations"]
