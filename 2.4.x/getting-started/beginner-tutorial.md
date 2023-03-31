@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Beginner Tutorial
-description: Learn how to quickly ingest photos, trace their outlines, and output a collage using the transformed data in {{%productName%}}.
+description: Learn how to quickly ingest photos, trace their outlines, and output a collage using the transformed data.
 date: 
 # taxonomy #
 tags: ["tutorials"]

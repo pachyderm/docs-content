@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Transactions
-description: Learn how to use transactions to create collections of pachctl commands that are executed concurrently.
+description: Learn how to use transactions to create collections of PachCTL commands that are executed concurrently.
 date: 
 # taxonomy #
 tags: ["data-operations"]

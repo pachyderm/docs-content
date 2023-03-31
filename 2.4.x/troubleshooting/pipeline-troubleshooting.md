@@ -1,7 +1,7 @@
 ---
 # metadata #
 title: Troubleshooting Pipelines
-description: Learn how to troubleshoot {{%productName%}} pipelines.
+description: Learn how to troubleshoot pipelines.
 date:
 # taxonomy #
 tags: ["pipelines"]

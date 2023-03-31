@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Local Getting Started Guides  
-description: Learn how to install {{%productName%}} locally using your favorite container solution.
+description: Learn how to install locally using your favorite container solution.
 date: 
 # taxonomy #
 tags:  ["deployment"]

@@ -1,7 +1,7 @@
 ---
 # metadata # 
-title:  GCP + {{%productName%}} 
-description: Learn how to deploy to {{%productName%}} to the cloud with GCP.
+title:  GCP Deployment
+description: Learn how to deploy to the cloud with GCP.
 date: 
 # taxonomy #
 tags: ["gcp", "cloud-deploy"]

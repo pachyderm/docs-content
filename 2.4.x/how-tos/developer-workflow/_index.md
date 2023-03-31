@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Developer Workflow
-description: Learn how to manage and process data using {{%productName%}} in your CI workflow.
+description: Learn how to manage and process data in your CI workflow.
 date: 
 # taxonomy #
 tags: 

@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Developing on Windows with VSCode
-description: Learn how to set up your Windows machine to contribute to {{%productName%}} via VS code.
+description: Learn how to set up your Windows machine to contribute via VS code.
 date: 
 # taxonomy #
 tags:  ["developers", "windows"]

@@ -1,7 +1,7 @@
 ---
 # metadata # 
-title:  Deploy {{%productName%}} via Proxy (One Port)
-description: Learn how to deploy {{%productName%}} using an embedded proxy, exposing only one external port. 
+title:  Deploy via Proxy (One Port)
+description: Learn how to deploy using an embedded proxy, exposing only one external port. 
 date: 
 # taxonomy #
 tags: ["deployment"]

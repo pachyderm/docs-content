@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: JupyterLab Extension
-description: Learn how to install and use {{%productName%}}'s JupyterLab Extension.
+description: Learn how to install and use the JupyterLab Extension.
 date: 
 # taxonomy #
 tags: ["integrations", "jupyterlab", "notebooks"]

@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Reference
-description: Reference pachctl commands, helm chart values, pipeline spec options, and more.
+description: Reference PachCTL commands, helm chart values, pipeline spec options, and more.
 date: 
 # taxonomy #
 tags: 

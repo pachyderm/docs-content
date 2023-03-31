@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Connect to a Cluster
-description: Learn how to connect to {{%productName%}} clusters locally and on the cloud.
+description: Learn how to connect to clusters locally and on the cloud.
 date: 
 # taxonomy #
 tags: ["cli"]

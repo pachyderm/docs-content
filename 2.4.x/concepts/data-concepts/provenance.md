@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Provenance
-description: Learn about the concept of provenance in {{%productName%}}. 
+description: Learn about the concept of provenance. 
 glossaryDefinition: The recorded data lineage that tracks the dependencies and relationships between datasets. 
 date: 
 # taxonomy #

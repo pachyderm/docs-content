@@ -1,7 +1,7 @@
 ---
 # metadata # 
-title:  AWS + {{%productName%}}
-description: Learn how to deploy to {{%productName%}} to the cloud with AWS.
+title:  AWS Deployment
+description: Learn how to deploy to the cloud with AWS.
 date: 
 # taxonomy #
 tags: ["aws", "cloud-deploy"]

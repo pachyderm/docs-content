@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Extension Walkthrough
-description: Learn about the components of {{%productName%}}'s JupyterLab extension, how they work, and how to install and use them.
+description: Learn about the components of the JupyterLab extension, how they work, and how to install and use them.
 date: 
 # taxonomy #
 tags: ["integrations", "jupyterlab", "notebooks"]

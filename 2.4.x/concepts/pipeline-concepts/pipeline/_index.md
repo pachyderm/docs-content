@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Pipeline
-description: "Learn about the types of pipelines used in {{%productName%}}, including: spout, cron, and service pipelines."
+description: "Learn about the types of pipelines, including: spout, cron, and service pipelines."
 date: 
 # taxonomy #
 tags: 

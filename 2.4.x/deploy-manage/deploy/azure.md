@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Azure
-description: Learn how to deploy a {{%productName%}} cluster on Microsoft Azure. 
+description: Learn how to deploy a cluster on Microsoft Azure. 
 date: 
 # taxonomy #
 tags: ["azure",]

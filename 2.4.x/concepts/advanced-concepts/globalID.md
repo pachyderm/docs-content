@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Global Identifier
-description: Learn about the concept of a global identifier in {{%productName%}}. 
+description: Learn about the concept of a global identifier. 
 date: 
 # taxonomy #
 tags:  ["data-operations", "pipelines"]

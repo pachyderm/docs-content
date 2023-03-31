@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Get Started
-description: New to using {{%productName%}}? Start Here.
+description: Start Here.
 date: 
 # taxonomy #
 tags: 

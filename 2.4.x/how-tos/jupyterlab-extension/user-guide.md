@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: User Guide
-description: Learn how to use the JupyterLab Mount Extension with {{%productName%}}.
+description: Learn how to use the JupyterLab Mount Extension.
 date: 
 # taxonomy #
 tags: ["integrations", "jupyterlab", "notebooks"]

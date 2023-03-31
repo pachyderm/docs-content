@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Pipeline Scaling Limits (CE)
-description: Learn about the built-in scaling limitations of {{%productName%}}'s Community Edition.
+description: Learn about the built-in scaling limitations of Community Edition.
 date: 
 # taxonomy #
 tags: ["community-edition"]

@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Use GPUs
-description: Learn how to access GPUs on a Kubernetes cluster for {{%productName%}} data transformations. 
+description: Learn how to access GPUs on a Kubernetes cluster for data transformations. 
 date: 
 # taxonomy #
 tags: ["management", "deployment"]

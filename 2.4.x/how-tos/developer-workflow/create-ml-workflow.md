@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Create a Machine Learning Workflow
-description: Learn how to incorporate {{%productName%}} into your Machine Learning workflows.
+description: Learn how to integrate into your Machine Learning workflows.
 date: 
 # taxonomy #
 tags: ["workflows"]

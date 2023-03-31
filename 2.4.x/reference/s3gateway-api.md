@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  S3 Gateway API 
-description: Learn about the operations exposed by {{%productName%}}'s S3 Gateway API.
+description: Learn about the operations exposed by the S3 Gateway API.
 date: 
 # taxonomy #
 tags: ["s3"]

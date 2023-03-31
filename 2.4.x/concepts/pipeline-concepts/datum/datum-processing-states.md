@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Datum Processing States
-description: Learn about the concept of datum processing states in {{%productName%}}. 
+description: Learn about the concept of datum processing states. 
 date: 
 # taxonomy #
 tags: ["concepts", "pachctl", "datums","pipelines", "data-operations"]

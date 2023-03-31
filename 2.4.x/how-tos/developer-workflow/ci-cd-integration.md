@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: CI/CD Integration
-description:  Learn how to incorporate {{%productName%}} into your overall CI/CD workflows.
+description:  Learn how to integrate into your overall CI/CD workflows.
 date: 
 # taxonomy #
 tags: ["workflows"]

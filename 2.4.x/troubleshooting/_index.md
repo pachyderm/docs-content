@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Troubleshooting Guides
-description: Learn how to resolve issues with deploying, configuring, or running {{%productName%}}.
+description: Learn how to resolve issues with deploying, configuring, or running our platform.
 date: 
 # taxonomy #
 tags: 

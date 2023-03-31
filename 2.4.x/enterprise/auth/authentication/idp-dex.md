@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Identity Providers
-description: Learn how to enable users to log in to {{%productName%}} using their preferred identity provider. 
+description: Learn how to enable users to log in using their preferred identity provider. 
 date: 
 # taxonomy #
 tags: ["identity-providers", "permissions", "management", "integrations"]

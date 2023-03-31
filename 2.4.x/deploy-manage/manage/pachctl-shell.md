@@ -1,7 +1,7 @@
 ---
 # metadata # 
-title: Using the {{%productName%}} Shell
-description: Learn how to use the {{%productName%}} Shell.
+title: Using the PachCTL Shell
+description: Learn how to use the PachCTL Shell.
 date: 
 # taxonomy #
 tags: ["pachctl", "cli"]

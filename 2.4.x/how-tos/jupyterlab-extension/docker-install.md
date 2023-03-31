@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Docker Installation Guide
-description: Learn how to install and use the JupyterLab Mount Extension with {{%productName%}} using a Docker image.
+description: Learn how to install and use the JupyterLab Mount Extension using a Docker image.
 date: 
 # taxonomy #
 tags: ["integrations", "jupyterlab", "notebooks", "docker"]

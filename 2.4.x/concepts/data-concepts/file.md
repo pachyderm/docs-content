@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: File
-description: Learn about the concept of a file in {{%productName%}}. 
+description: Learn about the concept of a file. 
 glossaryDefinition: A Unix filesystem object (directory or file) that stores data.
 date: 
 # taxonomy #

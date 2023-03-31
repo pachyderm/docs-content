@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Supported Releases & Features
-description: Check which versions of {{%productName%}} are actively supported using this guide.
+description: Check which release versions are actively supported using this guide.
 date: 
 # taxonomy #
 tags: 

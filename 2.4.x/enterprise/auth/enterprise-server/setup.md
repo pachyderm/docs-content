@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Server Setup
-description: Learn how to set up a {{%productName%}} enterprise server.
+description: Learn how to set up an Enterprise Server.
 date: 
 # taxonomy #
 tags: ["enterprise", "deployment", "helm"]

@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Versioned Data Concepts
-description: Learn about the data versioning concepts used in {{%productName%}}. 
+description: Learn about the data versioning concepts used. 
 date: 
 # taxonomy #
 tags: 

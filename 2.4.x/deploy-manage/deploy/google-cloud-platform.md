@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Google Cloud Platform
-description: Learn how to deploy a {{%productName%}} cluster on Google's GKE. 
+description: Learn how to deploy a cluster on Google's GKE. 
 date: 
 # taxonomy #
 tags: ["gcp"]
