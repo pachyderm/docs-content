@@ -14,11 +14,6 @@ weight: 3
 This guide assumes that:
 -  You have already tried [{{% productName %}} locally](../../local-deploy/) and have some familiarity with [Kubectl](https://kubernetes.io/docs/tasks/tools/), [Helm](https://helm.sh/docs/intro/install/), [Google Cloud SDK](https://cloud.google.com/sdk/) and [jq](https://stedolan.github.io/jq/download/).
 - You have access to a Google Cloud account linked to an active billing account.
-
-{{% notice warning %}}
-This is not a production-level setup guide; see the [Google Cloud Platform deploy guide](../../../deploy-manage/deploy/google-cloud-platform/) for in-depth setup. 
-{{% /notice %}}
-
 ---
 
 ## 1. Create a New Project 

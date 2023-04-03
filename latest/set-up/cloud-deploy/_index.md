@@ -1,6 +1,6 @@
 ---
 # metadata # 
-title: Cloud Setup
+title: Cloud Deploy
 description: Learn how to deploy using your preferred cloud provider.
 date: 
 # taxonomy #

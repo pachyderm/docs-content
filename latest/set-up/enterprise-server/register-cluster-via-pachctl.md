@@ -11,7 +11,7 @@ seriesPart:
 
 ## Before You Start 
 
-- You must have an [Enterprise license key](../../../)
+- You must have an Enterprise license key
 - You must have an active {{% productName %}} cluster
 - You must have the {{% productName %}} Helm repo downloaded.
 
@@ -51,7 +51,7 @@ pachctl license list-clusters
 ```s
 pachctl auth activate --enterprise
 ```
-5. [Set up your Identity Provider (IdP)](../../authentication/connectors/).
+1. [Set up your Identity Provider (IdP)](../../connectors/).
 
 
 

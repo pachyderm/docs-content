@@ -14,13 +14,11 @@ For production environments, we highly recommend securing and centralizing the s
 This section will walk you through the steps to enable your EKS cluster to retrieve secrets from AWS Secrets Manager. 
 
 
-## 1. Prerequisites
+## Before You Start
 
-Note that the following steps start right after installing your EKS cluster. 
-For informations on how to set your cluster up in production, refer to the [deploy Kubernetes](../aws-deploy-pachyderm/#2-deploy-kubernetes-by-using-eksctl) section of our deployment instructions on AWS.
+Make sure you have completed the steps found in the [AWS deployment instructions](../aws) before proceeding.
 
-
-## 2. Install The AWS Secrets and Configuration Provider (ASCP)
+## 1. Install The AWS Secrets and Configuration Provider (ASCP)
 
 To retrieve your secrets through your workloads running on your cluster, you will first need to install:
 
@@ -54,7 +52,7 @@ kubectl apply -f https://raw.githubusercontent.com/aws/secrets-store-csi-driver-
 ```
 {{% /notice %}}
 
-## 3. Store {{% productName %}}'s Secrets in Secrets Manager
+## 2. Store {{% productName %}}'s Secrets in Secrets Manager
 In your Secret Manager Console, click on **Store a new secret**, select the **Other type of Secret** (for generic secrets), provide the following Key/Value pairs, then choose a secret name. 
 
 
@@ -71,7 +69,7 @@ In your Secret Manager Console, click on **Store a new secret**, select the **Ot
 Create your secret, then retrieve its arn. 
 It will be needed in the next phase.
 
-## 4- Grant Your EKS Cluster Access To Your Secrets Manager
+## 3. Grant Your EKS Cluster Access To Your Secrets Manager
 
 Your cluster has an OpenID Connect issuer URL associated with it. 
 To use IAM roles for service accounts, an IAM OIDC provider must exist for your cluster.
@@ -132,7 +130,7 @@ eksctl create iamserviceaccount \
 ```
 
 
-## 5. Mount Your Secrets In Your EKS Cluster
+## 4. Mount Your Secrets In Your EKS Cluster
 To show secrets in EKS as though they are files on the filesystem, you need to create a **SecretProviderClass** YAML file that contains information about your secrets as well as information on how to display them in the EKS pod. Use the file provided below and run `kubectl apply -f yoursecretclass.yaml`.
 
 The SecretProviderClass must be in the same namespace as the EKS cluster.
@@ -193,7 +191,7 @@ spec:
     type: Opaque
 ```
 
-## 6. Create A Syncer Pod
+## 5. Create A Syncer Pod
 
 Once your secret class is configured, a pod needs to request the class to trigger the CSI driver and retrieve the secrets in Kubernetes. 
 Update the file below with your `serviceAccountName` and  `secretProviderClass` before you run a `kubectl apply -f syncerpod.yaml`
@@ -224,7 +222,7 @@ spec:
 ```
 Run a quick `kubectl get all` to check on your new pod.
 
-## 8. Update Your Secrets In {{% productName %}} Values.YAML 
+## 6. Update Secrets In {{% productName %}} Values.YAML 
 
 Finally, using the `secretName`(s) of your SecretProviderClass above, update {{% productName %}}'s values.YAML with the list of secrets you will be needing.
 
@@ -250,6 +248,4 @@ pachd:
   activateEnterprise: true
 ```
 
-Your Secrets Manager is now configured to provide credential values to your cluster, you can go back to your [installation of {{% productName %}}](../aws-deploy-pachyderm/#3-create-an-s3-bucket)  instructions.
-
-
+Your Secrets Manager is now configured to provide credential values to your cluster.

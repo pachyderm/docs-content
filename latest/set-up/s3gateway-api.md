@@ -10,7 +10,7 @@ seriesPart:
 directory: true 
 ---
 
-This section outlines the operations exposed by {{% productName %}}'s HTTP API [S3 Gateway](../../deploy-manage/manage/s3gateway/). 
+This section outlines the operations exposed by {{% productName %}}'s HTTP API [S3 Gateway](../../manage/s3gateway/). 
 
 {{% notice info %}}
 Since 1.13.3, all operations mentioning `<branch>.<repo>` also accept the syntax `<commit>.<repo>` and `<commit>.<branch>.<repo>`.

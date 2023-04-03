@@ -1,6 +1,6 @@
 ---
 # metadata # 
-title:  Local Setup 
+title:  Local Deploy 
 description: Learn how to install locally using your favorite container solution.
 date: 
 # taxonomy #

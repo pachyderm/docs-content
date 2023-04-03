@@ -11,4 +11,4 @@ weight: 1
 label: recommended
 ---
  
- {{% readfile file="/data/shared/setup/docker.md" %}}
+ {{% readfile file="/latest/shared/setup/docker.md" %}}

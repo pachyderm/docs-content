@@ -134,17 +134,17 @@ upstream-idps: |
 
 
 
-Alternatively, you can [create a secret](../../../../how-tos/advanced-data-operations/secrets/#generate-your-secret-configuration-file) containing your dex connectors (Key: upstream-idps) and reference its name in the field [oidc.upstreamIDPsSecretName](https://github.com/pachyderm/pachyderm/blob/{{% majorMinorVersion %}}/etc/helm/pachyderm/values.yaml#L805).
+Alternatively, you can [create a secret](../../../manage/secrets) containing your dex connectors (Key: upstream-idps) and reference its name in the field [oidc.upstreamIDPsSecretName](https://github.com/pachyderm/pachyderm/blob/{{% majorMinorVersion %}}/etc/helm/pachyderm/values.yaml#L805).
 
  
 ### 3. Login
-The users registered with your IdP are now ready to [Log in to {{% productName %}}](../login)
+The users registered with your IdP are now ready to [Log in to {{% productName %}}](../../../get-started/connect-to-existing)
 
 ## Considerations 
 
 ### Ingress 
 
-**When using an [ingress](../../../../deploy-manage/deploy/ingress/#ingress)**:
+**When using an [ingress](../../../manage/helm-values/ingress)**:
 
 - `redirect_uri` must be changed to point to `https://domain-name/dex/callback`. (Note the additional **/dex/**) 
 - TLS requires all non-localhost redirectURIs to be **HTTPS**.

@@ -9,11 +9,11 @@ series:
 seriesPart:
 ---
 
-You can register an existing single-cluster {{% productName %}} instance to the embedded [Enterprise Server](../) that comes included with `pachd` using the steps in this guide. Doing so enables you to also activate [authentication](../../) and set up [IdP connectors](../../authentication/connectors). 
+You can register an existing single-cluster {{% productName %}} instance to the embedded [Enterprise Server](../) that comes included with `pachd` using the steps in this guide. Doing so enables you to also activate [authentication](../../authentication) and set up [IdP connectors](../../connectors). 
 
 ## Before You Start
 
-- You must have an [Enterprise license key](../../../)
+- You must have an Enterprise license key
 - You must have an active {{% productName %}} cluster
 
 ##  How to Activate Enterprise Server 
@@ -27,4 +27,4 @@ echo <enterprise-license-key-value> | pachctl license activate
 ```s
 pachctl auth activate --enterprise
 ```
-4. [Set up your Identity Provider (IdP)](../../authentication/connectors/).
+4. [Set up your Identity Provider (IdP)](../../connectors/).

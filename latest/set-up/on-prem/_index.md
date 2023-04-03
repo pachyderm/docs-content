@@ -1,6 +1,6 @@
 ---
 # metadata # 
-title:  On-Prem Setup 
+title:  On-Prem Deploy 
 description: Learn how to install on your premises. 
 date: 
 # taxonomy #
@@ -73,5 +73,5 @@ helm upgrade pachyderm pachyderm/pachyderm -f values.yml
 
 ### 4. Install PachCTL
 
-Install [PachCTL](TBD) and [PachCTL Auto-completion](../install-pachctl-completion).
+Install [PachCTL](../../get-started/first-time-setup) and [PachCTL Auto-completion](../pachctl-autocomplete).
    

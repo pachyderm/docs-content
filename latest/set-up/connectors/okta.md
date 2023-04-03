@@ -9,16 +9,10 @@ series:
 seriesPart:
 ---
 
-If [Okta® access management software](https://www.okta.com)
-is your preferred choice of IdP,
-you can configure {{% productName %}} to use Okta as an OpenID Connect (OIDC) 
-identity provider using the following steps. 
+If [Okta® access management software](https://www.okta.com) is your preferred choice of IdP, you can configure {{% productName %}} to use Okta as an OpenID Connect (OIDC)  identity provider using the following steps. 
 
 {{% notice note %}}
-Before you can configure {{% productName %}} to work with Okta:
-
-- Check the [{{% productName %}} Integration with Identity Providers](../../idp-dex) general page.
-- Log in/Create an account at https://www.okta.com/login/. 
+Before you can configure {{% productName %}} to work with Okta, log in or create an account at https://www.okta.com/login/. 
 {{% /notice %}}
 
 

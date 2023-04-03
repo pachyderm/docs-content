@@ -11,7 +11,7 @@ seriesPart:
 
 ## Before You Start 
 
-- You must have an [Enterprise license key](../../../)
+- You must have an Enterprise license key
 - You must have the {{% productName %}} Helm repo downloaded.
 
 
