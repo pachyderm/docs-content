@@ -1,6 +1,6 @@
 ---
 # metadata # 
-title: Export via Pachctl
+title: Export via PachCTL
 description: Learn how to export data using the pachctl get command. 
 date: 
 # taxonomy #
@@ -10,7 +10,7 @@ seriesPart:
 directory: true
 ---
  
-To export your data with pachctl:
+To export your data with PachCTL:
 
 1. List the files in the given directory:
 
