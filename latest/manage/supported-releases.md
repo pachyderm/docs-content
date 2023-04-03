@@ -21,9 +21,10 @@ directory: true
 
 | Version  | Release Status | Support |
 | -------- | -------------- | ------- |
+| 2.6.x    | Upcoming       | Upcoming|
 | 2.5.x    | GA             | Yes     |           
 | 2.4.x    | GA             | Yes     |
-| 2.3.x    | GA             | Yes     |
+| 2.3.x    | GA             | No      |
 | 2.2.x    | GA             | No      |
 | 2.1.x    | GA             | No      |
 | 2.0.x    | GA             | No      |

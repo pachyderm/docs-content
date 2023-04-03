@@ -9,9 +9,7 @@ series:
 seriesPart:
 --- 
 
-Some of the S3 operations are not yet supported by {{% productName %}}.
-If you run any of these operations, {{% productName %}} returns a standard
-S3 `NotImplemented` error.
+Some of the S3 operations are not yet supported by {{% productName %}}. If you run any of these operations, {{% productName %}} returns a standard S3 `NotImplemented` error.
 
 The S3 Gateway does not support the following S3 operations:
 

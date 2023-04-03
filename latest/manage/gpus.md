@@ -10,11 +10,6 @@ seriesPart:
 directory: true
 --- 
 
-
-- To install {{% productName %}} on an **NVIDIA DGX A100** box, skip to [{{% productName %}} on NVIDIA DGX A100](#pachyderm-on-nvidia-dgx-a100).
-- If you already have a GPU enabled Kubernetes cluster,
-skip to [Configure GPUs in Pipelines](#configure-gpus-in-pipelines).
-- Otherwise, read the following section.
 ## Set up a GPU enabled Kubernetes Cluster
 
 {{% productName %}} leverages [Kubernetes Device Plugins](https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/) to let Kubernetes Pods access specialized hardware such as GPUs.
@@ -26,7 +21,7 @@ through device plugins, see the [Kubernetes documentation](https://kubernetes.io
 Let’s walk through the main steps allowing {{% productName %}} to leverage the AI performance of your [DGX A100](https://www.nvidia.com/en-in/data-center/dgx-a100/) GPUs.
 
 {{% notice info %}}
-Read about NVIDIA DGX A100's full [userguide](https://docs.nvidia.com/dgx/pdf/dgxa100-user-guide.pdf).
+Read about NVIDIA DGX A100's full [user guide](https://docs.nvidia.com/dgx/pdf/dgxa100-user-guide.pdf).
 {{% /notice %}}
 
 
@@ -107,13 +102,13 @@ Note that you have the option to use GPUs for compute-intensive workloads on:
 
 Once your GPU-enabled Kubernetes cluster is set, 
 you can request a GPU tier in your pipeline specifications
-by [setting up GPU resource limits](../../../reference/pipeline-spec/#resource-requests-optional), along with its type and number of GPUs. 
+by [setting up GPU resource limits](../../build-dags/pipeline-spec/resource-request), along with its type and number of GPUs. 
 
 {{% notice tip %}}
 By default, {{% productName %}} workers are spun up and wait for new input. That works great for pipelines that are processing a lot of new incoming commits. However, for lower volume of input commits, you could have your pipeline workers 'taking' the GPU resource as far as k8s is concerned, but 'idling' as far as you are concerned. 
 
  - Make sure to set the `autoscaling` field to `true` so that if your pipeline is not getting used, the worker pods get spun down and the GPU resource freed.
- - Additionally, specify how much of GPU your pipeline worker will need via the `resource_requests` fields in your [pipeline specification](../../../reference/pipeline-spec/#resource-requests-optional) with `resource_requests` <= `resource_limits`.
+ - Additionally, specify how much of GPU your pipeline worker will need via the `resource_requests` fields in your [pipeline specification](../../../build-dags/pipeline-spec) with `resource_requests` <= `resource_limits`.
 {{% /notice %}}
 
 Below is an example of a pipeline spec for a GPU-enabled pipeline from our [market sentiment analysis example](https://github.com/pachyderm/examples/tree/master/market-sentiment):

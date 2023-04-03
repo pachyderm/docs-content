@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Cluster Access
-description: Learn how to manage Kubernetes cluster access using {{% productName %}} Contexts.
+description: Learn how to manage Kubernetes cluster access using Contexts.
 date: 
 # taxonomy #
 tags: ["management", "permissions"]
@@ -34,10 +34,7 @@ The following text is an example of a {{% productName %}} `config.json` file:
 
 ## View the Active Context
 
-When you have multiple {{% productName %}} clusters, you can switch
-between them by setting the current context.
-The active context is the cluster that you interact with when
-you run `pachctl` commands.
+When you have multiple {{% productName %}} clusters, you can switch between them by setting the current context. The active context is the cluster that you interact with when you run `pachctl` commands.
 
 To view active context, type:
 
@@ -86,23 +83,17 @@ export PACH_CONTEXT=local1
 
 ## Create a New Context
 
-When you deploy a new {{% productName %}} cluster, a new context
-that points to the new cluster is created automatically.
+When you deploy a new {{% productName %}} cluster, a new context that points to the new cluster is created automatically.
 
-In addition, you can create a new context by providing your parameters
-through the standard input stream (`stdin`) in your terminal.
-Specify the parameters as a comma-separated list enclosed in
-curly brackets.
+In addition, you can create a new context by providing your parameters through the standard input stream (`stdin`) in your terminal. Specify the parameters as a comma-separated list enclosed in curly brackets.
 
 {{% notice note %}}
 By default, the `pachd` port is `30650`.
 {{% /notice %}}
 
-To create a new context with specific parameters, complete
-the following steps:
+To create a new context with specific parameters, complete the following steps:
 
-1. Create a new {{% productName %}} context with a specific `pachd` IP address
-and a client certificate:
+1. Create a new {{% productName %}} context with a specific `pachd` IP address and a client certificate:
 
     ```s
     echo '{"pachd_address":"10.10.10.130:650", "server_cas":"insert your base 64 encoded key.pem"}' | pachctl config set context new-local
@@ -126,9 +117,7 @@ and a client certificate:
 
 ## Update an Existing Context
 
-You can update an existing context with new parameters, such
-as a {{% productName %}} IP address, certificate authority (CA), and others.
-For the list of parameters, see [{{% productName %}} Config Specification](../../../reference/config-spec).
+You can update an existing context with new parameters, such as a {{% productName %}} IP address, certificate authority (CA), and others. 
 
 To update the Active Context, run the following commands:
 
@@ -141,7 +130,7 @@ To update the Active Context, run the following commands:
     The `pachctl config update` command supports the `--pachd-address`
     flag only.
 
-1. Verify that the context has been updated:
+2. Verify that the context has been updated:
 
     ```s
     pachctl config get context local-1
@@ -155,7 +144,7 @@ To update the Active Context, run the following commands:
     }
     ```
 
-1. Alternatively, you can update multiple properties by using
+3. Alternatively, you can update multiple properties by using
 an `echo` script:
 
     ```s

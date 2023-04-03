@@ -13,8 +13,8 @@ directory: true
 
 ## Before You Start 
 
-- Your organization must have an active [Enterprise license key](../../../).
-- You must have pachctl installed.
+- Your organization must have an active Enterprise license key.
+- You must have PachCTL installed.
 
 ## How to Check Your Current User
 

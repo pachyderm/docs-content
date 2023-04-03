@@ -19,10 +19,6 @@ Looking for a comprehensive list of all attributes and comments? [View a complet
 
 Proxy is a service that handles all {{% productName %}} traffic (S3, Console, OIDC, Dex, GRPC) on a single port; It's great for exposing directly to the Internet. 
 
-{{% notice warning %}}
-Proxy will soon be the mandatory way to interact with {{% productName %}}, replacing [Ingress](/{{% release %}}/reference/helm-values/ingress). See [Upgrade to Embedded Proxy](/{{% release %}}/deploy-manage/deploy/deploy-w-proxy/) for more details.
-{{% /notice %}}
-
 ## Values
 
 The following section contains a series of tabs for commonly used configurations for this section of your values.yml Helm chart. 

@@ -44,9 +44,6 @@ the following command:
             },
       ```
 
-   Both the access key and secret key 
-   should be set as mentioned in the [# Set Your Credentails](#set-your-credentials) section of this page. 
-
 ### Verify Setup 
 Check the list of filesystem objects on the `master` branch of the repository `raw_data`.
 

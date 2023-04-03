@@ -10,4 +10,4 @@ seriesPart:
 weight: 3
 directory: true
 ---
-{{% readfile file="data/shared/auth/log-in.md" %}}
+{{% readfile file="latest/shared/auth/log-in.md" %}}
