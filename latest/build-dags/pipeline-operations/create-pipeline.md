@@ -9,7 +9,7 @@ series:
 seriesPart:
 ---
 
-To create a [pipeline](../../../concepts/pipeline-concepts/pipeline), you need to define a [pipeline specification](../../../reference/pipeline-spec/) in YAML, JSON, or Jsonnet. 
+To create a [pipeline](../../../learn/glossary/pipeline), you need to define a [pipeline specification](../../../learn/glossary/pipeline-specification/) in YAML, JSON, or Jsonnet. 
 
 ## Before You Start
 
@@ -19,14 +19,14 @@ A basic pipeline must have all of the following:
 - **`transform.cmd`**: The command that executes your user code.
 - **`transform.img`**: The image that contains your user code. 
 - **`input.pfs.repo`**: The output repository for the transformed data.
-- **`input.pfs.glob`**: The [glob pattern](../../../concepts/pipeline-concepts/datum/glob-pattern) used to identify the shape of [datums](../../../concepts/pipeline-concepts/datum).
+- **`input.pfs.glob`**: The [glob pattern](../../../learn/glossary/glob-pattern) used to identify the shape of [datums](../../../learn/glossary/datum).
 
 
 ## How to Create a Pipeline
 
 ### Via Local File 
 
-1. Define a [pipeline specification](../../../reference/pipeline-spec/) in YAML, JSON, or Jsonnet.
+1. Define a [pipeline specification](../../pipeline-spec/) in YAML, JSON, or Jsonnet.
 
 2. Pass the pipeline configuration to {{% productName %}}:
 

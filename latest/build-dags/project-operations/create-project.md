@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Create a Project
-description: Learn how to create a new project in {{% productName %}}.
+description: Learn how to create a new project.
 date: 
 # taxonomy #
 tags: ["projects"]

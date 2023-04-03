@@ -54,4 +54,4 @@ pachctl create repo bar
 
 {{</stack>}}
 
-For more information about [Repos](../concepts/data-concepts/repo).
+For more information about [Repos](../../../learn/glossary/input-repo).

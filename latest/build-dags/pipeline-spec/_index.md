@@ -11,7 +11,7 @@ seriesPart:
 
 
 This document discusses each of the fields present in a pipeline specification.
-To see how to use a pipeline spec to create a pipeline, refer to the [create pipeline](../../how-tos/pipeline-operations/create-pipeline/#create-a-pipeline) section.
+To see how to use a pipeline spec to create a pipeline, refer to the [create pipeline](../pipeline-operations/create-pipeline/#create-a-pipeline) section.
 
 ## Before You Start 
 - {{% productName %}}'s pipeline specifications can be written in JSON or YAML.
