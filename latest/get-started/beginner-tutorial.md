@@ -1,20 +1,20 @@
 ---
 # metadata # 
 title:  Beginner Tutorial
-description: Learn how to quickly ingest photos, trace their outlines, and output a collage using the transformed data in {{% productName %}}.
+description: Learn how to quickly ingest photos, trace their outlines, and output a collage using the transformed data.
 date: 
 # taxonomy #
 tags: ["tutorials"]
 series:
 seriesPart: 
-weight: 3
+weight: 1
 directory: true 
 ---
 
 ## Before You Start 
 
-- Install {{% productName %}} either [locally](../local-deploy) our within the [cloud](../cloud-deploy). 
-- Install [{{% productName %}} Shell](../../deploy-manage/manage/pachctl-shell/).
+- Install {{% productName %}} either [locally](../../set-up/local-deploy) our within the [cloud](../../set-up/cloud-deploy). 
+- Install [{{% productName %}} Shell](../../manage/pachctl-shell/).
 - Join our [Slack Community](https://www.pachyderm.com/slack/) so you can ask any questions you may have!
 
 ### Context
@@ -157,9 +157,9 @@ In your Console, click on the `images` repo to visualize its commit and inspect 
 ### 4. Create a Pipeline
 
 Now that you have some data in your repo, it is time to do something
-with it using a [pipeline](../../concepts/pipeline-concepts/pipeline/). 
+with it using a [pipeline](../../learn/glossary/pipeline). 
 
-Pipelines process data and are defined using a JSON [pipeline specification](../../reference/pipeline-spec). For this [tutorial](https://github.com/pachyderm/pachyderm/blob/{{%majorMinorVersion%}}/examples/opencv), we've already
+Pipelines process data and are defined using a JSON [pipeline specification](../../learn/glossary/pipeline-specification). For this [tutorial](https://github.com/pachyderm/pachyderm/blob/{{%majorMinorVersion%}}/examples/opencv), we've already
 [created the spec for you](https://github.com/pachyderm/pachyderm/blob/{{%majorMinorVersion%}}/examples/opencv/edges.json).
 
 #### Review Pipeline Spec
@@ -234,7 +234,7 @@ Again, check the end result in your Console:
 
 #### What Happens When You Create a Pipeline
 
-When you create a pipeline, {{% productName %}} transforms all current and future data added to your input repo using your user code. This process is known as a [job](../../concepts/pipeline-concepts/job/#job). The initial job downloads the specified Docker image that is used for all future jobs.
+When you create a pipeline, {{% productName %}} transforms all current and future data added to your input repo using your user code. This process is known as a [job](../../learn/glossary/job). The initial job downloads the specified Docker image that is used for all future jobs.
 
 1. View the job:
 

@@ -7,10 +7,11 @@ date:
 tags: 
 series:
 seriesPart:
-weight: 1
+weight: 2
 directory: true
 ---
 
 {{% productName %}} can be deployed in Kubernetes using a wide variety of container orchestrators, but to get you set up for the very first time, we recommend using Docker Desktop. This installation method is very fast and will provide you with everything you need to start the [Beginner Tutorial](../beginner-tutorial). 
 
-{{% readfile file="/data/shared/setup/docker.md" %}}
+{{% readfile file="latest/shared/setup/docker.md" %}}
+

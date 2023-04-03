@@ -8,6 +8,7 @@ tags: ["sdks", "golang", "python","javascript","developers"]
 series:
 seriesPart:
 directory: true 
+weight: 4
 ---
 
 `pachctl` is the command-line tool you use 

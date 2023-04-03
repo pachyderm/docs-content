@@ -1,14 +1,14 @@
 ---
 # metadata # 
 title:  Connect to Existing Instance
-description: New to using {{% productName %}}? Start Here.
+description: Learn how to connect to your organization's existing instance. 
 date: 
 # taxonomy #
 tags: 
 series:
 seriesPart:
-weight: 2
+weight: 3
 directory: true
 ---
 
-{{% readfile file="/shared/auth/log-in.md" %}}
+{{% readfile file="latest/shared/auth/log-in.md" %}}
