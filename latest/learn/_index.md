@@ -7,7 +7,7 @@ date:
 tags: 
 series:
 seriesPart:
-weight: 1
+weight: 2
 --- 
 
 {{% productName %}} is a data science platform that provides data-driven pipelines with version control and autoscaling. It is container-native, allowing developers to use the languages and libraries that are best suited to their needs, and runs across all major cloud providers and on-premises installations.
