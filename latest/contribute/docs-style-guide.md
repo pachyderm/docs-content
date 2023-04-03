@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Documentation Style Guide
-description: Learn how to contribute content to {{% productName %}}'s documentation. 
+description: Learn how to contribute content to the documentation. 
 date: 
 # taxonomy #
 tags:  ["developers"]

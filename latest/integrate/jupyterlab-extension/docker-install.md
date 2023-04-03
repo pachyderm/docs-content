@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Docker Installation Guide
-description: Learn how to install and use the JupyterLab Mount Extension with {{% productName %}} using a Docker image.
+description: Learn how to install and use the JupyterLab Mount Extension using a Docker image.
 date: 
 # taxonomy #
 tags: ["integrations", "jupyterlab", "notebooks", "docker"]
@@ -92,4 +92,4 @@ USER $NB_UID
 RUN pip install jupyterlab-pachyderm==<version> 
 ```
 
-Then, [build, tag, and push your image](../developer-workflow/working-with-pipelines/#step-2-build-your-docker-image).
+Then, [build, tag, and push your image](../../../learn/developer-workflow/working-with-pipelines/#step-2-build-your-docker-image).

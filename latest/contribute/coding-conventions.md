@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Coding Conventions
-description: Learn the coding conventions contributors to {{% productName %}}'s code base follow.
+description: Learn the coding conventions contributors to the code base follow.
 date: 
 # taxonomy #
 tags:  ["developers"]

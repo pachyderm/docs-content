@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Local Installation Guide
-description: Learn how to locally install and use the JupyterLab Mount Extension with {{% productName %}}.
+description: Learn how to locally install and use the JupyterLab Mount Extension.
 date: 
 # taxonomy #
 tags: ["integrations", "jupyterlab", "notebooks"]
