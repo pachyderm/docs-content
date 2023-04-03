@@ -48,7 +48,7 @@ to create a diff. A diff for mounting a volume might look like this:
 This output needs to be converted into a one-liner and added to the
 pipeline spec.
 
-We will use the [OpenCV example](../../../getting-started/beginner-tutorial/).
+We will use the [OpenCV example](../../get-started/beginner-tutorial/).
 to demonstrate this functionality.
 
 To mount a volume, complete the following steps:
@@ -71,9 +71,9 @@ described in [Configure a Pod to Use a PersistentVolume for Storage](https://kub
       kubectl get rc pipeline-edges-v7 -o json > test-rc.yaml
       ```
 
-1. Open the generated RC manifest for editing.
-1. Under `spec`, find the `volumeMounts` section.
-1. Add your volume in the list of mounts. 
+2. Open the generated RC manifest for editing.
+3. Under `spec`, find the `volumeMounts` section.
+4. Add your volume in the list of mounts. 
 
       **Example:**
 
@@ -87,8 +87,8 @@ described in [Configure a Pod to Use a PersistentVolume for Storage](https://kub
       `mountPath` is where your volume will be mounted inside of the
       container.
 
-1. Find the `volumes` section.
-1. Add the information about the volume.
+5. Find the `volumes` section.
+6. Add the information about the volume.
 
       **Example:**
 
@@ -104,9 +104,9 @@ described in [Configure a Pod to Use a PersistentVolume for Storage](https://kub
       In this section, you need to specify the PersistentVolumeClaim you have
       created in Step 1.
 
-1. Save these changes to a new file.
-1. Copy the contents of the original RC to the clipboard.
-1. Go to a JSON patch generator, such as [JSON Patch Generator](https://extendsclass.com/json-patch.html),
+7. Save these changes to a new file.
+8. Copy the contents of the original RC to the clipboard.
+9. Go to a JSON patch generator, such as [JSON Patch Generator](https://extendsclass.com/json-patch.html),
 and paste the contents of the original RC manifest to the **Source JSON**
 field.
 1. Copy the contents of the modified RC manifest to clipboard
@@ -114,12 +114,12 @@ as described above.
 1. Paste the contents of the modified RC manifest to the **Target JSON**
 field.
 1. Copy the generated JSON Patch.
-1. Go to your terminal and open the pipeline manifest for editing.
+2. Go to your terminal and open the pipeline manifest for editing.
 
       For example, if you are modifying the `edges` pipeline, open the
       `edges.json` file.
 
-1. Add the patch as a one-liner under the `pod_patch` parameter.
+3. Add the patch as a one-liner under the `pod_patch` parameter.
 
       **Example:**
 
@@ -136,7 +136,7 @@ field.
       might need to replace it with `/volumes/-`. See the example
       above for details.
 
-1. After modifying the pipeline spec, update the pipeline:
+4. After modifying the pipeline spec, update the pipeline:
 
       ```s
       pachctl update pipeline -f <pipeline-spec.yaml>
@@ -145,7 +145,7 @@ field.
       A new pod and new replication controller should be created with
       your modified changes.
 
-1. Verify that your file was mounted by connecting to your pod and
+5. Verify that your file was mounted by connecting to your pod and
 listing the directory that you have specified as a mountpoint. In this
 example, it is `/data`.
 

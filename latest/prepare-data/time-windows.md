@@ -7,15 +7,16 @@ date:
 tags: ["data-operations"]
 series:
 seriesPart:
+directory: true
 ---
 
 {{% notice info %}}
 Before you read this section, make sure that you understand the concepts
 described in the following sections:
 
-- [Datum](../../../concepts/pipeline-concepts/datum)
-- [Distributed Computing](../../../concepts/advanced-concepts/distributed-computing)
-- [Developer Workflow](../../developer-workflow/)
+- [Datum](../../learn/glossary/datum)
+- [Distributed Computing](../../learn/glossary/distributed-computing)
+- [Developer Workflow](../../learn/developer-workflow/)
 {{% /notice %}}
 
 If you are analyzing data that is changing over time, you might
@@ -27,15 +28,15 @@ other moving or static time window of data.
 
 1. [Fixed time windows](#fixed-time-windows) - for rigid, fixed
 time windows, such as months (Jan, Feb, and so on) or days—01-01-17,
-01-02-17, and so on).
+01-02-17, and so on.
 
-2. [Moving time windows](#moving-time-windows)
+1. [Moving time windows](#moving-time-windows)
 - for rolling time windows of data, such as three-day windows or
 two-week windows.
 
 ## Fixed Time Windows
 
-[Datum](../../../concepts/pipeline-concepts/datum) is the basic
+[Datum](../../learn/glossary/datum) is the basic
 unit of data partitioning in {{% productName %}}. The glob pattern property
 in the pipeline specification defines a datum. When you analyze data
 within fixed time windows, such as the data that corresponds to

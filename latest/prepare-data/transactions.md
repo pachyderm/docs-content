@@ -7,6 +7,7 @@ date:
 tags: ["data-operations"]
 series:
 seriesPart:
+directory: true
 ---
 
 {{% notice note %}}
@@ -22,7 +23,7 @@ This functionality is useful in particular for pipelines with multiple
 inputs. If you need to update two or more input repos, you might not want
 pipeline jobs for each state change. You can issue a transaction
 to start commits in each of the input repos, which puts them both in
-the same [global commit](../../../concepts/advanced-concepts/globalID/), creating a single downstream commit 
+the same [global commit](../../learn/glossary/globalid), creating a single downstream commit 
 in the pipeline repo. After the transaction, you
 can put files and finish the commits at will, and **the pipeline job
 will run once all the input commits have been finished**.
@@ -88,7 +89,7 @@ are executed atomically.
   ```
 
   {{% notice tip %}}
-  As soon as a commit is started (whether through `start commit` or `put file` without an open commit, or finishing a transaction that contains a start commit), a new [**global commit** as well as a **global job**](../../../concepts/advanced-concepts/globalID/#definition) is created. All open commits are in a `started` state, each of the pipeline jobs created is `running`, and the workers waiting for the commit(s) to be closed to process the data. In other words, your changes will only be applied when you close the commits.
+  As soon as a commit is started (whether through `start commit` or `put file` without an open commit, or finishing a transaction that contains a start commit), a new [**global commit** as well as a **global job**](../../learn/glossary/globalid) is created. All open commits are in a `started` state, each of the pipeline jobs created is `running`, and the workers waiting for the commit(s) to be closed to process the data. In other words, your changes will only be applied when you close the commits.
 
   In the case of a transaction, the workers will wait until all of the input commits are finished to process them in one batch. All of those commits and jobs will be part of the same global commit/job and share the same globalID (**`Transaction ID`**). Without a transaction, each commit would trigger its own separate job.
   {{%/notice %}}
@@ -219,7 +220,7 @@ organizational and performance reasons.
 
 ### Switching from Staging to Master Simultaneously
 
-If you are using [deferred processing](../../../concepts/advanced-concepts/deferred-processing/)
+If you are using [deferred processing](../../learn/glossary/deferred-processing)
 in your repositories because you want to commit your changes frequently
 without triggering jobs every time, then transactions can help you
 manage deferred processing with multiple inputs. You commit your

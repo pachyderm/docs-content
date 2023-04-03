@@ -7,10 +7,11 @@ date:
 tags: ["sql","ingest", "data-operations"]
 series:
 seriesPart:
+directory: true
 ---
 
 {{% notice warning %}}
-SQL Ingest is an [experimental feature](../../../reference/supported-releases/#experimental).
+SQL Ingest is an [experimental feature](../../manage/supported-releases/#experimental).
 {{%/notice%}}
 
 You can inject database content, collected by your data warehouse, by pulling the result of a given query into {{% productName %}} and saving it as a CSV or JSON file.
@@ -44,7 +45,7 @@ You must generate a secret that contains the password granting user access to th
 7. Confirm secret by running `pachctl list secret`. 
    
 {{% notice note %}}
-Not all secret formats are the same. For a full walkthrough on how to create, edit, and view different types of secrets, see [Create and Manage Secrets in {{% productName %}}](../../advanced-data-operations/secrets/#create-a-secret).
+Not all secret formats are the same. For a full walkthrough on how to create, edit, and view different types of secrets, see [Create and Manage Secrets in {{% productName %}}](../../manage/secrets).
 {{% /notice %}}
 
 ### 2. Create a Database Connection String
@@ -122,7 +123,7 @@ In this example, we are leveraging Snowflake's support for queries traversing [s
 SQL Ingest's Jsonnet pipeline spec, [**`sql_ingest_cron.jsonnet`**](https://github.com/pachyderm/pachyderm/blob/{{% majorMinorVersion %}}/src/templates/sql_ingest_cron.jsonnet), creates all of the following:
 
 - **1 Input Data Repo**: Used to store timestamp files at the cronSpec's set interval rate (`--arg cronSpec="pullInterval" \`) to trigger the pipeline.
-- [**1 Cron Pipeline**](../../../concepts/pipeline-concepts/pipeline/cron/#cron-pipeline): Houses the spec details that define the input type and settings and  data transformation.
+- [**1 Cron Pipeline**](../../build-dags/pipeline-spec/input-cron): Houses the spec details that define the input type and settings and  data transformation.
 -  **1 Output Repo**: Used to store the data transformed by the cron pipeline; set by the pipeline spec's `pipeline.name` attribute, which you can define through the Jsonnet parameter `--arg name=outputRepoName \`.
 - **1 Output File**: Used to save the query results (JSON or CSV) and potentially be used as input for a following pipeline.
 
