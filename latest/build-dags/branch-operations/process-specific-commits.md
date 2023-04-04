@@ -21,7 +21,7 @@ weight:
 
 ## How to Process Specific Commits
 
-To do process a specific commit, you need to set the `master` branch of your repo to have your specified commit as `HEAD`.
+To process a specific commit, you need to set the `master` branch of your repo to have your specified commit as `HEAD`.
 
 For example, if you submitted ten commits in the `staging` branch and you want to process the seventh, third, and most recent commits, you need to run the following commands respectively:
 
@@ -31,9 +31,13 @@ pachctl create branch data@master --head staging^3
 pachctl create branch data@master --head staging
 ```
 
-When you run the commands above, {{%productName%}} creates a job for each of the commands one after another. Therefore, when one job is completed, {{%productName%}} starts the next one. To verify that {{%productName%}} created jobs for these commands, run `pachctl list job -p <pipeline_name> --history all`.
+When you run the commands above, {{%productName%}} creates a job for each of the commands one after another. Therefore, when one job is completed, {{%productName%}} starts the next one. To verify that {{%productName%}} created jobs for these commands, run the following:
 
-### Change the HEAD of your Branch
+```s
+pachctl list job -p <pipeline_name> --history all
+```
+
+## How to Change the Branch HEAD 
 
 You can move backward to previous commits as easily as advancing to the latest commits. For example, if you want to change the final output to be the result of processing `staging^1`, you can _roll back_ your HEAD commit by running the following command:
 
