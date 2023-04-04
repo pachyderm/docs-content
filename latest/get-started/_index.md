@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Get Started
-description: Start Here.
+description: Start here.
 date: 
 # taxonomy #
 tags: 
