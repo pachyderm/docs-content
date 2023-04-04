@@ -13,12 +13,7 @@ Deferred Processing is a technique that allows you to commit data more frequentl
 
 There are several ways to leverage deferred processing with {{% productName %}}:
 
-1. [Input repo staging branches](TBD)
-2. [Commit-specific processing](TBD)
-3. [Branch triggers](TBD)
-4. [Pipeline Specification triggers](TBD)
-5. [Kubernetes apps that use {{% productName %}} APIs](TBD)
-
-<!-- Todo: create guides for each method -->
-
- 
+1. [Defer processing via a staging branch](../../../prepare-data/dp-staging-branch)
+2. [Process specific commits](../../../build-dags/branch-operations/process-specific-commits)
+3. [Set branch triggers](../../../build-dags/branch-operations/set-branch-triggers)
+4. [Set a custom output branch](../../../build-dags/branch-operations/set-output-branch)

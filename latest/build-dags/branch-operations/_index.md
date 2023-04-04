@@ -1,6 +1,6 @@
 ---
 # metadata # 
-title:  Branch Operations
+title:  Branch Ops
 description: Learn how to create, delete, and update branches.
 date: 
 # taxonomy #

@@ -1,6 +1,6 @@
 ---
 # metadata #
-title:  Project Operations
+title:  Project Ops
 description: Learn how to create, delete, and update projects
 date:
 # taxonomy #

@@ -17,13 +17,10 @@ When a new commit is made, {{% productName %}} creates an associated commit ID; 
 
 You can perform the following actions with a Global ID:
 
-1. [List all global commits](TBD)
-2. [List all global jobs](TBD)
-3. [List all commits associated with a global ID](TBD)
-4. [List all jobs associated with a global ID](TBD)
-5. [Track provenance downstream, live](TBD)
-6. [Squash commits](TBD)
-7. [Delete commits](TBD)
+1. [List all global commits & jobs](../../../build-dags/provenance-operations/list-globals)
+2. [List all sub-commits associated with a global ID](../../../build-dags/provenance-operations/list-sub-commits)
+3. [Track provenance downstream, live](../../../build-dags/provenance-operations/track-downstream)
+4. [Squash & delete commits](../../../prepare-data/removing-data)
 
 
 
