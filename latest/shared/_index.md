@@ -1,3 +1,4 @@
 ---
+title: Shared
 hidden: true
 ---
