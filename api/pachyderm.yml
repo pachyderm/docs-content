@@ -1,0 +1,6166 @@
+---
+openapi: 3.0.0
+info:
+  title: pps
+  description: ''
+  version: '1'
+paths:
+  "/pps_v2/API/InspectJob":
+    post:
+      operationId: pps_v2.API.InspectJob
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pps_v2.InspectJobRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/pps_v2.JobInfo"
+  "/pps_v2/API/InspectJobSet":
+    post:
+      operationId: pps_v2.API.InspectJobSet
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pps_v2.InspectJobSetRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/pps_v2.JobInfo"
+  "/pps_v2/API/ListJob":
+    post:
+      operationId: pps_v2.API.ListJob
+      description: ListJob returns information about current and past Pachyderm jobs.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pps_v2.ListJobRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/pps_v2.JobInfo"
+  "/pps_v2/API/ListJobSet":
+    post:
+      operationId: pps_v2.API.ListJobSet
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pps_v2.ListJobSetRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/pps_v2.JobSetInfo"
+  "/pps_v2/API/SubscribeJob":
+    post:
+      operationId: pps_v2.API.SubscribeJob
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pps_v2.SubscribeJobRequest"
+        description: Streams open jobs until canceled
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/pps_v2.JobInfo"
+  "/pps_v2/API/DeleteJob":
+    post:
+      operationId: pps_v2.API.DeleteJob
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pps_v2.DeleteJobRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/google.protobuf.Empty"
+  "/pps_v2/API/StopJob":
+    post:
+      operationId: pps_v2.API.StopJob
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pps_v2.StopJobRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/google.protobuf.Empty"
+  "/pps_v2/API/InspectDatum":
+    post:
+      operationId: pps_v2.API.InspectDatum
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pps_v2.InspectDatumRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/pps_v2.DatumInfo"
+  "/pps_v2/API/ListDatum":
+    post:
+      operationId: pps_v2.API.ListDatum
+      description: ListDatum returns information about each datum fed to a Pachyderm
+        job
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pps_v2.ListDatumRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/pps_v2.DatumInfo"
+  "/pps_v2/API/RestartDatum":
+    post:
+      operationId: pps_v2.API.RestartDatum
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pps_v2.RestartDatumRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/google.protobuf.Empty"
+  "/pps_v2/API/CreatePipeline":
+    post:
+      operationId: pps_v2.API.CreatePipeline
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pps_v2.CreatePipelineRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/google.protobuf.Empty"
+  "/pps_v2/API/InspectPipeline":
+    post:
+      operationId: pps_v2.API.InspectPipeline
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pps_v2.InspectPipelineRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/pps_v2.PipelineInfo"
+  "/pps_v2/API/ListPipeline":
+    post:
+      operationId: pps_v2.API.ListPipeline
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pps_v2.ListPipelineRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/pps_v2.PipelineInfo"
+  "/pps_v2/API/DeletePipeline":
+    post:
+      operationId: pps_v2.API.DeletePipeline
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pps_v2.DeletePipelineRequest"
+        description: |-
+          Delete a pipeline.  If the deprecated all member is true, then delete all
+          pipelines in the default project.
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/google.protobuf.Empty"
+  "/pps_v2/API/DeletePipelines":
+    post:
+      operationId: pps_v2.API.DeletePipelines
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pps_v2.DeletePipelinesRequest"
+        description: Delete more than one pipeline.
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/pps_v2.DeletePipelinesResponse"
+  "/pps_v2/API/StartPipeline":
+    post:
+      operationId: pps_v2.API.StartPipeline
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pps_v2.StartPipelineRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/google.protobuf.Empty"
+  "/pps_v2/API/StopPipeline":
+    post:
+      operationId: pps_v2.API.StopPipeline
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pps_v2.StopPipelineRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/google.protobuf.Empty"
+  "/pps_v2/API/RunPipeline":
+    post:
+      operationId: pps_v2.API.RunPipeline
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pps_v2.RunPipelineRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/google.protobuf.Empty"
+  "/pps_v2/API/RunCron":
+    post:
+      operationId: pps_v2.API.RunCron
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pps_v2.RunCronRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/google.protobuf.Empty"
+  "/pps_v2/API/CreateSecret":
+    post:
+      operationId: pps_v2.API.CreateSecret
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pps_v2.CreateSecretRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/google.protobuf.Empty"
+  "/pps_v2/API/DeleteSecret":
+    post:
+      operationId: pps_v2.API.DeleteSecret
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pps_v2.DeleteSecretRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/google.protobuf.Empty"
+  "/pps_v2/API/ListSecret":
+    post:
+      operationId: pps_v2.API.ListSecret
+      description: ''
+      requestBody:
+        "$ref": "#/components/requestBodies/google.protobuf.Empty"
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/pps_v2.SecretInfos"
+  "/pps_v2/API/InspectSecret":
+    post:
+      operationId: pps_v2.API.InspectSecret
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pps_v2.InspectSecretRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/pps_v2.SecretInfo"
+  "/pps_v2/API/DeleteAll":
+    post:
+      operationId: pps_v2.API.DeleteAll
+      description: DeleteAll deletes everything
+      requestBody:
+        "$ref": "#/components/requestBodies/google.protobuf.Empty"
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/google.protobuf.Empty"
+  "/pps_v2/API/GetLogs":
+    post:
+      operationId: pps_v2.API.GetLogs
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pps_v2.GetLogsRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/pps_v2.LogMessage"
+  "/pps_v2/API/ActivateAuth":
+    post:
+      operationId: pps_v2.API.ActivateAuth
+      description: |-
+        An internal call that causes PPS to put itself into an auth-enabled state
+        (all pipeline have tokens, correct permissions, etcd)
+      requestBody:
+        "$ref": "#/components/requestBodies/pps_v2.ActivateAuthRequest"
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/pps_v2.ActivateAuthResponse"
+  "/pps_v2/API/UpdateJobState":
+    post:
+      operationId: pps_v2.API.UpdateJobState
+      description: An internal call used to move a job from one state to another
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pps_v2.UpdateJobStateRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/google.protobuf.Empty"
+  "/pps_v2/API/RunLoadTest":
+    post:
+      operationId: pps_v2.API.RunLoadTest
+      description: RunLoadTest runs a load test.
+      requestBody:
+        "$ref": "#/components/requestBodies/pps_v2.RunLoadTestRequest"
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/pps_v2.RunLoadTestResponse"
+  "/pps_v2/API/RunLoadTestDefault":
+    post:
+      operationId: pps_v2.API.RunLoadTestDefault
+      description: RunLoadTestDefault runs the default load test.
+      requestBody:
+        "$ref": "#/components/requestBodies/google.protobuf.Empty"
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/pps_v2.RunLoadTestResponse"
+  "/pps_v2/API/RenderTemplate":
+    post:
+      operationId: pps_v2.API.RenderTemplate
+      description: RenderTemplate renders the provided template and arguments into
+        a list of Pipeline specicifications
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pps_v2.RenderTemplateRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/pps_v2.RenderTemplateResponse"
+  "/pps_v2/API/ListTask":
+    post:
+      operationId: pps_v2.API.ListTask
+      description: ListTask lists PPS tasks
+      requestBody:
+        "$ref": "#/components/requestBodies/taskapi.ListTaskRequest"
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/taskapi.TaskInfo"
+  "/pps_v2/API/GetKubeEvents":
+    post:
+      operationId: pps_v2.API.GetKubeEvents
+      description: GetKubeEvents returns a stream of kubernetes events
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pps_v2.LokiRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/pps_v2.LokiLogMessage"
+  "/pfs_v2/API/CreateRepo":
+    post:
+      operationId: pfs_v2.API.CreateRepo
+      description: CreateRepo creates a new repo.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pfs_v2.CreateRepoRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/google.protobuf.Empty"
+  "/pfs_v2/API/InspectRepo":
+    post:
+      operationId: pfs_v2.API.InspectRepo
+      description: InspectRepo returns info about a repo.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pfs_v2.InspectRepoRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/pfs_v2.RepoInfo"
+  "/pfs_v2/API/ListRepo":
+    post:
+      operationId: pfs_v2.API.ListRepo
+      description: ListRepo returns info about all repos.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pfs_v2.ListRepoRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/pfs_v2.RepoInfo"
+  "/pfs_v2/API/DeleteRepo":
+    post:
+      operationId: pfs_v2.API.DeleteRepo
+      description: DeleteRepo deletes a repo.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pfs_v2.DeleteRepoRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/google.protobuf.Empty"
+  "/pfs_v2/API/DeleteRepos":
+    post:
+      operationId: pfs_v2.API.DeleteRepos
+      description: |-
+        DeleteRepos deletes more than one repo at once.  It attempts to
+        delete every repo matching the DeleteReposRequest.  When deleting
+        all repos matching a project, any repos not deletable by the
+        caller will remain, and the project will not be empty; this is
+        not an error.  The returned DeleteReposResponse will contain a
+        list of all actually-deleted repos.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pfs_v2.DeleteReposRequest"
+        description: DeleteReposRequest is used to delete more than one repo at once.
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/pfs_v2.DeleteReposResponse"
+  "/pfs_v2/API/StartCommit":
+    post:
+      operationId: pfs_v2.API.StartCommit
+      description: StartCommit creates a new write commit from a parent commit.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pfs_v2.StartCommitRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/pfs_v2.Commit"
+  "/pfs_v2/API/FinishCommit":
+    post:
+      operationId: pfs_v2.API.FinishCommit
+      description: FinishCommit turns a write commit into a read commit.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pfs_v2.FinishCommitRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/google.protobuf.Empty"
+  "/pfs_v2/API/ClearCommit":
+    post:
+      operationId: pfs_v2.API.ClearCommit
+      description: ClearCommit removes all data from the commit.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pfs_v2.ClearCommitRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/google.protobuf.Empty"
+  "/pfs_v2/API/InspectCommit":
+    post:
+      operationId: pfs_v2.API.InspectCommit
+      description: InspectCommit returns the info about a commit.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pfs_v2.InspectCommitRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/pfs_v2.CommitInfo"
+  "/pfs_v2/API/ListCommit":
+    post:
+      operationId: pfs_v2.API.ListCommit
+      description: ListCommit returns info about all commits.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pfs_v2.ListCommitRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/pfs_v2.CommitInfo"
+  "/pfs_v2/API/SubscribeCommit":
+    post:
+      operationId: pfs_v2.API.SubscribeCommit
+      description: SubscribeCommit subscribes for new commits on a given branch.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pfs_v2.SubscribeCommitRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/pfs_v2.CommitInfo"
+  "/pfs_v2/API/InspectCommitSet":
+    post:
+      operationId: pfs_v2.API.InspectCommitSet
+      description: InspectCommitSet returns the info about a CommitSet.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pfs_v2.InspectCommitSetRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/pfs_v2.CommitInfo"
+  "/pfs_v2/API/ListCommitSet":
+    post:
+      operationId: pfs_v2.API.ListCommitSet
+      description: ListCommitSet returns info about all CommitSets.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pfs_v2.ListCommitSetRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/pfs_v2.CommitSetInfo"
+  "/pfs_v2/API/SquashCommitSet":
+    post:
+      operationId: pfs_v2.API.SquashCommitSet
+      description: SquashCommitSet squashes the commits of a CommitSet into their
+        children.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pfs_v2.SquashCommitSetRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/google.protobuf.Empty"
+  "/pfs_v2/API/DropCommitSet":
+    post:
+      operationId: pfs_v2.API.DropCommitSet
+      description: DropCommitSet drops the commits of a CommitSet and all data included
+        in the commits.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pfs_v2.DropCommitSetRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/google.protobuf.Empty"
+  "/pfs_v2/API/FindCommits":
+    post:
+      operationId: pfs_v2.API.FindCommits
+      description: FindCommits searches for commits that reference a supplied file
+        being modified in a branch.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pfs_v2.FindCommitsRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/pfs_v2.FindCommitsResponse"
+  "/pfs_v2/API/CreateBranch":
+    post:
+      operationId: pfs_v2.API.CreateBranch
+      description: CreateBranch creates a new branch.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pfs_v2.CreateBranchRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/google.protobuf.Empty"
+  "/pfs_v2/API/InspectBranch":
+    post:
+      operationId: pfs_v2.API.InspectBranch
+      description: InspectBranch returns info about a branch.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pfs_v2.InspectBranchRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/pfs_v2.BranchInfo"
+  "/pfs_v2/API/ListBranch":
+    post:
+      operationId: pfs_v2.API.ListBranch
+      description: ListBranch returns info about the heads of branches.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pfs_v2.ListBranchRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/pfs_v2.BranchInfo"
+  "/pfs_v2/API/DeleteBranch":
+    post:
+      operationId: pfs_v2.API.DeleteBranch
+      description: DeleteBranch deletes a branch; note that the commits still exist.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pfs_v2.DeleteBranchRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/google.protobuf.Empty"
+  "/pfs_v2/API/ModifyFile":
+    post:
+      operationId: pfs_v2.API.ModifyFile
+      description: ModifyFile performs modifications on a set of files.
+      requestBody:
+        "$ref": "#/components/requestBodies/pfs_v2.ModifyFileRequest"
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/google.protobuf.Empty"
+  "/pfs_v2/API/GetFile":
+    post:
+      operationId: pfs_v2.API.GetFile
+      description: GetFile returns the contents of a single file
+      requestBody:
+        "$ref": "#/components/requestBodies/pfs_v2.GetFileRequest"
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/google.protobuf.BytesValue"
+  "/pfs_v2/API/GetFileTAR":
+    post:
+      operationId: pfs_v2.API.GetFileTAR
+      description: GetFileTAR returns a TAR stream of the contents matched by the
+        request
+      requestBody:
+        "$ref": "#/components/requestBodies/pfs_v2.GetFileRequest"
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/google.protobuf.BytesValue"
+  "/pfs_v2/API/InspectFile":
+    post:
+      operationId: pfs_v2.API.InspectFile
+      description: InspectFile returns info about a file.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pfs_v2.InspectFileRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/pfs_v2.FileInfo"
+  "/pfs_v2/API/ListFile":
+    post:
+      operationId: pfs_v2.API.ListFile
+      description: ListFile returns info about all files.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pfs_v2.ListFileRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/pfs_v2.FileInfo"
+  "/pfs_v2/API/WalkFile":
+    post:
+      operationId: pfs_v2.API.WalkFile
+      description: WalkFile walks over all the files under a directory, including
+        children of children.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pfs_v2.WalkFileRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/pfs_v2.FileInfo"
+  "/pfs_v2/API/GlobFile":
+    post:
+      operationId: pfs_v2.API.GlobFile
+      description: GlobFile returns info about all files.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pfs_v2.GlobFileRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/pfs_v2.FileInfo"
+  "/pfs_v2/API/DiffFile":
+    post:
+      operationId: pfs_v2.API.DiffFile
+      description: DiffFile returns the differences between 2 paths at 2 commits.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pfs_v2.DiffFileRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/pfs_v2.DiffFileResponse"
+  "/pfs_v2/API/ActivateAuth":
+    post:
+      operationId: pfs_v2.API.ActivateAuth
+      description: ActivateAuth creates a role binding for all existing repos
+      requestBody:
+        "$ref": "#/components/requestBodies/pps_v2.ActivateAuthRequest"
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/pps_v2.ActivateAuthResponse"
+  "/pfs_v2/API/DeleteAll":
+    post:
+      operationId: pfs_v2.API.DeleteAll
+      description: DeleteAll deletes everything.
+      requestBody:
+        "$ref": "#/components/requestBodies/google.protobuf.Empty"
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/google.protobuf.Empty"
+  "/pfs_v2/API/Fsck":
+    post:
+      operationId: pfs_v2.API.Fsck
+      description: Fsck does a file system consistency check for pfs.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pfs_v2.FsckRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/pfs_v2.FsckResponse"
+  "/pfs_v2/API/CreateFileSet":
+    post:
+      operationId: pfs_v2.API.CreateFileSet
+      description: |-
+        FileSet API
+        CreateFileSet creates a new file set.
+      requestBody:
+        "$ref": "#/components/requestBodies/pfs_v2.ModifyFileRequest"
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/pfs_v2.CreateFileSetResponse"
+  "/pfs_v2/API/GetFileSet":
+    post:
+      operationId: pfs_v2.API.GetFileSet
+      description: GetFileSet returns a file set with the data from a commit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pfs_v2.GetFileSetRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/pfs_v2.CreateFileSetResponse"
+  "/pfs_v2/API/AddFileSet":
+    post:
+      operationId: pfs_v2.API.AddFileSet
+      description: AddFileSet associates a file set with a commit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pfs_v2.AddFileSetRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/google.protobuf.Empty"
+  "/pfs_v2/API/RenewFileSet":
+    post:
+      operationId: pfs_v2.API.RenewFileSet
+      description: RenewFileSet prevents a file set from being deleted for a set amount
+        of time.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pfs_v2.RenewFileSetRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/google.protobuf.Empty"
+  "/pfs_v2/API/ComposeFileSet":
+    post:
+      operationId: pfs_v2.API.ComposeFileSet
+      description: ComposeFileSet composes a file set from a list of file sets.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pfs_v2.ComposeFileSetRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/pfs_v2.CreateFileSetResponse"
+  "/pfs_v2/API/ShardFileSet":
+    post:
+      operationId: pfs_v2.API.ShardFileSet
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pfs_v2.ShardFileSetRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/pfs_v2.ShardFileSetResponse"
+  "/pfs_v2/API/CheckStorage":
+    post:
+      operationId: pfs_v2.API.CheckStorage
+      description: CheckStorage runs integrity checks for the storage layer.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pfs_v2.CheckStorageRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/pfs_v2.CheckStorageResponse"
+  "/pfs_v2/API/PutCache":
+    post:
+      operationId: pfs_v2.API.PutCache
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pfs_v2.PutCacheRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/google.protobuf.Empty"
+  "/pfs_v2/API/GetCache":
+    post:
+      operationId: pfs_v2.API.GetCache
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pfs_v2.GetCacheRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/pfs_v2.GetCacheResponse"
+  "/pfs_v2/API/ClearCache":
+    post:
+      operationId: pfs_v2.API.ClearCache
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pfs_v2.ClearCacheRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/google.protobuf.Empty"
+  "/pfs_v2/API/RunLoadTest":
+    post:
+      operationId: pfs_v2.API.RunLoadTest
+      description: RunLoadTest runs a load test.
+      requestBody:
+        "$ref": "#/components/requestBodies/pps_v2.RunLoadTestRequest"
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/pps_v2.RunLoadTestResponse"
+  "/pfs_v2/API/RunLoadTestDefault":
+    post:
+      operationId: pfs_v2.API.RunLoadTestDefault
+      description: RunLoadTestDefault runs the default load tests.
+      requestBody:
+        "$ref": "#/components/requestBodies/google.protobuf.Empty"
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/pps_v2.RunLoadTestResponse"
+  "/pfs_v2/API/ListTask":
+    post:
+      operationId: pfs_v2.API.ListTask
+      description: ListTask lists PFS tasks
+      requestBody:
+        "$ref": "#/components/requestBodies/taskapi.ListTaskRequest"
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/taskapi.TaskInfo"
+  "/pfs_v2/API/Egress":
+    post:
+      operationId: pfs_v2.API.Egress
+      description: Egress writes data from a commit to an external system
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pfs_v2.EgressRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/pfs_v2.EgressResponse"
+  "/pfs_v2/API/CreateProject":
+    post:
+      operationId: pfs_v2.API.CreateProject
+      description: |-
+        Project API
+        CreateProject creates a new project.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pfs_v2.CreateProjectRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/google.protobuf.Empty"
+  "/pfs_v2/API/InspectProject":
+    post:
+      operationId: pfs_v2.API.InspectProject
+      description: InspectProject returns info about a project.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pfs_v2.InspectProjectRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/pfs_v2.ProjectInfo"
+  "/pfs_v2/API/ListProject":
+    post:
+      operationId: pfs_v2.API.ListProject
+      description: ListProject returns info about all projects.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pfs_v2.ListProjectRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/pfs_v2.ProjectInfo"
+  "/pfs_v2/API/DeleteProject":
+    post:
+      operationId: pfs_v2.API.DeleteProject
+      description: DeleteProject deletes a project.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pfs_v2.DeleteProjectRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/google.protobuf.Empty"
+  "/admin_v2/API/InspectCluster":
+    post:
+      operationId: admin_v2.API.InspectCluster
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/admin_v2.InspectClusterRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/admin_v2.ClusterInfo"
+  "/debug_v2/Debug/Profile":
+    post:
+      operationId: debug_v2.Debug.Profile
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/debug_v2.ProfileRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/google.protobuf.BytesValue"
+  "/debug_v2/Debug/Binary":
+    post:
+      operationId: debug_v2.Debug.Binary
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/debug_v2.BinaryRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/google.protobuf.BytesValue"
+  "/debug_v2/Debug/Dump":
+    post:
+      operationId: debug_v2.Debug.Dump
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/debug_v2.DumpRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/google.protobuf.BytesValue"
+  "/debug_v2/Debug/SetLogLevel":
+    post:
+      operationId: debug_v2.Debug.SetLogLevel
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/debug_v2.SetLogLevelRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/debug_v2.SetLogLevelResponse"
+  "/enterprise_v2/API/Activate":
+    post:
+      operationId: enterprise_v2.API.Activate
+      description: |-
+        Provide a Pachyderm enterprise token, enabling Pachyderm enterprise
+        features, such as the Pachyderm Dashboard and Auth system
+      requestBody:
+        "$ref": "#/components/requestBodies/enterprise_v2.ActivateRequest"
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/enterprise_v2.ActivateResponse"
+  "/enterprise_v2/API/GetState":
+    post:
+      operationId: enterprise_v2.API.GetState
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/enterprise_v2.GetStateRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/enterprise_v2.GetStateResponse"
+  "/enterprise_v2/API/GetActivationCode":
+    post:
+      operationId: enterprise_v2.API.GetActivationCode
+      description: ''
+      requestBody:
+        "$ref": "#/components/requestBodies/enterprise_v2.GetActivationCodeRequest"
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/enterprise_v2.GetActivationCodeResponse"
+  "/enterprise_v2/API/Heartbeat":
+    post:
+      operationId: enterprise_v2.API.Heartbeat
+      description: |-
+        Heartbeat is used in testing to trigger a heartbeat on demand. Normally this happens
+        on a timer.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/enterprise_v2.HeartbeatRequest"
+        description: |-
+          Heartbeat in the enterprise service just triggers a heartbeat for
+          testing purposes. The RPC used to communicate with the license
+          service is defined in the license service.
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/enterprise_v2.HeartbeatResponse"
+  "/enterprise_v2/API/Deactivate":
+    post:
+      operationId: enterprise_v2.API.Deactivate
+      description: |-
+        Deactivate removes a cluster's enterprise activation
+        token and sets its enterprise state to NONE.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/enterprise_v2.DeactivateRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/enterprise_v2.DeactivateResponse"
+  "/enterprise_v2/API/Pause":
+    post:
+      operationId: enterprise_v2.API.Pause
+      description: Pause pauses the cluster.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/enterprise_v2.PauseRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/enterprise_v2.PauseResponse"
+  "/enterprise_v2/API/Unpause":
+    post:
+      operationId: enterprise_v2.API.Unpause
+      description: Unpause unpauses the cluser.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/enterprise_v2.UnpauseRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/enterprise_v2.UnpauseResponse"
+  "/enterprise_v2/API/PauseStatus":
+    post:
+      operationId: enterprise_v2.API.PauseStatus
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/enterprise_v2.PauseStatusRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/enterprise_v2.PauseStatusResponse"
+  "/identity_v2/API/SetIdentityServerConfig":
+    post:
+      operationId: identity_v2.API.SetIdentityServerConfig
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/identity_v2.SetIdentityServerConfigRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/identity_v2.SetIdentityServerConfigResponse"
+  "/identity_v2/API/GetIdentityServerConfig":
+    post:
+      operationId: identity_v2.API.GetIdentityServerConfig
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/identity_v2.GetIdentityServerConfigRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/identity_v2.GetIdentityServerConfigResponse"
+  "/identity_v2/API/CreateIDPConnector":
+    post:
+      operationId: identity_v2.API.CreateIDPConnector
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/identity_v2.CreateIDPConnectorRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/identity_v2.CreateIDPConnectorResponse"
+  "/identity_v2/API/UpdateIDPConnector":
+    post:
+      operationId: identity_v2.API.UpdateIDPConnector
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/identity_v2.UpdateIDPConnectorRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/identity_v2.UpdateIDPConnectorResponse"
+  "/identity_v2/API/ListIDPConnectors":
+    post:
+      operationId: identity_v2.API.ListIDPConnectors
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/identity_v2.ListIDPConnectorsRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/identity_v2.ListIDPConnectorsResponse"
+  "/identity_v2/API/GetIDPConnector":
+    post:
+      operationId: identity_v2.API.GetIDPConnector
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/identity_v2.GetIDPConnectorRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/identity_v2.GetIDPConnectorResponse"
+  "/identity_v2/API/DeleteIDPConnector":
+    post:
+      operationId: identity_v2.API.DeleteIDPConnector
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/identity_v2.DeleteIDPConnectorRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/identity_v2.DeleteIDPConnectorResponse"
+  "/identity_v2/API/CreateOIDCClient":
+    post:
+      operationId: identity_v2.API.CreateOIDCClient
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/identity_v2.CreateOIDCClientRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/identity_v2.CreateOIDCClientResponse"
+  "/identity_v2/API/UpdateOIDCClient":
+    post:
+      operationId: identity_v2.API.UpdateOIDCClient
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/identity_v2.UpdateOIDCClientRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/identity_v2.UpdateOIDCClientResponse"
+  "/identity_v2/API/GetOIDCClient":
+    post:
+      operationId: identity_v2.API.GetOIDCClient
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/identity_v2.GetOIDCClientRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/identity_v2.GetOIDCClientResponse"
+  "/identity_v2/API/ListOIDCClients":
+    post:
+      operationId: identity_v2.API.ListOIDCClients
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/identity_v2.ListOIDCClientsRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/identity_v2.ListOIDCClientsResponse"
+  "/identity_v2/API/DeleteOIDCClient":
+    post:
+      operationId: identity_v2.API.DeleteOIDCClient
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/identity_v2.DeleteOIDCClientRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/identity_v2.DeleteOIDCClientResponse"
+  "/identity_v2/API/DeleteAll":
+    post:
+      operationId: identity_v2.API.DeleteAll
+      description: ''
+      requestBody:
+        "$ref": "#/components/requestBodies/identity_v2.DeleteAllRequest"
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/identity_v2.DeleteAllResponse"
+  "/license_v2/API/Activate":
+    post:
+      operationId: license_v2.API.Activate
+      description: |-
+        Activate enables the license service by setting the enterprise activation
+        code to serve.
+      requestBody:
+        "$ref": "#/components/requestBodies/enterprise_v2.ActivateRequest"
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/enterprise_v2.ActivateResponse"
+  "/license_v2/API/GetActivationCode":
+    post:
+      operationId: license_v2.API.GetActivationCode
+      description: ''
+      requestBody:
+        "$ref": "#/components/requestBodies/enterprise_v2.GetActivationCodeRequest"
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/enterprise_v2.GetActivationCodeResponse"
+  "/license_v2/API/DeleteAll":
+    post:
+      operationId: license_v2.API.DeleteAll
+      description: DeleteAll deactivates the server and removes all data.
+      requestBody:
+        "$ref": "#/components/requestBodies/identity_v2.DeleteAllRequest"
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/identity_v2.DeleteAllResponse"
+  "/license_v2/API/AddCluster":
+    post:
+      operationId: license_v2.API.AddCluster
+      description: CRUD operations for the pachds registered with this server.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/license_v2.AddClusterRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/license_v2.AddClusterResponse"
+  "/license_v2/API/DeleteCluster":
+    post:
+      operationId: license_v2.API.DeleteCluster
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/license_v2.DeleteClusterRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/license_v2.DeleteClusterResponse"
+  "/license_v2/API/ListClusters":
+    post:
+      operationId: license_v2.API.ListClusters
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/license_v2.ListClustersRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/license_v2.ListClustersResponse"
+  "/license_v2/API/UpdateCluster":
+    post:
+      operationId: license_v2.API.UpdateCluster
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/license_v2.UpdateClusterRequest"
+        description: 'Note: Updates of the enterprise-server field are not allowed.
+          In the worst case, a user can recreate their cluster if they need the field
+          updated.'
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/license_v2.UpdateClusterResponse"
+  "/license_v2/API/Heartbeat":
+    post:
+      operationId: license_v2.API.Heartbeat
+      description: |-
+        Heartbeat is the RPC registered pachds make to the license server
+        to communicate their status and fetch updates.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/enterprise_v2.HeartbeatRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/enterprise_v2.HeartbeatResponse"
+  "/license_v2/API/ListUserClusters":
+    post:
+      operationId: license_v2.API.ListUserClusters
+      description: Lists all clusters available to user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/license_v2.ListUserClustersRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/license_v2.ListUserClustersResponse"
+  "/proxy/API/Listen":
+    post:
+      operationId: proxy.API.Listen
+      description: |-
+        Listen streams database events.
+        It signals that it is internally set up by sending an initial empty ListenResponse.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/proxy.ListenRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/proxy.ListenResponse"
+  "/transaction_v2/API/BatchTransaction":
+    post:
+      operationId: transaction_v2.API.BatchTransaction
+      description: Transaction rpcs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/transaction_v2.BatchTransactionRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/transaction_v2.TransactionInfo"
+  "/transaction_v2/API/StartTransaction":
+    post:
+      operationId: transaction_v2.API.StartTransaction
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/transaction_v2.StartTransactionRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/transaction_v2.Transaction"
+  "/transaction_v2/API/InspectTransaction":
+    post:
+      operationId: transaction_v2.API.InspectTransaction
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/transaction_v2.InspectTransactionRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/transaction_v2.TransactionInfo"
+  "/transaction_v2/API/DeleteTransaction":
+    post:
+      operationId: transaction_v2.API.DeleteTransaction
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/transaction_v2.DeleteTransactionRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/google.protobuf.Empty"
+  "/transaction_v2/API/ListTransaction":
+    post:
+      operationId: transaction_v2.API.ListTransaction
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/transaction_v2.ListTransactionRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/transaction_v2.TransactionInfos"
+  "/transaction_v2/API/FinishTransaction":
+    post:
+      operationId: transaction_v2.API.FinishTransaction
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/transaction_v2.FinishTransactionRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/transaction_v2.TransactionInfo"
+  "/transaction_v2/API/DeleteAll":
+    post:
+      operationId: transaction_v2.API.DeleteAll
+      description: ''
+      requestBody:
+        "$ref": "#/components/requestBodies/identity_v2.DeleteAllRequest"
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/google.protobuf.Empty"
+  "/versionpb_v2/API/GetVersion":
+    post:
+      operationId: versionpb_v2.API.GetVersion
+      description: ''
+      requestBody:
+        "$ref": "#/components/requestBodies/google.protobuf.Empty"
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/versionpb_v2.Version"
+  "/pachyderm/worker/Worker/Status":
+    post:
+      operationId: pachyderm.worker.Worker.Status
+      description: ''
+      requestBody:
+        "$ref": "#/components/requestBodies/google.protobuf.Empty"
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/pps_v2.WorkerStatus"
+  "/pachyderm/worker/Worker/Cancel":
+    post:
+      operationId: pachyderm.worker.Worker.Cancel
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pachyderm.worker.CancelRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/pachyderm.worker.CancelResponse"
+  "/pachyderm/worker/Worker/NextDatum":
+    post:
+      operationId: pachyderm.worker.Worker.NextDatum
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/pachyderm.worker.NextDatumRequest"
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/pachyderm.worker.NextDatumResponse"
+  "/api/test":
+    get:
+      responses:
+        '200':
+          description: "tbd"
+components:
+  requestBodies:
+    pps_v2.ActivateAuthRequest:
+      content:
+        application/json:
+          schema:
+            "$ref": "#/components/schemas/pps_v2.ActivateAuthRequest"
+      required: true
+    pfs_v2.GetFileRequest:
+      content:
+        application/json:
+          schema:
+            "$ref": "#/components/schemas/pfs_v2.GetFileRequest"
+      required: true
+    pfs_v2.ModifyFileRequest:
+      content:
+        application/json:
+          schema:
+            "$ref": "#/components/schemas/pfs_v2.ModifyFileRequest"
+      required: true
+    google.protobuf.Empty:
+      content:
+        application/json:
+          schema:
+            "$ref": "#/components/schemas/google.protobuf.Empty"
+      required: true
+    pps_v2.RunLoadTestRequest:
+      content:
+        application/json:
+          schema:
+            "$ref": "#/components/schemas/pps_v2.RunLoadTestRequest"
+      required: true
+    taskapi.ListTaskRequest:
+      content:
+        application/json:
+          schema:
+            "$ref": "#/components/schemas/taskapi.ListTaskRequest"
+      required: true
+    enterprise_v2.ActivateRequest:
+      content:
+        application/json:
+          schema:
+            "$ref": "#/components/schemas/enterprise_v2.ActivateRequest"
+      required: true
+    enterprise_v2.GetActivationCodeRequest:
+      content:
+        application/json:
+          schema:
+            "$ref": "#/components/schemas/enterprise_v2.GetActivationCodeRequest"
+      required: true
+    identity_v2.DeleteAllRequest:
+      content:
+        application/json:
+          schema:
+            "$ref": "#/components/schemas/identity_v2.DeleteAllRequest"
+      required: true
+  schemas:
+    pps_v2.SecretMount:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name must be the name of the secret in kubernetes.
+        key:
+          type: string
+          description: Key of the secret to load into env_var, this field only has
+            meaning if EnvVar != "".
+        mount_path:
+          type: string
+        env_var:
+          type: string
+    pps_v2.Transform:
+      type: object
+      properties:
+        image:
+          type: string
+        cmd:
+          type: array
+          items:
+            type: string
+        err_cmd:
+          type: array
+          items:
+            type: string
+        env:
+          type: string
+        secrets:
+          type: array
+          items:
+            "$ref": "#/components/schemas/pps_v2.SecretMount"
+        image_pull_secrets:
+          type: array
+          items:
+            type: string
+        stdin:
+          type: array
+          items:
+            type: string
+        err_stdin:
+          type: array
+          items:
+            type: string
+        accept_return_code:
+          type: array
+          items:
+            type: integer
+            format: int64
+        debug:
+          type: boolean
+        user:
+          type: string
+        working_dir:
+          type: string
+        dockerfile:
+          type: string
+        memory_volume:
+          type: boolean
+        datum_batching:
+          type: boolean
+    pps_v2.TFJob:
+      type: object
+      properties:
+        tf_job:
+          type: string
+          description: |-
+            tf_job  is a serialized Kubeflow TFJob spec. Pachyderm sends this directly
+            to a kubernetes cluster on which kubeflow has been installed, instead of
+            creating a pipeline ReplicationController as it normally would.
+    pps_v2.Egress:
+      type: object
+      properties:
+        URL:
+          type: string
+        object_storage:
+          "$ref": "#/components/schemas/pfs_v2.ObjectStorageEgress"
+        sql_database:
+          "$ref": "#/components/schemas/pfs_v2.SQLDatabaseEgress"
+    pps_v2.Job:
+      type: object
+      properties:
+        pipeline:
+          "$ref": "#/components/schemas/pps_v2.Pipeline"
+        id:
+          type: string
+    pps_v2.JobState:
+      type: number
+      enum:
+      - 0
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
+      - 8
+      - 9
+      description: "0 - JOB_STATE_UNKNOWN \n1 - JOB_CREATED \n2 - JOB_STARTING \n3
+        - JOB_RUNNING \n4 - JOB_FAILURE \n5 - JOB_SUCCESS \n6 - JOB_KILLED \n7 - JOB_EGRESSING
+        \n8 - JOB_FINISHING \n9 - JOB_UNRUNNABLE "
+    pps_v2.Metadata:
+      type: object
+      properties:
+        annotations:
+          type: string
+        labels:
+          type: string
+    pps_v2.Service:
+      type: object
+      properties:
+        internal_port:
+          type: integer
+          format: int32
+        external_port:
+          type: integer
+          format: int32
+        ip:
+          type: string
+        type:
+          type: string
+    pps_v2.Spout:
+      type: object
+      properties:
+        service:
+          "$ref": "#/components/schemas/pps_v2.Service"
+    pps_v2.PFSInput:
+      type: object
+      properties:
+        project:
+          type: string
+        name:
+          type: string
+        repo:
+          type: string
+        repo_type:
+          type: string
+        branch:
+          type: string
+        commit:
+          type: string
+        glob:
+          type: string
+        join_on:
+          type: string
+        outer_join:
+          type: boolean
+        group_by:
+          type: string
+        lazy:
+          type: boolean
+        empty_files:
+          type: boolean
+          description: |-
+            EmptyFiles, if true, will cause files from this PFS input to be
+            presented as empty files. This is useful in shuffle pipelines where you
+            want to read the names of files and reorganize them using symlinks.
+        s3:
+          type: boolean
+          description: |-
+            S3, if true, will cause the worker to NOT download or link files from this
+            input into the /pfs_v2 directory. Instead, an instance of our S3 gateway
+            service will run on each of the sidecars, and data can be retrieved from
+            this input by querying
+            http://<pipeline>-s3.<namespace>/<job id>.<input>/my/file
+        trigger:
+          "$ref": "#/components/schemas/pfs_v2.Trigger"
+    pps_v2.CronInput:
+      type: object
+      properties:
+        name:
+          type: string
+        project:
+          type: string
+        repo:
+          type: string
+        commit:
+          type: string
+        spec:
+          type: string
+        overwrite:
+          type: boolean
+          description: |-
+            Overwrite, if true, will expose a single datum that gets overwritten each
+            tick. If false, it will create a new datum for each tick.
+        start:
+          "$ref": "#/components/schemas/google.protobuf.Timestamp"
+    pps_v2.Input:
+      type: object
+      properties:
+        pfs:
+          "$ref": "#/components/schemas/pps_v2.PFSInput"
+        join:
+          type: array
+          items:
+            "$ref": "#/components/schemas/pps_v2.Input"
+        group:
+          type: array
+          items:
+            "$ref": "#/components/schemas/pps_v2.Input"
+        cross:
+          type: array
+          items:
+            "$ref": "#/components/schemas/pps_v2.Input"
+        union:
+          type: array
+          items:
+            "$ref": "#/components/schemas/pps_v2.Input"
+        cron:
+          "$ref": "#/components/schemas/pps_v2.CronInput"
+    pps_v2.JobInput:
+      type: object
+      properties:
+        name:
+          type: string
+        commit:
+          "$ref": "#/components/schemas/pfs_v2.Commit"
+        glob:
+          type: string
+        lazy:
+          type: boolean
+    pps_v2.ParallelismSpec:
+      type: object
+      properties:
+        constant:
+          type: integer
+          format: int64
+          description: |-
+            Starts the pipeline/job with a 'constant' workers, unless 'constant' is
+            zero. If 'constant' is zero (which is the zero value of ParallelismSpec),
+            then Pachyderm will choose the number of workers that is started,
+            (currently it chooses the number of workers in the cluster)
+    pps_v2.InputFile:
+      type: object
+      properties:
+        path:
+          type: string
+          description: This file's absolute path within its pfs repo.
+        hash:
+          type: string
+          format: byte
+          description: This file's hash
+    pps_v2.Datum:
+      type: object
+      properties:
+        job:
+          "$ref": "#/components/schemas/pps_v2.Job"
+        id:
+          type: string
+    pps_v2.DatumState:
+      type: number
+      enum:
+      - 0
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      description: "0 - UNKNOWN // or not part of a job\n1 - FAILED \n2 - SUCCESS
+        \n3 - SKIPPED \n4 - STARTING \n5 - RECOVERED "
+    pps_v2.DatumInfo:
+      type: object
+      properties:
+        datum:
+          "$ref": "#/components/schemas/pps_v2.Datum"
+        state:
+          "$ref": "#/components/schemas/pps_v2.DatumState"
+        stats:
+          "$ref": "#/components/schemas/pps_v2.ProcessStats"
+        pfs_state:
+          "$ref": "#/components/schemas/pfs_v2.File"
+        data:
+          type: array
+          items:
+            "$ref": "#/components/schemas/pfs_v2.FileInfo"
+        image_id:
+          type: string
+    pps_v2.Aggregate:
+      type: object
+      properties:
+        count:
+          type: integer
+          format: int64
+        mean:
+          type: number
+          format: double
+        stddev:
+          type: number
+          format: double
+        fifth_percentile:
+          type: number
+          format: double
+        ninety_fifth_percentile:
+          type: number
+          format: double
+    pps_v2.ProcessStats:
+      type: object
+      properties:
+        download_time:
+          "$ref": "#/components/schemas/google.protobuf.Duration"
+        process_time:
+          "$ref": "#/components/schemas/google.protobuf.Duration"
+        upload_time:
+          "$ref": "#/components/schemas/google.protobuf.Duration"
+        download_bytes:
+          type: integer
+          format: int64
+        upload_bytes:
+          type: integer
+          format: int64
+    pps_v2.AggregateProcessStats:
+      type: object
+      properties:
+        download_time:
+          "$ref": "#/components/schemas/pps_v2.Aggregate"
+        process_time:
+          "$ref": "#/components/schemas/pps_v2.Aggregate"
+        upload_time:
+          "$ref": "#/components/schemas/pps_v2.Aggregate"
+        download_bytes:
+          "$ref": "#/components/schemas/pps_v2.Aggregate"
+        upload_bytes:
+          "$ref": "#/components/schemas/pps_v2.Aggregate"
+    pps_v2.WorkerStatus:
+      type: object
+      properties:
+        worker_id:
+          type: string
+        job_id:
+          type: string
+        datum_status:
+          "$ref": "#/components/schemas/pps_v2.DatumStatus"
+    pps_v2.DatumStatus:
+      type: object
+      properties:
+        started:
+          "$ref": "#/components/schemas/google.protobuf.Timestamp"
+        data:
+          type: array
+          items:
+            "$ref": "#/components/schemas/pps_v2.InputFile"
+    pps_v2.ResourceSpec:
+      type: object
+      properties:
+        cpu:
+          type: number
+          format: float
+          description: |-
+            The number of CPUs each worker needs (partial values are allowed, and
+            encouraged)
+        memory:
+          type: string
+          description: |-
+            The amount of memory each worker needs (in bytes, with allowed
+            SI suffixes (M, K, G, Mi, Ki, Gi, etc).
+        gpu:
+          "$ref": "#/components/schemas/pps_v2.GPUSpec"
+        disk:
+          type: string
+          description: |-
+            The amount of ephemeral storage each worker needs (in bytes, with allowed
+            SI suffixes (M, K, G, Mi, Ki, Gi, etc).
+      description: |-
+        ResourceSpec describes the amount of resources that pipeline pods should
+        request from kubernetes, for scheduling.
+    pps_v2.GPUSpec:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type of GPU (nvidia.com/gpu or amd.com/gpu for example).
+        number:
+          type: integer
+          format: int64
+          description: The number of GPUs to request.
+    pps_v2.JobSetInfo:
+      type: object
+      properties:
+        job_set:
+          "$ref": "#/components/schemas/pps_v2.JobSet"
+        jobs:
+          type: array
+          items:
+            "$ref": "#/components/schemas/pps_v2.JobInfo"
+    pps_v2.JobInfo:
+      type: object
+      properties:
+        job:
+          "$ref": "#/components/schemas/pps_v2.Job"
+        pipeline_version:
+          type: integer
+          format: int64
+        output_commit:
+          "$ref": "#/components/schemas/pfs_v2.Commit"
+        restart:
+          type: integer
+          format: int64
+          description: Job restart count (e.g. due to datum failure)
+        data_processed:
+          type: integer
+          format: int64
+          description: Counts of how many times we processed or skipped a datum
+        data_skipped:
+          type: integer
+          format: int64
+        data_total:
+          type: integer
+          format: int64
+        data_failed:
+          type: integer
+          format: int64
+        data_recovered:
+          type: integer
+          format: int64
+        stats:
+          "$ref": "#/components/schemas/pps_v2.ProcessStats"
+        state:
+          "$ref": "#/components/schemas/pps_v2.JobState"
+        reason:
+          type: string
+          description: reason explains why the job is in the current state
+        created:
+          "$ref": "#/components/schemas/google.protobuf.Timestamp"
+        started:
+          "$ref": "#/components/schemas/google.protobuf.Timestamp"
+        finished:
+          "$ref": "#/components/schemas/google.protobuf.Timestamp"
+        details:
+          "$ref": "#/components/schemas/pps_v2.JobInfo.Details"
+      description: |-
+        JobInfo is the data stored in the database regarding a given job.  The
+        'details' field contains more information about the job which is expensive to
+        fetch, requiring querying workers or loading the pipeline spec from object
+        storage.
+    pps_v2.WorkerState:
+      type: number
+      enum:
+      - 0
+      - 1
+      - 2
+      - 3
+      description: "0 - WORKER_STATE_UNKNOWN \n1 - POD_RUNNING \n2 - POD_SUCCESS \n3
+        - POD_FAILED "
+    pps_v2.Worker:
+      type: object
+      properties:
+        name:
+          type: string
+        state:
+          "$ref": "#/components/schemas/pps_v2.WorkerState"
+    pps_v2.Pipeline:
+      type: object
+      properties:
+        project:
+          "$ref": "#/components/schemas/pfs_v2.Project"
+        name:
+          type: string
+    pps_v2.PipelineState:
+      type: number
+      enum:
+      - 0
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
+      description: "0 - PIPELINE_STATE_UNKNOWN \n1 - PIPELINE_STARTING // There is
+        a PipelineInfo + spec commit, but no RC\nThis happens when a pipeline has
+        been created but not yet picked up by a\nPPS server.\n2 - PIPELINE_RUNNING
+        // A pipeline has a spec commit and a service + RC\nThis is the normal state
+        of a pipeline.\n3 - PIPELINE_RESTARTING // Equivalent to STARTING (there is
+        a PipelineInfo + commit, but no RC)\nAfter some error caused runPipeline to
+        exit, but before the pipeline is\nre-run. This is when the exponential backoff
+        is in effect.\n4 - PIPELINE_FAILURE // The pipeline has encountered unrecoverable
+        errors and is no longer being\nretried. It won't leave this state until the
+        pipeline is updated.\n5 - PIPELINE_PAUSED // The pipeline has been explicitly
+        paused by the user (the pipeline spec's\nStopped field should be true if the
+        pipeline is in this state)\n6 - PIPELINE_STANDBY // The pipeline is fully
+        functional, but there are no commits to process.\n7 - PIPELINE_CRASHING //
+        The pipeline's workers are crashing, or failing to come up, this may\nresolve
+        itself, the pipeline may make progress while in this state if the\nproblem
+        is only being experienced by some workers."
+    pps_v2.Toleration:
+      type: object
+      properties:
+        key:
+          type: string
+          description: key is the taint key that the toleration applies to.  Empty
+            means match all taint keys.
+        operator:
+          "$ref": "#/components/schemas/pps_v2.TolerationOperator"
+        value:
+          type: string
+          description: value is the taint value the toleration matches to.
+        effect:
+          "$ref": "#/components/schemas/pps_v2.TaintEffect"
+        toleration_seconds:
+          "$ref": "#/components/schemas/google.protobuf.Int64Value"
+      description: Toleration is a Kubernetes toleration.
+    pps_v2.TolerationOperator:
+      type: number
+      enum:
+      - 0
+      - 1
+      - 2
+      description: |-
+        0 - EMPTY // K8s doesn't have this, but it's possible to represent something similar.
+        1 - EXISTS // "Exists"
+        2 - EQUAL // "Equal"
+    pps_v2.TaintEffect:
+      type: number
+      enum:
+      - 0
+      - 1
+      - 2
+      - 3
+      description: |-
+        0 - ALL_EFFECTS // Empty matches all effects.
+        1 - NO_SCHEDULE // "NoSchedule"
+        2 - PREFER_NO_SCHEDULE // "PreferNoSchedule"
+        3 - NO_EXECUTE // "NoExecute"
+    pps_v2.PipelineInfo:
+      type: object
+      properties:
+        pipeline:
+          "$ref": "#/components/schemas/pps_v2.Pipeline"
+        version:
+          type: integer
+          format: int64
+        spec_commit:
+          "$ref": "#/components/schemas/pfs_v2.Commit"
+        stopped:
+          type: boolean
+        state:
+          "$ref": "#/components/schemas/pps_v2.PipelineState"
+        reason:
+          type: string
+          description: reason includes any error messages associated with a failed
+            pipeline
+        last_job_state:
+          "$ref": "#/components/schemas/pps_v2.JobState"
+        parallelism:
+          type: integer
+          format: int64
+          description: |-
+            parallelism tracks the literal number of workers that this pipeline should
+            run.
+        type:
+          "$ref": "#/components/schemas/pps_v2.PipelineInfo.PipelineType"
+        auth_token:
+          type: string
+        details:
+          "$ref": "#/components/schemas/pps_v2.JobInfo.Details"
+      description: |-
+        PipelineInfo is proto for each pipeline that Pachd stores in the
+        database. It tracks the state of the pipeline, and points to its metadata in
+        PFS (and, by pointing to a PFS commit, de facto tracks the pipeline's
+        version).  Any information about the pipeline _not_ stored in the database is
+        in the Details object, which requires fetching the spec from PFS or other
+        potentially expensive operations.
+    pps_v2.PipelineInfos:
+      type: object
+      properties:
+        pipeline_info:
+          type: array
+          items:
+            "$ref": "#/components/schemas/pps_v2.PipelineInfo"
+    pps_v2.JobSet:
+      type: object
+      properties:
+        id:
+          type: string
+    pps_v2.InspectJobSetRequest:
+      type: object
+      properties:
+        job_set:
+          "$ref": "#/components/schemas/pps_v2.JobSet"
+        wait:
+          type: boolean
+          description: When true, wait until all jobs in the set are finished
+        details:
+          type: boolean
+    pps_v2.ListJobSetRequest:
+      type: object
+      properties:
+        details:
+          type: boolean
+        projects:
+          type: array
+          items:
+            "$ref": "#/components/schemas/pfs_v2.Project"
+          description: A list of projects to filter jobs on, nil means don't filter.
+        paginationMarker:
+          "$ref": "#/components/schemas/google.protobuf.Timestamp"
+        number:
+          type: integer
+          format: int64
+          description: number of results to return
+        reverse:
+          type: boolean
+          description: if true, return results in reverse order
+    pps_v2.InspectJobRequest:
+      type: object
+      properties:
+        job:
+          "$ref": "#/components/schemas/pps_v2.Job"
+        wait:
+          type: boolean
+          description: wait until state is either FAILURE or SUCCESS
+        details:
+          type: boolean
+    pps_v2.ListJobRequest:
+      type: object
+      properties:
+        projects:
+          type: array
+          items:
+            "$ref": "#/components/schemas/pfs_v2.Project"
+          description: A list of projects to filter jobs on, nil means don't filter.
+        pipeline:
+          "$ref": "#/components/schemas/pps_v2.Pipeline"
+        input_commit:
+          type: array
+          items:
+            "$ref": "#/components/schemas/pfs_v2.Commit"
+        history:
+          type: integer
+          format: int64
+          description: |-
+            History indicates return jobs from historical versions of pipelines
+            semantics are:
+            0: Return jobs from the current version of the pipeline or pipelines.
+            1: Return the above and jobs from the next most recent version
+            2: etc.
+            -1: Return jobs from all historical versions.
+        details:
+          type: boolean
+          description: |-
+            Details indicates whether the result should include all pipeline details in
+            each JobInfo, or limited information including name and status, but
+            excluding information in the pipeline spec. Leaving this "false" can make
+            the call significantly faster in clusters with a large number of pipelines
+            and jobs.
+            Note that if 'input_commit' is set, this field is coerced to "true"
+        jqFilter:
+          type: string
+          description: A jq program string for additional result filtering
+        paginationMarker:
+          "$ref": "#/components/schemas/google.protobuf.Timestamp"
+        number:
+          type: integer
+          format: int64
+          description: number of results to return
+        reverse:
+          type: boolean
+          description: flag to indicated if results should be returned in reverse
+            order
+    pps_v2.SubscribeJobRequest:
+      type: object
+      properties:
+        pipeline:
+          "$ref": "#/components/schemas/pps_v2.Pipeline"
+        details:
+          type: boolean
+          description: Same as ListJobRequest.Details
+      description: Streams open jobs until canceled
+    pps_v2.DeleteJobRequest:
+      type: object
+      properties:
+        job:
+          "$ref": "#/components/schemas/pps_v2.Job"
+    pps_v2.StopJobRequest:
+      type: object
+      properties:
+        job:
+          "$ref": "#/components/schemas/pps_v2.Job"
+        reason:
+          type: string
+    pps_v2.UpdateJobStateRequest:
+      type: object
+      properties:
+        job:
+          "$ref": "#/components/schemas/pps_v2.Job"
+        state:
+          "$ref": "#/components/schemas/pps_v2.JobState"
+        reason:
+          type: string
+        restart:
+          type: integer
+          format: int64
+        data_processed:
+          type: integer
+          format: int64
+        data_skipped:
+          type: integer
+          format: int64
+        data_failed:
+          type: integer
+          format: int64
+        data_recovered:
+          type: integer
+          format: int64
+        data_total:
+          type: integer
+          format: int64
+        stats:
+          "$ref": "#/components/schemas/pps_v2.ProcessStats"
+    pps_v2.GetLogsRequest:
+      type: object
+      properties:
+        pipeline:
+          "$ref": "#/components/schemas/pps_v2.Pipeline"
+        job:
+          "$ref": "#/components/schemas/pps_v2.Job"
+        data_filters:
+          type: array
+          items:
+            type: string
+          description: |-
+            Names of input files from which we want processing logs. This may contain
+            multiple files, to query pipelines that contain multiple inputs. Each
+            filter may be an absolute path of a file within a pps repo, or it may be
+            a hash for that file (to search for files at specific versions)
+        datum:
+          "$ref": "#/components/schemas/pps_v2.Datum"
+        master:
+          type: boolean
+          description: If true get logs from the master process
+        follow:
+          type: boolean
+          description: Continue to follow new logs as they become available.
+        tail:
+          type: integer
+          format: int64
+          description: |-
+            If nonzero, the number of lines from the end of the logs to return.  Note:
+            tail applies per container, so you will get tail * <number of pods> total
+            lines back.
+        use_loki_backend:
+          type: boolean
+          description: |-
+            UseLokiBackend causes the logs request to go through the loki backend
+            rather than through kubernetes. This behavior can also be achieved by
+            setting the LOKI_LOGGING feature flag.
+        since:
+          "$ref": "#/components/schemas/google.protobuf.Duration"
+    pps_v2.LogMessage:
+      type: object
+      properties:
+        project_name:
+          type: string
+          description: |-
+            The job and pipeline for which a PFS file is being processed (if the job
+            is an orphan job, pipeline name and ID will be unset)
+        pipeline_name:
+          type: string
+        job_id:
+          type: string
+        worker_id:
+          type: string
+        datum_id:
+          type: string
+        master:
+          type: boolean
+        data:
+          type: array
+          items:
+            "$ref": "#/components/schemas/pps_v2.InputFile"
+          description: The PFS files being processed (one per pipeline/job input)
+        user:
+          type: boolean
+          description: User is true if log message comes from the users code.
+        ts:
+          "$ref": "#/components/schemas/google.protobuf.Timestamp"
+        message:
+          type: string
+      description: |-
+        LogMessage is a log line from a PPS worker, annotated with metadata
+        indicating when and why the line was logged.
+    pps_v2.RestartDatumRequest:
+      type: object
+      properties:
+        job:
+          "$ref": "#/components/schemas/pps_v2.Job"
+        data_filters:
+          type: array
+          items:
+            type: string
+    pps_v2.InspectDatumRequest:
+      type: object
+      properties:
+        datum:
+          "$ref": "#/components/schemas/pps_v2.Datum"
+    pps_v2.ListDatumRequest:
+      type: object
+      properties:
+        job:
+          "$ref": "#/components/schemas/pps_v2.Job"
+        input:
+          "$ref": "#/components/schemas/pps_v2.Input"
+        filter:
+          "$ref": "#/components/schemas/pps_v2.ListDatumRequest.Filter"
+        paginationMarker:
+          type: string
+          description: datum id to start from. we do not include this datum in the
+            response
+        number:
+          type: integer
+          format: int64
+          description: Number of datums to return
+        reverse:
+          type: boolean
+          description: If true, return datums in reverse order
+    pps_v2.DatumSetSpec:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int64
+          description: |-
+            number, if nonzero, specifies that each datum set should contain `number`
+            datums. Datum sets may contain fewer if the total number of datums don't
+            divide evenly.
+        size_bytes:
+          type: integer
+          format: int64
+          description: |-
+            size_bytes, if nonzero, specifies a target size for each datum set.
+            Datum sets may be larger or smaller than size_bytes, but will usually be
+            pretty close to size_bytes in size.
+        per_worker:
+          type: integer
+          format: int64
+          description: |-
+            per_worker, if nonzero, specifies how many datum sets should be created
+            for each worker. It can't be set with number or size_bytes.
+      description: DatumSetSpec specifies how a pipeline should split its datums into
+        datum sets.
+    pps_v2.SchedulingSpec:
+      type: object
+      properties:
+        node_selector:
+          type: string
+        priority_class_name:
+          type: string
+    pps_v2.CreatePipelineRequest:
+      type: object
+      properties:
+        pipeline:
+          "$ref": "#/components/schemas/pps_v2.Pipeline"
+        tf_job:
+          "$ref": "#/components/schemas/pps_v2.TFJob"
+        transform:
+          "$ref": "#/components/schemas/pps_v2.Transform"
+        parallelism_spec:
+          "$ref": "#/components/schemas/pps_v2.ParallelismSpec"
+        egress:
+          "$ref": "#/components/schemas/pps_v2.Egress"
+        update:
+          type: boolean
+        output_branch:
+          type: string
+        s3_out:
+          type: boolean
+          description: |-
+            s3_out, if set, requires a pipeline's user to write to its output repo
+            via Pachyderm's s3 gateway (if set, workers will serve Pachyderm's s3
+            gateway API at http://<pipeline>-s3.<namespace>/<job id>.out/my/file).
+            In this mode /pfs_v2/out won't be walked or uploaded, and the s3 gateway
+            service in the workers will allow writes to the job's output commit
+        resource_requests:
+          "$ref": "#/components/schemas/pps_v2.ResourceSpec"
+        resource_limits:
+          "$ref": "#/components/schemas/pps_v2.ResourceSpec"
+        sidecar_resource_limits:
+          "$ref": "#/components/schemas/pps_v2.ResourceSpec"
+        input:
+          "$ref": "#/components/schemas/pps_v2.Input"
+        description:
+          type: string
+        reprocess:
+          type: boolean
+          description: |-
+            Reprocess forces the pipeline to reprocess all datums.
+            It only has meaning if Update is true
+        service:
+          "$ref": "#/components/schemas/pps_v2.Service"
+        spout:
+          "$ref": "#/components/schemas/pps_v2.Spout"
+        datum_set_spec:
+          "$ref": "#/components/schemas/pps_v2.DatumSetSpec"
+        datum_timeout:
+          "$ref": "#/components/schemas/google.protobuf.Duration"
+        job_timeout:
+          "$ref": "#/components/schemas/google.protobuf.Duration"
+        salt:
+          type: string
+        datum_tries:
+          type: integer
+          format: int64
+        scheduling_spec:
+          "$ref": "#/components/schemas/pps_v2.SchedulingSpec"
+        pod_spec:
+          type: string
+          description: deprecated, use pod_patch below
+        pod_patch:
+          type: string
+          description: a json patch will be applied to the pipeline's pod_spec before
+            it's created;
+        spec_commit:
+          "$ref": "#/components/schemas/pfs_v2.Commit"
+        metadata:
+          "$ref": "#/components/schemas/pps_v2.Metadata"
+        reprocess_spec:
+          type: string
+        autoscaling:
+          type: boolean
+        tolerations:
+          type: array
+          items:
+            "$ref": "#/components/schemas/pps_v2.Toleration"
+    pps_v2.InspectPipelineRequest:
+      type: object
+      properties:
+        pipeline:
+          "$ref": "#/components/schemas/pps_v2.Pipeline"
+        details:
+          type: boolean
+          description: |-
+            When true, return PipelineInfos with the details field, which requires
+            loading the pipeline spec from PFS.
+    pps_v2.ListPipelineRequest:
+      type: object
+      properties:
+        pipeline:
+          "$ref": "#/components/schemas/pps_v2.Pipeline"
+        history:
+          type: integer
+          format: int64
+          description: |-
+            History indicates how many historical versions you want returned. Its
+            semantics are:
+            0: Return the current version of the pipeline or pipelines.
+            1: Return the above and the next most recent version
+            2: etc.
+            -1: Return all historical versions.
+        details:
+          type: boolean
+          description: |-
+            When true, return PipelineInfos with the details field, which requires
+            loading the pipeline spec from PFS.
+        jqFilter:
+          type: string
+          description: A jq program string for additional result filtering
+        commit_set:
+          "$ref": "#/components/schemas/pfs_v2.CommitSet"
+        projects:
+          type: array
+          items:
+            "$ref": "#/components/schemas/pfs_v2.Project"
+          description: Projects to filter on. Empty list means no filter, so return
+            all pipelines.
+    pps_v2.DeletePipelineRequest:
+      type: object
+      properties:
+        pipeline:
+          "$ref": "#/components/schemas/pps_v2.Pipeline"
+        all:
+          type: boolean
+        force:
+          type: boolean
+        keep_repo:
+          type: boolean
+      description: |-
+        Delete a pipeline.  If the deprecated all member is true, then delete all
+        pipelines in the default project.
+    pps_v2.DeletePipelinesRequest:
+      type: object
+      properties:
+        projects:
+          type: array
+          items:
+            "$ref": "#/components/schemas/pfs_v2.Project"
+          description: |-
+            All pipelines in each project will be deleted if the caller has
+            permission.
+        force:
+          type: boolean
+        keep_repo:
+          type: boolean
+        all:
+          type: boolean
+          description: |-
+            If set, all pipelines in all projects will be deleted if the caller has
+            permission.
+      description: Delete more than one pipeline.
+    pps_v2.DeletePipelinesResponse:
+      type: object
+      properties:
+        pipelines:
+          type: array
+          items:
+            "$ref": "#/components/schemas/pps_v2.Pipeline"
+    pps_v2.StartPipelineRequest:
+      type: object
+      properties:
+        pipeline:
+          "$ref": "#/components/schemas/pps_v2.Pipeline"
+    pps_v2.StopPipelineRequest:
+      type: object
+      properties:
+        pipeline:
+          "$ref": "#/components/schemas/pps_v2.Pipeline"
+    pps_v2.RunPipelineRequest:
+      type: object
+      properties:
+        pipeline:
+          "$ref": "#/components/schemas/pps_v2.Pipeline"
+        provenance:
+          type: array
+          items:
+            "$ref": "#/components/schemas/pfs_v2.Commit"
+        job_id:
+          type: string
+    pps_v2.RunCronRequest:
+      type: object
+      properties:
+        pipeline:
+          "$ref": "#/components/schemas/pps_v2.Pipeline"
+    pps_v2.CreateSecretRequest:
+      type: object
+      properties:
+        file:
+          type: string
+          format: byte
+    pps_v2.DeleteSecretRequest:
+      type: object
+      properties:
+        secret:
+          "$ref": "#/components/schemas/pps_v2.Secret"
+    pps_v2.InspectSecretRequest:
+      type: object
+      properties:
+        secret:
+          "$ref": "#/components/schemas/pps_v2.Secret"
+    pps_v2.Secret:
+      type: object
+      properties:
+        name:
+          type: string
+    pps_v2.SecretInfo:
+      type: object
+      properties:
+        secret:
+          "$ref": "#/components/schemas/pps_v2.Secret"
+        type:
+          type: string
+        creation_timestamp:
+          "$ref": "#/components/schemas/google.protobuf.Timestamp"
+    pps_v2.SecretInfos:
+      type: object
+      properties:
+        secret_info:
+          type: array
+          items:
+            "$ref": "#/components/schemas/pps_v2.SecretInfo"
+    pps_v2.ActivateAuthRequest:
+      type: object
+      properties: {}
+    pps_v2.ActivateAuthResponse:
+      type: object
+      properties: {}
+    pps_v2.RunLoadTestRequest:
+      type: object
+      properties:
+        dag_spec:
+          type: string
+        load_spec:
+          type: string
+        seed:
+          type: integer
+          format: int64
+        parallelism:
+          type: integer
+          format: int64
+        pod_patch:
+          type: string
+        state_id:
+          type: string
+    pps_v2.RunLoadTestResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        state_id:
+          type: string
+    pps_v2.RenderTemplateRequest:
+      type: object
+      properties:
+        template:
+          type: string
+        args:
+          type: string
+    pps_v2.RenderTemplateResponse:
+      type: object
+      properties:
+        json:
+          type: string
+        specs:
+          type: array
+          items:
+            "$ref": "#/components/schemas/pps_v2.CreatePipelineRequest"
+    pps_v2.LokiRequest:
+      type: object
+      properties:
+        since:
+          "$ref": "#/components/schemas/google.protobuf.Duration"
+    pps_v2.LokiLogMessage:
+      type: object
+      properties:
+        message:
+          type: string
+    pfs_v2.Repo:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+        project:
+          "$ref": "#/components/schemas/pfs_v2.Project"
+    pfs_v2.Branch:
+      type: object
+      properties:
+        repo:
+          "$ref": "#/components/schemas/pfs_v2.Repo"
+        name:
+          type: string
+    pfs_v2.File:
+      type: object
+      properties:
+        commit:
+          "$ref": "#/components/schemas/pfs_v2.Commit"
+        path:
+          type: string
+        datum:
+          type: string
+    pfs_v2.RepoInfo:
+      type: object
+      properties:
+        repo:
+          "$ref": "#/components/schemas/pfs_v2.Repo"
+        created:
+          "$ref": "#/components/schemas/google.protobuf.Timestamp"
+        size_bytes_upper_bound:
+          type: integer
+          format: int64
+        description:
+          type: string
+        branches:
+          type: array
+          items:
+            "$ref": "#/components/schemas/pfs_v2.Branch"
+        auth_info:
+          "$ref": "#/components/schemas/pfs_v2.RepoAuthInfo"
+        details:
+          "$ref": "#/components/schemas/pps_v2.JobInfo.Details"
+      description: RepoInfo is the main data structure representing a Repo in etcd
+    pfs_v2.RepoAuthInfo:
+      type: object
+      properties:
+        permissions:
+          type: array
+          items: {}
+          description: |-
+            The callers access level to the relevant repo. These are very granular
+            permissions - for the end user it makes sense to show them the roles
+            they have instead.
+        roles:
+          type: array
+          items:
+            type: string
+          description: |-
+            The caller's roles on the relevant repo. This includes inherited
+            roles from the cluster, group membership, etc.
+      description: |-
+        RepoAuthInfo includes the caller's access scope for a repo, and is returned
+        by ListRepo and InspectRepo but not persisted in etcd. It's used by the
+        Pachyderm dashboard to render repo access appropriately. To set a user's auth
+        scope for a repo, use the Pachyderm Auth API (in src/client/auth/auth.proto)
+    pfs_v2.BranchInfo:
+      type: object
+      properties:
+        branch:
+          "$ref": "#/components/schemas/pfs_v2.Branch"
+        head:
+          "$ref": "#/components/schemas/pfs_v2.Commit"
+        provenance:
+          type: array
+          items:
+            "$ref": "#/components/schemas/pfs_v2.Branch"
+        subvenance:
+          type: array
+          items:
+            "$ref": "#/components/schemas/pfs_v2.Branch"
+        direct_provenance:
+          type: array
+          items:
+            "$ref": "#/components/schemas/pfs_v2.Branch"
+        trigger:
+          "$ref": "#/components/schemas/pfs_v2.Trigger"
+    pfs_v2.Trigger:
+      type: object
+      properties:
+        branch:
+          type: string
+          description: Which branch this trigger refers to
+        all:
+          type: boolean
+          description: |-
+            All indicates that all conditions must be satisfied before the trigger
+            happens, otherwise any conditions being satisfied will trigger it.
+        cron_spec:
+          type: string
+          description: |-
+            Triggers if the cron spec has been satisfied since the last trigger and
+            there's been a new commit.
+        size:
+          type: string
+          description: Triggers if there's been `size` new data added since the last
+            trigger.
+        commits:
+          type: integer
+          format: int64
+          description: Triggers if there's been `commits` new commits added since
+            the last trigger.
+      description: |-
+        Trigger defines the conditions under which a head is moved, and to which
+        branch it is moved.
+    pfs_v2.OriginKind:
+      type: number
+      enum:
+      - 0
+      - 1
+      - 2
+      - 3
+      - 4
+      description: "0 - ORIGIN_KIND_UNKNOWN \n1 - USER \n2 - AUTO \n3 - FSCK \n4 -
+        ALIAS "
+    pfs_v2.CommitOrigin:
+      type: object
+      properties:
+        kind:
+          "$ref": "#/components/schemas/pfs_v2.OriginKind"
+    pfs_v2.Commit:
+      type: object
+      properties:
+        branch:
+          "$ref": "#/components/schemas/pfs_v2.Branch"
+        id:
+          type: string
+      description: |-
+        Commit is a reference to a commit (e.g. the collection of branches and the
+        collection of currently-open commits in etcd are collections of Commit
+        protos)
+    pfs_v2.CommitInfo:
+      type: object
+      properties:
+        commit:
+          "$ref": "#/components/schemas/pfs_v2.Commit"
+        origin:
+          "$ref": "#/components/schemas/pfs_v2.CommitOrigin"
+        description:
+          type: string
+          description: description is a user-provided script describing this commit
+        parent_commit:
+          "$ref": "#/components/schemas/pfs_v2.Commit"
+        child_commits:
+          type: array
+          items:
+            "$ref": "#/components/schemas/pfs_v2.Commit"
+        started:
+          "$ref": "#/components/schemas/google.protobuf.Timestamp"
+        finishing:
+          "$ref": "#/components/schemas/google.protobuf.Timestamp"
+        finished:
+          "$ref": "#/components/schemas/google.protobuf.Timestamp"
+        direct_provenance:
+          type: array
+          items:
+            "$ref": "#/components/schemas/pfs_v2.Branch"
+        error:
+          type: string
+        size_bytes_upper_bound:
+          type: integer
+          format: int64
+        details:
+          "$ref": "#/components/schemas/pps_v2.JobInfo.Details"
+      description: CommitInfo is the main data structure representing a commit in
+        etcd
+    pfs_v2.CommitSet:
+      type: object
+      properties:
+        id:
+          type: string
+    pfs_v2.CommitSetInfo:
+      type: object
+      properties:
+        commit_set:
+          "$ref": "#/components/schemas/pfs_v2.CommitSet"
+        commits:
+          type: array
+          items:
+            "$ref": "#/components/schemas/pfs_v2.CommitInfo"
+    pfs_v2.FileType:
+      type: number
+      enum:
+      - 0
+      - 1
+      - 2
+      description: "0 - RESERVED \n1 - FILE \n2 - DIR "
+    pfs_v2.FileInfo:
+      type: object
+      properties:
+        file:
+          "$ref": "#/components/schemas/pfs_v2.File"
+        file_type:
+          "$ref": "#/components/schemas/pfs_v2.FileType"
+        committed:
+          "$ref": "#/components/schemas/google.protobuf.Timestamp"
+        size_bytes:
+          type: integer
+          format: int64
+        hash:
+          type: string
+          format: byte
+    pfs_v2.Project:
+      type: object
+      properties:
+        name:
+          type: string
+    pfs_v2.ProjectInfo:
+      type: object
+      properties:
+        project:
+          "$ref": "#/components/schemas/pfs_v2.Project"
+        description:
+          type: string
+    pfs_v2.CreateRepoRequest:
+      type: object
+      properties:
+        repo:
+          "$ref": "#/components/schemas/pfs_v2.Repo"
+        description:
+          type: string
+        update:
+          type: boolean
+    pfs_v2.InspectRepoRequest:
+      type: object
+      properties:
+        repo:
+          "$ref": "#/components/schemas/pfs_v2.Repo"
+    pfs_v2.ListRepoRequest:
+      type: object
+      properties:
+        type:
+          type: string
+          description: |-
+            type is the type of (system) repos that should be returned
+            an empty string requests all repos
+        projects:
+          type: array
+          items:
+            "$ref": "#/components/schemas/pfs_v2.Project"
+          description: projects filters out repos that do not belong in the list,
+            while no projects means list all repos.
+    pfs_v2.DeleteRepoRequest:
+      type: object
+      properties:
+        repo:
+          "$ref": "#/components/schemas/pfs_v2.Repo"
+        force:
+          type: boolean
+    pfs_v2.DeleteReposRequest:
+      type: object
+      properties:
+        projects:
+          type: array
+          items:
+            "$ref": "#/components/schemas/pfs_v2.Project"
+          description: |-
+            All repos in each project will be deleted if the caller has
+            permission.
+        force:
+          type: boolean
+        all:
+          type: boolean
+          description: |-
+            If all is set, then all repos in all projects will be deleted if the caller
+            has permission.
+      description: DeleteReposRequest is used to delete more than one repo at once.
+    pfs_v2.DeleteReposResponse:
+      type: object
+      properties:
+        repos:
+          type: array
+          items:
+            "$ref": "#/components/schemas/pfs_v2.Repo"
+    pfs_v2.CommitState:
+      type: number
+      enum:
+      - 0
+      - 1
+      - 2
+      - 3
+      - 4
+      description: "0 - COMMIT_STATE_UNKNOWN \n1 - STARTED // The commit has been
+        started, all commits satisfy this state.\n2 - READY // The commit has been
+        started, and all of its provenant commits have been finished.\n3 - FINISHING
+        // The commit is in the process of being finished.\n4 - FINISHED // The commit
+        has been finished."
+    pfs_v2.StartCommitRequest:
+      type: object
+      properties:
+        parent:
+          "$ref": "#/components/schemas/pfs_v2.Commit"
+        description:
+          type: string
+          description: description is a user-provided string describing this commit
+        branch:
+          "$ref": "#/components/schemas/pfs_v2.Branch"
+    pfs_v2.FinishCommitRequest:
+      type: object
+      properties:
+        commit:
+          "$ref": "#/components/schemas/pfs_v2.Commit"
+        description:
+          type: string
+          description: |-
+            description is a user-provided string describing this commit. Setting this
+            will overwrite the description set in StartCommit
+        error:
+          type: string
+        force:
+          type: boolean
+    pfs_v2.InspectCommitRequest:
+      type: object
+      properties:
+        commit:
+          "$ref": "#/components/schemas/pfs_v2.Commit"
+        wait:
+          "$ref": "#/components/schemas/pfs_v2.CommitState"
+    pfs_v2.ListCommitRequest:
+      type: object
+      properties:
+        repo:
+          "$ref": "#/components/schemas/pfs_v2.Repo"
+        from:
+          "$ref": "#/components/schemas/pfs_v2.Commit"
+        to:
+          "$ref": "#/components/schemas/pfs_v2.Commit"
+        number:
+          type: integer
+          format: int64
+        reverse:
+          type: boolean
+          description: Return commits oldest to newest
+        all:
+          type: boolean
+          description: Return commits of all kinds (without this, aliases are excluded)
+        origin_kind:
+          "$ref": "#/components/schemas/pfs_v2.OriginKind"
+        started_time:
+          "$ref": "#/components/schemas/google.protobuf.Timestamp"
+    pfs_v2.InspectCommitSetRequest:
+      type: object
+      properties:
+        commit_set:
+          "$ref": "#/components/schemas/pfs_v2.CommitSet"
+        wait:
+          type: boolean
+          description: When true, wait until all commits in the set are finished
+    pfs_v2.ListCommitSetRequest:
+      type: object
+      properties:
+        project:
+          "$ref": "#/components/schemas/pfs_v2.Project"
+    pfs_v2.SquashCommitSetRequest:
+      type: object
+      properties:
+        commit_set:
+          "$ref": "#/components/schemas/pfs_v2.CommitSet"
+    pfs_v2.DropCommitSetRequest:
+      type: object
+      properties:
+        commit_set:
+          "$ref": "#/components/schemas/pfs_v2.CommitSet"
+    pfs_v2.SubscribeCommitRequest:
+      type: object
+      properties:
+        repo:
+          "$ref": "#/components/schemas/pfs_v2.Repo"
+        branch:
+          type: string
+        from:
+          "$ref": "#/components/schemas/pfs_v2.Commit"
+        state:
+          "$ref": "#/components/schemas/pfs_v2.CommitState"
+        all:
+          type: boolean
+          description: Return commits of all kinds (without this, aliases are excluded)
+        origin_kind:
+          "$ref": "#/components/schemas/pfs_v2.OriginKind"
+    pfs_v2.ClearCommitRequest:
+      type: object
+      properties:
+        commit:
+          "$ref": "#/components/schemas/pfs_v2.Commit"
+    pfs_v2.CreateBranchRequest:
+      type: object
+      properties:
+        head:
+          "$ref": "#/components/schemas/pfs_v2.Commit"
+        branch:
+          "$ref": "#/components/schemas/pfs_v2.Branch"
+        provenance:
+          type: array
+          items:
+            "$ref": "#/components/schemas/pfs_v2.Branch"
+        trigger:
+          "$ref": "#/components/schemas/pfs_v2.Trigger"
+        new_commit_set:
+          type: boolean
+          description: overrides the default behavior of using the same CommitSet
+            as 'head'
+    pfs_v2.FindCommitsRequest:
+      type: object
+      properties:
+        start:
+          "$ref": "#/components/schemas/pfs_v2.Commit"
+        file_path:
+          type: string
+        limit:
+          type: integer
+          format: int32
+          description: a limit of 0 means there is no upper bound on the limit.
+    pfs_v2.FindCommitsResponse:
+      type: object
+      properties:
+        found_commit:
+          "$ref": "#/components/schemas/pfs_v2.Commit"
+        last_searched_commit:
+          "$ref": "#/components/schemas/pfs_v2.Commit"
+        commits_searched:
+          type: integer
+          format: int32
+    pfs_v2.InspectBranchRequest:
+      type: object
+      properties:
+        branch:
+          "$ref": "#/components/schemas/pfs_v2.Branch"
+    pfs_v2.ListBranchRequest:
+      type: object
+      properties:
+        repo:
+          "$ref": "#/components/schemas/pfs_v2.Repo"
+        reverse:
+          type: boolean
+          description: Returns branches oldest to newest
+    pfs_v2.DeleteBranchRequest:
+      type: object
+      properties:
+        branch:
+          "$ref": "#/components/schemas/pfs_v2.Branch"
+        force:
+          type: boolean
+    pfs_v2.CreateProjectRequest:
+      type: object
+      properties:
+        project:
+          "$ref": "#/components/schemas/pfs_v2.Project"
+        description:
+          type: string
+        update:
+          type: boolean
+    pfs_v2.InspectProjectRequest:
+      type: object
+      properties:
+        project:
+          "$ref": "#/components/schemas/pfs_v2.Project"
+    pfs_v2.ListProjectRequest:
+      type: object
+      properties: {}
+    pfs_v2.DeleteProjectRequest:
+      type: object
+      properties:
+        project:
+          "$ref": "#/components/schemas/pfs_v2.Project"
+        force:
+          type: boolean
+    pfs_v2.Delimiter:
+      type: number
+      enum:
+      - 0
+      - 1
+      - 2
+      - 3
+      - 4
+      description: "0 - NONE \n1 - JSON \n2 - LINE \n3 - SQL \n4 - CSV "
+    pfs_v2.AddFile:
+      type: object
+      properties:
+        path:
+          type: string
+        datum:
+          type: string
+        raw:
+          "$ref": "#/components/schemas/google.protobuf.BytesValue"
+        url:
+          "$ref": "#/components/schemas/pfs_v2.AddFile.URLSource"
+    pfs_v2.DeleteFile:
+      type: object
+      properties:
+        path:
+          type: string
+        datum:
+          type: string
+    pfs_v2.CopyFile:
+      type: object
+      properties:
+        dst:
+          type: string
+        datum:
+          type: string
+        src:
+          "$ref": "#/components/schemas/pfs_v2.File"
+        append:
+          type: boolean
+    pfs_v2.ModifyFileRequest:
+      type: object
+      properties:
+        set_commit:
+          "$ref": "#/components/schemas/pfs_v2.Commit"
+        add_file:
+          "$ref": "#/components/schemas/pfs_v2.AddFile"
+        delete_file:
+          "$ref": "#/components/schemas/pfs_v2.DeleteFile"
+        copy_file:
+          "$ref": "#/components/schemas/pfs_v2.CopyFile"
+    pfs_v2.GetFileRequest:
+      type: object
+      properties:
+        file:
+          "$ref": "#/components/schemas/pfs_v2.File"
+        URL:
+          type: string
+        offset:
+          type: integer
+          format: int64
+        path_range:
+          "$ref": "#/components/schemas/pfs_v2.PathRange"
+    pfs_v2.InspectFileRequest:
+      type: object
+      properties:
+        file:
+          "$ref": "#/components/schemas/pfs_v2.File"
+    pfs_v2.ListFileRequest:
+      type: object
+      properties:
+        file:
+          "$ref": "#/components/schemas/pfs_v2.File"
+        paginationMarker:
+          "$ref": "#/components/schemas/pfs_v2.File"
+        number:
+          type: integer
+          format: int64
+          description: Number of files to return
+        reverse:
+          type: boolean
+          description: If true, return files in reverse order
+    pfs_v2.WalkFileRequest:
+      type: object
+      properties:
+        file:
+          "$ref": "#/components/schemas/pfs_v2.File"
+        paginationMarker:
+          "$ref": "#/components/schemas/pfs_v2.File"
+        number:
+          type: integer
+          format: int64
+          description: Number of files to return
+        reverse:
+          type: boolean
+          description: If true, return files in reverse order
+    pfs_v2.GlobFileRequest:
+      type: object
+      properties:
+        commit:
+          "$ref": "#/components/schemas/pfs_v2.Commit"
+        pattern:
+          type: string
+        path_range:
+          "$ref": "#/components/schemas/pfs_v2.PathRange"
+    pfs_v2.DiffFileRequest:
+      type: object
+      properties:
+        new_file:
+          "$ref": "#/components/schemas/pfs_v2.File"
+        old_file:
+          "$ref": "#/components/schemas/pfs_v2.File"
+        shallow:
+          type: boolean
+    pfs_v2.DiffFileResponse:
+      type: object
+      properties:
+        new_file:
+          "$ref": "#/components/schemas/pfs_v2.FileInfo"
+        old_file:
+          "$ref": "#/components/schemas/pfs_v2.FileInfo"
+    pfs_v2.FsckRequest:
+      type: object
+      properties:
+        fix:
+          type: boolean
+        zombie_target:
+          "$ref": "#/components/schemas/pfs_v2.Commit"
+        zombie_all:
+          type: boolean
+          description: run zombie data detection against all pipelines
+    pfs_v2.FsckResponse:
+      type: object
+      properties:
+        fix:
+          type: string
+        error:
+          type: string
+    pfs_v2.CreateFileSetResponse:
+      type: object
+      properties:
+        file_set_id:
+          type: string
+    pfs_v2.GetFileSetRequest:
+      type: object
+      properties:
+        commit:
+          "$ref": "#/components/schemas/pfs_v2.Commit"
+    pfs_v2.AddFileSetRequest:
+      type: object
+      properties:
+        commit:
+          "$ref": "#/components/schemas/pfs_v2.Commit"
+        file_set_id:
+          type: string
+    pfs_v2.RenewFileSetRequest:
+      type: object
+      properties:
+        file_set_id:
+          type: string
+        ttl_seconds:
+          type: integer
+          format: int64
+    pfs_v2.ComposeFileSetRequest:
+      type: object
+      properties:
+        file_set_ids:
+          type: array
+          items:
+            type: string
+        ttl_seconds:
+          type: integer
+          format: int64
+        compact:
+          type: boolean
+    pfs_v2.ShardFileSetRequest:
+      type: object
+      properties:
+        file_set_id:
+          type: string
+    pfs_v2.PathRange:
+      type: object
+      properties:
+        lower:
+          type: string
+        upper:
+          type: string
+    pfs_v2.ShardFileSetResponse:
+      type: object
+      properties:
+        shards:
+          type: array
+          items:
+            "$ref": "#/components/schemas/pfs_v2.PathRange"
+    pfs_v2.CheckStorageRequest:
+      type: object
+      properties:
+        read_chunk_data:
+          type: boolean
+        chunk_begin:
+          type: string
+          format: byte
+        chunk_end:
+          type: string
+          format: byte
+    pfs_v2.CheckStorageResponse:
+      type: object
+      properties:
+        chunk_object_count:
+          type: integer
+          format: int64
+    pfs_v2.PutCacheRequest:
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          "$ref": "#/components/schemas/google.protobuf.Any"
+        file_set_ids:
+          type: array
+          items:
+            type: string
+        tag:
+          type: string
+    pfs_v2.GetCacheRequest:
+      type: object
+      properties:
+        key:
+          type: string
+    pfs_v2.GetCacheResponse:
+      type: object
+      properties:
+        value:
+          "$ref": "#/components/schemas/google.protobuf.Any"
+    pfs_v2.ClearCacheRequest:
+      type: object
+      properties:
+        tag_prefix:
+          type: string
+    pfs_v2.ActivateAuthRequest:
+      type: object
+      properties: {}
+    pfs_v2.ActivateAuthResponse:
+      type: object
+      properties: {}
+    pfs_v2.RunLoadTestRequest:
+      type: object
+      properties:
+        spec:
+          type: string
+        branch:
+          "$ref": "#/components/schemas/pfs_v2.Branch"
+        seed:
+          type: integer
+          format: int64
+        state_id:
+          type: string
+    pfs_v2.RunLoadTestResponse:
+      type: object
+      properties:
+        spec:
+          type: string
+        branch:
+          "$ref": "#/components/schemas/pfs_v2.Branch"
+        seed:
+          type: integer
+          format: int64
+        error:
+          type: string
+        duration:
+          "$ref": "#/components/schemas/google.protobuf.Duration"
+        state_id:
+          type: string
+    pfs_v2.ObjectStorageEgress:
+      type: object
+      properties:
+        url:
+          type: string
+    pfs_v2.SQLDatabaseEgress:
+      type: object
+      properties:
+        url:
+          type: string
+        file_format:
+          "$ref": "#/components/schemas/pfs_v2.SQLDatabaseEgress.FileFormat"
+        secret:
+          "$ref": "#/components/schemas/pps_v2.Secret"
+    pfs_v2.EgressRequest:
+      type: object
+      properties:
+        commit:
+          "$ref": "#/components/schemas/pfs_v2.Commit"
+        object_storage:
+          "$ref": "#/components/schemas/pfs_v2.ObjectStorageEgress"
+        sql_database:
+          "$ref": "#/components/schemas/pfs_v2.SQLDatabaseEgress"
+    pfs_v2.EgressResponse:
+      type: object
+      properties:
+        object_storage:
+          "$ref": "#/components/schemas/pfs_v2.EgressResponse.ObjectStorageResult"
+        sql_database:
+          "$ref": "#/components/schemas/pfs_v2.EgressResponse.SQLDatabaseResult"
+    admin_v2.ClusterInfo:
+      type: object
+      properties:
+        id:
+          type: string
+        deployment_id:
+          type: string
+        version_warnings_ok:
+          type: boolean
+          description: Let the client detect a server that can't generate warnings.
+        version_warnings:
+          type: array
+          items:
+            type: string
+          description: Warnings about version skew.
+    admin_v2.InspectClusterRequest:
+      type: object
+      properties:
+        client_version:
+          "$ref": "#/components/schemas/versionpb_v2.Version"
+    debug_v2.ProfileRequest:
+      type: object
+      properties:
+        profile:
+          "$ref": "#/components/schemas/debug_v2.Profile"
+        filter:
+          "$ref": "#/components/schemas/pps_v2.ListDatumRequest.Filter"
+    debug_v2.Profile:
+      type: object
+      properties:
+        name:
+          type: string
+        duration:
+          "$ref": "#/components/schemas/google.protobuf.Duration"
+    debug_v2.Filter:
+      type: object
+      properties:
+        pachd:
+          type: boolean
+        pipeline:
+          "$ref": "#/components/schemas/pps_v2.Pipeline"
+        worker:
+          "$ref": "#/components/schemas/pps_v2.Worker"
+        database:
+          type: boolean
+    debug_v2.Worker:
+      type: object
+      properties:
+        pod:
+          type: string
+        redirected:
+          type: boolean
+    debug_v2.BinaryRequest:
+      type: object
+      properties:
+        filter:
+          "$ref": "#/components/schemas/pps_v2.ListDatumRequest.Filter"
+    debug_v2.DumpRequest:
+      type: object
+      properties:
+        filter:
+          "$ref": "#/components/schemas/pps_v2.ListDatumRequest.Filter"
+        limit:
+          type: integer
+          format: int64
+          description: Limit sets the limit for the number of commits / jobs that
+            are returned for each repo / pipeline in the dump.
+    debug_v2.SetLogLevelRequest:
+      type: object
+      properties:
+        pachyderm:
+          "$ref": "#/components/schemas/debug_v2.SetLogLevelRequest.LogLevel"
+        grpc:
+          "$ref": "#/components/schemas/debug_v2.SetLogLevelRequest.LogLevel"
+        duration:
+          "$ref": "#/components/schemas/google.protobuf.Duration"
+        recurse:
+          type: boolean
+    debug_v2.SetLogLevelResponse:
+      type: object
+      properties:
+        affected_pods:
+          type: array
+          items:
+            type: string
+        errored_pods:
+          type: array
+          items:
+            type: string
+    enterprise_v2.LicenseRecord:
+      type: object
+      properties:
+        activation_code:
+          type: string
+        expires:
+          "$ref": "#/components/schemas/google.protobuf.Timestamp"
+      description: |-
+        LicenseRecord is the record we store in etcd for a Pachyderm enterprise
+        token that has been provided to a Pachyderm license server
+    enterprise_v2.EnterpriseConfig:
+      type: object
+      properties:
+        license_server:
+          type: string
+          description: license_server is the address of the grpc license service
+        id:
+          type: string
+          description: |-
+            id is the unique identifier for this pachd, which is registered
+            with the license service
+        secret:
+          type: string
+          description: secret is a shared secret between this pachd and the license
+            service
+      description: |-
+        EnterpriseConfig is the configuration we store for heartbeating
+        to the license server.
+    enterprise_v2.EnterpriseRecord:
+      type: object
+      properties:
+        license:
+          "$ref": "#/components/schemas/enterprise_v2.LicenseRecord"
+        last_heartbeat:
+          "$ref": "#/components/schemas/google.protobuf.Timestamp"
+        heartbeat_failed:
+          type: boolean
+          description: |-
+            heartbeat_failed is set if the license is still valid, but
+            the pachd is no longer registered with an enterprise server.
+            This is the same as the expired state, where auth is locked
+            but not disabled.
+      description: |-
+        EnterpriseRecord is a protobuf we cache in etcd to store the
+        enterprise status.
+    enterprise_v2.State:
+      type: number
+      enum:
+      - 0
+      - 1
+      - 2
+      - 3
+      description: "0 - NONE \n1 - ACTIVE \n2 - EXPIRED \n3 - HEARTBEAT_FAILED "
+    enterprise_v2.TokenInfo:
+      type: object
+      properties:
+        expires:
+          "$ref": "#/components/schemas/google.protobuf.Timestamp"
+      description: TokenInfo contains information about the currently active enterprise
+        token
+    enterprise_v2.ActivateRequest:
+      type: object
+      properties:
+        license_server:
+          type: string
+        id:
+          type: string
+        secret:
+          type: string
+    enterprise_v2.ActivateResponse:
+      type: object
+      properties: {}
+    enterprise_v2.GetStateRequest:
+      type: object
+      properties: {}
+    enterprise_v2.GetStateResponse:
+      type: object
+      properties:
+        state:
+          "$ref": "#/components/schemas/enterprise_v2.State"
+        info:
+          "$ref": "#/components/schemas/enterprise_v2.TokenInfo"
+        activation_code:
+          type: string
+          description: |-
+            activation_code will always be an empty string,
+            call GetEnterpriseCode to get the activation code
+    enterprise_v2.GetActivationCodeRequest:
+      type: object
+      properties: {}
+    enterprise_v2.GetActivationCodeResponse:
+      type: object
+      properties:
+        state:
+          "$ref": "#/components/schemas/enterprise_v2.State"
+        info:
+          "$ref": "#/components/schemas/enterprise_v2.TokenInfo"
+        activation_code:
+          type: string
+    enterprise_v2.HeartbeatRequest:
+      type: object
+      properties: {}
+      description: |-
+        Heartbeat in the enterprise service just triggers a heartbeat for
+        testing purposes. The RPC used to communicate with the license
+        service is defined in the license service.
+    enterprise_v2.HeartbeatResponse:
+      type: object
+      properties: {}
+    enterprise_v2.DeactivateRequest:
+      type: object
+      properties: {}
+    enterprise_v2.DeactivateResponse:
+      type: object
+      properties: {}
+    enterprise_v2.PauseRequest:
+      type: object
+      properties: {}
+    enterprise_v2.PauseResponse:
+      type: object
+      properties: {}
+    enterprise_v2.UnpauseRequest:
+      type: object
+      properties: {}
+    enterprise_v2.UnpauseResponse:
+      type: object
+      properties: {}
+    enterprise_v2.PauseStatusRequest:
+      type: object
+      properties: {}
+    enterprise_v2.PauseStatusResponse:
+      type: object
+      properties:
+        status:
+          "$ref": "#/components/schemas/enterprise_v2.PauseStatusResponse.PauseStatus"
+    identity_v2.User:
+      type: object
+      properties:
+        email:
+          type: string
+        last_authenticated:
+          "$ref": "#/components/schemas/google.protobuf.Timestamp"
+      description: User represents an IDP user that has authenticated via OIDC
+    identity_v2.IdentityServerConfig:
+      type: object
+      properties:
+        issuer:
+          type: string
+        id_token_expiry:
+          type: string
+        rotation_token_expiry:
+          type: string
+      description: |-
+        IdentityServerConfig is the configuration for the identity web server.
+        When the configuration is changed the web server is reloaded automatically.
+    identity_v2.SetIdentityServerConfigRequest:
+      type: object
+      properties:
+        config:
+          "$ref": "#/components/schemas/identity_v2.IdentityServerConfig"
+    identity_v2.SetIdentityServerConfigResponse:
+      type: object
+      properties: {}
+    identity_v2.GetIdentityServerConfigRequest:
+      type: object
+      properties: {}
+    identity_v2.GetIdentityServerConfigResponse:
+      type: object
+      properties:
+        config:
+          "$ref": "#/components/schemas/identity_v2.IdentityServerConfig"
+    identity_v2.IDPConnector:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID is the unique identifier for this connector.
+        name:
+          type: string
+          description: |-
+            Name is the human-readable identifier for this connector,
+            which will be shown to end users when they're authenticating.
+        type:
+          type: string
+          description: Type is the type of the IDP ex. `saml`, `oidc`, `github`.
+        configVersion:
+          type: integer
+          format: int64
+          description: |-
+            ConfigVersion must be incremented every time a connector is
+            updated, to avoid concurrent updates conflicting.
+        jsonConfig:
+          type: string
+          description: This is left for backwards compatibility, but we want users
+            to use the config defined below.
+        config:
+          "$ref": "#/components/schemas/google.protobuf.Struct"
+      description: IDPConnector represents a connection to an identity provider
+    identity_v2.CreateIDPConnectorRequest:
+      type: object
+      properties:
+        connector:
+          "$ref": "#/components/schemas/identity_v2.IDPConnector"
+    identity_v2.CreateIDPConnectorResponse:
+      type: object
+      properties: {}
+    identity_v2.UpdateIDPConnectorRequest:
+      type: object
+      properties:
+        connector:
+          "$ref": "#/components/schemas/identity_v2.IDPConnector"
+    identity_v2.UpdateIDPConnectorResponse:
+      type: object
+      properties: {}
+    identity_v2.ListIDPConnectorsRequest:
+      type: object
+      properties: {}
+    identity_v2.ListIDPConnectorsResponse:
+      type: object
+      properties:
+        connectors:
+          type: array
+          items:
+            "$ref": "#/components/schemas/identity_v2.IDPConnector"
+    identity_v2.GetIDPConnectorRequest:
+      type: object
+      properties:
+        id:
+          type: string
+    identity_v2.GetIDPConnectorResponse:
+      type: object
+      properties:
+        connector:
+          "$ref": "#/components/schemas/identity_v2.IDPConnector"
+    identity_v2.DeleteIDPConnectorRequest:
+      type: object
+      properties:
+        id:
+          type: string
+    identity_v2.DeleteIDPConnectorResponse:
+      type: object
+      properties: {}
+    identity_v2.OIDCClient:
+      type: object
+      properties:
+        id:
+          type: string
+        redirect_uris:
+          type: array
+          items:
+            type: string
+        trusted_peers:
+          type: array
+          items:
+            type: string
+        name:
+          type: string
+        secret:
+          type: string
+    identity_v2.CreateOIDCClientRequest:
+      type: object
+      properties:
+        client:
+          "$ref": "#/components/schemas/identity_v2.OIDCClient"
+    identity_v2.CreateOIDCClientResponse:
+      type: object
+      properties:
+        client:
+          "$ref": "#/components/schemas/identity_v2.OIDCClient"
+    identity_v2.GetOIDCClientRequest:
+      type: object
+      properties:
+        id:
+          type: string
+    identity_v2.GetOIDCClientResponse:
+      type: object
+      properties:
+        client:
+          "$ref": "#/components/schemas/identity_v2.OIDCClient"
+    identity_v2.ListOIDCClientsRequest:
+      type: object
+      properties: {}
+    identity_v2.ListOIDCClientsResponse:
+      type: object
+      properties:
+        clients:
+          type: array
+          items:
+            "$ref": "#/components/schemas/identity_v2.OIDCClient"
+    identity_v2.UpdateOIDCClientRequest:
+      type: object
+      properties:
+        client:
+          "$ref": "#/components/schemas/identity_v2.OIDCClient"
+    identity_v2.UpdateOIDCClientResponse:
+      type: object
+      properties: {}
+    identity_v2.DeleteOIDCClientRequest:
+      type: object
+      properties:
+        id:
+          type: string
+    identity_v2.DeleteOIDCClientResponse:
+      type: object
+      properties: {}
+    identity_v2.DeleteAllRequest:
+      type: object
+      properties: {}
+    identity_v2.DeleteAllResponse:
+      type: object
+      properties: {}
+    common.TestItem:
+      type: object
+      properties:
+        id:
+          type: string
+        value:
+          type: string
+        data:
+          type: string
+    common.Input:
+      type: object
+      properties:
+        file_info:
+          "$ref": "#/components/schemas/pfs_v2.FileInfo"
+        parent_commit:
+          "$ref": "#/components/schemas/pfs_v2.Commit"
+        name:
+          type: string
+        join_on:
+          type: string
+        outer_join:
+          type: boolean
+        group_by:
+          type: string
+        lazy:
+          type: boolean
+        branch:
+          type: string
+        git_url:
+          type: string
+        empty_files:
+          type: boolean
+        s3:
+          type: boolean
+          description: If set, workers won't create an input directory for this input
+    config_v2.Config:
+      type: object
+      properties:
+        user_id:
+          type: string
+        v1:
+          "$ref": "#/components/schemas/config_v2.ConfigV1"
+        v2:
+          "$ref": "#/components/schemas/config_v2.ConfigV2"
+      description: |-
+        Config specifies the pachyderm config that is read and interpreted by the
+        pachctl command-line tool. Right now, this is stored at
+        $HOME/.pachyderm/config.
+
+        Different versions of the pachyderm config are specified as subfields of this
+        message (this allows us to make significant changes to the config structure
+        without breaking existing users by defining a new config version).
+
+        These structures are stored in a JSON format, so it should be safe to modify
+        fields as long as compatibility is ensured with previous versions.
+    config_v2.ConfigV1:
+      type: object
+      properties:
+        pachd_address:
+          type: string
+          description: A host:port pointing pachd at a pachyderm cluster.
+        server_cas:
+          type: string
+          description: |-
+            Trusted root certificates (overrides installed certificates), formatted
+            as base64-encoded PEM
+        session_token:
+          type: string
+          description: |-
+            A secret token identifying the current pachctl user within their
+            pachyderm cluster. This is included in all RPCs sent by pachctl, and used
+            to determine if pachctl actions are authorized.
+        active_transaction:
+          type: string
+          description: |-
+            The currently active transaction for batching together pachctl commands.
+            This can be set or cleared via many of the `pachctl * transaction` commands.
+            This is the ID of the transaction object stored in the pachyderm etcd.
+      description: ConfigV1 specifies v1 of the pachyderm config (June 30 2017 - June
+        2019)
+    config_v2.ConfigV2:
+      type: object
+      properties:
+        active_context:
+          type: string
+        active_enterprise_context:
+          type: string
+        contexts:
+          "$ref": "#/components/schemas/config_v2.Context"
+        metrics:
+          type: boolean
+        max_shell_completions:
+          type: integer
+          format: int64
+      description: ConfigV2 specifies v2 of the pachyderm config (June 2019 - present)
+    config_v2.Context:
+      type: object
+      properties:
+        source:
+          "$ref": "#/components/schemas/config_v2.ContextSource"
+        pachd_address:
+          type: string
+          description: The hostname or IP address pointing pachd at a pachyderm cluster.
+        server_cas:
+          type: string
+          description: |-
+            Trusted root certificates (overrides installed certificates), formatted
+            as base64-encoded PEM.
+        session_token:
+          type: string
+          description: |-
+            A secret token identifying the current pachctl user within their
+            pachyderm cluster. This is included in all RPCs sent by pachctl, and used
+            to determine if pachctl actions are authorized.
+        active_transaction:
+          type: string
+          description: |-
+            The currently active transaction for batching together pachctl commands.
+            This can be set or cleared via many of the `pachctl * transaction` commands.
+            This is the ID of the transaction object stored in the pachyderm etcd.
+        cluster_name:
+          type: string
+          description: The k8s cluster name - used to construct a k8s context.
+        auth_info:
+          type: string
+          description: The k8s auth info - used to construct a k8s context.
+        namespace:
+          type: string
+          description: The k8s namespace - used to construct a k8s context.
+        port_forwarders:
+          type: integer
+          format: int32
+          description: |-
+            A mapping of service -> port number, when port forwarding is
+            running for this context.
+        cluster_deployment_id:
+          type: string
+          description: |-
+            A unique ID for the cluster deployment. At client initialization time,
+            we ensure this is the same as what the cluster reports back, to prevent
+            us from connecting to the wrong cluster.
+        enterprise_server:
+          type: boolean
+          description: |-
+            A boolean that records whether the context points at an enterprise server.
+            If false, the context points at a stand-alone pachd.
+        project:
+          type: string
+          description: The current project.
+    config_v2.ContextSource:
+      type: number
+      enum:
+      - 0
+      - 1
+      - 2
+      - 3
+      description: "0 - NONE \n1 - CONFIG_V1 \n2 - HUB \n3 - IMPORTED "
+    metrics.Metrics:
+      type: object
+      properties:
+        cluster_id:
+          type: string
+        pod_id:
+          type: string
+        nodes:
+          type: integer
+          format: int64
+        version:
+          type: string
+        repos:
+          type: integer
+          format: int64
+          description: Number of repos
+        commits:
+          type: integer
+          format: int64
+          description: Number of commits -- not used
+        files:
+          type: integer
+          format: int64
+          description: Number of files -- not used
+        bytes:
+          type: integer
+          format: int64
+          description: Number of bytes in all repos
+        jobs:
+          type: integer
+          format: int64
+          description: Number of jobs
+        pipelines:
+          type: integer
+          format: int64
+          description: Number of pipelines in the cluster -- not the same as DAG
+        archived_commits:
+          type: integer
+          format: int64
+          description: Number of archived commit -- not used
+        cancelled_commits:
+          type: integer
+          format: int64
+          description: Number of cancelled commits -- not used
+        activation_code:
+          type: string
+          description: Activation code
+        max_branches:
+          type: integer
+          format: int64
+          description: Max branches in across all the repos
+        pps_spout:
+          type: integer
+          format: int64
+          description: Number of spout pipelines
+        pps_spout_service:
+          type: integer
+          format: int64
+          description: Number of spout services
+        cfg_egress:
+          type: integer
+          format: int64
+          description: Number of pipelines with Egress configured
+        cfg_standby:
+          type: integer
+          format: int64
+          description: Number of pipelines with Standby congigured
+        cfg_s3gateway:
+          type: integer
+          format: int64
+          description: Number of pipelines with S3 Gateway configured
+        cfg_services:
+          type: integer
+          format: int64
+          description: Number of pipelines with services configured
+        cfg_errcmd:
+          type: integer
+          format: int64
+          description: Number of pipelines with error cmd set
+        cfg_tfjob:
+          type: integer
+          format: int64
+          description: Number of pipelines with TFJobs configured
+        input_group:
+          type: integer
+          format: int64
+          description: Number of pipelines with group inputs
+        input_join:
+          type: integer
+          format: int64
+          description: Number of pipelines with join inputs
+        input_cross:
+          type: integer
+          format: int64
+          description: Number of pipelines with cross inputs
+        input_union:
+          type: integer
+          format: int64
+          description: Number of pipelines with union inputs
+        input_cron:
+          type: integer
+          format: int64
+          description: Number of pipelines with cron inputs
+        input_git:
+          type: integer
+          format: int64
+          description: Number of pipelines with git inputs
+        input_pfs:
+          type: integer
+          format: int64
+          description: Number of pfs inputs
+        input_commit:
+          type: integer
+          format: int64
+          description: Number of pfs inputs with commits
+        input_join_on:
+          type: integer
+          format: int64
+          description: Number of pfs inputs with join_on
+        input_outer_join:
+          type: integer
+          format: int64
+          description: Number of pipelines with outer joins
+        input_lazy:
+          type: integer
+          format: int64
+          description: Number of pipelines with lazy set
+        input_empty_files:
+          type: integer
+          format: int64
+          description: Number of pipelines with empty files set
+        input_s3:
+          type: integer
+          format: int64
+          description: Number of pipelines with S3 input
+        input_trigger:
+          type: integer
+          format: int64
+          description: Number of pipelines with triggers set
+        resource_cpu_req:
+          type: number
+          format: float
+          description: Total CPU request across all pipelines
+        resource_cpu_req_max:
+          type: number
+          format: float
+          description: Max CPU resource requests set
+        resource_mem_req:
+          type: string
+          description: Sting of memory requests set across all pipelines
+        resource_gpu_req:
+          type: integer
+          format: int64
+          description: Total GPU requests across all pipelines
+        resource_gpu_req_max:
+          type: integer
+          format: int64
+          description: Max GPU request across all pipelines
+        resource_disk_req:
+          type: string
+          description: String of disk requests set across all pipelines
+        resource_cpu_limit:
+          type: number
+          format: float
+          description: Total CPU limits set across all pipelines
+        resource_cpu_limit_max:
+          type: number
+          format: float
+          description: Max CPU limit set
+        resource_mem_limit:
+          type: string
+          description: String of memory limits set
+        resource_gpu_limit:
+          type: integer
+          format: int64
+          description: Number of pipelines with
+        resource_gpu_limit_max:
+          type: integer
+          format: int64
+          description: Max GPU limit set
+        resource_disk_limit:
+          type: string
+          description: String of disk limits set across all pipelines
+        max_parallelism:
+          type: integer
+          format: int64
+          description: Max parallelism set
+        min_parallelism:
+          type: integer
+          format: int64
+          description: Min parallelism set
+        num_parallelism:
+          type: integer
+          format: int64
+          description: Number of pipelines with parallelism set
+        enterprise_failures:
+          type: integer
+          format: int64
+          description: Number of times a command has failed due to an enterprise check
+    pfsload.CommitSpec:
+      type: object
+      properties:
+        count:
+          type: integer
+          format: int64
+        modifications:
+          type: array
+          items:
+            "$ref": "#/components/schemas/pfsload.ModificationSpec"
+        file_sources:
+          type: array
+          items:
+            "$ref": "#/components/schemas/pfsload.FileSourceSpec"
+        validator:
+          "$ref": "#/components/schemas/pfsload.ValidatorSpec"
+    pfsload.ModificationSpec:
+      type: object
+      properties:
+        count:
+          type: integer
+          format: int64
+        put_file:
+          "$ref": "#/components/schemas/pfsload.PutFileSpec"
+    pfsload.PutFileSpec:
+      type: object
+      properties:
+        count:
+          type: integer
+          format: int64
+        source:
+          type: string
+    pfsload.PutFileTask:
+      type: object
+      properties:
+        count:
+          type: integer
+          format: int64
+        file_source:
+          "$ref": "#/components/schemas/pfsload.FileSourceSpec"
+        seed:
+          type: integer
+          format: int64
+        auth_token:
+          type: string
+    pfsload.PutFileTaskResult:
+      type: object
+      properties:
+        file_set_id:
+          type: string
+        hash:
+          type: string
+          format: byte
+    pfsload.FileSourceSpec:
+      type: object
+      properties:
+        name:
+          type: string
+        random:
+          "$ref": "#/components/schemas/pfsload.RandomFileSourceSpec"
+    pfsload.RandomFileSourceSpec:
+      type: object
+      properties:
+        directory:
+          "$ref": "#/components/schemas/pfsload.RandomDirectorySpec"
+        sizes:
+          type: array
+          items:
+            "$ref": "#/components/schemas/pfsload.SizeSpec"
+        increment_path:
+          type: boolean
+    pfsload.RandomDirectorySpec:
+      type: object
+      properties:
+        depth:
+          "$ref": "#/components/schemas/pfsload.SizeSpec"
+        run:
+          type: integer
+          format: int64
+    pfsload.SizeSpec:
+      type: object
+      properties:
+        min_size:
+          type: integer
+          format: int64
+        max_size:
+          type: integer
+          format: int64
+        prob:
+          type: integer
+          format: int64
+    pfsload.ValidatorSpec:
+      type: object
+      properties:
+        frequency:
+          "$ref": "#/components/schemas/pfsload.FrequencySpec"
+    pfsload.FrequencySpec:
+      type: object
+      properties:
+        count:
+          type: integer
+          format: int64
+        prob:
+          type: integer
+          format: int64
+    pfsload.State:
+      type: object
+      properties:
+        commits:
+          type: array
+          items:
+            "$ref": "#/components/schemas/pfs_v2.Commit"
+    ppsload.State:
+      type: object
+      properties:
+        branch:
+          "$ref": "#/components/schemas/pfs_v2.Branch"
+        pfs_state_id:
+          type: string
+    chunk.DataRef:
+      type: object
+      properties:
+        ref:
+          "$ref": "#/components/schemas/chunk.Ref"
+        hash:
+          type: string
+          format: byte
+          description: The hash of the data being referenced.
+        offset_bytes:
+          type: integer
+          format: int64
+          description: The offset and size used for accessing the data within the
+            chunk.
+        size_bytes:
+          type: integer
+          format: int64
+      description: DataRef is a reference to data within a chunk.
+    chunk.CompressionAlgo:
+      type: number
+      enum:
+      - 0
+      - 1
+      description: "0 - NONE \n1 - GZIP_BEST_SPEED "
+    chunk.EncryptionAlgo:
+      type: number
+      enum:
+      - 0
+      - 1
+      description: "0 - ENCRYPTION_ALGO_UNKNOWN \n1 - CHACHA20 "
+    chunk.Ref:
+      type: object
+      properties:
+        id:
+          type: string
+          format: byte
+        size_bytes:
+          type: integer
+          format: int64
+        edge:
+          type: boolean
+        dek:
+          type: string
+          format: byte
+        encryption_algo:
+          "$ref": "#/components/schemas/chunk.EncryptionAlgo"
+        compression_algo:
+          "$ref": "#/components/schemas/chunk.CompressionAlgo"
+    fileset.Metadata:
+      type: object
+      properties:
+        primitive:
+          "$ref": "#/components/schemas/fileset.Primitive"
+        composite:
+          "$ref": "#/components/schemas/fileset.Composite"
+    fileset.Composite:
+      type: object
+      properties:
+        layers:
+          type: array
+          items:
+            type: string
+    fileset.Primitive:
+      type: object
+      properties:
+        deletive:
+          "$ref": "#/components/schemas/index.Index"
+        additive:
+          "$ref": "#/components/schemas/index.Index"
+        size_bytes:
+          type: integer
+          format: int64
+    fileset.TestCacheValue:
+      type: object
+      properties:
+        file_set_id:
+          type: string
+    index.Index:
+      type: object
+      properties:
+        path:
+          type: string
+        range:
+          "$ref": "#/components/schemas/index.Range"
+        file:
+          "$ref": "#/components/schemas/pfs_v2.File"
+        num_files:
+          type: integer
+          format: int64
+          description: |-
+            NOTE: num_files and size_bytes did not exist in older versions of 2.x, so
+            they will not be set.
+        size_bytes:
+          type: integer
+          format: int64
+      description: Index stores an index to and metadata about a range of files or
+        a file.
+    index.Range:
+      type: object
+      properties:
+        offset:
+          type: integer
+          format: int64
+        last_path:
+          type: string
+        chunk_ref:
+          "$ref": "#/components/schemas/chunk.DataRef"
+    index.File:
+      type: object
+      properties:
+        datum:
+          type: string
+        data_refs:
+          type: array
+          items:
+            "$ref": "#/components/schemas/chunk.DataRef"
+    task.State:
+      type: number
+      enum:
+      - 0
+      - 1
+      - 2
+      - 3
+      description: "0 - STATE_UNKNOWN \n1 - RUNNING \n2 - SUCCESS \n3 - FAILURE "
+    task.Group:
+      type: object
+      properties: {}
+    task.Task:
+      type: object
+      properties:
+        id:
+          type: string
+        state:
+          "$ref": "#/components/schemas/enterprise_v2.State"
+        input:
+          "$ref": "#/components/schemas/google.protobuf.Any"
+        output:
+          "$ref": "#/components/schemas/google.protobuf.Any"
+        reason:
+          type: string
+        index:
+          type: integer
+          format: int64
+      description: 'TODO: Consider splitting this up into separate structures for
+        each state in a oneof.'
+    task.Claim:
+      type: object
+      properties: {}
+    task.TestTask:
+      type: object
+      properties:
+        id:
+          type: string
+    license_v2.ActivateRequest:
+      type: object
+      properties:
+        activation_code:
+          type: string
+          description: |-
+            activation_code is a Pachyderm enterprise activation code. New users can
+            obtain trial activation codes
+        expires:
+          "$ref": "#/components/schemas/google.protobuf.Timestamp"
+    license_v2.ActivateResponse:
+      type: object
+      properties:
+        info:
+          "$ref": "#/components/schemas/enterprise_v2.TokenInfo"
+    license_v2.GetActivationCodeRequest:
+      type: object
+      properties: {}
+    license_v2.GetActivationCodeResponse:
+      type: object
+      properties:
+        state:
+          "$ref": "#/components/schemas/enterprise_v2.State"
+        info:
+          "$ref": "#/components/schemas/enterprise_v2.TokenInfo"
+        activation_code:
+          type: string
+    license_v2.DeactivateRequest:
+      type: object
+      properties: {}
+    license_v2.DeactivateResponse:
+      type: object
+      properties: {}
+    license_v2.AddClusterRequest:
+      type: object
+      properties:
+        id:
+          type: string
+          description: id is the unique, immutable identifier for this cluster
+        address:
+          type: string
+          description: address is the public GPRC address where the cluster can be
+            reached
+        secret:
+          type: string
+          description: |-
+            If set, secret specifies the shared secret this cluster will use
+            to authenticate to the license server. Otherwise a secret will be
+            generated and returned in the response.
+        user_address:
+          type: string
+          description: The pachd address for users to connect to.
+        cluster_deployment_id:
+          type: string
+          description: The deployment ID value generated by each Cluster
+        enterprise_server:
+          type: boolean
+          description: This field indicates whether the address points to an enterprise
+            server
+    license_v2.AddClusterResponse:
+      type: object
+      properties:
+        secret:
+          type: string
+    license_v2.DeleteClusterRequest:
+      type: object
+      properties:
+        id:
+          type: string
+    license_v2.DeleteClusterResponse:
+      type: object
+      properties: {}
+    license_v2.ClusterStatus:
+      type: object
+      properties:
+        id:
+          type: string
+        address:
+          type: string
+        version:
+          type: string
+        auth_enabled:
+          type: boolean
+        client_id:
+          type: string
+        last_heartbeat:
+          "$ref": "#/components/schemas/google.protobuf.Timestamp"
+        created_at:
+          "$ref": "#/components/schemas/google.protobuf.Timestamp"
+    license_v2.UpdateClusterRequest:
+      type: object
+      properties:
+        id:
+          type: string
+        address:
+          type: string
+        user_address:
+          type: string
+        cluster_deployment_id:
+          type: string
+        secret:
+          type: string
+      description: 'Note: Updates of the enterprise-server field are not allowed.
+        In the worst case, a user can recreate their cluster if they need the field
+        updated.'
+    license_v2.UpdateClusterResponse:
+      type: object
+      properties: {}
+    license_v2.ListClustersRequest:
+      type: object
+      properties: {}
+    license_v2.ListClustersResponse:
+      type: object
+      properties:
+        clusters:
+          type: array
+          items:
+            "$ref": "#/components/schemas/license_v2.ClusterStatus"
+    license_v2.DeleteAllRequest:
+      type: object
+      properties: {}
+    license_v2.DeleteAllResponse:
+      type: object
+      properties: {}
+    license_v2.HeartbeatRequest:
+      type: object
+      properties:
+        id:
+          type: string
+        secret:
+          type: string
+        version:
+          type: string
+        auth_enabled:
+          type: boolean
+        client_id:
+          type: string
+    license_v2.HeartbeatResponse:
+      type: object
+      properties:
+        license:
+          "$ref": "#/components/schemas/enterprise_v2.LicenseRecord"
+    license_v2.UserClusterInfo:
+      type: object
+      properties:
+        id:
+          type: string
+        cluster_deployment_id:
+          type: string
+        address:
+          type: string
+        enterprise_server:
+          type: boolean
+    license_v2.ListUserClustersRequest:
+      type: object
+      properties: {}
+    license_v2.ListUserClustersResponse:
+      type: object
+      properties:
+        clusters:
+          type: array
+          items:
+            "$ref": "#/components/schemas/license_v2.UserClusterInfo"
+    proxy.ListenRequest:
+      type: object
+      properties:
+        channel:
+          type: string
+    proxy.ListenResponse:
+      type: object
+      properties:
+        extra:
+          type: string
+    pfsserver.ShardTask:
+      type: object
+      properties:
+        inputs:
+          type: array
+          items:
+            type: string
+        path_range:
+          "$ref": "#/components/schemas/pfs_v2.PathRange"
+    pfsserver.ShardTaskResult:
+      type: object
+      properties:
+        compact_tasks:
+          type: array
+          items:
+            "$ref": "#/components/schemas/pfsserver.CompactTask"
+    pfsserver.PathRange:
+      type: object
+      properties:
+        lower:
+          type: string
+        upper:
+          type: string
+    pfsserver.CompactTask:
+      type: object
+      properties:
+        inputs:
+          type: array
+          items:
+            type: string
+        path_range:
+          "$ref": "#/components/schemas/pfs_v2.PathRange"
+    pfsserver.CompactTaskResult:
+      type: object
+      properties:
+        id:
+          type: string
+    pfsserver.ConcatTask:
+      type: object
+      properties:
+        inputs:
+          type: array
+          items:
+            type: string
+    pfsserver.ConcatTaskResult:
+      type: object
+      properties:
+        id:
+          type: string
+    pfsserver.ValidateTask:
+      type: object
+      properties:
+        id:
+          type: string
+        path_range:
+          "$ref": "#/components/schemas/pfs_v2.PathRange"
+    pfsserver.ValidateTaskResult:
+      type: object
+      properties:
+        first:
+          "$ref": "#/components/schemas/index.Index"
+        last:
+          "$ref": "#/components/schemas/index.Index"
+        error:
+          type: string
+        size_bytes:
+          type: integer
+          format: int64
+    pfsserver.PutFileURLTask:
+      type: object
+      properties:
+        dst:
+          type: string
+        datum:
+          type: string
+        URL:
+          type: string
+        paths:
+          type: array
+          items:
+            type: string
+        start_offset:
+          type: integer
+          format: int64
+        end_offset:
+          type: integer
+          format: int64
+    pfsserver.PutFileURLTaskResult:
+      type: object
+      properties:
+        id:
+          type: string
+    pfsserver.GetFileURLTask:
+      type: object
+      properties:
+        URL:
+          type: string
+        file:
+          "$ref": "#/components/schemas/pfs_v2.File"
+        path_range:
+          "$ref": "#/components/schemas/pfs_v2.PathRange"
+    pfsserver.GetFileURLTaskResult:
+      type: object
+      properties: {}
+    datum.State:
+      type: number
+      enum:
+      - 0
+      - 1
+      - 2
+      description: "0 - PROCESSED \n1 - FAILED \n2 - RECOVERED "
+    datum.Meta:
+      type: object
+      properties:
+        job:
+          "$ref": "#/components/schemas/pps_v2.Job"
+        inputs:
+          type: array
+          items:
+            "$ref": "#/components/schemas/common.Input"
+        hash:
+          type: string
+        state:
+          "$ref": "#/components/schemas/enterprise_v2.State"
+        reason:
+          type: string
+        stats:
+          "$ref": "#/components/schemas/pps_v2.ProcessStats"
+        index:
+          type: integer
+          format: int64
+        image_id:
+          type: string
+    datum.Stats:
+      type: object
+      properties:
+        process_stats:
+          "$ref": "#/components/schemas/pps_v2.ProcessStats"
+        processed:
+          type: integer
+          format: int64
+        skipped:
+          type: integer
+          format: int64
+        total:
+          type: integer
+          format: int64
+        failed:
+          type: integer
+          format: int64
+        recovered:
+          type: integer
+          format: int64
+        failed_id:
+          type: string
+    datum.PFSTask:
+      type: object
+      properties:
+        input:
+          "$ref": "#/components/schemas/pps_v2.PFSInput"
+        path_range:
+          "$ref": "#/components/schemas/pfs_v2.PathRange"
+        base_index:
+          type: integer
+          format: int64
+        auth_token:
+          type: string
+    datum.PFSTaskResult:
+      type: object
+      properties:
+        file_set_id:
+          type: string
+    datum.CrossTask:
+      type: object
+      properties:
+        file_set_ids:
+          type: array
+          items:
+            type: string
+        base_file_set_index:
+          type: integer
+          format: int64
+        base_file_set_path_range:
+          "$ref": "#/components/schemas/pfs_v2.PathRange"
+        base_index:
+          type: integer
+          format: int64
+        auth_token:
+          type: string
+    datum.CrossTaskResult:
+      type: object
+      properties:
+        file_set_id:
+          type: string
+    datum.KeyTask:
+      type: object
+      properties:
+        file_set_id:
+          type: string
+        path_range:
+          "$ref": "#/components/schemas/pfs_v2.PathRange"
+        type:
+          "$ref": "#/components/schemas/pfs_v2.SQLDatabaseEgress.FileFormat.Type"
+        auth_token:
+          type: string
+    datum.KeyTaskResult:
+      type: object
+      properties:
+        file_set_id:
+          type: string
+    datum.MergeTask:
+      type: object
+      properties:
+        file_set_ids:
+          type: array
+          items:
+            type: string
+        path_range:
+          "$ref": "#/components/schemas/pfs_v2.PathRange"
+        type:
+          "$ref": "#/components/schemas/pfs_v2.SQLDatabaseEgress.FileFormat.Type"
+        auth_token:
+          type: string
+    datum.MergeTaskResult:
+      type: object
+      properties:
+        file_set_id:
+          type: string
+    datum.ComposeTask:
+      type: object
+      properties:
+        file_set_ids:
+          type: array
+          items:
+            type: string
+        auth_token:
+          type: string
+    datum.ComposeTaskResult:
+      type: object
+      properties:
+        file_set_id:
+          type: string
+    datum.SetSpec:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int64
+        size_bytes:
+          type: integer
+          format: int64
+    taskapi.State:
+      type: number
+      enum:
+      - 0
+      - 1
+      - 2
+      - 3
+      - 4
+      description: "0 - UNKNOWN \n1 - RUNNING \n2 - SUCCESS \n3 - FAILURE \n4 - CLAIMED
+        // not a real state used by task logic"
+    taskapi.Group:
+      type: object
+      properties:
+        namespace:
+          type: string
+        group:
+          type: string
+    taskapi.TaskInfo:
+      type: object
+      properties:
+        id:
+          type: string
+        group:
+          "$ref": "#/components/schemas/task.Group"
+        state:
+          "$ref": "#/components/schemas/enterprise_v2.State"
+        reason:
+          type: string
+        input_type:
+          type: string
+        input_data:
+          type: string
+    taskapi.ListTaskRequest:
+      type: object
+      properties:
+        group:
+          "$ref": "#/components/schemas/task.Group"
+    transaction_v2.DeleteAllRequest:
+      type: object
+      properties: {}
+    transaction_v2.TransactionRequest:
+      type: object
+      properties:
+        create_repo:
+          "$ref": "#/components/schemas/pfs_v2.CreateRepoRequest"
+        delete_repo:
+          "$ref": "#/components/schemas/pfs_v2.DeleteRepoRequest"
+        start_commit:
+          "$ref": "#/components/schemas/pfs_v2.StartCommitRequest"
+        finish_commit:
+          "$ref": "#/components/schemas/pfs_v2.FinishCommitRequest"
+        squash_commit_set:
+          "$ref": "#/components/schemas/pfs_v2.SquashCommitSetRequest"
+        create_branch:
+          "$ref": "#/components/schemas/pfs_v2.CreateBranchRequest"
+        delete_branch:
+          "$ref": "#/components/schemas/pfs_v2.DeleteBranchRequest"
+        update_job_state:
+          "$ref": "#/components/schemas/pps_v2.UpdateJobStateRequest"
+        create_pipeline:
+          "$ref": "#/components/schemas/pps_v2.CreatePipelineRequest"
+        stop_job:
+          "$ref": "#/components/schemas/pps_v2.StopJobRequest"
+    transaction_v2.TransactionResponse:
+      type: object
+      properties:
+        commit:
+          "$ref": "#/components/schemas/pfs_v2.Commit"
+    transaction_v2.Transaction:
+      type: object
+      properties:
+        id:
+          type: string
+    transaction_v2.TransactionInfo:
+      type: object
+      properties:
+        transaction:
+          "$ref": "#/components/schemas/transaction_v2.Transaction"
+        requests:
+          type: array
+          items:
+            "$ref": "#/components/schemas/transaction_v2.TransactionRequest"
+        responses:
+          type: array
+          items:
+            "$ref": "#/components/schemas/transaction_v2.TransactionResponse"
+        started:
+          "$ref": "#/components/schemas/google.protobuf.Timestamp"
+        version:
+          type: integer
+          format: int64
+    transaction_v2.TransactionInfos:
+      type: object
+      properties:
+        transaction_info:
+          type: array
+          items:
+            "$ref": "#/components/schemas/transaction_v2.TransactionInfo"
+    transaction_v2.BatchTransactionRequest:
+      type: object
+      properties:
+        requests:
+          type: array
+          items:
+            "$ref": "#/components/schemas/transaction_v2.TransactionRequest"
+    transaction_v2.StartTransactionRequest:
+      type: object
+      properties: {}
+    transaction_v2.InspectTransactionRequest:
+      type: object
+      properties:
+        transaction:
+          "$ref": "#/components/schemas/transaction_v2.Transaction"
+    transaction_v2.DeleteTransactionRequest:
+      type: object
+      properties:
+        transaction:
+          "$ref": "#/components/schemas/transaction_v2.Transaction"
+    transaction_v2.ListTransactionRequest:
+      type: object
+      properties: {}
+    transaction_v2.FinishTransactionRequest:
+      type: object
+      properties:
+        transaction:
+          "$ref": "#/components/schemas/transaction_v2.Transaction"
+    versionpb_v2.Version:
+      type: object
+      properties:
+        major:
+          type: integer
+          format: int32
+        minor:
+          type: integer
+          format: int32
+        micro:
+          type: integer
+          format: int32
+        additional:
+          type: string
+        git_commit:
+          type: string
+        git_tree_modified:
+          type: string
+        build_date:
+          type: string
+        go_version:
+          type: string
+        platform:
+          type: string
+    pps_v2.JobInfo.Details:
+      type: object
+      properties:
+        transform:
+          "$ref": "#/components/schemas/pps_v2.Transform"
+        parallelism_spec:
+          "$ref": "#/components/schemas/pps_v2.ParallelismSpec"
+        egress:
+          "$ref": "#/components/schemas/pps_v2.Egress"
+        service:
+          "$ref": "#/components/schemas/pps_v2.Service"
+        spout:
+          "$ref": "#/components/schemas/pps_v2.Spout"
+        worker_status:
+          type: array
+          items:
+            "$ref": "#/components/schemas/pps_v2.WorkerStatus"
+        resource_requests:
+          "$ref": "#/components/schemas/pps_v2.ResourceSpec"
+        resource_limits:
+          "$ref": "#/components/schemas/pps_v2.ResourceSpec"
+        sidecar_resource_limits:
+          "$ref": "#/components/schemas/pps_v2.ResourceSpec"
+        input:
+          "$ref": "#/components/schemas/pps_v2.Input"
+        salt:
+          type: string
+        datum_set_spec:
+          "$ref": "#/components/schemas/pps_v2.DatumSetSpec"
+        datum_timeout:
+          "$ref": "#/components/schemas/google.protobuf.Duration"
+        job_timeout:
+          "$ref": "#/components/schemas/google.protobuf.Duration"
+        datum_tries:
+          type: integer
+          format: int64
+        scheduling_spec:
+          "$ref": "#/components/schemas/pps_v2.SchedulingSpec"
+        pod_spec:
+          type: string
+        pod_patch:
+          type: string
+    pps_v2.PipelineInfo.PipelineType:
+      type: number
+      enum:
+      - 0
+      - 1
+      - 2
+      - 3
+      description: "0 - PIPELINT_TYPE_UNKNOWN \n1 - PIPELINE_TYPE_TRANSFORM \n2 -
+        PIPELINE_TYPE_SPOUT \n3 - PIPELINE_TYPE_SERVICE "
+    pps_v2.PipelineInfo.Details:
+      type: object
+      properties:
+        transform:
+          "$ref": "#/components/schemas/pps_v2.Transform"
+        tf_job:
+          "$ref": "#/components/schemas/pps_v2.TFJob"
+        parallelism_spec:
+          "$ref": "#/components/schemas/pps_v2.ParallelismSpec"
+        egress:
+          "$ref": "#/components/schemas/pps_v2.Egress"
+        created_at:
+          "$ref": "#/components/schemas/google.protobuf.Timestamp"
+        recent_error:
+          type: string
+        workers_requested:
+          type: integer
+          format: int64
+        workers_available:
+          type: integer
+          format: int64
+        output_branch:
+          type: string
+        resource_requests:
+          "$ref": "#/components/schemas/pps_v2.ResourceSpec"
+        resource_limits:
+          "$ref": "#/components/schemas/pps_v2.ResourceSpec"
+        sidecar_resource_limits:
+          "$ref": "#/components/schemas/pps_v2.ResourceSpec"
+        input:
+          "$ref": "#/components/schemas/pps_v2.Input"
+        description:
+          type: string
+        salt:
+          type: string
+        reason:
+          type: string
+        service:
+          "$ref": "#/components/schemas/pps_v2.Service"
+        spout:
+          "$ref": "#/components/schemas/pps_v2.Spout"
+        datum_set_spec:
+          "$ref": "#/components/schemas/pps_v2.DatumSetSpec"
+        datum_timeout:
+          "$ref": "#/components/schemas/google.protobuf.Duration"
+        job_timeout:
+          "$ref": "#/components/schemas/google.protobuf.Duration"
+        datum_tries:
+          type: integer
+          format: int64
+        scheduling_spec:
+          "$ref": "#/components/schemas/pps_v2.SchedulingSpec"
+        pod_spec:
+          type: string
+        pod_patch:
+          type: string
+        s3_out:
+          type: boolean
+        metadata:
+          "$ref": "#/components/schemas/pps_v2.Metadata"
+        reprocess_spec:
+          type: string
+        unclaimed_tasks:
+          type: integer
+          format: int64
+        worker_rc:
+          type: string
+        autoscaling:
+          type: boolean
+        tolerations:
+          type: array
+          items:
+            "$ref": "#/components/schemas/pps_v2.Toleration"
+    pps_v2.ListDatumRequest.Filter:
+      type: object
+      properties:
+        state:
+          type: array
+          items:
+            "$ref": "#/components/schemas/pps_v2.DatumState"
+          description: Must match one of the given states.
+      description: |-
+        Filter restricts returned DatumInfo messages to those which match
+        all of the filtered attributes.
+    pfs_v2.RepoInfo.Details:
+      type: object
+      properties:
+        size_bytes:
+          type: integer
+          format: int64
+      description: Details are only provided when explicitly requested
+    pfs_v2.CommitInfo.Details:
+      type: object
+      properties:
+        size_bytes:
+          type: integer
+          format: int64
+        compacting_time:
+          "$ref": "#/components/schemas/google.protobuf.Duration"
+        validating_time:
+          "$ref": "#/components/schemas/google.protobuf.Duration"
+      description: Details are only provided when explicitly requested
+    pfs_v2.AddFile.URLSource:
+      type: object
+      properties:
+        URL:
+          type: string
+        recursive:
+          type: boolean
+        concurrency:
+          type: integer
+          format: int32
+    pfs_v2.SQLDatabaseEgress.FileFormat:
+      type: object
+      properties:
+        type:
+          "$ref": "#/components/schemas/pfs_v2.SQLDatabaseEgress.FileFormat.Type"
+        columns:
+          type: array
+          items:
+            type: string
+    pfs_v2.SQLDatabaseEgress.Secret:
+      type: object
+      properties:
+        name:
+          type: string
+        key:
+          type: string
+    pfs_v2.EgressResponse.ObjectStorageResult:
+      type: object
+      properties:
+        bytes_written:
+          type: integer
+          format: int64
+    pfs_v2.EgressResponse.SQLDatabaseResult:
+      type: object
+      properties:
+        rows_written:
+          type: integer
+          format: int64
+    debug_v2.SetLogLevelRequest.LogLevel:
+      type: number
+      enum:
+      - 0
+      - 1
+      - 2
+      - 3
+      - 4
+      description: "0 - UNKNOWN \n1 - DEBUG \n2 - INFO \n3 - ERROR \n4 - OFF // Only
+        GRPC logs can be turned off."
+    enterprise_v2.PauseStatusResponse.PauseStatus:
+      type: number
+      enum:
+      - 0
+      - 1
+      - 2
+      description: "0 - UNPAUSED \n1 - PARTIALLY_PAUSED \n2 - PAUSED "
+    google.protobuf.Empty:
+      type: object
+      properties: {}
+    google.protobuf.Timestamp:
+      type: object
+      properties:
+        seconds:
+          type: integer
+          format: int64
+        nanos:
+          type: integer
+          format: int32
+    google.protobuf.Duration:
+      type: object
+      properties:
+        seconds:
+          type: integer
+          format: int64
+        nanos:
+          type: integer
+          format: int32
+    google.protobuf.DoubleValue:
+      type: object
+      properties:
+        value:
+          type: number
+          format: double
+    google.protobuf.FloatValue:
+      type: object
+      properties:
+        value:
+          type: number
+          format: float
+    google.protobuf.Int64Value:
+      type: object
+      properties:
+        value:
+          type: integer
+          format: int64
+    google.protobuf.UInt64Value:
+      type: object
+      properties:
+        value:
+          type: integer
+          format: int64
+    google.protobuf.Int32Value:
+      type: object
+      properties:
+        value:
+          type: integer
+          format: int32
+    google.protobuf.UInt32Value:
+      type: object
+      properties:
+        value:
+          type: integer
+          format: int32
+    google.protobuf.BoolValue:
+      type: object
+      properties:
+        value:
+          type: boolean
+    google.protobuf.StringValue:
+      type: object
+      properties:
+        value:
+          type: string
+    google.protobuf.BytesValue:
+      type: object
+      properties:
+        value:
+          type: string
+          format: byte
+    google.protobuf.Any:
+      type: object
+      properties:
+        type_url:
+          type: string
+        value:
+          type: string
+          format: byte
+    google.protobuf.Struct:
+      type: object
+      properties:
+        fields:
+          "$ref": "#/components/schemas/google.protobuf.Value"
+    google.protobuf.Value:
+      type: object
+      properties:
+        nullValue:
+          "$ref": "#/components/schemas/google.protobuf.NullValue"
+        numberValue:
+          type: number
+          format: double
+        stringValue:
+          type: string
+        boolValue:
+          type: boolean
+        structValue:
+          "$ref": "#/components/schemas/google.protobuf.Struct"
+        listValue:
+          "$ref": "#/components/schemas/google.protobuf.ListValue"
+    google.protobuf.NullValue:
+      type: number
+      enum:
+      - 0
+      description: '0 - NULL_VALUE '
+    google.protobuf.ListValue:
+      type: object
+      properties:
+        values:
+          type: array
+          items:
+            "$ref": "#/components/schemas/google.protobuf.Value"
+    pfsload.State.Commit:
+      type: object
+      properties:
+        commit:
+          "$ref": "#/components/schemas/pfs_v2.Commit"
+        hash:
+          type: string
+          format: byte
+    datum.KeyTask.Type:
+      type: number
+      enum:
+      - 0
+      - 1
+      description: "0 - JOIN \n1 - GROUP "
+    datum.MergeTask.Type:
+      type: number
+      enum:
+      - 0
+      - 1
+      description: "0 - JOIN \n1 - GROUP "
+    pachyderm.worker.CancelRequest:
+      type: object
+      properties:
+        job_id:
+          type: string
+        data_filters:
+          type: array
+          items:
+            type: string
+    pachyderm.worker.CancelResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+    pachyderm.worker.NextDatumRequest:
+      type: object
+      properties:
+        error:
+          type: string
+    pachyderm.worker.NextDatumResponse:
+      type: object
+      properties:
+        env:
+          type: array
+          items:
+            type: string
+    pfs_v2.SQLDatabaseEgress.FileFormat.Type:
+      type: number
+      enum:
+      - 0
+      - 1
+      - 2
+      - 3
+      description: "0 - UNKNOWN \n1 - CSV \n2 - JSON \n3 - PARQUET "
+    pachyderm.worker.pipeline.transform.CreateParallelDatumsTask:
+      type: object
+      properties:
+        job:
+          "$ref": "#/components/schemas/pps_v2.Job"
+        salt:
+          type: string
+        file_set_id:
+          type: string
+        base_file_set_id:
+          type: string
+        path_range:
+          "$ref": "#/components/schemas/pfs_v2.PathRange"
+    pachyderm.worker.pipeline.transform.CreateParallelDatumsTaskResult:
+      type: object
+      properties:
+        file_set_id:
+          type: string
+        stats:
+          "$ref": "#/components/schemas/datum.Stats"
+    pachyderm.worker.pipeline.transform.CreateSerialDatumsTask:
+      type: object
+      properties:
+        job:
+          "$ref": "#/components/schemas/pps_v2.Job"
+        salt:
+          type: string
+        file_set_id:
+          type: string
+        base_meta_commit:
+          "$ref": "#/components/schemas/pfs_v2.Commit"
+        no_skip:
+          type: boolean
+        path_range:
+          "$ref": "#/components/schemas/pfs_v2.PathRange"
+    pachyderm.worker.pipeline.transform.CreateSerialDatumsTaskResult:
+      type: object
+      properties:
+        file_set_id:
+          type: string
+        output_delete_file_set_id:
+          type: string
+        meta_delete_file_set_id:
+          type: string
+        stats:
+          "$ref": "#/components/schemas/datum.Stats"
+    pachyderm.worker.pipeline.transform.CreateDatumSetsTask:
+      type: object
+      properties:
+        file_set_id:
+          type: string
+        path_range:
+          "$ref": "#/components/schemas/pfs_v2.PathRange"
+        set_spec:
+          "$ref": "#/components/schemas/datum.SetSpec"
+    pachyderm.worker.pipeline.transform.CreateDatumSetsTaskResult:
+      type: object
+      properties:
+        datum_sets:
+          type: array
+          items:
+            "$ref": "#/components/schemas/pfs_v2.PathRange"
+    pachyderm.worker.pipeline.transform.DatumSetTask:
+      type: object
+      properties:
+        job:
+          "$ref": "#/components/schemas/pps_v2.Job"
+        file_set_id:
+          type: string
+        path_range:
+          "$ref": "#/components/schemas/pfs_v2.PathRange"
+        output_commit:
+          "$ref": "#/components/schemas/pfs_v2.Commit"
+    pachyderm.worker.pipeline.transform.DatumSetTaskResult:
+      type: object
+      properties:
+        output_file_set_id:
+          type: string
+        meta_file_set_id:
+          type: string
+        stats:
+          "$ref": "#/components/schemas/datum.Stats"
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: token
+security:
+- cookieAuth: []
