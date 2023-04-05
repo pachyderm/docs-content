@@ -1,0 +1,623 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>pachyderm_sdk.api.pps.extension API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>pachyderm_sdk.api.pps.extension</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import base64
+import json
+from typing import Dict
+
+import grpc
+from betterproto.lib.google.protobuf import Empty
+
+from . import ApiStub as _GeneratedApiStub
+from . import (
+    Job,
+    Pipeline,
+    PipelineInfo,
+)
+
+
+class ApiStub(_GeneratedApiStub):
+
+    def inspect_pipeline(
+        self,
+        *,
+        pipeline: &#34;Pipeline&#34; = None,
+        details: bool = False,
+        history: int = 0,
+    ) -&gt; &#34;PipelineInfo&#34;:
+        &#34;&#34;&#34;Inspects a pipeline.
+
+        Parameters
+        ----------
+        pipeline : pps.Pipeline
+            The pipeline to inspect.
+        details : bool, optional
+            If true, return pipeline details.
+        history : int, optional
+            Indicates to return historical versions of `pipeline_name`.
+            Semantics are:
+
+            - 0: Return current version of `pipeline_name`
+            - 1: Return the above and `pipeline_name` from the next most recent version.
+            - 2: etc.
+            - -1: Return all historical versions of `pipeline_name`.
+
+        Returns
+        -------
+        pps.PipelineInfo
+
+        Examples
+        --------
+        &gt;&gt;&gt; from pachyderm_sdk import Client
+        &gt;&gt;&gt; from pachyderm_sdk.api import pps
+        &gt;&gt;&gt; client: Client
+        &gt;&gt;&gt; pipeline_info = client.pps.inspect_pipeline(
+        &gt;&gt;&gt;     pipeline=pps.Pipeline(name=&#34;foo&#34;)
+        &gt;&gt;&gt; )
+        &#34;&#34;&#34;
+        if history:
+            response = self.list_pipeline(
+                pipeline=pipeline,
+                history=history,
+                details=details
+            )
+            try:
+                return next(response)
+            except StopIteration:
+                raise ValueError(&#34;invalid pipeline&#34;)
+        return super().inspect_pipeline(pipeline=pipeline, details=details)
+
+    def pipeline_exists(self, pipeline: &#34;Pipeline&#34;) -&gt; bool:
+        &#34;&#34;&#34;Checks whether a pipeline exists.
+
+        Parameters
+        ----------
+        pipeline: pps.Pipeline
+            The pipeline to check.
+
+        Returns
+        -------
+        bool
+            Whether the pipeline exists.
+        &#34;&#34;&#34;
+        try:
+            super().inspect_pipeline(pipeline=pipeline)
+            return True
+        except grpc.RpcError as err:
+            err: grpc.Call
+            if err.code() == grpc.StatusCode.NOT_FOUND:
+                return False
+            raise err
+
+    def job_exists(self, job: &#34;Job&#34;) -&gt; bool:
+        &#34;&#34;&#34;Checks whether a job exists.
+
+        Parameters
+        ----------
+        job: pps.Job
+            The job to check.
+
+        Returns
+        -------
+        bool
+            Whether the job exists.
+        &#34;&#34;&#34;
+        try:
+            super().inspect_job(job=job)
+            return True
+        except grpc.RpcError as err:
+            err: grpc.Call
+            if err.code() == grpc.StatusCode.NOT_FOUND:
+                return False
+            raise err
+
+    # noinspection PyMethodOverriding
+    def create_secret(
+        self,
+        *,
+        name: str,
+        data: Dict,
+        labels: Dict[str, str] = None,
+        annotations: Dict[str, str] = None
+    ) -&gt; Empty:
+        &#34;&#34;&#34;Creates a new secret.
+
+        Parameters
+        ----------
+        name : str
+            The name of the secret.
+        data : Dict[str, Union[str, bytes]]
+            The data to store in the secret. Each key must consist of
+            alphanumeric characters ``-``, ``_`` or ``.``.
+        labels : Dict[str, str], optional
+            Kubernetes labels to attach to the secret.
+        annotations : Dict[str, str], optional
+            Kubernetes annotations to attach to the secret.
+        &#34;&#34;&#34;
+        encoded_data = {}
+        for k, v in data.items():
+            if isinstance(v, str):
+                v = v.encode(&#34;utf8&#34;)
+            encoded_data[k] = base64.b64encode(v).decode(&#34;utf8&#34;)
+
+        file = json.dumps(
+            {
+                &#34;kind&#34;: &#34;Secret&#34;,
+                &#34;apiVersion&#34;: &#34;v1&#34;,
+                &#34;metadata&#34;: {
+                    &#34;name&#34;: name,
+                    &#34;labels&#34;: labels,
+                    &#34;annotations&#34;: annotations,
+                },
+                &#34;data&#34;: encoded_data,
+            }
+        ).encode()
+
+        return super().create_secret(file=file)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="pachyderm_sdk.api.pps.extension.ApiStub"><code class="flex name class">
+<span>class <span class="ident">ApiStub</span></span>
+<span>(</span><span>channel: grpc.Channel)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ApiStub(_GeneratedApiStub):
+
+    def inspect_pipeline(
+        self,
+        *,
+        pipeline: &#34;Pipeline&#34; = None,
+        details: bool = False,
+        history: int = 0,
+    ) -&gt; &#34;PipelineInfo&#34;:
+        &#34;&#34;&#34;Inspects a pipeline.
+
+        Parameters
+        ----------
+        pipeline : pps.Pipeline
+            The pipeline to inspect.
+        details : bool, optional
+            If true, return pipeline details.
+        history : int, optional
+            Indicates to return historical versions of `pipeline_name`.
+            Semantics are:
+
+            - 0: Return current version of `pipeline_name`
+            - 1: Return the above and `pipeline_name` from the next most recent version.
+            - 2: etc.
+            - -1: Return all historical versions of `pipeline_name`.
+
+        Returns
+        -------
+        pps.PipelineInfo
+
+        Examples
+        --------
+        &gt;&gt;&gt; from pachyderm_sdk import Client
+        &gt;&gt;&gt; from pachyderm_sdk.api import pps
+        &gt;&gt;&gt; client: Client
+        &gt;&gt;&gt; pipeline_info = client.pps.inspect_pipeline(
+        &gt;&gt;&gt;     pipeline=pps.Pipeline(name=&#34;foo&#34;)
+        &gt;&gt;&gt; )
+        &#34;&#34;&#34;
+        if history:
+            response = self.list_pipeline(
+                pipeline=pipeline,
+                history=history,
+                details=details
+            )
+            try:
+                return next(response)
+            except StopIteration:
+                raise ValueError(&#34;invalid pipeline&#34;)
+        return super().inspect_pipeline(pipeline=pipeline, details=details)
+
+    def pipeline_exists(self, pipeline: &#34;Pipeline&#34;) -&gt; bool:
+        &#34;&#34;&#34;Checks whether a pipeline exists.
+
+        Parameters
+        ----------
+        pipeline: pps.Pipeline
+            The pipeline to check.
+
+        Returns
+        -------
+        bool
+            Whether the pipeline exists.
+        &#34;&#34;&#34;
+        try:
+            super().inspect_pipeline(pipeline=pipeline)
+            return True
+        except grpc.RpcError as err:
+            err: grpc.Call
+            if err.code() == grpc.StatusCode.NOT_FOUND:
+                return False
+            raise err
+
+    def job_exists(self, job: &#34;Job&#34;) -&gt; bool:
+        &#34;&#34;&#34;Checks whether a job exists.
+
+        Parameters
+        ----------
+        job: pps.Job
+            The job to check.
+
+        Returns
+        -------
+        bool
+            Whether the job exists.
+        &#34;&#34;&#34;
+        try:
+            super().inspect_job(job=job)
+            return True
+        except grpc.RpcError as err:
+            err: grpc.Call
+            if err.code() == grpc.StatusCode.NOT_FOUND:
+                return False
+            raise err
+
+    # noinspection PyMethodOverriding
+    def create_secret(
+        self,
+        *,
+        name: str,
+        data: Dict,
+        labels: Dict[str, str] = None,
+        annotations: Dict[str, str] = None
+    ) -&gt; Empty:
+        &#34;&#34;&#34;Creates a new secret.
+
+        Parameters
+        ----------
+        name : str
+            The name of the secret.
+        data : Dict[str, Union[str, bytes]]
+            The data to store in the secret. Each key must consist of
+            alphanumeric characters ``-``, ``_`` or ``.``.
+        labels : Dict[str, str], optional
+            Kubernetes labels to attach to the secret.
+        annotations : Dict[str, str], optional
+            Kubernetes annotations to attach to the secret.
+        &#34;&#34;&#34;
+        encoded_data = {}
+        for k, v in data.items():
+            if isinstance(v, str):
+                v = v.encode(&#34;utf8&#34;)
+            encoded_data[k] = base64.b64encode(v).decode(&#34;utf8&#34;)
+
+        file = json.dumps(
+            {
+                &#34;kind&#34;: &#34;Secret&#34;,
+                &#34;apiVersion&#34;: &#34;v1&#34;,
+                &#34;metadata&#34;: {
+                    &#34;name&#34;: name,
+                    &#34;labels&#34;: labels,
+                    &#34;annotations&#34;: annotations,
+                },
+                &#34;data&#34;: encoded_data,
+            }
+        ).encode()
+
+        return super().create_secret(file=file)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pachyderm_sdk.api.pps.ApiStub" href="index.html#pachyderm_sdk.api.pps.ApiStub">ApiStub</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="pachyderm_sdk.api.pps.extension.ApiStub.create_secret"><code class="name flex">
+<span>def <span class="ident">create_secret</span></span>(<span>self, *, name: str, data: Dict, labels: Dict[str, str] = None, annotations: Dict[str, str] = None) ‑> betterproto.lib.google.protobuf.Empty</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Creates a new secret.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>name</code></strong> :&ensp;<code>str</code></dt>
+<dd>The name of the secret.</dd>
+<dt><strong><code>data</code></strong> :&ensp;<code>Dict[str, Union[str, bytes]]</code></dt>
+<dd>The data to store in the secret. Each key must consist of
+alphanumeric characters <code>-</code>, <code>_</code> or <code>.</code>.</dd>
+<dt><strong><code>labels</code></strong> :&ensp;<code>Dict[str, str]</code>, optional</dt>
+<dd>Kubernetes labels to attach to the secret.</dd>
+<dt><strong><code>annotations</code></strong> :&ensp;<code>Dict[str, str]</code>, optional</dt>
+<dd>Kubernetes annotations to attach to the secret.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_secret(
+    self,
+    *,
+    name: str,
+    data: Dict,
+    labels: Dict[str, str] = None,
+    annotations: Dict[str, str] = None
+) -&gt; Empty:
+    &#34;&#34;&#34;Creates a new secret.
+
+    Parameters
+    ----------
+    name : str
+        The name of the secret.
+    data : Dict[str, Union[str, bytes]]
+        The data to store in the secret. Each key must consist of
+        alphanumeric characters ``-``, ``_`` or ``.``.
+    labels : Dict[str, str], optional
+        Kubernetes labels to attach to the secret.
+    annotations : Dict[str, str], optional
+        Kubernetes annotations to attach to the secret.
+    &#34;&#34;&#34;
+    encoded_data = {}
+    for k, v in data.items():
+        if isinstance(v, str):
+            v = v.encode(&#34;utf8&#34;)
+        encoded_data[k] = base64.b64encode(v).decode(&#34;utf8&#34;)
+
+    file = json.dumps(
+        {
+            &#34;kind&#34;: &#34;Secret&#34;,
+            &#34;apiVersion&#34;: &#34;v1&#34;,
+            &#34;metadata&#34;: {
+                &#34;name&#34;: name,
+                &#34;labels&#34;: labels,
+                &#34;annotations&#34;: annotations,
+            },
+            &#34;data&#34;: encoded_data,
+        }
+    ).encode()
+
+    return super().create_secret(file=file)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.pps.extension.ApiStub.inspect_pipeline"><code class="name flex">
+<span>def <span class="ident">inspect_pipeline</span></span>(<span>self, *, pipeline: Pipeline = None, details: bool = False, history: int = 0) ‑> <a title="pachyderm_sdk.api.pps.PipelineInfo" href="index.html#pachyderm_sdk.api.pps.PipelineInfo">PipelineInfo</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Inspects a pipeline.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>pipeline</code></strong> :&ensp;<code>pps.Pipeline</code></dt>
+<dd>The pipeline to inspect.</dd>
+<dt><strong><code>details</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>If true, return pipeline details.</dd>
+<dt><strong><code>history</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>
+<p>Indicates to return historical versions of <code>pipeline_name</code>.
+Semantics are:</p>
+<ul>
+<li>0: Return current version of <code>pipeline_name</code></li>
+<li>1: Return the above and <code>pipeline_name</code> from the next most recent version.</li>
+<li>2: etc.</li>
+<li>-1: Return all historical versions of <code>pipeline_name</code>.</li>
+</ul>
+</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>pps.PipelineInfo</code></dt>
+<dd>&nbsp;</dd>
+</dl>
+<h2 id="examples">Examples</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; from pachyderm_sdk import Client
+&gt;&gt;&gt; from pachyderm_sdk.api import pps
+&gt;&gt;&gt; client: Client
+&gt;&gt;&gt; pipeline_info = client.pps.inspect_pipeline(
+&gt;&gt;&gt;     pipeline=pps.Pipeline(name=&quot;foo&quot;)
+&gt;&gt;&gt; )
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def inspect_pipeline(
+    self,
+    *,
+    pipeline: &#34;Pipeline&#34; = None,
+    details: bool = False,
+    history: int = 0,
+) -&gt; &#34;PipelineInfo&#34;:
+    &#34;&#34;&#34;Inspects a pipeline.
+
+    Parameters
+    ----------
+    pipeline : pps.Pipeline
+        The pipeline to inspect.
+    details : bool, optional
+        If true, return pipeline details.
+    history : int, optional
+        Indicates to return historical versions of `pipeline_name`.
+        Semantics are:
+
+        - 0: Return current version of `pipeline_name`
+        - 1: Return the above and `pipeline_name` from the next most recent version.
+        - 2: etc.
+        - -1: Return all historical versions of `pipeline_name`.
+
+    Returns
+    -------
+    pps.PipelineInfo
+
+    Examples
+    --------
+    &gt;&gt;&gt; from pachyderm_sdk import Client
+    &gt;&gt;&gt; from pachyderm_sdk.api import pps
+    &gt;&gt;&gt; client: Client
+    &gt;&gt;&gt; pipeline_info = client.pps.inspect_pipeline(
+    &gt;&gt;&gt;     pipeline=pps.Pipeline(name=&#34;foo&#34;)
+    &gt;&gt;&gt; )
+    &#34;&#34;&#34;
+    if history:
+        response = self.list_pipeline(
+            pipeline=pipeline,
+            history=history,
+            details=details
+        )
+        try:
+            return next(response)
+        except StopIteration:
+            raise ValueError(&#34;invalid pipeline&#34;)
+    return super().inspect_pipeline(pipeline=pipeline, details=details)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.pps.extension.ApiStub.job_exists"><code class="name flex">
+<span>def <span class="ident">job_exists</span></span>(<span>self, job: Job) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Checks whether a job exists.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>job</code></strong> :&ensp;<code>pps.Job</code></dt>
+<dd>The job to check.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>Whether the job exists.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def job_exists(self, job: &#34;Job&#34;) -&gt; bool:
+    &#34;&#34;&#34;Checks whether a job exists.
+
+    Parameters
+    ----------
+    job: pps.Job
+        The job to check.
+
+    Returns
+    -------
+    bool
+        Whether the job exists.
+    &#34;&#34;&#34;
+    try:
+        super().inspect_job(job=job)
+        return True
+    except grpc.RpcError as err:
+        err: grpc.Call
+        if err.code() == grpc.StatusCode.NOT_FOUND:
+            return False
+        raise err</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.pps.extension.ApiStub.pipeline_exists"><code class="name flex">
+<span>def <span class="ident">pipeline_exists</span></span>(<span>self, pipeline: Pipeline) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Checks whether a pipeline exists.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>pipeline</code></strong> :&ensp;<code>pps.Pipeline</code></dt>
+<dd>The pipeline to check.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>Whether the pipeline exists.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def pipeline_exists(self, pipeline: &#34;Pipeline&#34;) -&gt; bool:
+    &#34;&#34;&#34;Checks whether a pipeline exists.
+
+    Parameters
+    ----------
+    pipeline: pps.Pipeline
+        The pipeline to check.
+
+    Returns
+    -------
+    bool
+        Whether the pipeline exists.
+    &#34;&#34;&#34;
+    try:
+        super().inspect_pipeline(pipeline=pipeline)
+        return True
+    except grpc.RpcError as err:
+        err: grpc.Call
+        if err.code() == grpc.StatusCode.NOT_FOUND:
+            return False
+        raise err</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="pachyderm_sdk.api.pps" href="index.html">pachyderm_sdk.api.pps</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="pachyderm_sdk.api.pps.extension.ApiStub" href="#pachyderm_sdk.api.pps.extension.ApiStub">ApiStub</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.pps.extension.ApiStub.create_secret" href="#pachyderm_sdk.api.pps.extension.ApiStub.create_secret">create_secret</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pps.extension.ApiStub.inspect_pipeline" href="#pachyderm_sdk.api.pps.extension.ApiStub.inspect_pipeline">inspect_pipeline</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pps.extension.ApiStub.job_exists" href="#pachyderm_sdk.api.pps.extension.ApiStub.job_exists">job_exists</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pps.extension.ApiStub.pipeline_exists" href="#pachyderm_sdk.api.pps.extension.ApiStub.pipeline_exists">pipeline_exists</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>

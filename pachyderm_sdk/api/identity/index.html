@@ -1,0 +1,2398 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>pachyderm_sdk.api.identity API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>pachyderm_sdk.api.identity</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python"># Generated by the protocol buffer compiler.  DO NOT EDIT!
+# sources: api/identity/identity.proto
+# plugin: python-betterproto
+# This file has been @generated
+from dataclasses import dataclass
+from datetime import datetime
+from typing import (
+    TYPE_CHECKING,
+    Dict,
+    List,
+    Optional,
+)
+
+import betterproto
+import betterproto.lib.google.protobuf as betterproto_lib_google_protobuf
+import grpc
+
+
+if TYPE_CHECKING:
+    import grpc
+
+
+@dataclass(eq=False, repr=False)
+class User(betterproto.Message):
+    &#34;&#34;&#34;User represents an Idp user that has authenticated via Oidc&#34;&#34;&#34;
+
+    email: str = betterproto.string_field(1)
+    last_authenticated: datetime = betterproto.message_field(2)
+
+
+@dataclass(eq=False, repr=False)
+class IdentityServerConfig(betterproto.Message):
+    &#34;&#34;&#34;
+    IdentityServerConfig is the configuration for the identity web server. When
+    the configuration is changed the web server is reloaded automatically.
+    &#34;&#34;&#34;
+
+    issuer: str = betterproto.string_field(1)
+    id_token_expiry: str = betterproto.string_field(2)
+    rotation_token_expiry: str = betterproto.string_field(3)
+
+
+@dataclass(eq=False, repr=False)
+class SetIdentityServerConfigRequest(betterproto.Message):
+    config: &#34;IdentityServerConfig&#34; = betterproto.message_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class SetIdentityServerConfigResponse(betterproto.Message):
+    pass
+
+
+@dataclass(eq=False, repr=False)
+class GetIdentityServerConfigRequest(betterproto.Message):
+    pass
+
+
+@dataclass(eq=False, repr=False)
+class GetIdentityServerConfigResponse(betterproto.Message):
+    config: &#34;IdentityServerConfig&#34; = betterproto.message_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class IdpConnector(betterproto.Message):
+    &#34;&#34;&#34;IdpConnector represents a connection to an identity provider&#34;&#34;&#34;
+
+    id: str = betterproto.string_field(1)
+    &#34;&#34;&#34;ID is the unique identifier for this connector.&#34;&#34;&#34;
+
+    name: str = betterproto.string_field(2)
+    &#34;&#34;&#34;
+    Name is the human-readable identifier for this connector, which will be
+    shown to end users when they&#39;re authenticating.
+    &#34;&#34;&#34;
+
+    type: str = betterproto.string_field(3)
+    &#34;&#34;&#34;Type is the type of the Idp ex. `saml`, `oidc`, `github`.&#34;&#34;&#34;
+
+    config_version: int = betterproto.int64_field(4)
+    &#34;&#34;&#34;
+    ConfigVersion must be incremented every time a connector is updated, to
+    avoid concurrent updates conflicting.
+    &#34;&#34;&#34;
+
+    json_config: str = betterproto.string_field(5)
+    &#34;&#34;&#34;
+    This is left for backwards compatibility, but we want users to use the
+    config defined below.
+    &#34;&#34;&#34;
+
+    config: &#34;betterproto_lib_google_protobuf.Struct&#34; = betterproto.message_field(6)
+    &#34;&#34;&#34;
+    Config is the configuration for the upstream Idp, which varies based on the
+    type. We make the assumption that this is either yaml or JSON.
+    &#34;&#34;&#34;
+
+
+@dataclass(eq=False, repr=False)
+class CreateIdpConnectorRequest(betterproto.Message):
+    connector: &#34;IdpConnector&#34; = betterproto.message_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class CreateIdpConnectorResponse(betterproto.Message):
+    pass
+
+
+@dataclass(eq=False, repr=False)
+class UpdateIdpConnectorRequest(betterproto.Message):
+    connector: &#34;IdpConnector&#34; = betterproto.message_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class UpdateIdpConnectorResponse(betterproto.Message):
+    pass
+
+
+@dataclass(eq=False, repr=False)
+class ListIdpConnectorsRequest(betterproto.Message):
+    pass
+
+
+@dataclass(eq=False, repr=False)
+class ListIdpConnectorsResponse(betterproto.Message):
+    connectors: List[&#34;IdpConnector&#34;] = betterproto.message_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class GetIdpConnectorRequest(betterproto.Message):
+    id: str = betterproto.string_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class GetIdpConnectorResponse(betterproto.Message):
+    connector: &#34;IdpConnector&#34; = betterproto.message_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class DeleteIdpConnectorRequest(betterproto.Message):
+    id: str = betterproto.string_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class DeleteIdpConnectorResponse(betterproto.Message):
+    pass
+
+
+@dataclass(eq=False, repr=False)
+class OidcClient(betterproto.Message):
+    id: str = betterproto.string_field(1)
+    redirect_uris: List[str] = betterproto.string_field(2)
+    trusted_peers: List[str] = betterproto.string_field(3)
+    name: str = betterproto.string_field(4)
+    secret: str = betterproto.string_field(5)
+
+
+@dataclass(eq=False, repr=False)
+class CreateOidcClientRequest(betterproto.Message):
+    client: &#34;OidcClient&#34; = betterproto.message_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class CreateOidcClientResponse(betterproto.Message):
+    client: &#34;OidcClient&#34; = betterproto.message_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class GetOidcClientRequest(betterproto.Message):
+    id: str = betterproto.string_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class GetOidcClientResponse(betterproto.Message):
+    client: &#34;OidcClient&#34; = betterproto.message_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class ListOidcClientsRequest(betterproto.Message):
+    pass
+
+
+@dataclass(eq=False, repr=False)
+class ListOidcClientsResponse(betterproto.Message):
+    clients: List[&#34;OidcClient&#34;] = betterproto.message_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class UpdateOidcClientRequest(betterproto.Message):
+    client: &#34;OidcClient&#34; = betterproto.message_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class UpdateOidcClientResponse(betterproto.Message):
+    pass
+
+
+@dataclass(eq=False, repr=False)
+class DeleteOidcClientRequest(betterproto.Message):
+    id: str = betterproto.string_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class DeleteOidcClientResponse(betterproto.Message):
+    pass
+
+
+@dataclass(eq=False, repr=False)
+class DeleteAllRequest(betterproto.Message):
+    pass
+
+
+@dataclass(eq=False, repr=False)
+class DeleteAllResponse(betterproto.Message):
+    pass
+
+
+class ApiStub:
+    def __init__(self, channel: &#34;grpc.Channel&#34;):
+        self.__rpc_set_identity_server_config = channel.unary_unary(
+            &#34;/identity_v2.API/SetIdentityServerConfig&#34;,
+            request_serializer=SetIdentityServerConfigRequest.SerializeToString,
+            response_deserializer=SetIdentityServerConfigResponse.FromString,
+        )
+        self.__rpc_get_identity_server_config = channel.unary_unary(
+            &#34;/identity_v2.API/GetIdentityServerConfig&#34;,
+            request_serializer=GetIdentityServerConfigRequest.SerializeToString,
+            response_deserializer=GetIdentityServerConfigResponse.FromString,
+        )
+        self.__rpc_create_idp_connector = channel.unary_unary(
+            &#34;/identity_v2.API/CreateIdpConnector&#34;,
+            request_serializer=CreateIdpConnectorRequest.SerializeToString,
+            response_deserializer=CreateIdpConnectorResponse.FromString,
+        )
+        self.__rpc_update_idp_connector = channel.unary_unary(
+            &#34;/identity_v2.API/UpdateIdpConnector&#34;,
+            request_serializer=UpdateIdpConnectorRequest.SerializeToString,
+            response_deserializer=UpdateIdpConnectorResponse.FromString,
+        )
+        self.__rpc_list_idp_connectors = channel.unary_unary(
+            &#34;/identity_v2.API/ListIdpConnectors&#34;,
+            request_serializer=ListIdpConnectorsRequest.SerializeToString,
+            response_deserializer=ListIdpConnectorsResponse.FromString,
+        )
+        self.__rpc_get_idp_connector = channel.unary_unary(
+            &#34;/identity_v2.API/GetIdpConnector&#34;,
+            request_serializer=GetIdpConnectorRequest.SerializeToString,
+            response_deserializer=GetIdpConnectorResponse.FromString,
+        )
+        self.__rpc_delete_idp_connector = channel.unary_unary(
+            &#34;/identity_v2.API/DeleteIdpConnector&#34;,
+            request_serializer=DeleteIdpConnectorRequest.SerializeToString,
+            response_deserializer=DeleteIdpConnectorResponse.FromString,
+        )
+        self.__rpc_create_oidc_client = channel.unary_unary(
+            &#34;/identity_v2.API/CreateOidcClient&#34;,
+            request_serializer=CreateOidcClientRequest.SerializeToString,
+            response_deserializer=CreateOidcClientResponse.FromString,
+        )
+        self.__rpc_update_oidc_client = channel.unary_unary(
+            &#34;/identity_v2.API/UpdateOidcClient&#34;,
+            request_serializer=UpdateOidcClientRequest.SerializeToString,
+            response_deserializer=UpdateOidcClientResponse.FromString,
+        )
+        self.__rpc_get_oidc_client = channel.unary_unary(
+            &#34;/identity_v2.API/GetOidcClient&#34;,
+            request_serializer=GetOidcClientRequest.SerializeToString,
+            response_deserializer=GetOidcClientResponse.FromString,
+        )
+        self.__rpc_list_oidc_clients = channel.unary_unary(
+            &#34;/identity_v2.API/ListOidcClients&#34;,
+            request_serializer=ListOidcClientsRequest.SerializeToString,
+            response_deserializer=ListOidcClientsResponse.FromString,
+        )
+        self.__rpc_delete_oidc_client = channel.unary_unary(
+            &#34;/identity_v2.API/DeleteOidcClient&#34;,
+            request_serializer=DeleteOidcClientRequest.SerializeToString,
+            response_deserializer=DeleteOidcClientResponse.FromString,
+        )
+        self.__rpc_delete_all = channel.unary_unary(
+            &#34;/identity_v2.API/DeleteAll&#34;,
+            request_serializer=DeleteAllRequest.SerializeToString,
+            response_deserializer=DeleteAllResponse.FromString,
+        )
+
+    def set_identity_server_config(
+        self, *, config: &#34;IdentityServerConfig&#34; = None
+    ) -&gt; &#34;SetIdentityServerConfigResponse&#34;:
+        request = SetIdentityServerConfigRequest()
+        if config is not None:
+            request.config = config
+
+        return self.__rpc_set_identity_server_config(request)
+
+    def get_identity_server_config(self) -&gt; &#34;GetIdentityServerConfigResponse&#34;:
+        request = GetIdentityServerConfigRequest()
+
+        return self.__rpc_get_identity_server_config(request)
+
+    def create_idp_connector(
+        self, *, connector: &#34;IdpConnector&#34; = None
+    ) -&gt; &#34;CreateIdpConnectorResponse&#34;:
+        request = CreateIdpConnectorRequest()
+        if connector is not None:
+            request.connector = connector
+
+        return self.__rpc_create_idp_connector(request)
+
+    def update_idp_connector(
+        self, *, connector: &#34;IdpConnector&#34; = None
+    ) -&gt; &#34;UpdateIdpConnectorResponse&#34;:
+        request = UpdateIdpConnectorRequest()
+        if connector is not None:
+            request.connector = connector
+
+        return self.__rpc_update_idp_connector(request)
+
+    def list_idp_connectors(self) -&gt; &#34;ListIdpConnectorsResponse&#34;:
+        request = ListIdpConnectorsRequest()
+
+        return self.__rpc_list_idp_connectors(request)
+
+    def get_idp_connector(self, *, id: str = &#34;&#34;) -&gt; &#34;GetIdpConnectorResponse&#34;:
+        request = GetIdpConnectorRequest()
+        request.id = id
+
+        return self.__rpc_get_idp_connector(request)
+
+    def delete_idp_connector(self, *, id: str = &#34;&#34;) -&gt; &#34;DeleteIdpConnectorResponse&#34;:
+        request = DeleteIdpConnectorRequest()
+        request.id = id
+
+        return self.__rpc_delete_idp_connector(request)
+
+    def create_oidc_client(
+        self, *, client: &#34;OidcClient&#34; = None
+    ) -&gt; &#34;CreateOidcClientResponse&#34;:
+        request = CreateOidcClientRequest()
+        if client is not None:
+            request.client = client
+
+        return self.__rpc_create_oidc_client(request)
+
+    def update_oidc_client(
+        self, *, client: &#34;OidcClient&#34; = None
+    ) -&gt; &#34;UpdateOidcClientResponse&#34;:
+        request = UpdateOidcClientRequest()
+        if client is not None:
+            request.client = client
+
+        return self.__rpc_update_oidc_client(request)
+
+    def get_oidc_client(self, *, id: str = &#34;&#34;) -&gt; &#34;GetOidcClientResponse&#34;:
+        request = GetOidcClientRequest()
+        request.id = id
+
+        return self.__rpc_get_oidc_client(request)
+
+    def list_oidc_clients(self) -&gt; &#34;ListOidcClientsResponse&#34;:
+        request = ListOidcClientsRequest()
+
+        return self.__rpc_list_oidc_clients(request)
+
+    def delete_oidc_client(self, *, id: str = &#34;&#34;) -&gt; &#34;DeleteOidcClientResponse&#34;:
+        request = DeleteOidcClientRequest()
+        request.id = id
+
+        return self.__rpc_delete_oidc_client(request)
+
+    def delete_all(self) -&gt; &#34;DeleteAllResponse&#34;:
+        request = DeleteAllRequest()
+
+        return self.__rpc_delete_all(request)
+
+
+class ApiBase:
+    def set_identity_server_config(
+        self, config: &#34;IdentityServerConfig&#34;, context: &#34;grpc.ServicerContext&#34;
+    ) -&gt; &#34;SetIdentityServerConfigResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def get_identity_server_config(
+        self, context: &#34;grpc.ServicerContext&#34;
+    ) -&gt; &#34;GetIdentityServerConfigResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def create_idp_connector(
+        self, connector: &#34;IdpConnector&#34;, context: &#34;grpc.ServicerContext&#34;
+    ) -&gt; &#34;CreateIdpConnectorResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def update_idp_connector(
+        self, connector: &#34;IdpConnector&#34;, context: &#34;grpc.ServicerContext&#34;
+    ) -&gt; &#34;UpdateIdpConnectorResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def list_idp_connectors(
+        self, context: &#34;grpc.ServicerContext&#34;
+    ) -&gt; &#34;ListIdpConnectorsResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def get_idp_connector(
+        self, id: str, context: &#34;grpc.ServicerContext&#34;
+    ) -&gt; &#34;GetIdpConnectorResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def delete_idp_connector(
+        self, id: str, context: &#34;grpc.ServicerContext&#34;
+    ) -&gt; &#34;DeleteIdpConnectorResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def create_oidc_client(
+        self, client: &#34;OidcClient&#34;, context: &#34;grpc.ServicerContext&#34;
+    ) -&gt; &#34;CreateOidcClientResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def update_oidc_client(
+        self, client: &#34;OidcClient&#34;, context: &#34;grpc.ServicerContext&#34;
+    ) -&gt; &#34;UpdateOidcClientResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def get_oidc_client(
+        self, id: str, context: &#34;grpc.ServicerContext&#34;
+    ) -&gt; &#34;GetOidcClientResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def list_oidc_clients(
+        self, context: &#34;grpc.ServicerContext&#34;
+    ) -&gt; &#34;ListOidcClientsResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def delete_oidc_client(
+        self, id: str, context: &#34;grpc.ServicerContext&#34;
+    ) -&gt; &#34;DeleteOidcClientResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def delete_all(self, context: &#34;grpc.ServicerContext&#34;) -&gt; &#34;DeleteAllResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    __proto_path__ = &#34;identity_v2.API&#34;
+
+    @property
+    def __rpc_methods__(self):
+        return {
+            &#34;SetIdentityServerConfig&#34;: grpc.unary_unary_rpc_method_handler(
+                self.set_identity_server_config,
+                request_deserializer=SetIdentityServerConfigRequest.FromString,
+                response_serializer=SetIdentityServerConfigRequest.SerializeToString,
+            ),
+            &#34;GetIdentityServerConfig&#34;: grpc.unary_unary_rpc_method_handler(
+                self.get_identity_server_config,
+                request_deserializer=GetIdentityServerConfigRequest.FromString,
+                response_serializer=GetIdentityServerConfigRequest.SerializeToString,
+            ),
+            &#34;CreateIdpConnector&#34;: grpc.unary_unary_rpc_method_handler(
+                self.create_idp_connector,
+                request_deserializer=CreateIdpConnectorRequest.FromString,
+                response_serializer=CreateIdpConnectorRequest.SerializeToString,
+            ),
+            &#34;UpdateIdpConnector&#34;: grpc.unary_unary_rpc_method_handler(
+                self.update_idp_connector,
+                request_deserializer=UpdateIdpConnectorRequest.FromString,
+                response_serializer=UpdateIdpConnectorRequest.SerializeToString,
+            ),
+            &#34;ListIdpConnectors&#34;: grpc.unary_unary_rpc_method_handler(
+                self.list_idp_connectors,
+                request_deserializer=ListIdpConnectorsRequest.FromString,
+                response_serializer=ListIdpConnectorsRequest.SerializeToString,
+            ),
+            &#34;GetIdpConnector&#34;: grpc.unary_unary_rpc_method_handler(
+                self.get_idp_connector,
+                request_deserializer=GetIdpConnectorRequest.FromString,
+                response_serializer=GetIdpConnectorRequest.SerializeToString,
+            ),
+            &#34;DeleteIdpConnector&#34;: grpc.unary_unary_rpc_method_handler(
+                self.delete_idp_connector,
+                request_deserializer=DeleteIdpConnectorRequest.FromString,
+                response_serializer=DeleteIdpConnectorRequest.SerializeToString,
+            ),
+            &#34;CreateOidcClient&#34;: grpc.unary_unary_rpc_method_handler(
+                self.create_oidc_client,
+                request_deserializer=CreateOidcClientRequest.FromString,
+                response_serializer=CreateOidcClientRequest.SerializeToString,
+            ),
+            &#34;UpdateOidcClient&#34;: grpc.unary_unary_rpc_method_handler(
+                self.update_oidc_client,
+                request_deserializer=UpdateOidcClientRequest.FromString,
+                response_serializer=UpdateOidcClientRequest.SerializeToString,
+            ),
+            &#34;GetOidcClient&#34;: grpc.unary_unary_rpc_method_handler(
+                self.get_oidc_client,
+                request_deserializer=GetOidcClientRequest.FromString,
+                response_serializer=GetOidcClientRequest.SerializeToString,
+            ),
+            &#34;ListOidcClients&#34;: grpc.unary_unary_rpc_method_handler(
+                self.list_oidc_clients,
+                request_deserializer=ListOidcClientsRequest.FromString,
+                response_serializer=ListOidcClientsRequest.SerializeToString,
+            ),
+            &#34;DeleteOidcClient&#34;: grpc.unary_unary_rpc_method_handler(
+                self.delete_oidc_client,
+                request_deserializer=DeleteOidcClientRequest.FromString,
+                response_serializer=DeleteOidcClientRequest.SerializeToString,
+            ),
+            &#34;DeleteAll&#34;: grpc.unary_unary_rpc_method_handler(
+                self.delete_all,
+                request_deserializer=DeleteAllRequest.FromString,
+                response_serializer=DeleteAllRequest.SerializeToString,
+            ),
+        }</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="pachyderm_sdk.api.identity.ApiBase"><code class="flex name class">
+<span>class <span class="ident">ApiBase</span></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ApiBase:
+    def set_identity_server_config(
+        self, config: &#34;IdentityServerConfig&#34;, context: &#34;grpc.ServicerContext&#34;
+    ) -&gt; &#34;SetIdentityServerConfigResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def get_identity_server_config(
+        self, context: &#34;grpc.ServicerContext&#34;
+    ) -&gt; &#34;GetIdentityServerConfigResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def create_idp_connector(
+        self, connector: &#34;IdpConnector&#34;, context: &#34;grpc.ServicerContext&#34;
+    ) -&gt; &#34;CreateIdpConnectorResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def update_idp_connector(
+        self, connector: &#34;IdpConnector&#34;, context: &#34;grpc.ServicerContext&#34;
+    ) -&gt; &#34;UpdateIdpConnectorResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def list_idp_connectors(
+        self, context: &#34;grpc.ServicerContext&#34;
+    ) -&gt; &#34;ListIdpConnectorsResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def get_idp_connector(
+        self, id: str, context: &#34;grpc.ServicerContext&#34;
+    ) -&gt; &#34;GetIdpConnectorResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def delete_idp_connector(
+        self, id: str, context: &#34;grpc.ServicerContext&#34;
+    ) -&gt; &#34;DeleteIdpConnectorResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def create_oidc_client(
+        self, client: &#34;OidcClient&#34;, context: &#34;grpc.ServicerContext&#34;
+    ) -&gt; &#34;CreateOidcClientResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def update_oidc_client(
+        self, client: &#34;OidcClient&#34;, context: &#34;grpc.ServicerContext&#34;
+    ) -&gt; &#34;UpdateOidcClientResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def get_oidc_client(
+        self, id: str, context: &#34;grpc.ServicerContext&#34;
+    ) -&gt; &#34;GetOidcClientResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def list_oidc_clients(
+        self, context: &#34;grpc.ServicerContext&#34;
+    ) -&gt; &#34;ListOidcClientsResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def delete_oidc_client(
+        self, id: str, context: &#34;grpc.ServicerContext&#34;
+    ) -&gt; &#34;DeleteOidcClientResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def delete_all(self, context: &#34;grpc.ServicerContext&#34;) -&gt; &#34;DeleteAllResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    __proto_path__ = &#34;identity_v2.API&#34;
+
+    @property
+    def __rpc_methods__(self):
+        return {
+            &#34;SetIdentityServerConfig&#34;: grpc.unary_unary_rpc_method_handler(
+                self.set_identity_server_config,
+                request_deserializer=SetIdentityServerConfigRequest.FromString,
+                response_serializer=SetIdentityServerConfigRequest.SerializeToString,
+            ),
+            &#34;GetIdentityServerConfig&#34;: grpc.unary_unary_rpc_method_handler(
+                self.get_identity_server_config,
+                request_deserializer=GetIdentityServerConfigRequest.FromString,
+                response_serializer=GetIdentityServerConfigRequest.SerializeToString,
+            ),
+            &#34;CreateIdpConnector&#34;: grpc.unary_unary_rpc_method_handler(
+                self.create_idp_connector,
+                request_deserializer=CreateIdpConnectorRequest.FromString,
+                response_serializer=CreateIdpConnectorRequest.SerializeToString,
+            ),
+            &#34;UpdateIdpConnector&#34;: grpc.unary_unary_rpc_method_handler(
+                self.update_idp_connector,
+                request_deserializer=UpdateIdpConnectorRequest.FromString,
+                response_serializer=UpdateIdpConnectorRequest.SerializeToString,
+            ),
+            &#34;ListIdpConnectors&#34;: grpc.unary_unary_rpc_method_handler(
+                self.list_idp_connectors,
+                request_deserializer=ListIdpConnectorsRequest.FromString,
+                response_serializer=ListIdpConnectorsRequest.SerializeToString,
+            ),
+            &#34;GetIdpConnector&#34;: grpc.unary_unary_rpc_method_handler(
+                self.get_idp_connector,
+                request_deserializer=GetIdpConnectorRequest.FromString,
+                response_serializer=GetIdpConnectorRequest.SerializeToString,
+            ),
+            &#34;DeleteIdpConnector&#34;: grpc.unary_unary_rpc_method_handler(
+                self.delete_idp_connector,
+                request_deserializer=DeleteIdpConnectorRequest.FromString,
+                response_serializer=DeleteIdpConnectorRequest.SerializeToString,
+            ),
+            &#34;CreateOidcClient&#34;: grpc.unary_unary_rpc_method_handler(
+                self.create_oidc_client,
+                request_deserializer=CreateOidcClientRequest.FromString,
+                response_serializer=CreateOidcClientRequest.SerializeToString,
+            ),
+            &#34;UpdateOidcClient&#34;: grpc.unary_unary_rpc_method_handler(
+                self.update_oidc_client,
+                request_deserializer=UpdateOidcClientRequest.FromString,
+                response_serializer=UpdateOidcClientRequest.SerializeToString,
+            ),
+            &#34;GetOidcClient&#34;: grpc.unary_unary_rpc_method_handler(
+                self.get_oidc_client,
+                request_deserializer=GetOidcClientRequest.FromString,
+                response_serializer=GetOidcClientRequest.SerializeToString,
+            ),
+            &#34;ListOidcClients&#34;: grpc.unary_unary_rpc_method_handler(
+                self.list_oidc_clients,
+                request_deserializer=ListOidcClientsRequest.FromString,
+                response_serializer=ListOidcClientsRequest.SerializeToString,
+            ),
+            &#34;DeleteOidcClient&#34;: grpc.unary_unary_rpc_method_handler(
+                self.delete_oidc_client,
+                request_deserializer=DeleteOidcClientRequest.FromString,
+                response_serializer=DeleteOidcClientRequest.SerializeToString,
+            ),
+            &#34;DeleteAll&#34;: grpc.unary_unary_rpc_method_handler(
+                self.delete_all,
+                request_deserializer=DeleteAllRequest.FromString,
+                response_serializer=DeleteAllRequest.SerializeToString,
+            ),
+        }</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pachyderm_sdk.api.identity.ApiBase.create_idp_connector"><code class="name flex">
+<span>def <span class="ident">create_idp_connector</span></span>(<span>self, connector: <a title="pachyderm_sdk.api.identity.IdpConnector" href="#pachyderm_sdk.api.identity.IdpConnector">IdpConnector</a>, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.identity.CreateIdpConnectorResponse" href="#pachyderm_sdk.api.identity.CreateIdpConnectorResponse">CreateIdpConnectorResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_idp_connector(
+    self, connector: &#34;IdpConnector&#34;, context: &#34;grpc.ServicerContext&#34;
+) -&gt; &#34;CreateIdpConnectorResponse&#34;:
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details(&#34;Method not implemented!&#34;)
+    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.identity.ApiBase.create_oidc_client"><code class="name flex">
+<span>def <span class="ident">create_oidc_client</span></span>(<span>self, client: <a title="pachyderm_sdk.api.identity.OidcClient" href="#pachyderm_sdk.api.identity.OidcClient">OidcClient</a>, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.identity.CreateOidcClientResponse" href="#pachyderm_sdk.api.identity.CreateOidcClientResponse">CreateOidcClientResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_oidc_client(
+    self, client: &#34;OidcClient&#34;, context: &#34;grpc.ServicerContext&#34;
+) -&gt; &#34;CreateOidcClientResponse&#34;:
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details(&#34;Method not implemented!&#34;)
+    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.identity.ApiBase.delete_all"><code class="name flex">
+<span>def <span class="ident">delete_all</span></span>(<span>self, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.identity.DeleteAllResponse" href="#pachyderm_sdk.api.identity.DeleteAllResponse">DeleteAllResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def delete_all(self, context: &#34;grpc.ServicerContext&#34;) -&gt; &#34;DeleteAllResponse&#34;:
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details(&#34;Method not implemented!&#34;)
+    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.identity.ApiBase.delete_idp_connector"><code class="name flex">
+<span>def <span class="ident">delete_idp_connector</span></span>(<span>self, id: str, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.identity.DeleteIdpConnectorResponse" href="#pachyderm_sdk.api.identity.DeleteIdpConnectorResponse">DeleteIdpConnectorResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def delete_idp_connector(
+    self, id: str, context: &#34;grpc.ServicerContext&#34;
+) -&gt; &#34;DeleteIdpConnectorResponse&#34;:
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details(&#34;Method not implemented!&#34;)
+    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.identity.ApiBase.delete_oidc_client"><code class="name flex">
+<span>def <span class="ident">delete_oidc_client</span></span>(<span>self, id: str, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.identity.DeleteOidcClientResponse" href="#pachyderm_sdk.api.identity.DeleteOidcClientResponse">DeleteOidcClientResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def delete_oidc_client(
+    self, id: str, context: &#34;grpc.ServicerContext&#34;
+) -&gt; &#34;DeleteOidcClientResponse&#34;:
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details(&#34;Method not implemented!&#34;)
+    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.identity.ApiBase.get_identity_server_config"><code class="name flex">
+<span>def <span class="ident">get_identity_server_config</span></span>(<span>self, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.identity.GetIdentityServerConfigResponse" href="#pachyderm_sdk.api.identity.GetIdentityServerConfigResponse">GetIdentityServerConfigResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_identity_server_config(
+    self, context: &#34;grpc.ServicerContext&#34;
+) -&gt; &#34;GetIdentityServerConfigResponse&#34;:
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details(&#34;Method not implemented!&#34;)
+    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.identity.ApiBase.get_idp_connector"><code class="name flex">
+<span>def <span class="ident">get_idp_connector</span></span>(<span>self, id: str, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.identity.GetIdpConnectorResponse" href="#pachyderm_sdk.api.identity.GetIdpConnectorResponse">GetIdpConnectorResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_idp_connector(
+    self, id: str, context: &#34;grpc.ServicerContext&#34;
+) -&gt; &#34;GetIdpConnectorResponse&#34;:
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details(&#34;Method not implemented!&#34;)
+    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.identity.ApiBase.get_oidc_client"><code class="name flex">
+<span>def <span class="ident">get_oidc_client</span></span>(<span>self, id: str, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.identity.GetOidcClientResponse" href="#pachyderm_sdk.api.identity.GetOidcClientResponse">GetOidcClientResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_oidc_client(
+    self, id: str, context: &#34;grpc.ServicerContext&#34;
+) -&gt; &#34;GetOidcClientResponse&#34;:
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details(&#34;Method not implemented!&#34;)
+    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.identity.ApiBase.list_idp_connectors"><code class="name flex">
+<span>def <span class="ident">list_idp_connectors</span></span>(<span>self, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.identity.ListIdpConnectorsResponse" href="#pachyderm_sdk.api.identity.ListIdpConnectorsResponse">ListIdpConnectorsResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def list_idp_connectors(
+    self, context: &#34;grpc.ServicerContext&#34;
+) -&gt; &#34;ListIdpConnectorsResponse&#34;:
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details(&#34;Method not implemented!&#34;)
+    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.identity.ApiBase.list_oidc_clients"><code class="name flex">
+<span>def <span class="ident">list_oidc_clients</span></span>(<span>self, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.identity.ListOidcClientsResponse" href="#pachyderm_sdk.api.identity.ListOidcClientsResponse">ListOidcClientsResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def list_oidc_clients(
+    self, context: &#34;grpc.ServicerContext&#34;
+) -&gt; &#34;ListOidcClientsResponse&#34;:
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details(&#34;Method not implemented!&#34;)
+    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.identity.ApiBase.set_identity_server_config"><code class="name flex">
+<span>def <span class="ident">set_identity_server_config</span></span>(<span>self, config: <a title="pachyderm_sdk.api.identity.IdentityServerConfig" href="#pachyderm_sdk.api.identity.IdentityServerConfig">IdentityServerConfig</a>, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.identity.SetIdentityServerConfigResponse" href="#pachyderm_sdk.api.identity.SetIdentityServerConfigResponse">SetIdentityServerConfigResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_identity_server_config(
+    self, config: &#34;IdentityServerConfig&#34;, context: &#34;grpc.ServicerContext&#34;
+) -&gt; &#34;SetIdentityServerConfigResponse&#34;:
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details(&#34;Method not implemented!&#34;)
+    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.identity.ApiBase.update_idp_connector"><code class="name flex">
+<span>def <span class="ident">update_idp_connector</span></span>(<span>self, connector: <a title="pachyderm_sdk.api.identity.IdpConnector" href="#pachyderm_sdk.api.identity.IdpConnector">IdpConnector</a>, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.identity.UpdateIdpConnectorResponse" href="#pachyderm_sdk.api.identity.UpdateIdpConnectorResponse">UpdateIdpConnectorResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def update_idp_connector(
+    self, connector: &#34;IdpConnector&#34;, context: &#34;grpc.ServicerContext&#34;
+) -&gt; &#34;UpdateIdpConnectorResponse&#34;:
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details(&#34;Method not implemented!&#34;)
+    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.identity.ApiBase.update_oidc_client"><code class="name flex">
+<span>def <span class="ident">update_oidc_client</span></span>(<span>self, client: <a title="pachyderm_sdk.api.identity.OidcClient" href="#pachyderm_sdk.api.identity.OidcClient">OidcClient</a>, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.identity.UpdateOidcClientResponse" href="#pachyderm_sdk.api.identity.UpdateOidcClientResponse">UpdateOidcClientResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def update_oidc_client(
+    self, client: &#34;OidcClient&#34;, context: &#34;grpc.ServicerContext&#34;
+) -&gt; &#34;UpdateOidcClientResponse&#34;:
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details(&#34;Method not implemented!&#34;)
+    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.identity.ApiStub"><code class="flex name class">
+<span>class <span class="ident">ApiStub</span></span>
+<span>(</span><span>channel: grpc.Channel)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ApiStub:
+    def __init__(self, channel: &#34;grpc.Channel&#34;):
+        self.__rpc_set_identity_server_config = channel.unary_unary(
+            &#34;/identity_v2.API/SetIdentityServerConfig&#34;,
+            request_serializer=SetIdentityServerConfigRequest.SerializeToString,
+            response_deserializer=SetIdentityServerConfigResponse.FromString,
+        )
+        self.__rpc_get_identity_server_config = channel.unary_unary(
+            &#34;/identity_v2.API/GetIdentityServerConfig&#34;,
+            request_serializer=GetIdentityServerConfigRequest.SerializeToString,
+            response_deserializer=GetIdentityServerConfigResponse.FromString,
+        )
+        self.__rpc_create_idp_connector = channel.unary_unary(
+            &#34;/identity_v2.API/CreateIdpConnector&#34;,
+            request_serializer=CreateIdpConnectorRequest.SerializeToString,
+            response_deserializer=CreateIdpConnectorResponse.FromString,
+        )
+        self.__rpc_update_idp_connector = channel.unary_unary(
+            &#34;/identity_v2.API/UpdateIdpConnector&#34;,
+            request_serializer=UpdateIdpConnectorRequest.SerializeToString,
+            response_deserializer=UpdateIdpConnectorResponse.FromString,
+        )
+        self.__rpc_list_idp_connectors = channel.unary_unary(
+            &#34;/identity_v2.API/ListIdpConnectors&#34;,
+            request_serializer=ListIdpConnectorsRequest.SerializeToString,
+            response_deserializer=ListIdpConnectorsResponse.FromString,
+        )
+        self.__rpc_get_idp_connector = channel.unary_unary(
+            &#34;/identity_v2.API/GetIdpConnector&#34;,
+            request_serializer=GetIdpConnectorRequest.SerializeToString,
+            response_deserializer=GetIdpConnectorResponse.FromString,
+        )
+        self.__rpc_delete_idp_connector = channel.unary_unary(
+            &#34;/identity_v2.API/DeleteIdpConnector&#34;,
+            request_serializer=DeleteIdpConnectorRequest.SerializeToString,
+            response_deserializer=DeleteIdpConnectorResponse.FromString,
+        )
+        self.__rpc_create_oidc_client = channel.unary_unary(
+            &#34;/identity_v2.API/CreateOidcClient&#34;,
+            request_serializer=CreateOidcClientRequest.SerializeToString,
+            response_deserializer=CreateOidcClientResponse.FromString,
+        )
+        self.__rpc_update_oidc_client = channel.unary_unary(
+            &#34;/identity_v2.API/UpdateOidcClient&#34;,
+            request_serializer=UpdateOidcClientRequest.SerializeToString,
+            response_deserializer=UpdateOidcClientResponse.FromString,
+        )
+        self.__rpc_get_oidc_client = channel.unary_unary(
+            &#34;/identity_v2.API/GetOidcClient&#34;,
+            request_serializer=GetOidcClientRequest.SerializeToString,
+            response_deserializer=GetOidcClientResponse.FromString,
+        )
+        self.__rpc_list_oidc_clients = channel.unary_unary(
+            &#34;/identity_v2.API/ListOidcClients&#34;,
+            request_serializer=ListOidcClientsRequest.SerializeToString,
+            response_deserializer=ListOidcClientsResponse.FromString,
+        )
+        self.__rpc_delete_oidc_client = channel.unary_unary(
+            &#34;/identity_v2.API/DeleteOidcClient&#34;,
+            request_serializer=DeleteOidcClientRequest.SerializeToString,
+            response_deserializer=DeleteOidcClientResponse.FromString,
+        )
+        self.__rpc_delete_all = channel.unary_unary(
+            &#34;/identity_v2.API/DeleteAll&#34;,
+            request_serializer=DeleteAllRequest.SerializeToString,
+            response_deserializer=DeleteAllResponse.FromString,
+        )
+
+    def set_identity_server_config(
+        self, *, config: &#34;IdentityServerConfig&#34; = None
+    ) -&gt; &#34;SetIdentityServerConfigResponse&#34;:
+        request = SetIdentityServerConfigRequest()
+        if config is not None:
+            request.config = config
+
+        return self.__rpc_set_identity_server_config(request)
+
+    def get_identity_server_config(self) -&gt; &#34;GetIdentityServerConfigResponse&#34;:
+        request = GetIdentityServerConfigRequest()
+
+        return self.__rpc_get_identity_server_config(request)
+
+    def create_idp_connector(
+        self, *, connector: &#34;IdpConnector&#34; = None
+    ) -&gt; &#34;CreateIdpConnectorResponse&#34;:
+        request = CreateIdpConnectorRequest()
+        if connector is not None:
+            request.connector = connector
+
+        return self.__rpc_create_idp_connector(request)
+
+    def update_idp_connector(
+        self, *, connector: &#34;IdpConnector&#34; = None
+    ) -&gt; &#34;UpdateIdpConnectorResponse&#34;:
+        request = UpdateIdpConnectorRequest()
+        if connector is not None:
+            request.connector = connector
+
+        return self.__rpc_update_idp_connector(request)
+
+    def list_idp_connectors(self) -&gt; &#34;ListIdpConnectorsResponse&#34;:
+        request = ListIdpConnectorsRequest()
+
+        return self.__rpc_list_idp_connectors(request)
+
+    def get_idp_connector(self, *, id: str = &#34;&#34;) -&gt; &#34;GetIdpConnectorResponse&#34;:
+        request = GetIdpConnectorRequest()
+        request.id = id
+
+        return self.__rpc_get_idp_connector(request)
+
+    def delete_idp_connector(self, *, id: str = &#34;&#34;) -&gt; &#34;DeleteIdpConnectorResponse&#34;:
+        request = DeleteIdpConnectorRequest()
+        request.id = id
+
+        return self.__rpc_delete_idp_connector(request)
+
+    def create_oidc_client(
+        self, *, client: &#34;OidcClient&#34; = None
+    ) -&gt; &#34;CreateOidcClientResponse&#34;:
+        request = CreateOidcClientRequest()
+        if client is not None:
+            request.client = client
+
+        return self.__rpc_create_oidc_client(request)
+
+    def update_oidc_client(
+        self, *, client: &#34;OidcClient&#34; = None
+    ) -&gt; &#34;UpdateOidcClientResponse&#34;:
+        request = UpdateOidcClientRequest()
+        if client is not None:
+            request.client = client
+
+        return self.__rpc_update_oidc_client(request)
+
+    def get_oidc_client(self, *, id: str = &#34;&#34;) -&gt; &#34;GetOidcClientResponse&#34;:
+        request = GetOidcClientRequest()
+        request.id = id
+
+        return self.__rpc_get_oidc_client(request)
+
+    def list_oidc_clients(self) -&gt; &#34;ListOidcClientsResponse&#34;:
+        request = ListOidcClientsRequest()
+
+        return self.__rpc_list_oidc_clients(request)
+
+    def delete_oidc_client(self, *, id: str = &#34;&#34;) -&gt; &#34;DeleteOidcClientResponse&#34;:
+        request = DeleteOidcClientRequest()
+        request.id = id
+
+        return self.__rpc_delete_oidc_client(request)
+
+    def delete_all(self) -&gt; &#34;DeleteAllResponse&#34;:
+        request = DeleteAllRequest()
+
+        return self.__rpc_delete_all(request)</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pachyderm_sdk.api.identity.ApiStub.create_idp_connector"><code class="name flex">
+<span>def <span class="ident">create_idp_connector</span></span>(<span>self, *, connector: <a title="pachyderm_sdk.api.identity.IdpConnector" href="#pachyderm_sdk.api.identity.IdpConnector">IdpConnector</a> = None) ‑> <a title="pachyderm_sdk.api.identity.CreateIdpConnectorResponse" href="#pachyderm_sdk.api.identity.CreateIdpConnectorResponse">CreateIdpConnectorResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_idp_connector(
+    self, *, connector: &#34;IdpConnector&#34; = None
+) -&gt; &#34;CreateIdpConnectorResponse&#34;:
+    request = CreateIdpConnectorRequest()
+    if connector is not None:
+        request.connector = connector
+
+    return self.__rpc_create_idp_connector(request)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.identity.ApiStub.create_oidc_client"><code class="name flex">
+<span>def <span class="ident">create_oidc_client</span></span>(<span>self, *, client: <a title="pachyderm_sdk.api.identity.OidcClient" href="#pachyderm_sdk.api.identity.OidcClient">OidcClient</a> = None) ‑> <a title="pachyderm_sdk.api.identity.CreateOidcClientResponse" href="#pachyderm_sdk.api.identity.CreateOidcClientResponse">CreateOidcClientResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_oidc_client(
+    self, *, client: &#34;OidcClient&#34; = None
+) -&gt; &#34;CreateOidcClientResponse&#34;:
+    request = CreateOidcClientRequest()
+    if client is not None:
+        request.client = client
+
+    return self.__rpc_create_oidc_client(request)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.identity.ApiStub.delete_all"><code class="name flex">
+<span>def <span class="ident">delete_all</span></span>(<span>self) ‑> <a title="pachyderm_sdk.api.identity.DeleteAllResponse" href="#pachyderm_sdk.api.identity.DeleteAllResponse">DeleteAllResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def delete_all(self) -&gt; &#34;DeleteAllResponse&#34;:
+    request = DeleteAllRequest()
+
+    return self.__rpc_delete_all(request)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.identity.ApiStub.delete_idp_connector"><code class="name flex">
+<span>def <span class="ident">delete_idp_connector</span></span>(<span>self, *, id: str = '') ‑> <a title="pachyderm_sdk.api.identity.DeleteIdpConnectorResponse" href="#pachyderm_sdk.api.identity.DeleteIdpConnectorResponse">DeleteIdpConnectorResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def delete_idp_connector(self, *, id: str = &#34;&#34;) -&gt; &#34;DeleteIdpConnectorResponse&#34;:
+    request = DeleteIdpConnectorRequest()
+    request.id = id
+
+    return self.__rpc_delete_idp_connector(request)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.identity.ApiStub.delete_oidc_client"><code class="name flex">
+<span>def <span class="ident">delete_oidc_client</span></span>(<span>self, *, id: str = '') ‑> <a title="pachyderm_sdk.api.identity.DeleteOidcClientResponse" href="#pachyderm_sdk.api.identity.DeleteOidcClientResponse">DeleteOidcClientResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def delete_oidc_client(self, *, id: str = &#34;&#34;) -&gt; &#34;DeleteOidcClientResponse&#34;:
+    request = DeleteOidcClientRequest()
+    request.id = id
+
+    return self.__rpc_delete_oidc_client(request)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.identity.ApiStub.get_identity_server_config"><code class="name flex">
+<span>def <span class="ident">get_identity_server_config</span></span>(<span>self) ‑> <a title="pachyderm_sdk.api.identity.GetIdentityServerConfigResponse" href="#pachyderm_sdk.api.identity.GetIdentityServerConfigResponse">GetIdentityServerConfigResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_identity_server_config(self) -&gt; &#34;GetIdentityServerConfigResponse&#34;:
+    request = GetIdentityServerConfigRequest()
+
+    return self.__rpc_get_identity_server_config(request)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.identity.ApiStub.get_idp_connector"><code class="name flex">
+<span>def <span class="ident">get_idp_connector</span></span>(<span>self, *, id: str = '') ‑> <a title="pachyderm_sdk.api.identity.GetIdpConnectorResponse" href="#pachyderm_sdk.api.identity.GetIdpConnectorResponse">GetIdpConnectorResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_idp_connector(self, *, id: str = &#34;&#34;) -&gt; &#34;GetIdpConnectorResponse&#34;:
+    request = GetIdpConnectorRequest()
+    request.id = id
+
+    return self.__rpc_get_idp_connector(request)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.identity.ApiStub.get_oidc_client"><code class="name flex">
+<span>def <span class="ident">get_oidc_client</span></span>(<span>self, *, id: str = '') ‑> <a title="pachyderm_sdk.api.identity.GetOidcClientResponse" href="#pachyderm_sdk.api.identity.GetOidcClientResponse">GetOidcClientResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_oidc_client(self, *, id: str = &#34;&#34;) -&gt; &#34;GetOidcClientResponse&#34;:
+    request = GetOidcClientRequest()
+    request.id = id
+
+    return self.__rpc_get_oidc_client(request)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.identity.ApiStub.list_idp_connectors"><code class="name flex">
+<span>def <span class="ident">list_idp_connectors</span></span>(<span>self) ‑> <a title="pachyderm_sdk.api.identity.ListIdpConnectorsResponse" href="#pachyderm_sdk.api.identity.ListIdpConnectorsResponse">ListIdpConnectorsResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def list_idp_connectors(self) -&gt; &#34;ListIdpConnectorsResponse&#34;:
+    request = ListIdpConnectorsRequest()
+
+    return self.__rpc_list_idp_connectors(request)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.identity.ApiStub.list_oidc_clients"><code class="name flex">
+<span>def <span class="ident">list_oidc_clients</span></span>(<span>self) ‑> <a title="pachyderm_sdk.api.identity.ListOidcClientsResponse" href="#pachyderm_sdk.api.identity.ListOidcClientsResponse">ListOidcClientsResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def list_oidc_clients(self) -&gt; &#34;ListOidcClientsResponse&#34;:
+    request = ListOidcClientsRequest()
+
+    return self.__rpc_list_oidc_clients(request)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.identity.ApiStub.set_identity_server_config"><code class="name flex">
+<span>def <span class="ident">set_identity_server_config</span></span>(<span>self, *, config: <a title="pachyderm_sdk.api.identity.IdentityServerConfig" href="#pachyderm_sdk.api.identity.IdentityServerConfig">IdentityServerConfig</a> = None) ‑> <a title="pachyderm_sdk.api.identity.SetIdentityServerConfigResponse" href="#pachyderm_sdk.api.identity.SetIdentityServerConfigResponse">SetIdentityServerConfigResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_identity_server_config(
+    self, *, config: &#34;IdentityServerConfig&#34; = None
+) -&gt; &#34;SetIdentityServerConfigResponse&#34;:
+    request = SetIdentityServerConfigRequest()
+    if config is not None:
+        request.config = config
+
+    return self.__rpc_set_identity_server_config(request)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.identity.ApiStub.update_idp_connector"><code class="name flex">
+<span>def <span class="ident">update_idp_connector</span></span>(<span>self, *, connector: <a title="pachyderm_sdk.api.identity.IdpConnector" href="#pachyderm_sdk.api.identity.IdpConnector">IdpConnector</a> = None) ‑> <a title="pachyderm_sdk.api.identity.UpdateIdpConnectorResponse" href="#pachyderm_sdk.api.identity.UpdateIdpConnectorResponse">UpdateIdpConnectorResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def update_idp_connector(
+    self, *, connector: &#34;IdpConnector&#34; = None
+) -&gt; &#34;UpdateIdpConnectorResponse&#34;:
+    request = UpdateIdpConnectorRequest()
+    if connector is not None:
+        request.connector = connector
+
+    return self.__rpc_update_idp_connector(request)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.identity.ApiStub.update_oidc_client"><code class="name flex">
+<span>def <span class="ident">update_oidc_client</span></span>(<span>self, *, client: <a title="pachyderm_sdk.api.identity.OidcClient" href="#pachyderm_sdk.api.identity.OidcClient">OidcClient</a> = None) ‑> <a title="pachyderm_sdk.api.identity.UpdateOidcClientResponse" href="#pachyderm_sdk.api.identity.UpdateOidcClientResponse">UpdateOidcClientResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def update_oidc_client(
+    self, *, client: &#34;OidcClient&#34; = None
+) -&gt; &#34;UpdateOidcClientResponse&#34;:
+    request = UpdateOidcClientRequest()
+    if client is not None:
+        request.client = client
+
+    return self.__rpc_update_oidc_client(request)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.identity.CreateIdpConnectorRequest"><code class="flex name class">
+<span>class <span class="ident">CreateIdpConnectorRequest</span></span>
+<span>(</span><span>connector: <a title="pachyderm_sdk.api.identity.IdpConnector" href="#pachyderm_sdk.api.identity.IdpConnector">IdpConnector</a> = &lt;object object&gt;)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>CreateIdpConnectorRequest(connector: 'IdpConnector' = <object object at 0x104312050>)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class CreateIdpConnectorRequest(betterproto.Message):
+    connector: &#34;IdpConnector&#34; = betterproto.message_field(1)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.identity.CreateIdpConnectorRequest.connector"><code class="name">var <span class="ident">connector</span> : <a title="pachyderm_sdk.api.identity.IdpConnector" href="#pachyderm_sdk.api.identity.IdpConnector">IdpConnector</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.identity.CreateIdpConnectorResponse"><code class="flex name class">
+<span>class <span class="ident">CreateIdpConnectorResponse</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>CreateIdpConnectorResponse()</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class CreateIdpConnectorResponse(betterproto.Message):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+</dd>
+<dt id="pachyderm_sdk.api.identity.CreateOidcClientRequest"><code class="flex name class">
+<span>class <span class="ident">CreateOidcClientRequest</span></span>
+<span>(</span><span>client: <a title="pachyderm_sdk.api.identity.OidcClient" href="#pachyderm_sdk.api.identity.OidcClient">OidcClient</a> = &lt;object object&gt;)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>CreateOidcClientRequest(client: 'OidcClient' = <object object at 0x104312050>)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class CreateOidcClientRequest(betterproto.Message):
+    client: &#34;OidcClient&#34; = betterproto.message_field(1)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.identity.CreateOidcClientRequest.client"><code class="name">var <span class="ident">client</span> : <a title="pachyderm_sdk.api.identity.OidcClient" href="#pachyderm_sdk.api.identity.OidcClient">OidcClient</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.identity.CreateOidcClientResponse"><code class="flex name class">
+<span>class <span class="ident">CreateOidcClientResponse</span></span>
+<span>(</span><span>client: <a title="pachyderm_sdk.api.identity.OidcClient" href="#pachyderm_sdk.api.identity.OidcClient">OidcClient</a> = &lt;object object&gt;)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>CreateOidcClientResponse(client: 'OidcClient' = <object object at 0x104312050>)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class CreateOidcClientResponse(betterproto.Message):
+    client: &#34;OidcClient&#34; = betterproto.message_field(1)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.identity.CreateOidcClientResponse.client"><code class="name">var <span class="ident">client</span> : <a title="pachyderm_sdk.api.identity.OidcClient" href="#pachyderm_sdk.api.identity.OidcClient">OidcClient</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.identity.DeleteAllRequest"><code class="flex name class">
+<span>class <span class="ident">DeleteAllRequest</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>DeleteAllRequest()</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class DeleteAllRequest(betterproto.Message):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+</dd>
+<dt id="pachyderm_sdk.api.identity.DeleteAllResponse"><code class="flex name class">
+<span>class <span class="ident">DeleteAllResponse</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>DeleteAllResponse()</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class DeleteAllResponse(betterproto.Message):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+</dd>
+<dt id="pachyderm_sdk.api.identity.DeleteIdpConnectorRequest"><code class="flex name class">
+<span>class <span class="ident">DeleteIdpConnectorRequest</span></span>
+<span>(</span><span>id: str = &lt;object object&gt;)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>DeleteIdpConnectorRequest(id: str = <object object at 0x104312050>)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class DeleteIdpConnectorRequest(betterproto.Message):
+    id: str = betterproto.string_field(1)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.identity.DeleteIdpConnectorRequest.id"><code class="name">var <span class="ident">id</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.identity.DeleteIdpConnectorResponse"><code class="flex name class">
+<span>class <span class="ident">DeleteIdpConnectorResponse</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>DeleteIdpConnectorResponse()</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class DeleteIdpConnectorResponse(betterproto.Message):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+</dd>
+<dt id="pachyderm_sdk.api.identity.DeleteOidcClientRequest"><code class="flex name class">
+<span>class <span class="ident">DeleteOidcClientRequest</span></span>
+<span>(</span><span>id: str = &lt;object object&gt;)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>DeleteOidcClientRequest(id: str = <object object at 0x104312050>)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class DeleteOidcClientRequest(betterproto.Message):
+    id: str = betterproto.string_field(1)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.identity.DeleteOidcClientRequest.id"><code class="name">var <span class="ident">id</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.identity.DeleteOidcClientResponse"><code class="flex name class">
+<span>class <span class="ident">DeleteOidcClientResponse</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>DeleteOidcClientResponse()</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class DeleteOidcClientResponse(betterproto.Message):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+</dd>
+<dt id="pachyderm_sdk.api.identity.GetIdentityServerConfigRequest"><code class="flex name class">
+<span>class <span class="ident">GetIdentityServerConfigRequest</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>GetIdentityServerConfigRequest()</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class GetIdentityServerConfigRequest(betterproto.Message):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+</dd>
+<dt id="pachyderm_sdk.api.identity.GetIdentityServerConfigResponse"><code class="flex name class">
+<span>class <span class="ident">GetIdentityServerConfigResponse</span></span>
+<span>(</span><span>config: <a title="pachyderm_sdk.api.identity.IdentityServerConfig" href="#pachyderm_sdk.api.identity.IdentityServerConfig">IdentityServerConfig</a> = &lt;object object&gt;)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>GetIdentityServerConfigResponse(config: 'IdentityServerConfig' = <object object at 0x104312050>)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class GetIdentityServerConfigResponse(betterproto.Message):
+    config: &#34;IdentityServerConfig&#34; = betterproto.message_field(1)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.identity.GetIdentityServerConfigResponse.config"><code class="name">var <span class="ident">config</span> : <a title="pachyderm_sdk.api.identity.IdentityServerConfig" href="#pachyderm_sdk.api.identity.IdentityServerConfig">IdentityServerConfig</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.identity.GetIdpConnectorRequest"><code class="flex name class">
+<span>class <span class="ident">GetIdpConnectorRequest</span></span>
+<span>(</span><span>id: str = &lt;object object&gt;)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>GetIdpConnectorRequest(id: str = <object object at 0x104312050>)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class GetIdpConnectorRequest(betterproto.Message):
+    id: str = betterproto.string_field(1)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.identity.GetIdpConnectorRequest.id"><code class="name">var <span class="ident">id</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.identity.GetIdpConnectorResponse"><code class="flex name class">
+<span>class <span class="ident">GetIdpConnectorResponse</span></span>
+<span>(</span><span>connector: <a title="pachyderm_sdk.api.identity.IdpConnector" href="#pachyderm_sdk.api.identity.IdpConnector">IdpConnector</a> = &lt;object object&gt;)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>GetIdpConnectorResponse(connector: 'IdpConnector' = <object object at 0x104312050>)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class GetIdpConnectorResponse(betterproto.Message):
+    connector: &#34;IdpConnector&#34; = betterproto.message_field(1)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.identity.GetIdpConnectorResponse.connector"><code class="name">var <span class="ident">connector</span> : <a title="pachyderm_sdk.api.identity.IdpConnector" href="#pachyderm_sdk.api.identity.IdpConnector">IdpConnector</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.identity.GetOidcClientRequest"><code class="flex name class">
+<span>class <span class="ident">GetOidcClientRequest</span></span>
+<span>(</span><span>id: str = &lt;object object&gt;)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>GetOidcClientRequest(id: str = <object object at 0x104312050>)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class GetOidcClientRequest(betterproto.Message):
+    id: str = betterproto.string_field(1)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.identity.GetOidcClientRequest.id"><code class="name">var <span class="ident">id</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.identity.GetOidcClientResponse"><code class="flex name class">
+<span>class <span class="ident">GetOidcClientResponse</span></span>
+<span>(</span><span>client: <a title="pachyderm_sdk.api.identity.OidcClient" href="#pachyderm_sdk.api.identity.OidcClient">OidcClient</a> = &lt;object object&gt;)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>GetOidcClientResponse(client: 'OidcClient' = <object object at 0x104312050>)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class GetOidcClientResponse(betterproto.Message):
+    client: &#34;OidcClient&#34; = betterproto.message_field(1)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.identity.GetOidcClientResponse.client"><code class="name">var <span class="ident">client</span> : <a title="pachyderm_sdk.api.identity.OidcClient" href="#pachyderm_sdk.api.identity.OidcClient">OidcClient</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.identity.IdentityServerConfig"><code class="flex name class">
+<span>class <span class="ident">IdentityServerConfig</span></span>
+<span>(</span><span>issuer: str = &lt;object object&gt;, id_token_expiry: str = &lt;object object&gt;, rotation_token_expiry: str = &lt;object object&gt;)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>IdentityServerConfig is the configuration for the identity web server. When
+the configuration is changed the web server is reloaded automatically.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class IdentityServerConfig(betterproto.Message):
+    &#34;&#34;&#34;
+    IdentityServerConfig is the configuration for the identity web server. When
+    the configuration is changed the web server is reloaded automatically.
+    &#34;&#34;&#34;
+
+    issuer: str = betterproto.string_field(1)
+    id_token_expiry: str = betterproto.string_field(2)
+    rotation_token_expiry: str = betterproto.string_field(3)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.identity.IdentityServerConfig.id_token_expiry"><code class="name">var <span class="ident">id_token_expiry</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.identity.IdentityServerConfig.issuer"><code class="name">var <span class="ident">issuer</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.identity.IdentityServerConfig.rotation_token_expiry"><code class="name">var <span class="ident">rotation_token_expiry</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.identity.IdpConnector"><code class="flex name class">
+<span>class <span class="ident">IdpConnector</span></span>
+<span>(</span><span>id: str = &lt;object object&gt;, name: str = &lt;object object&gt;, type: str = &lt;object object&gt;, config_version: int = &lt;object object&gt;, json_config: str = &lt;object object&gt;, config: betterproto_lib_google_protobuf.Struct = &lt;object object&gt;)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>IdpConnector represents a connection to an identity provider</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class IdpConnector(betterproto.Message):
+    &#34;&#34;&#34;IdpConnector represents a connection to an identity provider&#34;&#34;&#34;
+
+    id: str = betterproto.string_field(1)
+    &#34;&#34;&#34;ID is the unique identifier for this connector.&#34;&#34;&#34;
+
+    name: str = betterproto.string_field(2)
+    &#34;&#34;&#34;
+    Name is the human-readable identifier for this connector, which will be
+    shown to end users when they&#39;re authenticating.
+    &#34;&#34;&#34;
+
+    type: str = betterproto.string_field(3)
+    &#34;&#34;&#34;Type is the type of the Idp ex. `saml`, `oidc`, `github`.&#34;&#34;&#34;
+
+    config_version: int = betterproto.int64_field(4)
+    &#34;&#34;&#34;
+    ConfigVersion must be incremented every time a connector is updated, to
+    avoid concurrent updates conflicting.
+    &#34;&#34;&#34;
+
+    json_config: str = betterproto.string_field(5)
+    &#34;&#34;&#34;
+    This is left for backwards compatibility, but we want users to use the
+    config defined below.
+    &#34;&#34;&#34;
+
+    config: &#34;betterproto_lib_google_protobuf.Struct&#34; = betterproto.message_field(6)
+    &#34;&#34;&#34;
+    Config is the configuration for the upstream Idp, which varies based on the
+    type. We make the assumption that this is either yaml or JSON.
+    &#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.identity.IdpConnector.config"><code class="name">var <span class="ident">config</span> : betterproto.lib.google.protobuf.Struct</code></dt>
+<dd>
+<div class="desc"><p>Config is the configuration for the upstream Idp, which varies based on the
+type. We make the assumption that this is either yaml or JSON.</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.identity.IdpConnector.config_version"><code class="name">var <span class="ident">config_version</span> : int</code></dt>
+<dd>
+<div class="desc"><p>ConfigVersion must be incremented every time a connector is updated, to
+avoid concurrent updates conflicting.</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.identity.IdpConnector.id"><code class="name">var <span class="ident">id</span> : str</code></dt>
+<dd>
+<div class="desc"><p>ID is the unique identifier for this connector.</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.identity.IdpConnector.json_config"><code class="name">var <span class="ident">json_config</span> : str</code></dt>
+<dd>
+<div class="desc"><p>This is left for backwards compatibility, but we want users to use the
+config defined below.</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.identity.IdpConnector.name"><code class="name">var <span class="ident">name</span> : str</code></dt>
+<dd>
+<div class="desc"><p>Name is the human-readable identifier for this connector, which will be
+shown to end users when they're authenticating.</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.identity.IdpConnector.type"><code class="name">var <span class="ident">type</span> : str</code></dt>
+<dd>
+<div class="desc"><p>Type is the type of the Idp ex. <code>saml</code>, <code>oidc</code>, <code>github</code>.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.identity.ListIdpConnectorsRequest"><code class="flex name class">
+<span>class <span class="ident">ListIdpConnectorsRequest</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>ListIdpConnectorsRequest()</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class ListIdpConnectorsRequest(betterproto.Message):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+</dd>
+<dt id="pachyderm_sdk.api.identity.ListIdpConnectorsResponse"><code class="flex name class">
+<span>class <span class="ident">ListIdpConnectorsResponse</span></span>
+<span>(</span><span>connectors: List[ForwardRef('<a title="pachyderm_sdk.api.identity.IdpConnector" href="#pachyderm_sdk.api.identity.IdpConnector">IdpConnector</a>')] = &lt;object object&gt;)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>ListIdpConnectorsResponse(connectors: List[ForwardRef('IdpConnector')] = <object object at 0x104312050>)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class ListIdpConnectorsResponse(betterproto.Message):
+    connectors: List[&#34;IdpConnector&#34;] = betterproto.message_field(1)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.identity.ListIdpConnectorsResponse.connectors"><code class="name">var <span class="ident">connectors</span> : List[<a title="pachyderm_sdk.api.identity.IdpConnector" href="#pachyderm_sdk.api.identity.IdpConnector">IdpConnector</a>]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.identity.ListOidcClientsRequest"><code class="flex name class">
+<span>class <span class="ident">ListOidcClientsRequest</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>ListOidcClientsRequest()</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class ListOidcClientsRequest(betterproto.Message):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+</dd>
+<dt id="pachyderm_sdk.api.identity.ListOidcClientsResponse"><code class="flex name class">
+<span>class <span class="ident">ListOidcClientsResponse</span></span>
+<span>(</span><span>clients: List[ForwardRef('<a title="pachyderm_sdk.api.identity.OidcClient" href="#pachyderm_sdk.api.identity.OidcClient">OidcClient</a>')] = &lt;object object&gt;)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>ListOidcClientsResponse(clients: List[ForwardRef('OidcClient')] = <object object at 0x104312050>)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class ListOidcClientsResponse(betterproto.Message):
+    clients: List[&#34;OidcClient&#34;] = betterproto.message_field(1)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.identity.ListOidcClientsResponse.clients"><code class="name">var <span class="ident">clients</span> : List[<a title="pachyderm_sdk.api.identity.OidcClient" href="#pachyderm_sdk.api.identity.OidcClient">OidcClient</a>]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.identity.OidcClient"><code class="flex name class">
+<span>class <span class="ident">OidcClient</span></span>
+<span>(</span><span>id: str = &lt;object object&gt;, redirect_uris: List[str] = &lt;object object&gt;, trusted_peers: List[str] = &lt;object object&gt;, name: str = &lt;object object&gt;, secret: str = &lt;object object&gt;)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>OidcClient(id: str = <object object at 0x104312050>, redirect_uris: List[str] = <object object at 0x104312050>, trusted_peers: List[str] = <object object at 0x104312050>, name: str = <object object at 0x104312050>, secret: str = <object object at 0x104312050>)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class OidcClient(betterproto.Message):
+    id: str = betterproto.string_field(1)
+    redirect_uris: List[str] = betterproto.string_field(2)
+    trusted_peers: List[str] = betterproto.string_field(3)
+    name: str = betterproto.string_field(4)
+    secret: str = betterproto.string_field(5)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.identity.OidcClient.id"><code class="name">var <span class="ident">id</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.identity.OidcClient.name"><code class="name">var <span class="ident">name</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.identity.OidcClient.redirect_uris"><code class="name">var <span class="ident">redirect_uris</span> : List[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.identity.OidcClient.secret"><code class="name">var <span class="ident">secret</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.identity.OidcClient.trusted_peers"><code class="name">var <span class="ident">trusted_peers</span> : List[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.identity.SetIdentityServerConfigRequest"><code class="flex name class">
+<span>class <span class="ident">SetIdentityServerConfigRequest</span></span>
+<span>(</span><span>config: <a title="pachyderm_sdk.api.identity.IdentityServerConfig" href="#pachyderm_sdk.api.identity.IdentityServerConfig">IdentityServerConfig</a> = &lt;object object&gt;)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>SetIdentityServerConfigRequest(config: 'IdentityServerConfig' = <object object at 0x104312050>)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class SetIdentityServerConfigRequest(betterproto.Message):
+    config: &#34;IdentityServerConfig&#34; = betterproto.message_field(1)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.identity.SetIdentityServerConfigRequest.config"><code class="name">var <span class="ident">config</span> : <a title="pachyderm_sdk.api.identity.IdentityServerConfig" href="#pachyderm_sdk.api.identity.IdentityServerConfig">IdentityServerConfig</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.identity.SetIdentityServerConfigResponse"><code class="flex name class">
+<span>class <span class="ident">SetIdentityServerConfigResponse</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>SetIdentityServerConfigResponse()</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class SetIdentityServerConfigResponse(betterproto.Message):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+</dd>
+<dt id="pachyderm_sdk.api.identity.UpdateIdpConnectorRequest"><code class="flex name class">
+<span>class <span class="ident">UpdateIdpConnectorRequest</span></span>
+<span>(</span><span>connector: <a title="pachyderm_sdk.api.identity.IdpConnector" href="#pachyderm_sdk.api.identity.IdpConnector">IdpConnector</a> = &lt;object object&gt;)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>UpdateIdpConnectorRequest(connector: 'IdpConnector' = <object object at 0x104312050>)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class UpdateIdpConnectorRequest(betterproto.Message):
+    connector: &#34;IdpConnector&#34; = betterproto.message_field(1)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.identity.UpdateIdpConnectorRequest.connector"><code class="name">var <span class="ident">connector</span> : <a title="pachyderm_sdk.api.identity.IdpConnector" href="#pachyderm_sdk.api.identity.IdpConnector">IdpConnector</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.identity.UpdateIdpConnectorResponse"><code class="flex name class">
+<span>class <span class="ident">UpdateIdpConnectorResponse</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>UpdateIdpConnectorResponse()</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class UpdateIdpConnectorResponse(betterproto.Message):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+</dd>
+<dt id="pachyderm_sdk.api.identity.UpdateOidcClientRequest"><code class="flex name class">
+<span>class <span class="ident">UpdateOidcClientRequest</span></span>
+<span>(</span><span>client: <a title="pachyderm_sdk.api.identity.OidcClient" href="#pachyderm_sdk.api.identity.OidcClient">OidcClient</a> = &lt;object object&gt;)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>UpdateOidcClientRequest(client: 'OidcClient' = <object object at 0x104312050>)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class UpdateOidcClientRequest(betterproto.Message):
+    client: &#34;OidcClient&#34; = betterproto.message_field(1)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.identity.UpdateOidcClientRequest.client"><code class="name">var <span class="ident">client</span> : <a title="pachyderm_sdk.api.identity.OidcClient" href="#pachyderm_sdk.api.identity.OidcClient">OidcClient</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.identity.UpdateOidcClientResponse"><code class="flex name class">
+<span>class <span class="ident">UpdateOidcClientResponse</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>UpdateOidcClientResponse()</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class UpdateOidcClientResponse(betterproto.Message):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+</dd>
+<dt id="pachyderm_sdk.api.identity.User"><code class="flex name class">
+<span>class <span class="ident">User</span></span>
+<span>(</span><span>email: str = &lt;object object&gt;, last_authenticated: datetime.datetime = &lt;object object&gt;)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>User represents an Idp user that has authenticated via Oidc</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class User(betterproto.Message):
+    &#34;&#34;&#34;User represents an Idp user that has authenticated via Oidc&#34;&#34;&#34;
+
+    email: str = betterproto.string_field(1)
+    last_authenticated: datetime = betterproto.message_field(2)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.identity.User.email"><code class="name">var <span class="ident">email</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.identity.User.last_authenticated"><code class="name">var <span class="ident">last_authenticated</span> : datetime.datetime</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="pachyderm_sdk.api" href="../index.html">pachyderm_sdk.api</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="pachyderm_sdk.api.identity.ApiBase" href="#pachyderm_sdk.api.identity.ApiBase">ApiBase</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.identity.ApiBase.create_idp_connector" href="#pachyderm_sdk.api.identity.ApiBase.create_idp_connector">create_idp_connector</a></code></li>
+<li><code><a title="pachyderm_sdk.api.identity.ApiBase.create_oidc_client" href="#pachyderm_sdk.api.identity.ApiBase.create_oidc_client">create_oidc_client</a></code></li>
+<li><code><a title="pachyderm_sdk.api.identity.ApiBase.delete_all" href="#pachyderm_sdk.api.identity.ApiBase.delete_all">delete_all</a></code></li>
+<li><code><a title="pachyderm_sdk.api.identity.ApiBase.delete_idp_connector" href="#pachyderm_sdk.api.identity.ApiBase.delete_idp_connector">delete_idp_connector</a></code></li>
+<li><code><a title="pachyderm_sdk.api.identity.ApiBase.delete_oidc_client" href="#pachyderm_sdk.api.identity.ApiBase.delete_oidc_client">delete_oidc_client</a></code></li>
+<li><code><a title="pachyderm_sdk.api.identity.ApiBase.get_identity_server_config" href="#pachyderm_sdk.api.identity.ApiBase.get_identity_server_config">get_identity_server_config</a></code></li>
+<li><code><a title="pachyderm_sdk.api.identity.ApiBase.get_idp_connector" href="#pachyderm_sdk.api.identity.ApiBase.get_idp_connector">get_idp_connector</a></code></li>
+<li><code><a title="pachyderm_sdk.api.identity.ApiBase.get_oidc_client" href="#pachyderm_sdk.api.identity.ApiBase.get_oidc_client">get_oidc_client</a></code></li>
+<li><code><a title="pachyderm_sdk.api.identity.ApiBase.list_idp_connectors" href="#pachyderm_sdk.api.identity.ApiBase.list_idp_connectors">list_idp_connectors</a></code></li>
+<li><code><a title="pachyderm_sdk.api.identity.ApiBase.list_oidc_clients" href="#pachyderm_sdk.api.identity.ApiBase.list_oidc_clients">list_oidc_clients</a></code></li>
+<li><code><a title="pachyderm_sdk.api.identity.ApiBase.set_identity_server_config" href="#pachyderm_sdk.api.identity.ApiBase.set_identity_server_config">set_identity_server_config</a></code></li>
+<li><code><a title="pachyderm_sdk.api.identity.ApiBase.update_idp_connector" href="#pachyderm_sdk.api.identity.ApiBase.update_idp_connector">update_idp_connector</a></code></li>
+<li><code><a title="pachyderm_sdk.api.identity.ApiBase.update_oidc_client" href="#pachyderm_sdk.api.identity.ApiBase.update_oidc_client">update_oidc_client</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.identity.ApiStub" href="#pachyderm_sdk.api.identity.ApiStub">ApiStub</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.identity.ApiStub.create_idp_connector" href="#pachyderm_sdk.api.identity.ApiStub.create_idp_connector">create_idp_connector</a></code></li>
+<li><code><a title="pachyderm_sdk.api.identity.ApiStub.create_oidc_client" href="#pachyderm_sdk.api.identity.ApiStub.create_oidc_client">create_oidc_client</a></code></li>
+<li><code><a title="pachyderm_sdk.api.identity.ApiStub.delete_all" href="#pachyderm_sdk.api.identity.ApiStub.delete_all">delete_all</a></code></li>
+<li><code><a title="pachyderm_sdk.api.identity.ApiStub.delete_idp_connector" href="#pachyderm_sdk.api.identity.ApiStub.delete_idp_connector">delete_idp_connector</a></code></li>
+<li><code><a title="pachyderm_sdk.api.identity.ApiStub.delete_oidc_client" href="#pachyderm_sdk.api.identity.ApiStub.delete_oidc_client">delete_oidc_client</a></code></li>
+<li><code><a title="pachyderm_sdk.api.identity.ApiStub.get_identity_server_config" href="#pachyderm_sdk.api.identity.ApiStub.get_identity_server_config">get_identity_server_config</a></code></li>
+<li><code><a title="pachyderm_sdk.api.identity.ApiStub.get_idp_connector" href="#pachyderm_sdk.api.identity.ApiStub.get_idp_connector">get_idp_connector</a></code></li>
+<li><code><a title="pachyderm_sdk.api.identity.ApiStub.get_oidc_client" href="#pachyderm_sdk.api.identity.ApiStub.get_oidc_client">get_oidc_client</a></code></li>
+<li><code><a title="pachyderm_sdk.api.identity.ApiStub.list_idp_connectors" href="#pachyderm_sdk.api.identity.ApiStub.list_idp_connectors">list_idp_connectors</a></code></li>
+<li><code><a title="pachyderm_sdk.api.identity.ApiStub.list_oidc_clients" href="#pachyderm_sdk.api.identity.ApiStub.list_oidc_clients">list_oidc_clients</a></code></li>
+<li><code><a title="pachyderm_sdk.api.identity.ApiStub.set_identity_server_config" href="#pachyderm_sdk.api.identity.ApiStub.set_identity_server_config">set_identity_server_config</a></code></li>
+<li><code><a title="pachyderm_sdk.api.identity.ApiStub.update_idp_connector" href="#pachyderm_sdk.api.identity.ApiStub.update_idp_connector">update_idp_connector</a></code></li>
+<li><code><a title="pachyderm_sdk.api.identity.ApiStub.update_oidc_client" href="#pachyderm_sdk.api.identity.ApiStub.update_oidc_client">update_oidc_client</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.identity.CreateIdpConnectorRequest" href="#pachyderm_sdk.api.identity.CreateIdpConnectorRequest">CreateIdpConnectorRequest</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.identity.CreateIdpConnectorRequest.connector" href="#pachyderm_sdk.api.identity.CreateIdpConnectorRequest.connector">connector</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.identity.CreateIdpConnectorResponse" href="#pachyderm_sdk.api.identity.CreateIdpConnectorResponse">CreateIdpConnectorResponse</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.identity.CreateOidcClientRequest" href="#pachyderm_sdk.api.identity.CreateOidcClientRequest">CreateOidcClientRequest</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.identity.CreateOidcClientRequest.client" href="#pachyderm_sdk.api.identity.CreateOidcClientRequest.client">client</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.identity.CreateOidcClientResponse" href="#pachyderm_sdk.api.identity.CreateOidcClientResponse">CreateOidcClientResponse</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.identity.CreateOidcClientResponse.client" href="#pachyderm_sdk.api.identity.CreateOidcClientResponse.client">client</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.identity.DeleteAllRequest" href="#pachyderm_sdk.api.identity.DeleteAllRequest">DeleteAllRequest</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.identity.DeleteAllResponse" href="#pachyderm_sdk.api.identity.DeleteAllResponse">DeleteAllResponse</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.identity.DeleteIdpConnectorRequest" href="#pachyderm_sdk.api.identity.DeleteIdpConnectorRequest">DeleteIdpConnectorRequest</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.identity.DeleteIdpConnectorRequest.id" href="#pachyderm_sdk.api.identity.DeleteIdpConnectorRequest.id">id</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.identity.DeleteIdpConnectorResponse" href="#pachyderm_sdk.api.identity.DeleteIdpConnectorResponse">DeleteIdpConnectorResponse</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.identity.DeleteOidcClientRequest" href="#pachyderm_sdk.api.identity.DeleteOidcClientRequest">DeleteOidcClientRequest</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.identity.DeleteOidcClientRequest.id" href="#pachyderm_sdk.api.identity.DeleteOidcClientRequest.id">id</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.identity.DeleteOidcClientResponse" href="#pachyderm_sdk.api.identity.DeleteOidcClientResponse">DeleteOidcClientResponse</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.identity.GetIdentityServerConfigRequest" href="#pachyderm_sdk.api.identity.GetIdentityServerConfigRequest">GetIdentityServerConfigRequest</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.identity.GetIdentityServerConfigResponse" href="#pachyderm_sdk.api.identity.GetIdentityServerConfigResponse">GetIdentityServerConfigResponse</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.identity.GetIdentityServerConfigResponse.config" href="#pachyderm_sdk.api.identity.GetIdentityServerConfigResponse.config">config</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.identity.GetIdpConnectorRequest" href="#pachyderm_sdk.api.identity.GetIdpConnectorRequest">GetIdpConnectorRequest</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.identity.GetIdpConnectorRequest.id" href="#pachyderm_sdk.api.identity.GetIdpConnectorRequest.id">id</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.identity.GetIdpConnectorResponse" href="#pachyderm_sdk.api.identity.GetIdpConnectorResponse">GetIdpConnectorResponse</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.identity.GetIdpConnectorResponse.connector" href="#pachyderm_sdk.api.identity.GetIdpConnectorResponse.connector">connector</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.identity.GetOidcClientRequest" href="#pachyderm_sdk.api.identity.GetOidcClientRequest">GetOidcClientRequest</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.identity.GetOidcClientRequest.id" href="#pachyderm_sdk.api.identity.GetOidcClientRequest.id">id</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.identity.GetOidcClientResponse" href="#pachyderm_sdk.api.identity.GetOidcClientResponse">GetOidcClientResponse</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.identity.GetOidcClientResponse.client" href="#pachyderm_sdk.api.identity.GetOidcClientResponse.client">client</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.identity.IdentityServerConfig" href="#pachyderm_sdk.api.identity.IdentityServerConfig">IdentityServerConfig</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.identity.IdentityServerConfig.id_token_expiry" href="#pachyderm_sdk.api.identity.IdentityServerConfig.id_token_expiry">id_token_expiry</a></code></li>
+<li><code><a title="pachyderm_sdk.api.identity.IdentityServerConfig.issuer" href="#pachyderm_sdk.api.identity.IdentityServerConfig.issuer">issuer</a></code></li>
+<li><code><a title="pachyderm_sdk.api.identity.IdentityServerConfig.rotation_token_expiry" href="#pachyderm_sdk.api.identity.IdentityServerConfig.rotation_token_expiry">rotation_token_expiry</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.identity.IdpConnector" href="#pachyderm_sdk.api.identity.IdpConnector">IdpConnector</a></code></h4>
+<ul class="two-column">
+<li><code><a title="pachyderm_sdk.api.identity.IdpConnector.config" href="#pachyderm_sdk.api.identity.IdpConnector.config">config</a></code></li>
+<li><code><a title="pachyderm_sdk.api.identity.IdpConnector.config_version" href="#pachyderm_sdk.api.identity.IdpConnector.config_version">config_version</a></code></li>
+<li><code><a title="pachyderm_sdk.api.identity.IdpConnector.id" href="#pachyderm_sdk.api.identity.IdpConnector.id">id</a></code></li>
+<li><code><a title="pachyderm_sdk.api.identity.IdpConnector.json_config" href="#pachyderm_sdk.api.identity.IdpConnector.json_config">json_config</a></code></li>
+<li><code><a title="pachyderm_sdk.api.identity.IdpConnector.name" href="#pachyderm_sdk.api.identity.IdpConnector.name">name</a></code></li>
+<li><code><a title="pachyderm_sdk.api.identity.IdpConnector.type" href="#pachyderm_sdk.api.identity.IdpConnector.type">type</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.identity.ListIdpConnectorsRequest" href="#pachyderm_sdk.api.identity.ListIdpConnectorsRequest">ListIdpConnectorsRequest</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.identity.ListIdpConnectorsResponse" href="#pachyderm_sdk.api.identity.ListIdpConnectorsResponse">ListIdpConnectorsResponse</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.identity.ListIdpConnectorsResponse.connectors" href="#pachyderm_sdk.api.identity.ListIdpConnectorsResponse.connectors">connectors</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.identity.ListOidcClientsRequest" href="#pachyderm_sdk.api.identity.ListOidcClientsRequest">ListOidcClientsRequest</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.identity.ListOidcClientsResponse" href="#pachyderm_sdk.api.identity.ListOidcClientsResponse">ListOidcClientsResponse</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.identity.ListOidcClientsResponse.clients" href="#pachyderm_sdk.api.identity.ListOidcClientsResponse.clients">clients</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.identity.OidcClient" href="#pachyderm_sdk.api.identity.OidcClient">OidcClient</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.identity.OidcClient.id" href="#pachyderm_sdk.api.identity.OidcClient.id">id</a></code></li>
+<li><code><a title="pachyderm_sdk.api.identity.OidcClient.name" href="#pachyderm_sdk.api.identity.OidcClient.name">name</a></code></li>
+<li><code><a title="pachyderm_sdk.api.identity.OidcClient.redirect_uris" href="#pachyderm_sdk.api.identity.OidcClient.redirect_uris">redirect_uris</a></code></li>
+<li><code><a title="pachyderm_sdk.api.identity.OidcClient.secret" href="#pachyderm_sdk.api.identity.OidcClient.secret">secret</a></code></li>
+<li><code><a title="pachyderm_sdk.api.identity.OidcClient.trusted_peers" href="#pachyderm_sdk.api.identity.OidcClient.trusted_peers">trusted_peers</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.identity.SetIdentityServerConfigRequest" href="#pachyderm_sdk.api.identity.SetIdentityServerConfigRequest">SetIdentityServerConfigRequest</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.identity.SetIdentityServerConfigRequest.config" href="#pachyderm_sdk.api.identity.SetIdentityServerConfigRequest.config">config</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.identity.SetIdentityServerConfigResponse" href="#pachyderm_sdk.api.identity.SetIdentityServerConfigResponse">SetIdentityServerConfigResponse</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.identity.UpdateIdpConnectorRequest" href="#pachyderm_sdk.api.identity.UpdateIdpConnectorRequest">UpdateIdpConnectorRequest</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.identity.UpdateIdpConnectorRequest.connector" href="#pachyderm_sdk.api.identity.UpdateIdpConnectorRequest.connector">connector</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.identity.UpdateIdpConnectorResponse" href="#pachyderm_sdk.api.identity.UpdateIdpConnectorResponse">UpdateIdpConnectorResponse</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.identity.UpdateOidcClientRequest" href="#pachyderm_sdk.api.identity.UpdateOidcClientRequest">UpdateOidcClientRequest</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.identity.UpdateOidcClientRequest.client" href="#pachyderm_sdk.api.identity.UpdateOidcClientRequest.client">client</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.identity.UpdateOidcClientResponse" href="#pachyderm_sdk.api.identity.UpdateOidcClientResponse">UpdateOidcClientResponse</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.identity.User" href="#pachyderm_sdk.api.identity.User">User</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.identity.User.email" href="#pachyderm_sdk.api.identity.User.email">email</a></code></li>
+<li><code><a title="pachyderm_sdk.api.identity.User.last_authenticated" href="#pachyderm_sdk.api.identity.User.last_authenticated">last_authenticated</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>
