@@ -9,11 +9,6 @@ series: ["pps"]
 seriesPart:
 label: optional
 ---
-
-{{% notice note %}}
-For a single-page view of all PPS options, go to the [PPS series page](/series/pps).
-{{% /notice %}}
-
 ## Spec 
 
 ```s
@@ -26,7 +21,7 @@ For a single-page view of all PPS options, go to the [PPS series page](/series/p
 
 The `datum_timeout` attribute in a {{% productName %}} pipeline is used to specify the maximum amount of time that a worker is allowed to process a single datum in the pipeline.
 
-When a worker begins processing a datum, {{% productName %}} starts a timer that tracks the elapsed time since the datum was first assigned to the worker. If the worker has not finished processing the datum before the `datum_timeout` period has elapsed, {{% productName %}} will automatically mark the datum as failed and reassign it to another worker to [retry](../datum-tries). This helps to ensure that slow or problematic datums do not hold up the processing of the entire pipeline.
+When a worker begins processing a datum, {{% productName %}} starts a timer that tracks the elapsed time since the datum was first assigned to the worker. If the worker has not finished processing the datum before the `datum_timeout` period has elapsed, {{% productName %}} will automatically mark the datum as failed and reassign it to another worker to [retry](/{{% release %}}/build-dags/pipeline-spec/datum-tries). This helps to ensure that slow or problematic datums do not hold up the processing of the entire pipeline.
 
 Other considerations:
 

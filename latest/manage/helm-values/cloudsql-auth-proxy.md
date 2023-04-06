@@ -10,10 +10,6 @@ seriesPart:
 weight: 11
 label: Required for GCP
 --- 
-
-{{% notice note %}}
-Looking for a comprehensive list of all attributes and comments? [View a complete values.yml file.](https://github.com/pachyderm/pachyderm/blob/{{% majorMinorVersion %}}/etc/helm/pachyderm/values.yaml) or the [Helm Series page](/series/helm).
-{{% /notice %}}
 ## About
 
 The CloudSQL Auth Proxy section configures the [CloudSQL Auth Proxy](https://cloud.google.com/sql/docs/mysql/connect-auth-proxy) for deploying {{% productName %}} on GCP with CloudSQL.

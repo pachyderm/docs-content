@@ -10,10 +10,6 @@ seriesPart:
 weight: 10
 label: Not For Production
 --- 
-
-{{% notice note %}}
-Looking for a comprehensive list of all attributes and comments? [View a complete values.yml file.](https://github.com/pachyderm/pachyderm/blob/{{% majorMinorVersion %}}/etc/helm/pachyderm/values.yaml) or the [Helm Series page](/series/helm).
-{{% /notice %}}
 ## About
 
 The PostgresQL section controls the Bitnami PostgreSQL subchart. {{% productName %}} runs on Kubernetes, is backed by an object store of your choice, and comes with a bundled version of PostgreSQL (metadata storage) by default.

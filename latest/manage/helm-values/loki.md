@@ -11,9 +11,6 @@ weight: 6
 label: optional
 --- 
 
-{{% notice note %}}
-Looking for a comprehensive list of all attributes and comments? [View a complete values.yml file.](https://github.com/pachyderm/pachyderm/blob/{{% majorMinorVersion %}}/etc/helm/pachyderm/values.yaml) or the [Helm Series page](/series/helm).
-{{% /notice %}}
 ## About
 
 Loki Stack contains values that are passed to the loki-stack subchart. For more details on each service, see their official documentation:

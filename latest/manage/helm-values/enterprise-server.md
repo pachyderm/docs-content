@@ -11,9 +11,6 @@ weight: 4
 label: Optional
 --- 
 
-{{% notice note %}}
-Looking for a comprehensive list of all attributes and comments? [View a complete values.yml file.](https://github.com/pachyderm/pachyderm/blob/{{% majorMinorVersion %}}/etc/helm/pachyderm/values.yaml) or the [Helm Series page](/series/helm).
-{{% /notice %}}
 ## About
 
 [Enterprise Server](/{{% release %}}/enterprise/auth/enterprise-server) is a production management layer that centralizes  the licensing registration of multiple {{% productName %}} clusters for Enterprise use and the setup of user authorization/authentication via [OIDC](/{{% release %}}/manage/helm-values/oidc).
