@@ -8,6 +8,7 @@ tags: ["community-edition"]
 series:
 seriesPart:
 directory: true 
+weight: 20
 ---
 
 Our free {{% productName %}} Community Edition contains **built-in scaling limitations and parallelism thresholds**. To scale beyond these limits, request a [Enterprise trial token](https://www.pachyderm.com/trial/) and enjoy unlimited scaling, and more.

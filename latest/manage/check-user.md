@@ -7,7 +7,7 @@ date:
 tags: ["workflows", "permissions", "management"]
 series:
 seriesPart:
-weight: 4
+weight: 6
 directory: true
 ---
 

@@ -8,6 +8,7 @@ tags:
 series:
 seriesPart:
 directory: true
+weight: 20
 --- 
 
 You can interact with input/output data through the S3 protocol using {{% productName %}}'s S3-protocol-enabled pipelines.

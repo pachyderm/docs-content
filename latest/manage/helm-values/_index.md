@@ -7,6 +7,7 @@ date:
 tags: ["configuration", "helm", "helm chart"]
 series:
 seriesPart:
+weight: 1
 ---
 
 Explore all of the available Helm chart values for {{% productName %}} in this section. 

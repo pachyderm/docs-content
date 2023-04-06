@@ -8,6 +8,7 @@ tags: ["pachctl", "cli"]
 series:
 seriesPart:
 directory: true
+weight: 5
 ---
 
 The {{% productName %}} Shell is a special-purpose shell for {{% productName %}} that provides

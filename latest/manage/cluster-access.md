@@ -8,6 +8,7 @@ tags: ["management", "permissions"]
 series:
 seriesPart:
 directory: true
+weight: 20
 ---
 
 {{% productName %}} contexts enable you to store configuration parameters for multiple {{% productName %}} clusters in a single configuration file saved at `~/.pachyderm/config.json`. This file stores the information about all {{% productName %}} clusters that you have deployed from your machine locally or on a remote server.

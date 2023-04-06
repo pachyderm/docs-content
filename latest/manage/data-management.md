@@ -8,6 +8,7 @@ tags: ["management", "storage"]
 series:
 seriesPart:
 directory: true
+weight: 20
 ---
 
 This section discusses best practices for minimizing the space needed to store your {{% productName %}} data, increasing the performance of your data processing as related to data organization, and general good ideas when you are using {{% productName %}} to version/process your data.

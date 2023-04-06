@@ -8,6 +8,7 @@ tags:
 series:
 seriesPart:
 directory: true
+weight: 21
 ---
 
 ## Uninstall {{% productName %}}

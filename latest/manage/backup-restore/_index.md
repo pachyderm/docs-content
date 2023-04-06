@@ -8,4 +8,5 @@ tags: ["management", "backups"]
 series:
 seriesPart:
 directory: true
+weight: 3
 ---

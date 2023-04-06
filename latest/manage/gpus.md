@@ -8,6 +8,7 @@ tags: ["management", "deployment"]
 series:
 seriesPart:
 directory: true
+weight: 20
 --- 
 
 ## Set up a GPU enabled Kubernetes Cluster

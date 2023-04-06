@@ -7,6 +7,7 @@ date:
 tags: 
 series:
 seriesPart:
+weight: 2
 ---
 
 Use the embedded S3 Gateway to send or receive data through the S3 protocol using object storage tooling such as Minio, boto3, or AWS s3 CLI. Operations available are similar to those [officially documented for S3](https://docs.aws.amazon.com/cli/latest/reference/s3/).

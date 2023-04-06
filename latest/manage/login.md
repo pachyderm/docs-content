@@ -7,7 +7,7 @@ date:
 tags: ["workflows", "permissions", "management"]
 series:
 seriesPart:
-weight: 3
+weight: 20
 directory: true
 ---
 {{% readfile file="latest/shared/auth/log-in.md" %}}

@@ -8,6 +8,7 @@ tags: ["management", "upgrades", "pachctl","pachd"]
 series:
 seriesPart:
 directory: true
+weight: 3
 ---
 
 Learn how to upgrade {{% productName %}} to access new features and performance enhancements.

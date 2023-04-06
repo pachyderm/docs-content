@@ -8,6 +8,7 @@ tags:
 series:
 seriesPart:
 directory: true
+weight: 20
 ---
 
 {{% productName %}} automatically collects and reports anonymous usage metrics.

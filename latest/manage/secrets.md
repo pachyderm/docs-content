@@ -8,6 +8,7 @@ tags: ["secrets", "management", "kubernetes"]
 series:
 seriesPart:
 directory: true
+weight: 20
 ---
 
 {{% productName %}} uses Kubernetes' *Secrets* to store and manage sensitive data, such as passwords, OAuth tokens, or ssh keys. You can use any of [Kubernetes' types of Secrets](https://kubernetes.io/docs/concepts/configuration/secret/#secret-types) that match your use case. 

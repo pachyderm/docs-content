@@ -8,6 +8,7 @@ tags:
 series:
 seriesPart:
 directory: true 
+weight: 7
 ---
 
 {{% productName %}} lists the status for each release and feature, so that you can understand expectations for support and stability.
