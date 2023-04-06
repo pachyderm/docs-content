@@ -9,7 +9,7 @@ series: ["glossary"]
 seriesPart:
 --- 
 
-A glob pattern is a string of characters that specifies a set of filenames or paths in a file system. The term "glob" is short for "global," and refers to the fact that a glob pattern can match multiple filenames or paths at once. For {{% productName %}}, you can use glob patterns to define the shape of your [datums](../datum) against your inputs, which are spread across [{{% productName %}} workers](../pachyderm-worker) for [distributing computing](../distributed-computing).
+A glob pattern is a string of characters that specifies a set of filenames or paths in a file system. The term "glob" is short for "global," and refers to the fact that a glob pattern can match multiple filenames or paths at once. For {{% productName %}}, you can use glob patterns to define the shape of your [datums](/{{% release %}}/learn/glossary/datum) against your inputs, which are spread across [{{% productName %}} workers](/{{% release %}}/learn/glossary/pachyderm-worker) for [distributing computing](/{{% release %}}/learn/glossary/distributed-computing).
 
 ## Examples
 

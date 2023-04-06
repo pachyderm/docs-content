@@ -13,7 +13,9 @@ Deferred Processing is a technique that allows you to commit data more frequentl
 
 There are several ways to leverage deferred processing with {{% productName %}}:
 
-1. [Defer processing via a staging branch](../../../prepare-data/dp-staging-branch)
-2. [Process specific commits](../../../build-dags/branch-operations/process-specific-commits)
-3. [Set branch triggers](../../../build-dags/branch-operations/set-branch-triggers)
-4. [Set a custom output branch](../../../build-dags/branch-operations/set-output-branch)
+1. [Defer processing via a staging branch](/{{%release%}}/prepare-data/dp-staging-branch)
+2. [Process specific commits](/{{%release%}}/build-dags/branch-operations/process-specific-commits)
+3. [Set branch triggers](/{{%release%}}/build-dags/branch-operations/set-branch-triggers)
+4. [Set a custom output branch](/{{%release%}}/build-dags/branch-operations/set-output-branch)
+
+

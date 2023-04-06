@@ -9,7 +9,7 @@ series: ["glossary"]
 seriesPart:
 ---
 
-Ancestry syntax in {{% productName %}} is used to reference the [history](../history) of [commits](../commit) and [branches](../branch) in a {{% productName %}} [input repository](../input-repo). Ancestry syntax is similar to Git syntax, and it allows users to navigate the history of commits and branches using special characters like `^` and `.`.
+Ancestry syntax in {{% productName %}} is used to reference the [history](/{{% release %}}/learn/glossary/history) of [commits](/{{% release %}}/learn/glossary/commit) and [branches](../branch) in a {{% productName %}} [input repository](/{{% release %}}/learn/glossary/input-repo). Ancestry syntax is similar to Git syntax, and it allows users to navigate the history of commits and branches using special characters like `^` and `.`.
 
 - The `^` character is used to reference a commit or branch parent, where `commit^` refers to the parent of the commit, and `branch^"` refers to the parent of the branch head. Multiple `^` characters can be used to reference earlier ancestors, for example, `commit^^` refers to the grandparent of the commit.
 

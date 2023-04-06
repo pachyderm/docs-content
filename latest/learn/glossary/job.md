@@ -9,9 +9,9 @@ series: ["glossary"]
 seriesPart:
 --- 
 
-A job is an execution of a [pipeline](../pipeline) triggered by new data detected in an input repository. 
+A job is an execution of a [pipeline](/{{% release %}}/learn/glossary/pipeline) triggered by new data detected in an input repository. 
 
-When a [commit](../commit) is made to the input repository of a pipeline, jobs are created for all downstream pipelines in a [directed acyclic graph (DAG)](../dag), but they do not run until the prior pipelines they depend on produce their output. Each job runs the user's code against the current commit in a repository at a specified [branch](../branch) and then submits the results to the output repository of the pipeline as a single output commit.
+When a [commit](/{{% release %}}/learn/glossary/commit) is made to the input repository of a pipeline, jobs are created for all downstream pipelines in a [directed acyclic graph (DAG)](/{{% release %}}/learn/glossary/dag), but they do not run until the prior pipelines they depend on produce their output. Each job runs the user's code against the current commit in a repository at a specified [branch](/{{% release %}}/learn/glossary/branch) and then submits the results to the output repository of the pipeline as a single output commit.
 
 Each job has a unique alphanumeric identifier (ID) that users can reference in the `<pipeline>@<jobID>` format. Jobs have the following states:
 
