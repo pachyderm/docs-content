@@ -18,6 +18,7 @@ interact with {{%productName%}} directly through our APIs.
 
 In this case, {{%productName%}} offers language specific SDKs in Go, Python, and JS.
 
+{{% chunk go %}}
 ## Go Client
 
 The {{%productName%}} team officially supports the Go client. It implements most of the functionalities provided with the `pachctl` CLI tool.
@@ -67,6 +68,7 @@ For example, if you are testing on `minikube`, run
 
 See the [OpenCV Example in Go](https://github.com/pachyderm/pachyderm/tree/{{% majorMinorVersion %}}/examples/opencv) for more
 information.
+{{% /chunk %}}
 
 ## Python Client
 
