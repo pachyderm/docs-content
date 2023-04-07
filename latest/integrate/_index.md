@@ -1,6 +1,6 @@
 ---
 # metadata # 
-title: Integrate
+title: Connect & Integrate
 description: Integrate with popular tools such as JupyterLab. 
 date: 
 # taxonomy #
