@@ -21,8 +21,9 @@ This connector ingests the result of a BigQuery query into Pachyderm. With this 
 
 [dockerfile](./Dockerfile)
 
-{{< githubCodeSnippet repo="pachyderm/examples/bigquery" file="Dockerfile" lines="1-10" >}}
+{{< githubCodeSnippet repo="pachyderm/examples" file="bigquery/Dockerfile" lines="1-30" >}}
 
+{{< githubCodeSnippet repo="pachyderm/examples" file="bigquery/gbq_ingest.jsonnet" lines="1-30" lang="json">}}
 
 
 
