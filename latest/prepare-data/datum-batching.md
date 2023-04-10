@@ -52,8 +52,8 @@ flowchart LR
 ### Via PachCTL
 
 1. Define your user code and build a docker image.
-2. Create your repo.
-3. Define your pipeline spec.
+2. Create a repo (e.g., `pachctl create repo repoName`).
+3. Define a pipeline spec in YAML or JSON that references your Docker image and repo.
 4. Add the following to the `transform` section of your pipeline spec:
    - `datum_batching: true`
    - `cmd` should be a bash script that calls `pachctl next datum` and then runs your user code.
@@ -79,4 +79,6 @@ transform:
   datum_batching: true
   image: user/docker-image:tag
 ```
+5. Create the pipeline (e.g., `pachctl update pipeline -f pipeline.yaml`).
+6. Monitor the pipeline's state either via Console or via `pachctl list pipeline`.
 
