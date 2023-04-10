@@ -9,9 +9,11 @@ series: ["glossary"]
 seriesPart:
 ---
 
+## About 
+
 Deferred Processing is a technique that allows you to commit data more frequently than you process it. By default, {{% productName %}} automatically processes any newly committed data added to its input branch. For example, you may want to commit data hourly, but retrain your ML model daily. 
 
-There are several ways to leverage deferred processing with {{% productName %}}:
+## Actions:
 
 1. [Defer processing via a staging branch](/{{%release%}}/prepare-data/dp-staging-branch)
 2. [Process specific commits](/{{%release%}}/build-dags/branch-operations/process-specific-commits)

@@ -8,6 +8,7 @@ tags:  ["data-operations", "pipelines"]
 series: ["glossary"]
 seriesPart:
 --- 
+## About 
 
 Distributed computing is a technique that allows you to split your jobs across multiple {{% productName %}} workers via the [Parallelism PPS attribute](/{{%release%}}/build-dags/pipeline-spec/parallelism). Leveraging distributed computing enables you to build production-scale pipelines with adjustable resources to optimize throughput. 
 

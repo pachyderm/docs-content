@@ -8,8 +8,10 @@ tags: ["provenance"]
 series:
 seriesPart:
 
-weight: 
+weight: 1
 ---
+
+## How to List Global Commits
 
 You can list all global commits by running the following command: 
 
@@ -23,6 +25,9 @@ ID                               SUBCOMMITS PROGRESS CREATED        MODIFIED
 28363be08a8f4786b6dd0d3b142edd56 6          ▇▇▇▇▇▇▇▇ 24 seconds ago 24 seconds ago
 e050771b5c6f4082aed48a059e1ac203 4          ▇▇▇▇▇▇▇▇ 24 seconds ago 24 seconds ago
 ```
+
+## How to List Global Jobs
+
 Similarly, if you run the equivalent command for global jobs:
 ```s
 pachctl list job

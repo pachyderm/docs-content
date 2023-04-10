@@ -8,6 +8,7 @@ tags:
 series: ["glossary"]
 seriesPart:
 ---
+## About 
 
 Ancestry syntax in {{% productName %}} is used to reference the [history](/{{% release %}}/learn/glossary/history) of [commits](/{{% release %}}/learn/glossary/commit) and [branches](../branch) in a {{% productName %}} [input repository](/{{% release %}}/learn/glossary/input-repo). Ancestry syntax is similar to Git syntax, and it allows users to navigate the history of commits and branches using special characters like `^` and `.`.
 

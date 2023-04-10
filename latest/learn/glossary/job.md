@@ -8,6 +8,7 @@ tags: ["concepts", "pachctl", "data-operations", "pipelines"]
 series: ["glossary"]
 seriesPart:
 --- 
+## About 
 
 A job is an execution of a [pipeline](/{{% release %}}/learn/glossary/pipeline) triggered by new data detected in an input repository. 
 

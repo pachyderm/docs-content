@@ -8,6 +8,7 @@ tags:
 series: ["glossary"]
 seriesPart:
 ---
+## About 
 
 A pipeline is a {{% productName %}} primitive responsible for reading data from a specified source, such as a {{% productName %}} repo, transforming it according to the [pipeline specification](/{{% release %}}/learn/glossary/pipeline-specification), and writing the result to an output repo. 
 

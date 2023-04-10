@@ -9,6 +9,7 @@ series: ["glossary"]
 seriesPart:
 --- 
 
+## About 
 
 In {{% productName %}}, an output repo is a repository where the results of a pipeline's processing are stored after being transformed by the provided [user code](/{{% release %}}/learn/glossary/user-code). Every pipeline automatically creates an output repository with the same name as the pipeline.
 

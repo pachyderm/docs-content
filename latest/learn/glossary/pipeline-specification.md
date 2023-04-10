@@ -8,6 +8,7 @@ tags:
 series: ["glossary"]
 seriesPart:
 ---
+## About 
 
 A pipeline specification is a declarative configuration file used to define the behavior of a {{% productName %}} [pipeline](/{{% release %}}/learn/glossary/pipeline). It is typically written in YAML or JSON format and contains information about the pipeline's input sources, output destinations, Docker image ([user code](/{{% release %}}/learn/glossary/user-code)), command, and other metadata.
 

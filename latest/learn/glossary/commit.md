@@ -9,29 +9,24 @@ tags: ["concepts", "pachctl", "data-operations"]
 series: ["glossary"]
 seriesPart:
 --- 
-{{% notice note %}}
-{{% productName %}} uses the term `commit` at two different levels: a global level and commits on a repository's branch.
-{{% /notice %}}
+## About 
 
 In {{% productName %}}, commits snapshot and preserve the state of files and directories in a repository at a point in time.
-Unlike Git, {{% productName %}} commits are centralized and transactional. You can create a commit with `pachctl start commit` and save it with `pachctl finish commit`.
+Unlike Git, {{% productName %}} commits are centralized and transactional. You can create a commit with `pachctl start commit` and save it with `pachctl finish commit`. Once the commit is closed its contents are immutable. Commits may be chained together to represent a sequence of states. 
 
-All commits have an alphanumeric ID, and you can reference a commit with `<repo>@<commitID>`. Each commit has an origin that indicates why it was produced (USER, AUTO, or ALIAS).
+All commits have an alphanumeric ID, and you can reference a commit with `<repo>@<commitID>`. Each commit has an origin that indicates why it was produced (USER or AUTO).
+### Global Commits 
 
-To track provenance, each commit must belong to exactly one [branch](../branch). You can view commit information with `pachctl list commit` and `pachctl inspect commit`.
+A commit with global scope (global commit) represents the set of all provenance-dependent commits sharing the same ID.
 
-You can squash or delete commits with `pachctl squash commit` and `pachctl delete commit`.
+### Sub-Commits
 
-## Example 
+A commit with a more focused scope (sub-commit) represents the "Git-like" record of one commit in a single branch of a repository’s file system.
 
-```s
-pachctl list commit images@master
+## Actions
 
-# REPO   BRANCH COMMIT                           FINISHED        SIZE       ORIGIN DESCRIPTION
-# images master c6d7be4a13614f2baec2cb52d14310d0 33 minutes ago  5.121MiB    USER
-# images master 385b70f90c3247e69e4bdadff12e44b2 2 hours ago     2.561MiB    USER
-```
-
-{{% notice warning %}}
-`start commit` can only be used on input repos without provenance, and all commits must belong to exactly one branch.
-{{% /notice %}}
+- [List Commits](/{{% release %}}/build-dags/provenance-operations/list-globals)
+- [Inspect Commit](/{{% release %}}/build-dags/provenance-operations/inspect-commit)
+- [Squash Commit](/{{% release %}}/build-dags/provenance-operations/squash-nonhead)
+- [Delete Commit](/{{% release %}}/build-dags/provenance-operations/delete-history)
+- [Track Downstream Provenance](/{{% release %}}/build-dags/provenance-operations/track-downstream)

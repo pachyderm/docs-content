@@ -9,6 +9,7 @@ tags: ["concepts", "pachctl", "data-operations"]
 series: ["glossary"]
 seriesPart:
 --- 
+## About 
 
 A file is a Unix filesystem object, which is a directory or file, that stores data. Unlike source code version-control systems that are most suitable for storing plain text files, you can store any type of file in {{% productName %}}, including binary files. 
 

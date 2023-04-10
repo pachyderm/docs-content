@@ -9,6 +9,7 @@ tags:
 series: ["glossary"]
 seriesPart:
 --- 
+## About 
 
 In {{% productName %}}, an input repository is a location where data resides that is used as input for a {{% productName %}} [pipeline](/{{% release %}}/learn/glossary/pipeline). To define an input repository, you need to fill out the `input` attribute in [pipeline's specification](/{{%release%}}/build-dags/pipeline-spec) file.
 

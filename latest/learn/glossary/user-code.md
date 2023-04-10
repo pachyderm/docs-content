@@ -8,6 +8,7 @@ tags:
 series: ["glossary"]
 seriesPart:
 --- 
+## About 
 
 In {{% productName %}}, user code refers to the custom code that users write to process their data in [pipelines](/{{% release %}}/learn/glossary/pipeline). User code can be written in any language and can use any libraries or frameworks.
 

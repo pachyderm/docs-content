@@ -9,6 +9,7 @@ series: ["glossary"]
 seriesPart:
 mermaid: true
 ---
+## About 
 
 In {{% productName %}}, a Directed Acyclic Graph (DAG) is a collection of [pipelines](/{{% release %}}/learn/glossary/pipeline) connected by data dependencies. The DAG defines the order in which pipelines are executed and how data flows between them.
 

@@ -10,6 +10,7 @@ series: ["glossary"]
 seriesPart:
 --- 
 
+## About 
 A {{% productName %}} branch is a pointer to a [commit](/{{% release %}}/learn/glossary/commit) that moves along with new commits. By default, {{% productName %}} does not create any branches when you create a repository. Most users create a `master` branch to initiate the first commit.
 
 Branches allow collaboration between teams of data scientists. However, the `master` branch is sufficient for most users.

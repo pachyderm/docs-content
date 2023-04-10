@@ -157,7 +157,7 @@ pachctl update pipeline --jsonnet https://raw.githubusercontent.com/pachyderm/pa
 | `name`        | The name of output repo where query results will materialize.|
 | `url`         | The connection string to the database.|  
 | `query`       | The SQL query to be run against the connected database. |
-| `hasHeader`   | Adds a header to your CSV file if set to `true`. Ignored if `format="json"` (JSON files always display (header,value) pairs for each returned row). Defaults to `false`. <br><br>{{% productName %}} creates the header after each element of the comma separated list of your SELECT clause or their aliases (if any). <br>For example `country.country_name_eng` will have `country.country_name_eng` as header while `country.country_name_eng as country_name` will have `country_name`. |
+| `hasHeader`   | Adds a header to your CSV file if set to `true`. Ignored if `format="json"` (JSON files always display (header,value) pairs for each returned row). Defaults to `false`. <br><br>{{% productName %}} creates the header after each element of the comma separated list of your SELECT clause. <br>For example `country.country_name_eng` will have `country.country_name_eng` as header while `country.country_name_eng as country_name` will have `country_name`. |
 | `cronSpec`    | How often to run the query. For example `"@every 60s"`.|
 | `format`      | The type of your output file containing the results of your query (either `json` or `csv`).|
 | `secretName`  | The Kubernetes secret name that contains the password to the database.|
