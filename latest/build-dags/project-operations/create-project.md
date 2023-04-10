@@ -35,7 +35,12 @@ pachctl create project foo
 {{% /wizardResult %}}
 
 {{% wizardResult val1="tool/console"%}}
-This is not yet available. 
+1. Open Console.
+2. Click **Create Project**.
+3. Provide the following details:
+   - `Name`
+   - `Description`
+4. Click **Create**.
 
 {{% /wizardResult %}}
 
