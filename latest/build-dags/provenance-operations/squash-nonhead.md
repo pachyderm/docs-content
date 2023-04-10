@@ -46,3 +46,4 @@ At any moment, `pachctl list file repo@master` invariably returns the same files
 
 ### Limitations 
 - Squash commit only applies to [user repositories](../../../learn/glossary/input-repo). For example, you cannot squash a commit that updated a pipeline (Commit that lives in a spec repository).
+- You cannot squash a [commit set](/{{%release%}}/learn/glossary/commit-set) that contains a commit that is a dependency for another commit set. For example, if you have `RepoB@master` that depends on `RepoA@master` as an input, you cannot squash the commit set for `RepoA@master`.
