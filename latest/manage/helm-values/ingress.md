@@ -9,6 +9,7 @@ series: ["helm"]
 seriesPart:
 weight: 5
 label: Being Deprecated
+hidden: true
 --- 
 
 ## About

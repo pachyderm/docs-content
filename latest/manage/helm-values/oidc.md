@@ -34,7 +34,7 @@ The following section contains a series of tabs for commonly used configurations
 
 ```s
 oidc:
-  issuerURI: "" # inferred if running locally or using ingress
+  issuerURI: "" # inferred if running locally or using proxy
   requireVerifiedEmail: false # if true, email verification is required to authenticate
   IDTokenExpiry: 24h # if set, specifies the duration where OIDC ID Tokens are valid; parsed into golang's time.Duration: https://pkg.go.dev/time#example-ParseDuration
   RotationTokenExpiry: 48h # If set, enables OIDC rotation tokens, and specifies the duration where they are valid.
@@ -47,7 +47,7 @@ oidc:
 
 ```s
 oidc:
-  issuerURI: "" # inferred if running locally or using ingress
+  issuerURI: "" # inferred if running locally or using proxy
   requireVerifiedEmail: false # if true, email verification is required to authenticate
   IDTokenExpiry: 24h # if set, specifies the duration where OIDC ID Tokens are valid; parsed into golang's time.Duration: https://pkg.go.dev/time#example-ParseDuration
   RotationTokenExpiry: 48h # If set, enables OIDC rotation tokens, and specifies the duration where they are valid.
@@ -90,7 +90,7 @@ oidc:
 
 ```s
 oidc:
-  issuerURI: "" # inferred if running locally or using ingress
+  issuerURI: "" # inferred if running locally or using proxy
   requireVerifiedEmail: false # if true, email verification is required to authenticate
   IDTokenExpiry: 24h # if set, specifies the duration where OIDC ID Tokens are valid; parsed into golang's time.Duration: https://pkg.go.dev/time#example-ParseDuration
   RotationTokenExpiry: 48h # If set, enables OIDC rotation tokens, and specifies the duration where they are valid.
