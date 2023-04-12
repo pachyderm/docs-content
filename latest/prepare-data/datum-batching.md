@@ -51,34 +51,125 @@ flowchart LR
 
 ### Via PachCTL
 
-1. Define your user code and build a docker image.
+1. Define your user code and build a docker image. Your user code must call `pachctl next datum` to get the next datum to process.
+
+   {{< stack type="wizard">}}
+   {{% wizardRow id="Language"%}}
+   {{% wizardButton option="Python" state="active" %}}
+   {{% wizardButton option="Go" %}}
+   {{% wizardButton option="JS" %}}
+   {{% /wizardRow %}}
+   {{% wizardResults  %}}
+   {{% wizardResult val1="language/python"%}}
+   ```s
+   import subprocess
+
+   def transformation(): 
+       # Your transformation code goes here
+
+   def main():
+
+       print("User code is starting")
+       subprocess.run(["pachctl", "connect", "grpc://localhost:1650"])
+
+       print("starting while loop")
+       while True:
+           subprocess.run(["pachctl", "next", "datum"])
+           print("next datum called")
+
+           transformation()
+
+   if __name__ == "__main__":
+       main()
+   ```
+   {{% /wizardResult %}}
+   {{% wizardResult val1="language/go"%}}
+   ```s
+   package main
+
+   import (
+       "os/exec"
+   )
+
+   func transformation() {
+       // Your transformation code goes here
+   }
+
+   func main() {
+       cmd := exec.Command("pachctl", "connect", "grpc://localhost:1650")
+       cmd.Run()
+
+       for {
+           cmd := exec.Command("pachctl", "next", "datum")
+           cmd.Run()
+           transformation()
+       }
+   }
+
+   ```
+   {{% /wizardResult %}}
+   {{% wizardResult val1="language/js"%}}
+   ```s
+   const { exec } = require('child_process');
+
+   function transformation() {
+       // Your transformation code goes here
+   }
+
+   function main() {
+       console.log("User code is starting");
+       exec('pachctl connect grpc://localhost:1650', (error, stdout, stderr) => {
+           if (error) {
+               console.error(`Error connecting to Pachyderm: ${error}`);
+               return;
+           }
+           console.log('Connected to Pachyderm');
+       });
+
+       console.log("Starting while loop");
+       while (true) {
+           exec('pachctl next datum', (error, stdout, stderr) => {
+               if (error) {
+                   console.error(`Error running pachctl next: ${error}`);
+                   return;
+               }
+               console.log('Next datum called');
+               transformation();
+           });
+       }
+   }
+
+   if (require.main === module) {
+       main();
+   }
+
+   ```
+   {{% /wizardResult %}}
+   {{% /wizardResults%}}
+
+   {{< /stack >}}
+
 2. Create a repo (e.g., `pachctl create repo repoName`).
 3. Define a pipeline spec in YAML or JSON that references your Docker image and repo.
 4. Add the following to the `transform` section of your pipeline spec:
    - `datum_batching: true`
-   - `cmd` should be a bash script that calls `pachctl next datum` and then runs your user code.
-   - `stdin` should contain the following:
-     - `./pachctl connect grpc://localhost:1650`
-     - `while true; do ./pachctl next datum; sleep 10; ls /pfs/repoName -la; done`
 
-```s
-pipeline:
-  name: p_datum_batching_example
-input:
-  pfs:
-    repo: repoName
-    glob: "/*"
-transform:
-  cmd:
-    - bash
-  stdin:
-    - >-
-      ./pachctl connect grpc://localhost:1650
-    - >-
-      while true; do ./pachctl next datum; sleep 10; ls /pfs/repoName -la; done
-  datum_batching: true
-  image: user/docker-image:tag
-```
+   ```s
+   pipeline:
+     name: p_datum_batching_example
+   input:
+     pfs:
+       repo: repoName
+       glob: "/*"
+   transform:
+     datum_batching: true
+     image: user/docker-image:tag
+   ```
 5. Create the pipeline (e.g., `pachctl update pipeline -f pipeline.yaml`).
 6. Monitor the pipeline's state either via Console or via `pachctl list pipeline`.
 
+{{% notice tip %}}
+
+You can view the printed confirmation of "Next datum called" in the logs your pipeline's job. 
+
+{{% /notice %}}
