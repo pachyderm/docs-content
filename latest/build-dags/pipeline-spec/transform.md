@@ -17,6 +17,7 @@ label: required
 "transform": {
     "image": string,
     "cmd": [ string ],
+    "datum_batching": bool,
     "err_cmd": [ string ],
     "env": {
         string: string
@@ -49,6 +50,7 @@ label: required
 |Attribute|Description|
 |-|-|
 |cmd| Passes a command to the Docker run invocation.|
+|datum_batching|Enables you to call your user code once for a batch of datums versus calling it per each datum.|
 |stdin| Passes an array of lines to your command on `stdin`.|
 |err_cmd| Passes a command executed on failed datums.|
 |err_stdin| Passes an array of lines to your error command on `stdin`.|
