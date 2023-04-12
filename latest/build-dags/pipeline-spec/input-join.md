@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Input Join PPS
-description: Join files that are stored in separate {{% productName %}} repositories.
+description: Join files that are stored in separate repositories.
 date: 
 # taxonomy #
 tags: ["pipelines", "pps"]

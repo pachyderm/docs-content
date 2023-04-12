@@ -33,6 +33,7 @@ label: optional
 - When enabled, `transform.cmd` is not expected to exit and will restart if it does.
 - The service becomes exposed outside the container using a Kubernetes service.
 - You can access the service at `http://<kubernetes-host>:<external_port>`.
+- The Service starts running at the **first commit** in the input repo.
 
 ## When to Use
 
