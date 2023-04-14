@@ -36,26 +36,16 @@ You can choose between {{% productName %}}'s pre-built image (a custom version o
  ```
 4. Navigate to the connection tab. You will need to provide a link formatted like the following:
  ```s
- grpc://<cluster-ip>:<port>
+ http://localhost:80
  ```
  ![mount connection url](/images/jupyterlab-extension/mount-connection-url.gif)
-5. Open another terminal and run the following to get the IP address and port number:
-  ```s
-  kubectl get services | grep -w "pachd "
-  ```
-6. Find the `servic/pachd` line item and copy the **IP address** and first **port number**.
-    
- ```s
-    NAME                          TYPE           CLUSTER-IP       EXTERNAL-IP   PORT
-    pachd                         ClusterIP      10.106.225.116   <none>        30650/TCP,30657/TCP,30658/TCP,30600/TCP,30656/TCP
- ```
-7. Input the full connection URL (`grpc://10.106.225.116:30650`).
-8. Navigate to the **Launcher** view in Jupyter and select **Terminal**.
-9. Input the following command:
+
+5. Navigate to the **Launcher** view in Jupyter and select **Terminal**.
+6. Input the following command:
  ```s
  pachctl version
  ```
-10. If you see a `pachctl` and `pachd` version, you are good to go.
+7.  If you see a `pachctl` and `pachd` version, you are good to go.
 
 
 ### Option 2: Custom Dockerfile 
