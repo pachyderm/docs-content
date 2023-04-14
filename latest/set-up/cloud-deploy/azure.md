@@ -265,14 +265,28 @@ pod/postgres-0                                 1/1     Running     0          2m
 
 ## 6. Connect to Cluster
 
-```s
-pachctl connect grpc://localhost:80 
-```
-{{% notice note %}}
-If the connection commands did not work together, run each separately.
-{{%/notice %}}
+{{< stack type="wizard">}}
 
-Optionally open your browser and navigate to the [Console UI](http://localhost:4000).
+{{% wizardRow id="Method" %}}
+{{% wizardButton option="HTTP" state="active" %}}
+{{% wizardButton option="HTTPS (TLS)" %}}
+{{% /wizardRow %}}
+
+{{% wizardResults %}}
+{{% wizardResult val1="method/http" %}}
+```s
+pachctl connect http://pachyderm.<your-proxy.host-value>
+```
+{{% /wizardResult %}}
+{{% wizardResult val1="method/https-tls" %}}
+```s
+pachctl connect https://pachyderm.<your-proxy.host-value>
+```
+{{% /wizardResult %}}
+{{% /wizardResults%}}
+
+{{</stack>}}
+
 
 {{% notice tip %}}
 You can check your {{% productName %}} version and connection to `pachd` at any time with the following command:

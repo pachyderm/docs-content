@@ -11,12 +11,38 @@ weight: 3
 directory: true
 ---
 
+## Before You Start
+
+- This guide assumes you have already [installed {{% productName %}}](../first-time-setup).
+
 ## How to Log in to a Cluster via IdP
 
 1. Open a terminal.
-2. Input the following command:
-```s
-pachctl auth login
-```
-3. Select the connector you wish to use.
-4. Provide your credentials
+2. Connect to your organization's instance.
+   {{< stack type="wizard">}}
+
+   {{% wizardRow id="Method" %}}
+   {{% wizardButton option="HTTP" state="active" %}}
+   {{% wizardButton option="HTTPS (TLS)" %}}
+   {{% /wizardRow %}}
+
+   {{% wizardResults %}}
+   {{% wizardResult val1="method/http" %}}
+   ```s
+   pachctl connect http://pachyderm.<your-proxy.host-value>
+   ```
+   {{% /wizardResult %}}
+   {{% wizardResult val1="method/https-tls" %}}
+   ```s
+   pachctl connect https://pachyderm.<your-proxy.host-value>
+   ```
+   {{% /wizardResult %}}
+   {{% /wizardResults%}}
+
+   {{</stack>}}
+3. Input the following command:
+   ```s
+   pachctl auth login
+   ```
+4. Select the connector you wish to use.
+5. Provide your credentials.

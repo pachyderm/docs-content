@@ -21,7 +21,7 @@ You must have {{% productName %}} installed using one of the following guides:
 
 ## Deploy 
 
-1. Set up your [Ingress](../../../manage/helm-values/ingress) and DNS and point your browser to:  
+1. Set up your [Proxy](../../../manage/helm-values/proxy) and DNS and point your browser to:  
    - `http://<external-IP-address-or-domain-name>:80` or,
    - `https://<external-IP-address-or-domain-name>:443` if TLS is enabled
 2. Set up your IDP during deployment.
@@ -31,6 +31,29 @@ You must have {{% productName %}} installed using one of the following guides:
 3. Configure your Identity Provider
     - **As Part of Helm**: To configure your Identity Provider as a part of `helm install`, see examples for the `oidc.upstreamIDPs` value in the [helm chart values specification](https://github.com/pachyderm/pachyderm/blob/42462ba37f23452a5ea764543221bf8946cebf4f/etc/helm/pachyderm/values.yaml#L461) and read [our IDP Configuration page](../../connectors) for a better understanding of each field. 
     - **Manually via Values.yaml:** You can manually update your values.yaml with `oidc.mockIDP = false`.
+4. Connect.
+
+{{< stack type="wizard">}}
+
+{{% wizardRow id="Method" %}}
+{{% wizardButton option="HTTP" state="active" %}}
+{{% wizardButton option="HTTPS (TLS)" %}}
+{{% /wizardRow %}}
+
+{{% wizardResults %}}
+{{% wizardResult val1="method/http" %}}
+```s
+pachctl connect http://pachyderm.<your-proxy.host-value>
+```
+{{% /wizardResult %}}
+{{% wizardResult val1="method/https-tls" %}}
+```s
+pachctl connect https://pachyderm.<your-proxy.host-value>
+```
+{{% /wizardResult %}}
+{{% /wizardResults%}}
+
+{{</stack>}}
 
 You are all set! 
 You should land on the Projects page of Console.

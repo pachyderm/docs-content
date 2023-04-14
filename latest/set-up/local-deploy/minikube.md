@@ -178,7 +178,7 @@ kubernetes-dashboard   kubernetes-dashboard-5fd5574d9f-c7ptx        1/1     Runn
 ## 6. Connect to Cluster
 
 ```s
-pachctl connect grpc://localhost:80 
+pachctl connect http://localhost:80 
 ```
 {{% notice note %}}
 If the connection commands did not work together, run each separately.

@@ -153,9 +153,30 @@ pod/postgres-0                                 1/1     Running     0          2m
 
 ## 7. Connect to Cluster
 
+{{< stack type="wizard">}}
+
+{{% wizardRow id="Method" %}}
+{{% wizardButton option="HTTP" state="active" %}}
+{{% wizardButton option="HTTPS (TLS)" %}}
+{{% /wizardRow %}}
+
+{{% wizardResults %}}
+{{% wizardResult val1="method/http" %}}
 ```s
-pachctl connect grpc://localhost:80 
+pachctl connect http://pachyderm.<your-proxy.host-value>
 ```
+{{% /wizardResult %}}
+{{% wizardResult val1="method/https-tls" %}}
+```s
+pachctl connect https://pachyderm.<your-proxy.host-value>
+```
+{{% /wizardResult %}}
+{{% /wizardResults%}}
+
+{{</stack>}}
+
+
+
 {{% notice note %}}
 If the connection commands did not work together, run each separately.
 {{%/notice %}}

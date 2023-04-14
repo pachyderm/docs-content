@@ -108,7 +108,7 @@ You can do so by running the following command:
 {{% wizardResults %}}
 {{% wizardResult val1="setup-type/with-proxy" %}}
 ```s
-pachctl connect grpc://localhost:80 
+pachctl connect https://localhost:80 
 ```
 
 {{% /wizardResult %}}

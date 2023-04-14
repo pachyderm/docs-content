@@ -165,7 +165,7 @@ pod/postgres-0                                 1/1     Running     0          2m
 ## 5. Connect to Cluster
 
 ```s
-pachctl connect grpc://localhost:80 
+pachctl connect http://localhost:80 
 ```
 {{% notice note %}}
 If the connection commands did not work together, run each separately.
