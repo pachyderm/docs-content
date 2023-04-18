@@ -1,6 +1,6 @@
 ---
 # metadata # 
-title: JupyterLab Mount Extension
+title: JupyterLab
 description: Learn how to install and use the JupyterLab Mount Extension.
 date: 
 # taxonomy #

@@ -1,6 +1,6 @@
 ---
 # metadata # 
-title: Google BigQuery Connector
+title: Google BigQuery
 description: Learn how to use the Google BigQuery connector to ingest data.
 date: 
 # taxonomy #
@@ -8,7 +8,7 @@ tags: ["integrations", "bigquery", "google"]
 series:
 seriesPart:
 weight: 
-beta: true 
+beta: false 
 ---
 
 This connector ingests the result of a BigQuery query into Pachyderm. With this connector, you can easily create pipelines that read data from BigQuery and process it using Pachyderm's powerful data parallelism and versioning capabilities. It uses python and the python-bigquery-pandas library built by Google. 
