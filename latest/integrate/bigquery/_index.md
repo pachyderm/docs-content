@@ -17,13 +17,16 @@ This connector ingests the result of a BigQuery query into Pachyderm. With this 
 ## Before You Start
 
 - You must have a Google Cloud Platform account with a project that has BigQuery enabled.
-- You must download the following files.
+- You must download the following files:
 
-[dockerfile](./Dockerfile)
+  - [dockerfile](./Dockerfile)
 
-{{< githubCodeSnippet repo="pachyderm/examples" file="bigquery/Dockerfile" lines="1-30" >}}
+  - [gbq_ingest.jsonnet](./gbq_ingest.jsonnet)
 
-{{< githubCodeSnippet repo="pachyderm/examples" file="bigquery/gbq_ingest.jsonnet" lines="1-30" lang="json">}}
+  - [gbq_ingest.py](./gbq_ingest.py)
+
+  - [requirements.txt](./requirements.txt)
+
 
 
 
@@ -100,10 +103,3 @@ and
         "GOOGLE_APPLICATION_CREDENTIALS": "/kubesecret/gbq-pachyderm-creds.json"
     },
 ```
-
-### Links to Relevant Documentation
-- [Pachyderm documentation](https://docs.pachyderm.com/)
-- [Pachyderm cron spec documentation](https://docs.pachyderm.com/2.4.x/concepts/pipeline-concepts/pipeline/cron/)
-- [Google Cloud Platform documentation](https://cloud.google.com/docs)
-- [BigQuery API documentation](https://cloud.google.com/bigquery/docs/reference/rest/)
-- [Troubleshooting tips for the BigQuery API](https://cloud.google.com/bigquery/troubleshooting-errors)
