@@ -21,6 +21,7 @@ This integration ingests the data into {{% productName %}} on a [cron schedule](
 ## Before You Start 
 * You must have a [Superb.AI account](https://suite.superb-ai.com/auth/create?from=homepage)
 * You must have a {{% productName %}} cluster
+* * Download the [example code](Example.zip) and unzip it. (or download this repo. `gh repo clone pachyderm/docs-content` and navigate to `docs-content/docs/latest/integrate/superb-ai`)
 
 
 ## How to Use the Superb AI Connector
