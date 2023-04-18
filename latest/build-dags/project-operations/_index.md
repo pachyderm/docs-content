@@ -8,7 +8,7 @@ tags: ["projects"]
 series:
 seriesPart:
 
-weight: 
+weight: 4
 mermaid: true
 ---
 

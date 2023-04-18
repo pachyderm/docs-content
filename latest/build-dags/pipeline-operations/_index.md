@@ -7,5 +7,5 @@ date:
 tags: 
 series:
 seriesPart:
-weight: 
+weight: 3
 ---

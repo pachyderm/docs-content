@@ -8,5 +8,5 @@ tags: ["projects"]
 series:
 seriesPart:
 
-weight: 
+weight: 6
 ---

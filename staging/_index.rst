@@ -1,4 +1,0 @@
----
-title: staging
-hidden: true
----

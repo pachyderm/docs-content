@@ -8,7 +8,7 @@ tags: ["pipeline", "pipelines", "pipeline specification", "pps" ]
 series:
 seriesPart:
 
-weight: 1
+weight: 2
 ---
 
 
