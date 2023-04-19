@@ -16,6 +16,7 @@ You can use {{% productName %}} to build an automated machine learning pipeline 
 
 ## Before You Start
 - You must have {{% productName %}} installed and running on your cluster
+- You should have already completed the [Standard ML Pipeline](/{{%release%}}/build-dags/tutorials/basic-ml) tutorial
 - You must be familiar with jsonnet
 
 ## How to Build an AutoML Pipeline
