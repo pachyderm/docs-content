@@ -37,7 +37,7 @@ This parameter is optional, and if you do not explicitly add it in
 the pipeline spec, {{% productName %}} creates Kubernetes containers with the
 following default resources: 
 
-- The user and storage containers request 0 CPU, 0 disk space, and 64MB of memory.
+- The user and storage containers request 1 CPU, 0 disk space, and 256MB of memory.
 - The init container requests the same amount of CPU, memory, and disk
 space that is set for the user container.
 
