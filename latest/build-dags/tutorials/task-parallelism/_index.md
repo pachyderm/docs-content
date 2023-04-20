@@ -251,15 +251,19 @@ pachctl create pipeline -f /path/to/extract_centers.json
 
 ### 4. Upload Dataset
 
-1. Download the following:
-   - [sample_data.zip](sample_data.zip)
-   - [models.zip](models.zip)
-2. Upload the `sample_data` and `models` folders to your repos.
+1. Open or download this github repo.
    ```s
-   pachctl put file -r sample_data@master -f /path/to/sample_data/
-   pachctl put file -r models@master -f /path/to/models/
+   gh repo clone pachyderm/docs-content
    ```
-
+2. Navigate to this tutorial. 
+   ```s
+   cd content/{{%release%}}/build-dags/tutorials/task-parallelism
+   ```
+3. Upload the `sample_data` and `models` folders to your repos.
+   ```s
+   pachctl put file -r sample_data@master -f sample_data/
+   pachctl put file -r models@master -f models/
+   ```
 ---
 
 ## User Code Assets
