@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: AutoML Pipeline
-description: Learn how to build an automated machine learning pipeline 
+description: Learn how to build an automated machine learning pipeline.
 date: 
 # taxonomy #
 tags: ["integrations", "automl", "mljar"]

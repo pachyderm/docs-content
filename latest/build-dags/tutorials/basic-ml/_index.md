@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Standard ML Pipeline
-description: Learn how to build a basic machine learning pipeline 
+description: Learn how to build a basic machine learning pipeline.
 date: 
 # taxonomy #
 tags: ["integrations", "automl", "mljar"]
