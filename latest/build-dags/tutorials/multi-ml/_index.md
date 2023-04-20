@@ -11,149 +11,55 @@ weight: 2
 beta: false 
 ---
 
-# Intermediate Boston Housing Prices Example
+In this tutorial, we'll build a multi-pipeline DAG to train a regression model on housing market data to predict the value of homes in Boston. This tutorial builds on the skills learned from the previous tutorials, ([Standard ML Pipeline]({{< ref "basic-ml" >}} "Standard ML Pipeline") and [AutoML Pipeline]({{< ref "auto-ml" >}} "AutoML Pipeline Tutorial")). 
 
-This example creates extends the original [Boston Housing Prices Example](../housing-prices/) to show a multi-pipeline DAG. Each pipeline executes a Python script,  versions the artifacts (datasets, models, etc.), and gives you a full lineage of the model. Once it is set up, you can change, add, or remove data and Pachyderm will automatically keep everything up to date, creating data splits, computing data analysis metrics, and training the model. 
+## Before You Start 
+- You must have {{% productName %}} installed and running on your cluster
+- You should have already completed the [Standard ML Pipeline](/{{%release%}}/build-dags/tutorials/basic-ml) tutorial
+- You must be familiar with jsonnet
+- This tutorial assumes your active context is `localhost:80`
+  
+## Tutorial 
+
+Our Docker image's [user code](/{{%release%}}/learn/glossary/user-code) for this tutorial is built on top of the [civisanalytics/datascience-python](https://github.com/civisanalytics/datascience-python) base image, which includes the necessary dependencies.  It uses [pandas](https://pypi.org/project/pandas/) to import the structured dataset and the [scikit-learn](https://scikit-learn.org/stable/) library to train the model. 
+
+Each pipeline in this tutorial executes a Python script,  versions the artifacts (datasets, models, etc.), and gives you a full lineage of the model. Once it is set up, you can change, add, or remove data and Pachyderm will automatically keep everything up to date, creating data splits, computing data analysis metrics, and training the model. 
 
 <p align="center">
-  <img width="600" src="images/pipeline.png">
+  <img width="400" src="images/pipeline.png">
 </p>
 
-The Pachyderm pipelines performs the following actions:
+### 1. Create an Input Repo 
+1. Make sure your `tutorials` project we created in the [Standard ML Pipeline](/{{%release%}}/build-dags/tutorials/basic-ml) tutorial is set to your active context. (This would only change if you have updated your active context since completing the first tutorial.)
 
-1. Version the dataset (`.csv`)
-2. Performs data analysis with `scikit-learn`.
-3. Split the data into training and testing sets.
-4. Trains a regression model to predict housing prices.
-5. Generates a learning curve and performance metrics to estimate the quality of the model.
+   ```s
+   pachctl config get context localhost:80
 
-Table of Contents:
-- [Intermediate Boston Housing Prices Example](#intermediate-boston-housing-prices-example)
-  - [Housing Prices Dataset](#housing-prices-dataset)
-  - [Prerequisites](#prerequisites)
-  - [Pachyderm Pipelines](#pachyderm-pipelines)
-    - [Data Analysis Pipeline](#data-analysis-pipeline)
-    - [Split Pipeline](#split-pipeline)
-    - [Regression Pipeline](#regression-pipeline)
-    - [TLDR; Just give me the code](#tldr-just-give-me-the-code)
-  - [Detailed Walkthrough](#detailed-walkthrough)
-    - [Step 1: Create an input data repository](#step-1-create-an-input-data-repository)
-    - [Step 2: Create the regression pipeline](#step-2-create-the-regression-pipeline)
-    - [Step 3: Add the housing dataset to the repo](#step-3-add-the-housing-dataset-to-the-repo)
-    - [Step 4: Download files once the pipeline has finished](#step-4-download-files-once-the-pipeline-has-finished)
-    - [Step 5: Update Dataset](#step-5-update-dataset)
-    - [Step 6: Inspect the data](#step-6-inspect-the-data)
-    - [Step 7: Roll back to the previous commit](#step-7-roll-back-to-the-previous-commit)
-    - [Step 8: Update our dataset](#step-8-update-our-dataset)
+   # {
+   #   "pachd_address": "grpc://localhost:80",
+   #   "cluster_deployment_id": "KhpCZx7c8prdB268SnmXjELG27JDCaji",
+   #   "project": "Tutorials"
+   # }
+   ```
+2. Create a new data repository called `csv_data` where we will put our dataset.
 
-## Housing Prices Dataset
-
-The housing prices dataset used for this example is a reduced version of the original [Boston Housing Datset](https://www.cs.toronto.edu/~delve/data/boston/bostonDetail.html), which was originally collected by the U.S. Census Service. We choose to focus on three features of the originally dataset (RM, LSTST, and PTRATIO) and the output, or target (MEDV) that we are learning to predict.
-|Feature| Description|
-|---|---|
-|RM |       Average number of rooms per dwelling|
-|LSTAT |    A measurement of the socioeconomic status of people living in the area|
-|PTRATIO |  Pupil-teacher ratio by town - approximation of the local education system's quality|
-|MEDV |     Median value of owner-occupied homes in $1000's|
-
-Sample:
-|RM   |LSTAT|PTRATIO|MEDV|
-|-----|----|----|--------|
-|6.575|4.98|15.3|504000.0|
-|6.421|9.14|17.8|453600.0|
-|7.185|4.03|17.8|728700.0|
-|6.998|2.94|18.7|701400.0|
-
-## Prerequisites
-
-Before you can deploy this example you need to have the following components:
-
-1. A clone of this Pachyderm repository on your local computer. (could potentially include those instructions)
-2. A Pachyderm cluster - You can deploy a cluster locally as described [here](https://docs.pachyderm.com/latest/getting_started/).
-
-Verify that your environment is accessible by running `pachctl version` which will show both the `pachctl` and `pachd` versions.
-```bash
-$ pachctl version
-COMPONENT           VERSION
-pachctl             1.11.0
-pachd               1.11.0
-```
-
-## Pachyderm Pipelines
+   ```s
+   pachctl create repo csv_data
+   ```
+### 2. Create the Pipelines
 
 We'll deploy each stage in our ML process as a Pachyderm pipeline. Organizing our work into pipelines allows us to keep track of artifacts created in our ML development process. We can extend or add pipelines at any point to add new functionality or features, while keeping track of code and data changes simultaneously.
 
-### Data Analysis Pipeline
+#### 1. Data Analysis Pipeline
 The data analysis pipeline creates a pair plot and a correlation matrix showing the relationship between features. By seeing what features are positively or negatively correlated to the target value (or each other), it can helps us understand what features may be valuable to the model.
 <p align="center">
   <img width="300" src="images/pairplot-1.png">
   <img width="300" src="images/corr_matrix-1.png">
 </p>
 
-### Split Pipeline
-Split the input `csv` files into train and test sets. As we new data is added, we will always have access to previous versions of the splits to reproduce experiments and test results. 
-
-Both the `split` pipeline and the `data_analysis` pipeline take the `csv_data` as input but have no dependencies on each other. Pachyderm is able to recognize this. It can run each pipeline simultaneously, scaling each horizontally.
-
-### Regression Pipeline
-To train the regression model using scikit-learn. In our case, we will train a Random Forest Regressor ensemble. After splitting the data into features and targets (`X` and `y`), we can fit the model to our parameters. Once the model is trained, we will compute our score (r^2) on the test set. 
-
-After the model is trained we output some visualizations to evaluate its effectiveness of it using the learning curve and other statistics.
-<p align="center">
-  <img src="images/cv_reg_output-1.png">
-</p>
-
-
-### TLDR; Just give me the code
-
-```bash
-# Step 1: Create input data repository
-pachctl create repo csv_data
-
-# Step 2: Create the pipelines
-pachctl create pipeline -f data_analysis.json
-pachctl create pipeline -f split.json
-pachctl create pipeline -f regression.json
-
-# Step 3: Add the housing dataset to the repo to kick off all the pipelines
-pachctl put file csv_data@master:housing-simplified.csv -f data/housing-simplified-1.csv
-
-# Step 4: Download files once the pipeline has finished
-pachctl get file regression@master:/ --recursive --output .
-
-# Step 5: Update dataset with more data (this one has errors in it)
-pachctl put file csv_data@master:housing-simplified.csv -f data/housing-simplified-error.csv
-
-# Step 6: Inspect the data
-pachctl diff file csv_data@master csv_data@master^
-
-# Step 7: Roll back to the previous dataset commit
-pachctl create branch csv_data@master --head master^
-
-# Step 8: Add a new csv file (without the error)
-pachctl put file csv_data@master:housing-simplified.csv -f data/housing-simplified-2.csv
-
-```
-## Detailed Walkthrough
-
-### Step 1: Create an input data repository
-
-Once the Pachyderm cluster is running, create a data repository called `csv_data` where we will put our dataset.
-
-```bash
-$ pachctl create repo housing_data
-$ pachctl list repo
-NAME                CREATED             SIZE
-housing_data        3 seconds ago       0 B
-```
-
-### Step 2: Create the regression pipeline
-
-We can now connect a pipeline to watch the data repo. Pipelines are defined in `json` format. Here is the one that we'll be used for the regression pipeline:
-
-```json
-# data_analysis.json
-{
+1. Create a file named `data_analysis.json` with the following contents:
+   ```s
+   {
     "pipeline": {
         "name": "data_analysis"
     },
@@ -173,115 +79,624 @@ We can now connect a pipeline to watch the data repo. Pipelines are defined in `
         ],
         "image": "jimmywhitaker/housing-prices-int:dev0.2"
     }
-}
-```
+   }
+   ```
+2. Save the file.
+3. Create the pipeline.
 
-For the **input** field in the pipeline definition, we define input data repo(s) and a [glob pattern](https://docs.pachyderm.com/latest/concepts/pipeline-concepts/datum/glob-pattern/). A glob pattern tells the pipeline how to map data into a job, here we have it create a new job for each datum in the `housing_data` repository.
+   ```s
+   pachctl create pipeline -f /path/to/data_analysis.json
+   ```
 
-The **image** defines what Docker image will be used for the pipeline, and the **transform** is the command run once a pipeline job starts.
+#### 2. Split Pipeline
+Split the input `csv` files into `train` and `test` sets. As we new data is added, we will always have access to previous versions of the splits to reproduce experiments and test results. 
 
-Once this pipeline is created, it watches for any changes to its input, and if detected, it starts a new job to train given the new dataset.
+Both the `split` pipeline and the `data_analysis` pipeline take the `csv_data` as input but have no dependencies on each other. Pachyderm is able to recognize this. It can run each pipeline simultaneously, scaling each horizontally.
 
-```bash
-$ pachctl create pipeline -f regression.json
-```
+1. Create a file named `split.json` with the following contents:
+   ```s
+   {
+    "pipeline": {
+        "name": "split"
+    },
+    "description": "A pipeline that splits tabular data into training and testing sets.",
+    "input": {
+        "pfs": {
+            "glob": "/*",
+            "repo": "csv_data"
+        }
+    },
+    "transform": {
+        "cmd": [
+            "python", "split.py",
+            "--input", "/pfs/csv_data/",
+            "--test-size", "0.1",
+            "--output", "/pfs/out/"
+        ],
+        "image": "jimmywhitaker/housing-prices-int:dev0.2"
+    }
+   }
+   ```
+2. Save the file.
+3. Create the pipeline.
 
-The pipeline writes the output to a PFS repo (`/pfs/out/` in the pipeline json) created with the same name as the pipeline.
+   ```s
+   pachctl create pipeline -f /path/to/split.json
+   ```
 
-### Step 3: Add the housing dataset to the repo
-Now we can add the data, which will kick off the processing automatically. If we update the data with a new commit, then the pipeline will automatically re-run. 
+#### 3. Regression Pipeline
+To train the regression model using scikit-learn. In our case, we will train a Random Forest Regressor ensemble. After splitting the data into features and targets (`X` and `y`), we can fit the model to our parameters. Once the model is trained, we will compute our score (r^2) on the test set. 
 
-```bash
-$ pachctl put file housing_data@master:housing-simplified.csv -f data/housing-simplified-1.csv
-```
-
-We can inspect that the data is in the repository by looking at the files in the repository.
-
-```bash
-$ pachctl list file housing_data@master
-NAME                    TYPE SIZE
-/housing-simplified.csv file 12.14KiB
-```
-
-We can see that the pipeline is running by looking at the status of the job(s). 
-
-```bash
-$ pachctl list job
-ID                               PIPELINE   STARTED        DURATION   RESTART PROGRESS  DL       UL      STATE
-299b4f36535e47e399e7df7fc6ee2f7f regression 23 seconds ago 18 seconds 0       1 + 0 / 1 2.482KiB 1002KiB success
-```
-
-### Step 4: Download files once the pipeline has finished
-Once the pipeline is completed, we can download the files that were created.
-
-```bash
-$ pachctl list file regression@master
-NAME               TYPE SIZE
-/housing-simplified_corr_matrix.png   file 18.66KiB
-/housing-simplified_cv_reg_output.png file 62.19KiB
-/housing-simplified_final_model.sav   file 1.007KiB
-/housing-simplified_pairplot.png      file 207.5KiB
-
-$ pachctl get file regression@master:/ --recursive --output .
-```
-
-When we inspect the learning curve, we can see that there is a large gap between the training score and the validation score. This typically indicates that our model could benefit from the addition of more data. 
-
+After the model is trained we output some visualizations to evaluate its effectiveness of it using the learning curve and other statistics.
 <p align="center">
-  <img width="400" height="350" src="images/learning_curve-1.png">
+  <img src="images/cv_reg_output-1.png">
 </p>
 
-Now let's update our dataset with additional examples.
+1. Create a file named `regression.json` with the following contents:
+   ```s
+   {
+    "pipeline": {
+        "name": "regression"
+    },
+    "description": "A pipeline that trains and tests a regression model for tabular.",
+    "input": {
+        "pfs": {
+            "glob": "/*/",
+            "repo": "split"
+        }
+    },
+    "transform": {
+        "cmd": [
+            "python", "regression.py",
+            "--input", "/pfs/split/",
+            "--target-col", "MEDV",
+            "--output", "/pfs/out/"
+        ],
+        "image": "jimmywhitaker/housing-prices-int:dev0.2"
+    }
+   }
+   ```
+2. Save the file.
+3. Create the pipeline.
 
-### Step 5: Update Dataset
-Similar to the original housing prices example, we'll now add some new data. 
+   ```s
+   pachctl create pipeline -f /path/to/regression.json
+   ```
 
-```bash
-$ pachctl put file csv_data@master:housing-simplified.csv -f data/housing-simplified-error.csv
+### 3. Upload the Dataset
+1. Download our first example data set, [housing-simplified-1.csv](./data/housing-simplified-1.csv). 
+2. Add the data to your repo.
+   ```s
+   pachctl put file csv_data@master:housing-simplified.csv -f /path/to/housing-simplified-1.csv
+   ```
+### 4. Download the Results
+
+Once the pipeline has finished, download the results.
+   ```s
+   pachctl get file regression@master:/ --recursive --output .
+   ```
+
+### 5. Update the Dataset
+
+1. Download our second example data set, [housing-simplified-2.csv](./data/housing-simplified-2.csv). 
+2. Add the data to your repo.
+   ```s
+   pachctl put file csv_data@master:housing-simplified.csv -f /path/to/housing-simplified-2.csv
+   ```
+
+### 6. Inspect the Data
+
+We can use the `diff` command and [ancestry syntax](/{{%release%}}/learn/glossary/ancestry-syntax) to see what has changed between the two versions of the dataset.
+   ```s
+   pachctl diff file csv_data@master csv_data@master^
+   ```
+
+### Bonus Step: Rolling Back
+
+If you need to roll back to a previous dataset commit, you can do so with the `create branch` command and [ancestry syntax](/{{%release%}}/learn/glossary/ancestry-syntax).
+   ```s
+   pachctl create branch csv_data@master --head csv_data@master^
+   ```
+
+---
+## User Code Assets 
+
+The [Docker image](/{{%release%}}/build-dags/tutorials/user-code) used in this tutorial was built with the following assets:
+
+{{< stack type="wizard" >}}
+
+{{% wizardRow id ="assets" %}}
+{{% wizardButton option="Dockerfile" state="active" %}}
+{{% wizardButton option="Regression.py" %}}
+{{% wizardButton option="Split.py" %}}
+{{% wizardButton option="Utils.py" %}}
+{{% wizardButton option="Nb_utils.py" %}}
+{{% /wizardRow %}}
+
+{{% wizardResults  %}}
+{{% wizardResult val1="assets/dockerfile"%}}
+```Dockerfile
+FROM civisanalytics/datascience-python
+RUN pip install seaborn
+
+WORKDIR /workdir/
+COPY *.py /workdir/
 ```
+{{% /wizardResult %}}
+{{% wizardResult val1="assets/regression.py"%}}
+```python
+import argparse
+import os
+from os import path
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+import joblib
+from utils import plot_learning_curve
 
-The new commit of data to the `csv_data` repository automatically kicks off a jobs on the downstream pipelines. 
+from sklearn.model_selection import ShuffleSplit
+from sklearn import datasets, ensemble, linear_model
+from sklearn.model_selection import learning_curve
+from sklearn.model_selection import ShuffleSplit
+from sklearn.model_selection import cross_val_score 
+from sklearn.metrics import r2_score
 
-Only this time, the new data has an error in it. We've added a new feature to our dataset, a `test_feature` that is an accidental duplication of our target column. Obviously, any model built with oracle information will not work in the real world. 
+parser = argparse.ArgumentParser(description="Structured data regression")
+parser.add_argument("--input",
+                    type=str,
+                    help="directory with train.csv and test.csv")
+parser.add_argument("--target-col",
+                    type=str,
+                    default="MEDV",
+                    help="column with target values")
+parser.add_argument("--output",
+                    metavar="DIR",
+                    default='./output',
+                    help="output directory")
 
-When we look at our data analysis output, we can see that the correlation matrix shows our new feature has a correlation of `1` with our target. The pair plot shows the linear relationship of our features.
+def load_data(input_csv, target_col):
+    # Load the Boston housing dataset
+    data = pd.read_csv(input_csv, header=0)
+    targets = data[target_col]
+    features = data.drop(target_col, axis = 1)
+    return data, features, targets
 
-<p align="center">
-  <img width="400" src="images/correclation_matrix_error.png">
-</p>
+def train_model(features, targets):
+    # Train a Random Forest Regression model
+    reg = ensemble.RandomForestRegressor(random_state=1)
+    scores = cross_val_score(reg, features, targets, cv=10)
+    print("Cross Val Score: {:2f} (+/- {:2f})".format(scores.mean(), scores.std() * 2))
+    reg.fit(features,targets)
+    
+    return reg
 
-### Step 6: Inspect the data
+def test_model(model, features, targets):
+    # Train a Random Forest Regression model
+    score = r2_score(model.predict(features), targets)
 
-We can inspect the difference in our data by using the `diff file` command.
+    return "Test Score: {:2f}".format(score)
 
-```bash
-$ pachctl diff file csv_data@master csv_data@master^
-diff --git a/var/folders/jj/j322r7t156l0cysg8jqswvhw0000gn/T/housing-simplified.csv_368103379 b/var/folders/jj/j322r7t156l0cysg8jqswvhw0000gn/T/housing-simplified.csv_586389828
-index 9a01e63..58f4021 100644
---- a/var/folders/jj/j322r7t156l0cysg8jqswvhw0000gn/T/housing-simplified.csv_368103379
-+++ b/var/folders/jj/j322r7t156l0cysg8jqswvhw0000gn/T/housing-simplified.csv_586389828
-@@ -1,101 +1,101 @@
--RM,LSTAT,PTRATIO,MEDV
--6.575,4.98,15.3,504000.0
-...
-+RM,LSTAT,PTRATIO,test_feature,MEDV
-+6.575,4.98,15.3,504000.0,504000.0
+def create_learning_curve(estimator, features, targets):
+    plt.clf()
+
+    title = "Learning Curves (Random Forest Regressor)"
+    cv = ShuffleSplit(n_splits=10, test_size=0.2, random_state=0)
+    plot_learning_curve(estimator, title, features, targets, 
+                        ylim=(0.5, 1.01), cv=cv, n_jobs=4)
+
+def main():
+    args = parser.parse_args()
+    input_dirs = []
+    file_list = os.listdir(args.input)
+    if 'train.csv' in file_list and 'test.csv' in file_list:
+        input_dirs = [args.input]
+    else:  # Directory of directories
+        for root, dirs, files in os.walk(args.input):  
+            for dir in dirs: 
+                file_list = os.listdir(os.path.join(root, dir))
+                if 'train.csv' in file_list and 'test.csv' in file_list:
+                    input_dirs.append(os.path.join(root,dir))
+    print("Datasets: {}".format(input_dirs))
+    os.makedirs(args.output, exist_ok=True)
+
+    for dir in input_dirs:
+        experiment_name = os.path.basename(os.path.splitext(dir)[0])
+        train_filename = os.path.join(dir,'train.csv')
+        test_filename = os.path.join(dir,'test.csv')
+        # Data loading 
+        train_data, train_features, train_targets = load_data(train_filename, args.target_col)
+        print("Training set has {} data points with {} variables each.".format(*train_data.shape))
+        test_data, test_features, test_targets = load_data(test_filename, args.target_col)
+        print("Testing set has {} data points with {} variables each.".format(*test_data.shape))
+
+        reg = train_model(train_features, train_targets)
+        test_results = test_model(reg, test_features, test_targets)
+        create_learning_curve(reg, train_features, train_targets)
+        plt.savefig(path.join(args.output, experiment_name + '_cv_reg_output.png'))
+
+        print(test_results)
+
+        # Save model and test score
+        joblib.dump(reg, path.join(args.output, experiment_name + '_model.sav'))
+        with open(path.join(args.output, experiment_name + '_test_results.txt'), "w") as text_file:
+            text_file.write(test_results)
+
+if __name__ == "__main__":
+    main()
 ```
+{{% /wizardResult %}}
+{{% wizardResult val1="assets/split.py"%}}
+```python
+import argparse
+import os
+from os import path
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+import joblib
+from utils import load_data
 
-We can see the new feature column in the diff that is causing our issue.
+from sklearn.model_selection import train_test_split
 
-### Step 7: Roll back to the previous commit
-Let's undo this change by rolling back to the previous version of the dataset. We can do this by using the `create branch` command and passing it the current parent of the master commit by using the `^` character. For more info on referencing parent commits, see [Ancestry Syntax](https://docs.pachyderm.com/latest/concepts/data-concepts/history/#ancestry-syntax).
+parser = argparse.ArgumentParser(description="Structured data regression")
+parser.add_argument("--input",
+                    type=str,
+                    help="csv file with all examples")
+parser.add_argument("--output",
+                    metavar="DIR",
+                    default='./output',
+                    help="output directory")
+parser.add_argument("--test-size",
+                    type=float,
+                    default=0.2,
+                    help="percentage of data to use for testing (\"0.2\" = 20% used for testing, 80% for training")
+parser.add_argument("--seed",
+                    type=int,
+                    default=42,
+                    help="random seed")
 
-```bash
-$ pachctl create branch csv_data@master --head master^
+def main():
+    args = parser.parse_args()
+    if os.path.isfile(args.input):
+        input_files = [args.input]
+    else:  # Directory
+        for dirpath, dirs, files in os.walk(args.input):  
+            input_files = [ os.path.join(dirpath, filename) for filename in files if filename.endswith('.csv') ]
+    print("Datasets: {}".format(input_files))
+
+    for filename in input_files:
+        file_basename = os.path.basename(os.path.splitext(filename)[0])
+        os.makedirs(os.path.join(args.output,file_basename), exist_ok=True)
+        # Data loading 
+        data = load_data(filename)
+        train, test = train_test_split(data, test_size=args.test_size, random_state=args.seed)
+        
+
+        train.to_csv(os.path.join(args.output, file_basename, 'train.csv'), header=True, index=False)
+        test.to_csv(os.path.join(args.output, file_basename, 'test.csv'), header=True, index=False)
+
+
+if __name__ == "__main__":
+    main()
 ```
+{{% /wizardResult %}}
+{{% wizardResult val1="assets/utils.py"%}}
+```python
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.naive_bayes import GaussianNB
+from sklearn.svm import SVC
+from sklearn.datasets import load_digits
+from sklearn.model_selection import learning_curve
+from sklearn.model_selection import ShuffleSplit
 
-If we inspect the data_analysis output now, we can see that we're using the previous version of the dataset. 
+def load_data(input_csv, target_col=None):
+    # Load the Boston housing dataset
+    data = pd.read_csv(input_csv, header=0)
+    if target_col:
+        targets = data[target_col]
+        features = data.drop(target_col, axis = 1)
+        print("Dataset has {} data points with {} variables each.".format(*data.shape))
+        return data, features, targets
+    return data
 
-### Step 8: Update our dataset
-Now we can update our dataset with additional data not containing the error, and our pipelines will automatically update again.
+def plot_learning_curve(estimator, title, X, y, axes=None, ylim=None, cv=None,
+                        n_jobs=None, train_sizes=np.linspace(.1, 1.0, 5)):
+    """
+    Generate 3 plots: the test and training learning curve, the training
+    samples vs fit times curve, the fit times vs score curve.
 
-```bash
-pachctl put file csv_data@master:housing-simplified.csv -f data/housing-simplified-2.csv
+    Parameters
+    ----------
+    estimator : object type that implements the "fit" and "predict" methods
+        An object of that type which is cloned for each validation.
+
+    title : string
+        Title for the chart.
+
+    X : array-like, shape (n_samples, n_features)
+        Training vector, where n_samples is the number of samples and
+        n_features is the number of features.
+
+    y : array-like, shape (n_samples) or (n_samples, n_features), optional
+        Target relative to X for classification or regression;
+        None for unsupervised learning.
+
+    axes : array of 3 axes, optional (default=None)
+        Axes to use for plotting the curves.
+
+    ylim : tuple, shape (ymin, ymax), optional
+        Defines minimum and maximum yvalues plotted.
+
+    cv : int, cross-validation generator or an iterable, optional
+        Determines the cross-validation splitting strategy.
+        Possible inputs for cv are:
+
+          - None, to use the default 5-fold cross-validation,
+          - integer, to specify the number of folds.
+          - :term:`CV splitter`,
+          - An iterable yielding (train, test) splits as arrays of indices.
+
+        For integer/None inputs, if ``y`` is binary or multiclass,
+        :class:`StratifiedKFold` used. If the estimator is not a classifier
+        or if ``y`` is neither binary nor multiclass, :class:`KFold` is used.
+
+        Refer :ref:`User Guide <cross_validation>` for the various
+        cross-validators that can be used here.
+
+    n_jobs : int or None, optional (default=None)
+        Number of jobs to run in parallel.
+        ``None`` means 1 unless in a :obj:`joblib.parallel_backend` context.
+        ``-1`` means using all processors. See :term:`Glossary <n_jobs>`
+        for more details.
+
+    train_sizes : array-like, shape (n_ticks,), dtype float or int
+        Relative or absolute numbers of training examples that will be used to
+        generate the learning curve. If the dtype is float, it is regarded as a
+        fraction of the maximum size of the training set (that is determined
+        by the selected validation method), i.e. it has to be within (0, 1].
+        Otherwise it is interpreted as absolute sizes of the training sets.
+        Note that for classification the number of samples usually have to
+        be big enough to contain at least one sample from each class.
+        (default: np.linspace(0.1, 1.0, 5))
+    """
+    if axes is None:
+        _, axes = plt.subplots(1, 3, figsize=(20, 5))
+
+    axes[0].set_title(title)
+    if ylim is not None:
+        axes[0].set_ylim(*ylim)
+    axes[0].set_xlabel("Training examples")
+    axes[0].set_ylabel("Score")
+
+    train_sizes, train_scores, test_scores, fit_times, _ = \
+        learning_curve(estimator, X, y, cv=cv, n_jobs=n_jobs,
+                       train_sizes=train_sizes,
+                       return_times=True)
+    train_scores_mean = np.mean(train_scores, axis=1)
+    train_scores_std = np.std(train_scores, axis=1)
+    test_scores_mean = np.mean(test_scores, axis=1)
+    test_scores_std = np.std(test_scores, axis=1)
+    fit_times_mean = np.mean(fit_times, axis=1)
+    fit_times_std = np.std(fit_times, axis=1)
+
+    # Plot learning curve
+    axes[0].grid()
+    axes[0].fill_between(train_sizes, train_scores_mean - train_scores_std,
+                         train_scores_mean + train_scores_std, alpha=0.1,
+                         color="r")
+    axes[0].fill_between(train_sizes, test_scores_mean - test_scores_std,
+                         test_scores_mean + test_scores_std, alpha=0.1,
+                         color="g")
+    axes[0].plot(train_sizes, train_scores_mean, 'o-', color="r",
+                 label="Training score")
+    axes[0].plot(train_sizes, test_scores_mean, 'o-', color="g",
+                 label="Cross-validation score")
+    axes[0].legend(loc="best")
+
+    # Plot n_samples vs fit_times
+    axes[1].grid()
+    axes[1].plot(train_sizes, fit_times_mean, 'o-')
+    axes[1].fill_between(train_sizes, fit_times_mean - fit_times_std,
+                         fit_times_mean + fit_times_std, alpha=0.1)
+    axes[1].set_xlabel("Training examples")
+    axes[1].set_ylabel("fit_times")
+    axes[1].set_title("Scalability of the model")
+
+    # Plot fit_time vs score
+    axes[2].grid()
+    axes[2].plot(fit_times_mean, test_scores_mean, 'o-')
+    axes[2].fill_between(fit_times_mean, test_scores_mean - test_scores_std,
+                         test_scores_mean + test_scores_std, alpha=0.1)
+    axes[2].set_xlabel("fit_times")
+    axes[2].set_ylabel("Score")
+    axes[2].set_title("Performance of the model")
+
+    return plt
 ```
+{{% /wizardResult %}}
+{{% wizardResult val1="assets/nb_utils.py"%}}
+```python
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+import joblib
+from os import path
+from sklearn.model_selection import ShuffleSplit
+from sklearn import datasets, ensemble, linear_model
+from sklearn.model_selection import learning_curve
+from sklearn.model_selection import ShuffleSplit
+from sklearn.model_selection import cross_val_score 
+from sklearn.metrics import r2_score
+
+def plot_learning_curve(estimator, title, X, y, axes=None, ylim=None, cv=None,
+                        n_jobs=None, train_sizes=np.linspace(.1, 1.0, 5)):
+    """
+    Generate 3 plots: the test and training learning curve, the training
+    samples vs fit times curve, the fit times vs score curve.
+
+    Parameters
+    ----------
+    estimator : object type that implements the "fit" and "predict" methods
+        An object of that type which is cloned for each validation.
+
+    title : string
+        Title for the chart.
+
+    X : array-like, shape (n_samples, n_features)
+        Training vector, where n_samples is the number of samples and
+        n_features is the number of features.
+
+    y : array-like, shape (n_samples) or (n_samples, n_features), optional
+        Target relative to X for classification or regression;
+        None for unsupervised learning.
+
+    axes : array of 3 axes, optional (default=None)
+        Axes to use for plotting the curves.
+
+    ylim : tuple, shape (ymin, ymax), optional
+        Defines minimum and maximum yvalues plotted.
+
+    cv : int, cross-validation generator or an iterable, optional
+        Determines the cross-validation splitting strategy.
+        Possible inputs for cv are:
+
+          - None, to use the default 5-fold cross-validation,
+          - integer, to specify the number of folds.
+          - :term:`CV splitter`,
+          - An iterable yielding (train, test) splits as arrays of indices.
+
+        For integer/None inputs, if ``y`` is binary or multiclass,
+        :class:`StratifiedKFold` used. If the estimator is not a classifier
+        or if ``y`` is neither binary nor multiclass, :class:`KFold` is used.
+
+        Refer :ref:`User Guide <cross_validation>` for the various
+        cross-validators that can be used here.
+
+    n_jobs : int or None, optional (default=None)
+        Number of jobs to run in parallel.
+        ``None`` means 1 unless in a :obj:`joblib.parallel_backend` context.
+        ``-1`` means using all processors. See :term:`Glossary <n_jobs>`
+        for more details.
+
+    train_sizes : array-like, shape (n_ticks,), dtype float or int
+        Relative or absolute numbers of training examples that will be used to
+        generate the learning curve. If the dtype is float, it is regarded as a
+        fraction of the maximum size of the training set (that is determined
+        by the selected validation method), i.e. it has to be within (0, 1].
+        Otherwise it is interpreted as absolute sizes of the training sets.
+        Note that for classification the number of samples usually have to
+        be big enough to contain at least one sample from each class.
+        (default: np.linspace(0.1, 1.0, 5))
+    """
+    if axes is None:
+        _, axes = plt.subplots(1, 1, figsize=(5, 5))
+
+    axes.set_title(title)
+    if ylim is not None:
+        axes.set_ylim(*ylim)
+    axes.set_xlabel("Training examples")
+    axes.set_ylabel("Score")
+
+    train_sizes, train_scores, test_scores, fit_times, _ = \
+        learning_curve(estimator, X, y, cv=cv, n_jobs=n_jobs,
+                       train_sizes=train_sizes,
+                       return_times=True)
+    train_scores_mean = np.mean(train_scores, axis=1)
+    train_scores_std = np.std(train_scores, axis=1)
+    test_scores_mean = np.mean(test_scores, axis=1)
+    test_scores_std = np.std(test_scores, axis=1)
+    fit_times_mean = np.mean(fit_times, axis=1)
+    fit_times_std = np.std(fit_times, axis=1)
+
+    # Plot learning curve
+    axes.grid()
+    axes.fill_between(train_sizes, train_scores_mean - train_scores_std,
+                         train_scores_mean + train_scores_std, alpha=0.1,
+                         color="r")
+    axes.fill_between(train_sizes, test_scores_mean - test_scores_std,
+                         test_scores_mean + test_scores_std, alpha=0.1,
+                         color="g")
+    axes.plot(train_sizes, train_scores_mean, 'o-', color="r",
+                 label="Training score")
+    axes.plot(train_sizes, test_scores_mean, 'o-', color="g",
+                 label="Cross-validation score")
+    axes.legend(loc="best")
+
+
+    return plt
+
+
+def create_pairplot(data):
+    plt.clf()
+    # Calculate and show pairplot
+    sns.pairplot(data, height=2.5)
+    plt.tight_layout()
+
+def create_corr_matrix(data):
+    plt.clf()
+    # Calculate and show correlation matrix
+    sns.set()
+    corr = data.corr()
+    
+    # Generate a mask for the upper triangle
+    mask = np.triu(np.ones_like(corr, dtype=np.bool))
+
+    # Generate a custom diverging colormap
+    cmap = sns.diverging_palette(220, 10, as_cmap=True)
+
+    # Draw the heatmap with the mask and correct aspect ratio
+    sns_plot = sns.heatmap(corr, mask=mask, cmap=cmap, vmax=.3, center=0,
+                square=True, linewidths=.5, annot=True, cbar_kws={"shrink": .5})
+
+def data_analysis(data):
+    create_pairplot(data)
+    plt.show()
+    create_corr_matrix(data)
+    plt.show()
+
+def load_data(input_data, target_col):
+    # Load the Boston housing dataset
+    data = input_data
+    targets = data[target_col]
+    features = data.drop(target_col, axis = 1)
+    return data, features, targets
+
+def train_model(features, targets):
+    # Train a Random Forest Regression model
+    reg = ensemble.RandomForestRegressor(random_state=1)
+    scores = cross_val_score(reg, features, targets, cv=10)
+    print("Cross Val Score: {:2f} (+/- {:2f})".format(scores.mean(), scores.std() * 2))
+    reg.fit(features,targets)
+    
+    return reg
+
+def test_model(model, features, targets):
+    # Train a Random Forest Regression model
+    score = r2_score(model.predict(features), targets)
+
+    return "Test Score: {:2f}".format(score)
+
+def create_learning_curve(estimator, features, targets):
+    plt.clf()
+
+    title = "Learning Curves (Random Forest Regressor)"
+    cv = ShuffleSplit(n_splits=10, test_size=0.2, random_state=0)
+    plot_learning_curve(estimator, title, features, targets, 
+                        ylim=(0.5, 1.01), cv=cv, n_jobs=4)
+
+
+def set_dtypes(data):
+    for key in data:
+        data[key] = data[key].astype(float)
+    return data
+```
+{{% /wizardResult %}}
+{{% /wizardResults %}}
+
+{{< /stack >}}

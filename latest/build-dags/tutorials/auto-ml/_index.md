@@ -100,7 +100,7 @@ pachctl put file csv_data@master:housing-simplified.csv -f /path/to/housing-simp
 
 ## User Code Assets 
 
-The docker image used in this tutorial was built with the following assets:
+The [Docker image](/{{%release%}}/build-dags/tutorials/user-code) used in this tutorial was built with the following assets:
 
 {{< stack type="wizard" >}}
 

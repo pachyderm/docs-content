@@ -268,7 +268,7 @@ pachctl create pipeline -f /path/to/extract_centers.json
 
 ## User Code Assets
 
-The docker image used in this tutorial was built with the following assets:
+The [Docker image](/{{%release%}}/build-dags/tutorials/user-code) used in this tutorial was built with the following assets:
 
 {{< stack type="wizard" >}}
 

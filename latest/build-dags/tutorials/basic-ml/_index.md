@@ -185,7 +185,7 @@ For any given output commit, {{% productName %}} can tell us exactly which input
 
 ## User Code Assets 
 
-The docker image used in this tutorial was built with the following assets:
+The [Docker image](/{{%release%}}/build-dags/tutorials/user-code) used in this tutorial was built with the following assets:
 
 {{< stack type="wizard" >}}
 

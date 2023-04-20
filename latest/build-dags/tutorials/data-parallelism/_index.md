@@ -195,7 +195,7 @@ The `gen_exam_list_before_cropping.pkl` is a pickled version of the image list, 
 
 ## User Code Assets
 
-The docker image used in this tutorial was built with the following assets:
+The [Docker image](/{{%release%}}/build-dags/tutorials/user-code) used in this tutorial was built with the following assets:
 
 {{< stack type="wizard" >}}
 
