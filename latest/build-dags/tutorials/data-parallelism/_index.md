@@ -10,7 +10,7 @@ seriesPart:
 weight: 4
 beta: false 
 ---
-In this tutorial, we’ll build a scalable inference data parallelism pipeline for breast cancer detection. 
+In this tutorial, we’ll build a scalable inference data parallelism pipeline for breast cancer detection using [data parallelism](/{{%release%}}/learn/glossary/data-parallelism). 
 
 ## Before You Start 
 
@@ -174,11 +174,11 @@ sample_data/
 The `gen_exam_list_before_cropping.pkl` is a pickled version of the image list, a requirement of the underlying library being used.
 {{% /notice%}}
 
-### 3. Upload Dataset
+### 3. Upload Dataset 
 
-1. Download the [Data.zip](Data.zip) folder which contains:
-   - **`sample_data/`**
-   - **`models/`**
+1. Download the following:
+   - [sample_data.zip](sample_data.zip)
+   - [models.zip](models.zip)
 2. Upload the `sample_data` and `models` folders to your repos.
    ```s
    pachctl put file -r sample_data@master -f /path/to/sample_data/

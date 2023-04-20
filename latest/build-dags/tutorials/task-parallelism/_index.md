@@ -10,12 +10,12 @@ seriesPart:
 weight: 5
 beta: false 
 ---
-In this tutorial, we’ll build a scalable inference pipeline for breast cancer detection.  
+In this tutorial, we’ll build a scalable inference pipeline for breast cancer detection using [task parallelism](/{{%release%}}/learn/glossary/task-parallelism). 
 
 ## Before You Start 
 
 - You must have a {{% productName %}} cluster up and running
-- You should have some basic familiarity with {{% productName %}} [pipeline specs](/{{%release%}}/build-dags/pipeline-spec) -- see the [Transform](/{{%release%}}/build-dags/pipeline-spec/transform), [Cross Input](/{{%release%}}/build-dags/pipeline-spec/input-cross), [Resource Limits](/{{%release%}}/build-dags/pipeline-spec/resource-limits), [Resource Requests](/{{%release%}}/build-dags/pipeline-spec/resource-requests), and [Parallelism](/{{%release%}}/build-dags/pipeline-spec/parallelism) sections in particular
+- You should have some basic familiarity with {{% productName %}} [pipeline specs](/{{%release%}}/build-dags/pipeline-spec) -- see the [Transform](/{{%release%}}/build-dags/pipeline-spec/transform), [Join Input](/{{%release%}}/build-dags/pipeline-spec/input-join), [Resource Limits](/{{%release%}}/build-dags/pipeline-spec/resource-limits), [Resource Requests](/{{%release%}}/build-dags/pipeline-spec/resource-requests), and [Parallelism](/{{%release%}}/build-dags/pipeline-spec/parallelism) sections in particular
 
 ## Tutorial
 
@@ -48,7 +48,7 @@ In task parallelism, we separate out the CPU-based preprocessing and GPU-related
 We can split the `run.sh` script used in the previous tutorial ([Data Parallelism Pipeline](/{{%release%}}/build-dags/tutorials/data-parallelism#data-parallelism-pipeline-user-code-assets)) into 5 separate processing steps (4 already defined in the script + a visualization step) which will become Pachyderm pipelines, so each can be scaled separately. 
 
 <p align="center">
-  <img width="300" src="images/bc_diagram_resources.png">
+  <img width="300" src="/images/task-parallelism/bc_diagram_resources.png">
 </p>
 
 #### Crop Pipeline 
@@ -251,9 +251,9 @@ pachctl create pipeline -f /path/to/extract_centers.json
 
 ### 4. Upload Dataset
 
-1. Download the [Data.zip](Data.zip) folder which contains:
-   - **`sample_data/`**
-   - **`models/`**
+1. Download the following:
+   - [sample_data.zip](sample_data.zip)
+   - [models.zip](models.zip)
 2. Upload the `sample_data` and `models` folders to your repos.
    ```s
    pachctl put file -r sample_data@master -f /path/to/sample_data/
