@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: NLP Pipeline
-description: Learn how to create a NLP pipeline.
+description: Learn how to create a NLP (Natural Language Processing) pipeline.
 date: 
 # taxonomy #
 tags: ["integrations", "nlp"]
@@ -11,38 +11,56 @@ weight: 6
 beta: false 
 ---
 
-<p align="center">
-	<img src='images/market_sentiment.png' width='1000' title=''>
-</p>
+In this tutorial, we'll build an [NLP](/{{% release %}}/learn/glossary/nlp) (Natural Language Processing) pipeline to classify the sentiment of financial news articles. This tutorial shows how to combine inputs from separate sources, incorporates data labeling, model training, and data visualization.
 
-In this example, we show a market sentiment NLP implementation in Pachyderm. In it, we use [transfer learning](https://en.wikipedia.org/wiki/Transfer_learning) to fine-tune a BERT language model to classify text for financial sentiment. It shows how to combine inputs from separate sources, incorporates data labeling, model training, and data visualization.
+## Before You Start 
+
+- You must have {{% productName %}} installed and running on your cluster
+- You should have already completed the [Standard ML Pipeline](/{{%release%}}/build-dags/tutorials/basic-ml) tutorial
+- You should have completed the [Label Studio](/{{%release%}}/integrate/label-studio) integration guide
+- This tutorial assumes your active context is `localhost:80`
+
+## Tutorial 
+
+Our Docker image's [user code](/{{%release%}}/learn/glossary/user-code) for this tutorial is built on top of the [pytorch/pytorch](https://github.com/civisanalytics/datascience-python) base image, which includes necessary dependencies. This image also uses the [FinBERT](https://huggingface.co/ProsusAI/finbert) pre-trained NLP model for sentiment analysis.
+
+### 1. Create Your Repos
+1. Make sure your `tutorials` project we created in the [Standard ML Pipeline](/{{%release%}}/build-dags/tutorials/basic-ml) tutorial is set to your active context. (This would only change if you have updated your active context since completing the first tutorial.)
+
+   ```s
+   pachctl config get context localhost:80
+
+   # {
+   #   "pachd_address": "grpc://localhost:80",
+   #   "cluster_deployment_id": "KhpCZx7c8prdB268SnmXjELG27JDCaji",
+   #   "project": "Tutorials"
+   # }
+   ```
+2. Create the following repos:
+   ```s
+   pachctl create repo financial_phrase_bank
+   pachctl create repo language_model
+   pachctl create repo labeled_data
+   pachctl create repo sentiment_words
+   ```
+
+### 2. Create Your Pipelines
+
+1. Create the following pipelines:
+   ```s
+   pachctl create pipeline -f pachyderm/dataset.json
+   pachctl create pipeline -f pachyderm/train_model.json
+   pachctl create pipeline -f pachyderm/visualizations.json
+   pachctl create pipeline -f pachyderm/query_es.json
+   ```
 
 
-This example requires general knowledge of Pachyderm, which can be obtained through the Boston Housing Prices examples: [Intro](https://github.com/pachyderm/examples/blob/master/housing-prices) and [Intermediate](https://github.com/pachyderm/examples/blob/master/housing-prices-intermediate). 
+---
+## User Code Assets 
 
-## The Data
-We will use the [Financial Phrase Bank Dataset](https://www.researchgate.net/profile/Pekka_Malo/publication/251231364_FinancialPhraseBank-v10) as a starting point for our model. This data will be combined with new, human labeled data from our production environment.  In this example, dataset for simplicity and transparency to show the interactions more than the techniques themselves.
 
-There are different versions of the Financial Phrase Bank Dataset, according to how many human labelers agreed with one another on the sentiment class of the text statement. For example, the `AllAgree` dataset is when all human labelers were in agreement with the sentiment of the sentence, while `50Agree` represents the dataset where more than 50% were in agreement with each other (more data, but potentially less accurate).
 
-## The Model
-FinBERT is a pre-trained NLP model that is adapted to analyze the sentiment of financial text. The original BERT-based language model was trained with a large corpus of Reuters and training code used in this example, [FinBERT](https://huggingface.co/ProsusAI/finbert). The base model is built on a large subset of  Reuters TRC2 dataset. We will be tuning this pre-trained language model (transfer learning) for sentiment analysis using the Financial Phrase Bank Dataset. Download this model into `models/finbertTCR2`.
 
-## Pre-requisites
-Before you can deploy this example you need to have the following components:
-
-1. A clone of this repository on your local computer. 
-2. The Financial Phrase Bank Dataset should be [downloaded](https://www.researchgate.net/publication/251231364_FinancialPhraseBank-v10) and placed in `data/FinancialPhraseBank-v1.0/`. 
-3. A Pachyderm cluster - You can deploy a cluster as described [here](https://docs.pachyderm.com/latest/getting_started/).
-4. [Docker](https://docs.docker.com/get-docker/) installed (for Label Studio integration)
-
-Verify that your environment is accessible by running `pachctl version` which will show both the `pachctl` and `pachd` versions.
-```bash
-$ pachctl version
-COMPONENT           VERSION
-pachctl             2.1.0
-pachd               2.1.0
-```
 
 
 ## TLDR;

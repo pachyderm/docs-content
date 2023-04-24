@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Multi-Pipeline DAG
-description: Learn how to build a scalable inference pipeline.
+description: Learn how to build a DAG with multiple pipelines.
 date: 
 # taxonomy #
 tags: ["integrations", "automl", "mljar"]

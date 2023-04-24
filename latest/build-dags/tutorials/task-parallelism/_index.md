@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Task Parallelism Pipeline
-description: Learn how to build a scalable inference pipeline.
+description: Learn how to build a scalable inference pipeline using task parallelism.
 date: 
 # taxonomy #
 tags: ["integrations", "automl", "mljar", "inference"]

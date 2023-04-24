@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Data Parallelism Pipeline
-description: Learn how to build a scalable inference pipeline.
+description: Learn how to build a scalable inference pipeline using data parallelism.
 date: 
 # taxonomy #
 tags: ["integrations", "automl", "mljar", "inference"]

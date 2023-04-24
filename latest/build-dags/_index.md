@@ -1,6 +1,6 @@
 ---
 # metadata # 
-title: Build DAGs
+title: Build Pipelines & DAGs
 description: Build pipelines & DAGs for every use case.
 date: 
 # taxonomy #
