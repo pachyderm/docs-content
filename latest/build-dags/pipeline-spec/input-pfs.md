@@ -21,7 +21,6 @@ label: Required for PFS Inputs
     "repo": string,
     "repo_type":string,
     "branch": string,
-    "commit":string,
     "glob": string,
     "join_on":string,
     "outer_join": bool,
