@@ -20,15 +20,15 @@ In this tutorial, we'll build a simple machine learning pipeline in {{% productN
 
 Our Docker image's [user code](/{{%release%}}/learn/glossary/user-code) for this tutorial is built on top of the [civisanalytics/datascience-python](https://github.com/civisanalytics/datascience-python) base image, which includes the necessary dependencies.  It uses [pandas](https://pypi.org/project/pandas/) to import the structured dataset and the [scikit-learn](https://scikit-learn.org/stable/) library to train the model. 
 
-### 1. Create an Input Repo
+### 1. Create a Project & Input Repo
 
-1. Create a project named `tutorials`. 
+1. Create a project named `standard-ml-tutorial`. 
    ```s
-   pachctl create project tutorials
+   pachctl create project standard-ml-tutorial
    ```
 2. Set the project as current. 
    ```s
-   pachctl config update context --project tutorials
+   pachctl config update context --project standard-ml-tutorial
    ```
 3. Create a repo named `housing_data`.
    ```s

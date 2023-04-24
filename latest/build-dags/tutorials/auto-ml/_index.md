@@ -23,24 +23,21 @@ You can use {{% productName %}} to build an automated machine learning pipeline 
 ## Tutorial
 Our Docker image's [user code](/{{%release%}}/learn/glossary/user-code) for this tutorial is built on top of the [python:3.7-slim-buster](https://hub.docker.com/_/python) base image. It also uses the [mljar-supervised](https://github.com/mljar/mljar-supervised) package to perform automated feature engineering, model selection, and hyperparameter tuning, making it easy to train high-quality machine learning models on structured data.
 
-### 1. Create an Input Repo 
-1. Make sure your Tutorials project we created in the [Standard ML Pipeline](/{{%release%}}/build-dags/tutorials/basic-ml) tutorial is set to your active context. (This would only change if you have updated your active context since completing the first tutorial.)
+### 1. Create a Project & Input Repo
 
+1. Create a project named `automl-tutorial`. 
    ```s
-   pachctl config get context localhost:80
-
-   # {
-   #   "pachd_address": "grpc://localhost:80",
-   #   "cluster_deployment_id": "KhpCZx7c8prdB268SnmXjELG27JDCaji",
-   #   "project": "Tutorials"
-   # }
+   pachctl create project automl-tutorial
    ```
-
-2. Create a new `csv-data` repo.
+2. Set the project as current. 
+   ```s
+   pachctl config update context --project automl-tutorial
+   ```
+3. Create a new `csv-data` repo.
    ```s
    pachctl create repo csv-data
    ```
-3. Upload the [housing-simplified-1.csv](../basic-ml/data/housing-simplified-1.csv) file to the repo.
+4. Upload the [housing-simplified-1.csv](../basic-ml/data/housing-simplified-1.csv) file to the repo.
    ```s
    pachctl put file csv_data@master:housing-simplified.csv -f /path/to/housing-simplified-1.csv
    ```

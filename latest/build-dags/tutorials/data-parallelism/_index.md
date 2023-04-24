@@ -21,20 +21,17 @@ In this tutorial, we’ll build a scalable inference data parallelism pipeline f
 
 Our Docker image's [user code](/{{%release%}}/learn/glossary/user-code) for this tutorial is built on top of the [pytorch/pytorch](https://github.com/civisanalytics/datascience-python) base image, which includes necessary dependencies. The underlying code and pre-trained breast cancer detection model comes from [this repo](https://github.com/nyukat/breast_cancer_classifier), developed by the Center of Data Science and Department of Radiology at NYU. Their original paper can be found [here](https://ieeexplore.ieee.org/document/8861376).
 
-### 1. Create an Input Repo
+### 1. Create a Project & Input Repos
 
-1. Make sure your Tutorials project we created in the [Standard ML Pipeline](/{{%release%}}/build-dags/tutorials/basic-ml) tutorial is set to your active context. (This would only change if you have updated your active context since completing the first tutorial.)
-
+1. Create a project named `data-parallelism-tutorial`. 
    ```s
-   pachctl config get context localhost:80
-
-   # {
-   #   "pachd_address": "grpc://localhost:80",
-   #   "cluster_deployment_id": "KhpCZx7c8prdB268SnmXjELG27JDCaji",
-   #   "project": "Tutorials"
-   # }
+   pachctl create project data-parallelism-tutorial
    ```
-2. Create the following repos:
+2. Set the project as current. 
+   ```s
+   pachctl config update context --project data-parallelism-tutorial
+   ```
+3. Create the following repos:
 
    ```s
    pachctl create repo models

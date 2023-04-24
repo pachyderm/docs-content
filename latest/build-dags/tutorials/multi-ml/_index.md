@@ -30,18 +30,16 @@ Each pipeline in this tutorial executes a Python script,  versions the artifacts
 </p>
 
 ### 1. Create an Input Repo 
-1. Make sure your `tutorials` project we created in the [Standard ML Pipeline](/{{%release%}}/build-dags/tutorials/basic-ml) tutorial is set to your active context. (This would only change if you have updated your active context since completing the first tutorial.)
 
+1. Create a project named `multipipeline-tutorial`. 
    ```s
-   pachctl config get context localhost:80
-
-   # {
-   #   "pachd_address": "grpc://localhost:80",
-   #   "cluster_deployment_id": "KhpCZx7c8prdB268SnmXjELG27JDCaji",
-   #   "project": "Tutorials"
-   # }
+   pachctl create project multipipeline-tutorial
    ```
-2. Create a new data repository called `csv_data` where we will put our dataset.
+2. Set the project as current. 
+   ```s
+   pachctl config update context --project multipipeline-tutorial
+   ```
+3. Create a new data repository called `csv_data` where we will put our dataset.
 
    ```s
    pachctl create repo csv_data
