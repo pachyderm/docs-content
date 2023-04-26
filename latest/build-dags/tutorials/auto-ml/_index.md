@@ -204,6 +204,10 @@ if __name__ == "__main__":
 ```s
  mljar-supervised
 ```
-{{% /wizardResult %}}
+{{% /wizardResult %}} 
+{{% /wizardResults %}}
 
 {{< /stack>}}
+
+
+[bad link](/latest/this-doesnt-exist)

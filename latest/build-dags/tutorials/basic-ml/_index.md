@@ -451,4 +451,6 @@ def plot_learning_curve(estimator, title, X, y, axes=None, ylim=None, cv=None,
 ```
 {{% /wizardResult %}}
 
+{{% /wizardResults %}}
+
 {{< /stack>}}

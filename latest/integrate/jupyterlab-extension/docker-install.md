@@ -82,4 +82,4 @@ USER $NB_UID
 RUN pip install jupyterlab-pachyderm==<version> 
 ```
 
-Then, [build, tag, and push your image](../../../learn/developer-workflow/working-with-pipelines/#step-2-build-your-docker-image).
+Then, [build, tag, and push your image](/{{%release%}}/learn/developer-workflow/working-with-pipelines/#step-2-build-your-docker-image).

@@ -1,6 +1,6 @@
 ---
 # metadata # 
-title: Latest Release
+title: Latest
 description: Version 2.6.x 
 date: 
 # taxonomy #
@@ -14,4 +14,5 @@ cascade:
     extensionJupyterLab: 2.6.0
     mountServerBinary: 2.6.0
     release: latest  # used by sitemap.xml in themes folder
+
 ---

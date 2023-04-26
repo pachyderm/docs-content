@@ -39,7 +39,7 @@ You can filter mountable repositories by selecting a project.
 
 {{% notice tip %}}
 
-Your repo is created within the project [set to your current context](../../../build-dags/project-operations/set-project).
+Your repo is created within the project [set to your current context](/{{%release%}}/build-dags/project-operations/set-project).
 
 {{% /notice %}}
 

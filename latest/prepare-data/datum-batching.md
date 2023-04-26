@@ -13,39 +13,43 @@ mermaid: true
 
 By default, {{%productName%}} processes each datum independently. This means that your user code is called once for each datum. This can be inefficient and costly if you have a large number of small datums or if your user code is slow to start.  
 
-When you have a large number of datums, you can batch them to optimize performance. {{%productName%}} provides a `next` command that you can use to batch datums. 
+When you have a large number of datums, you can batch them to optimize performance. {{%productName%}} provides a `next datum` command that you can use to batch datums. 
 
 ## Flow Diagram
 
+
 ```mermaid
 flowchart LR
-  user_code(User Code)
-  ndsuccess(NextDatum)
-  nderror("NextDatum(error)")
-  success?{success?}
-  response(NextDatumResponse)
-  
-  cmd_err(Run cmd_err)
-  kill[Kill User Code]  
-  datum?{datum exists?}
-  retry?{retry?}
-  cmd_err?{cmd_err defined}
-  
-  user_code ==>|process datum| success?
-  response ==> user_code
-  success? -->|yes| ndsuccess =====> datum?
-  success? --> |no| nderror ==> retry?
-	
-  datum? -->|yes| response
-  datum? --> |no| kill
-  
-  retry? -->|yes| response
-  retry? --> |no| cmd_err?
+    user_code(User Code)
+    ndsuccess(NextDatum)
+    nderror("NextDatum(error)")
+    response(NextDatumResponse)
+    process_datum{process datum}
 
-  cmd_err? -->|yes| cmd_err ==> datum?
-  cmd_err? --> |no| kill
+    cmd_err(Run cmd_err)
+    kill[Kill User Code]  
+    datum?{datum exists?}
+    retry?{retry?}
+    cmd_err?{cmd_err defined}
+
+    user_code ==>ndsuccess
+    ndsuccess =====> datum?
+    datum? ==>|yes| process_datum
+    process_datum ==>|success| response
+    response ==> user_code
+
+    datum? -->|no| kill
+    process_datum -->|fail| nderror
+    nderror --> cmd_err?
+    cmd_err? -->|yes| cmd_err
+    cmd_err? -->|no|kill
+    cmd_err --> retry?
+    retry? -->|yes| response
+    retry? -->|no| kill
   
 ```
+
+
 
 ## How to Batch Datums
 
@@ -67,10 +71,7 @@ flowchart LR
    def transformation(): 
        # Your transformation code goes here
 
-   def main():
-
-       print("User code is starting")
-       subprocess.run(["pachctl", "connect", "grpc://localhost:1650"])
+   def main()
 
        print("starting while loop")
        while True:
@@ -88,6 +89,7 @@ flowchart LR
    package main
 
    import (
+       "fmt"
        "os/exec"
    )
 
@@ -96,12 +98,11 @@ flowchart LR
    }
 
    func main() {
-       cmd := exec.Command("pachctl", "connect", "grpc://localhost:1650")
-       cmd.Run()
-
+       fmt.Println("starting while loop")
        for {
            cmd := exec.Command("pachctl", "next", "datum")
            cmd.Run()
+           fmt.Println("next datum called")
            transformation()
        }
    }
@@ -110,38 +111,28 @@ flowchart LR
    {{% /wizardResult %}}
    {{% wizardResult val1="language/js"%}}
    ```s
+
    const { exec } = require('child_process');
 
    function transformation() {
-       // Your transformation code goes here
+     // Your transformation code goes here
    }
 
    function main() {
-       console.log("User code is starting");
-       exec('pachctl connect grpc://localhost:1650', (error, stdout, stderr) => {
-           if (error) {
-               console.error(`Error connecting to Pachyderm: ${error}`);
-               return;
-           }
-           console.log('Connected to Pachyderm');
+     console.log("starting while loop");
+     while (true) {
+       exec("pachctl next datum", (error, stdout, stderr) => {
+         if (error) {
+           console.error(`exec error: ${error}`);
+           return;
+         }
+         console.log("next datum called");
+         transformation();
        });
-
-       console.log("Starting while loop");
-       while (true) {
-           exec('pachctl next datum', (error, stdout, stderr) => {
-               if (error) {
-                   console.error(`Error running pachctl next: ${error}`);
-                   return;
-               }
-               console.log('Next datum called');
-               transformation();
-           });
-       }
+     }
    }
-
-   if (require.main === module) {
-       main();
-   }
+   
+   main();
 
    ```
    {{% /wizardResult %}}

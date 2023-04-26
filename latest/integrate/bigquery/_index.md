@@ -19,13 +19,13 @@ This connector ingests the result of a BigQuery query into Pachyderm. With this 
 - You must have a Google Cloud Platform account with a project that has BigQuery enabled.
 - You must download the following files:
 
-  - [dockerfile](./Dockerfile)
+  - [dockerfile](Dockerfile)
 
-  - [gbq_ingest.jsonnet](./gbq_ingest.jsonnet)
+  - [gbq_ingest.jsonnet](gbq_ingest.jsonnet)
 
-  - [gbq_ingest.py](./gbq_ingest.py)
+  - [gbq_ingest.py](gbq_ingest.py)
 
-  - [requirements.txt](./requirements.txt)
+  - [requirements.txt](requirements.txt)
 
 
 
