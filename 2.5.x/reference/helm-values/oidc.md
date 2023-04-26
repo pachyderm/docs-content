@@ -18,7 +18,7 @@ Looking for a comprehensive list of all attributes and comments? [View a complet
 
 The OIDC section of the helm chart enables you to set up authentication through upstream IDPs. To use authentication, you must have an Enterprise license. 
 
-We recommend setting up this section alongside the [Enterprise Server section](/{{% release %}}/reference/helm-values/enterprise-server) of your Helm chart so that you can easily scale multiple clusters using the same authentication configurations.
+We recommend setting up this section alongside the [Enterprise Server section](/{{%release%}}/reference/helm-values/enterprise-server) of your Helm chart so that you can easily scale multiple clusters using the same authentication configurations.
 
 ## Values 
 

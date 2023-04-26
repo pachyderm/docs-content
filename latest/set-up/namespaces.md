@@ -16,7 +16,7 @@ Often, production deploys of {{% productName %}} involve deploying {{% productNa
 * To deploy {{% productName %}} to a non-default namespace, 
 you need to add the `-n` or `--namespace` flag when deploying. 
     If the namespace does not already exist, 
-    you can have [Helm](../helm-install/) create it with `--create-namespace`.
+    you can have Helm create it with `--create-namespace`.
 
 
     ```s
@@ -30,4 +30,4 @@ you need to add the `-n` or `--namespace` flag when deploying.
         pachctl config update context --namespace pachyderm
         ```
 
-    - or [import one from Kubernetes](../import-kubernetes-context/):
+    - or [import one from Kubernetes](/{{%release%}}/set-up/import-kubernetes-context/):

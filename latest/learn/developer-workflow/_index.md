@@ -22,16 +22,16 @@ The workflow steps are shown below.
 Adding data to {{%productName%}} is the first step towards building data-driven pipelines. There are multiple ways to add data to a {{%productName%}} repository:
 
 * By using the `pachctl put file` command
-* By using a special type of pipeline, such as a [spout](../../build-dags/pipeline-spec/spout/) or [cron](../../build-dags/pipeline-spec/input-cron/) 
-* By using one of the {{%productName%}}'s [language clients](../../get-started/clients/)
+* By using a special type of pipeline, such as a [spout](/{{%release%}}/build-dags/pipeline-spec/spout/) or [cron](/{{%release%}}/build-dags/pipeline-spec/input-cron/) 
+* By using one of the {{%productName%}}'s [language clients](/{{%release%}}/get-started/clients/)
 * By using a compatible S3 client
 
-For more information, see [Load Your Data Into {{%productName%}}](../../prepare-data/ingest-data/).
+For more information, see [Load Your Data Into {{%productName%}}](/{{%release%}}/prepare-data/ingest-data/).
 
 ## Pipeline Workflow
 
-The fundamental concepts of {{%productName%}} are very powerful, but the manual build steps mentioned in the [pipeline workflow](./working-with-pipelines) can become cumbersome during rapid-iteration development cycles. We've created a few helpful developer workflows and tools to automate steps that are error-prone or repetitive:
+The fundamental concepts of {{%productName%}} are very powerful, but the manual build steps mentioned in the [pipeline workflow](working-with-pipelines) can become cumbersome during rapid-iteration development cycles. We've created a few helpful developer workflows and tools to automate steps that are error-prone or repetitive:
 
-* The [push images flag](./push-images-flag) or `--push-images` is a optional flag that can be passed to the `create` or `update` pipeline command. This option is most useful when you need to customize your Docker image or are iterating on the Docker image and code together, since it tags and pushes the image before updating the pipeline. 
-* [CI/CD Integration](./ci-cd-integration) provides a way to incorporate {{%productName%}} functions into the CI process. This is most useful when working with a complex project or for code collaboration. 
+* The [push images flag](push-images-flag) or `--push-images` is a optional flag that can be passed to the `create` or `update` pipeline command. This option is most useful when you need to customize your Docker image or are iterating on the Docker image and code together, since it tags and pushes the image before updating the pipeline. 
+* [CI/CD Integration](ci-cd-integration) provides a way to incorporate {{%productName%}} functions into the CI process. This is most useful when working with a complex project or for code collaboration. 
 

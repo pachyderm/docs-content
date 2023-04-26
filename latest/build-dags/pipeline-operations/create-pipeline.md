@@ -9,7 +9,7 @@ series:
 seriesPart:
 ---
 
-To create a [pipeline](../../../learn/glossary/pipeline), you need to define a [pipeline specification](../../../learn/glossary/pipeline-specification/) in YAML, JSON, or Jsonnet. 
+To create a [pipeline](/{{%release%}}/learn/glossary/pipeline), you need to define a [pipeline specification](/{{%release%}}/learn/glossary/pipeline-specification/) in YAML, JSON, or Jsonnet. 
 
 ## Before You Start
 
@@ -19,14 +19,14 @@ A basic pipeline must have all of the following:
 - **`transform.cmd`**: The command that executes your user code.
 - **`transform.img`**: The image that contains your user code. 
 - **`input.pfs.repo`**: The output repository for the transformed data.
-- **`input.pfs.glob`**: The [glob pattern](../../../learn/glossary/glob-pattern) used to identify the shape of [datums](../../../learn/glossary/datum).
+- **`input.pfs.glob`**: The [glob pattern](/{{%release%}}/learn/glossary/glob-pattern) used to identify the shape of [datums](/{{%release%}}/learn/glossary/datum).
 
 
 ## How to Create a Pipeline
 
 ### Via Local File 
 
-1. Define a [pipeline specification](../../pipeline-spec/) in YAML, JSON, or Jsonnet.
+1. Define a [pipeline specification](/{{%release%}}/build-dags/pipeline-spec/) in YAML, JSON, or Jsonnet.
 
 2. Pass the pipeline configuration to {{% productName %}}:
 
@@ -44,7 +44,7 @@ A basic pipeline must have all of the following:
 
 ### Via Jsonnet
 
-[Jsonnet Pipeline specs](../jsonnet-pipeline-specs/) let you create pipelines while passing a set of parameters dynamically, allowing you to reuse the baseline of a given pipeline while changing the values of chosen fields.
+[Jsonnet Pipeline specs](/{{%release%}}/build-dags/pipeline-operations/jsonnet-pipeline-specs/) let you create pipelines while passing a set of parameters dynamically, allowing you to reuse the baseline of a given pipeline while changing the values of chosen fields.
 You can, for example, create multiple pipelines out of the same jsonnet pipeline spec file while pointing each of them at different input repositories, parameterize a command line in the transform field of your pipelines, or dynamically pass various docker images to train different models on the same dataset. 
 
 For illustration purposes, in the following example, we are creating a pipeline named `edges-1` and pointing its input repository at the repo 'images':

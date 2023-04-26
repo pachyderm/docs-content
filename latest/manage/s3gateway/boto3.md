@@ -11,7 +11,7 @@ seriesPart:
 
 ## Before You Start 
 
-Before using Boto3, you need to [set up authentication credentials for your AWS account](#configure-the-aws-cli) using the AWS CLI as mentioned previously.
+Before using Boto3, you need to set up authentication credentials for your AWS accountn using the AWS CLI.
 
 ## Configuration Steps
 

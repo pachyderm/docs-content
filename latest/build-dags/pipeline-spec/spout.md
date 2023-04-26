@@ -34,7 +34,7 @@ label: optional
 ## Behavior 
 
 - Does not have a PFS input; instead, it consumes data from an outside source.
-- Can have a service added to it. See [Service](/{{% release %}}/reference/pipeline-spec/service).
+- Can have a service added to it. See [Service](/{{%release%}}/build-dags/pipeline-spec/service).
 - Its code runs continuously, waiting for new events.
 - The output repo, `pfs/out` is not directly accessible. To write into the output repo, you must to use the put file API call via any of the following:
   - `pachctl put file`

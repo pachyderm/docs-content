@@ -10,10 +10,10 @@ seriesPart:
 ---
 
 {{% notice warning %}}
-`Jsonnet pipeline specifications` is an [experimental feature](../../../manage/supported-releases/#experimental).
+`Jsonnet pipeline specifications` is an [experimental feature](/{{%release%}}/manage/supported-releases/#experimental).
 {{% /notice %}}
 
-{{% productName %}} [pipeline's specification](../../pipeline-spec) files are intuitive, simple, and language agnostic.
+{{% productName %}} [pipeline's specification](/{{%release%}}/build-dags/pipeline-spec) files are intuitive, simple, and language agnostic.
 They are, however, very static.
 
 A **jsonnet pipeline specification file** is a thin wrapping layer atop of your JSON file, 

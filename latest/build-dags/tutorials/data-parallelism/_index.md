@@ -15,7 +15,7 @@ In this tutorial, we’ll build a scalable inference data parallelism pipeline f
 ## Before You Start 
 
 - You must have a {{% productName %}} cluster up and running
-- You should have some basic familiarity with {{% productName %}} [pipeline specs](/{{%release%}}/build-dags/pipeline-spec) -- see the [Transform](/{{%release%}}/build-dags/pipeline-spec/transform), [Cross Input](/{{%release%}}/build-dags/pipeline-spec/input-cross), [Resource Limits](/{{%release%}}/build-dags/pipeline-spec/resource-limits), [Resource Requests](/{{%release%}}/build-dags/pipeline-spec/resource-requests), and [Parallelism](/{{%release%}}/build-dags/pipeline-spec/parallelism) sections in particular
+- You should have some basic familiarity with {{% productName %}} [pipeline specs](/{{%release%}}/build-dags/pipeline-spec) -- see the [Transform](/{{%release%}}/build-dags/pipeline-spec/transform), [Cross Input](/{{%release%}}/build-dags/pipeline-spec/input-cross), [Resource Limits](/{{%release%}}/build-dags/pipeline-spec/resource-limits), [Resource Requests](/{{%release%}}/build-dags/pipeline-spec/resource-request), and [Parallelism](/{{%release%}}/build-dags/pipeline-spec/parallelism) sections in particular
 
 ## Tutorial
 

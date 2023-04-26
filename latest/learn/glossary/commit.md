@@ -25,8 +25,8 @@ A commit with a more focused scope (sub-commit) represents the "Git-like" record
 
 ## Actions
 
-- [List Commits](/{{% release %}}/build-dags/provenance-operations/list-globals)
-- [Inspect Commit](/{{% release %}}/build-dags/provenance-operations/inspect-commit)
-- [Squash Commit](/{{% release %}}/build-dags/provenance-operations/squash-nonhead)
-- [Delete Commit](/{{% release %}}/build-dags/provenance-operations/delete-history)
-- [Track Downstream Provenance](/{{% release %}}/build-dags/provenance-operations/track-downstream)
+- [List Commits](/{{%release%}}/build-dags/provenance-operations/list-globals)
+- [Inspect Commit](/{{%release%}}/build-dags/provenance-operations/inspect-commit)
+- [Squash Commit](/{{%release%}}/build-dags/provenance-operations/squash-nonhead)
+- [Delete Commit](/{{%release%}}/build-dags/provenance-operations/delete-history)
+- [Track Downstream Provenance](/{{%release%}}/build-dags/provenance-operations/track-downstream)

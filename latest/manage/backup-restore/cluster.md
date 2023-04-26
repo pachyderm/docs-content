@@ -53,7 +53,7 @@ Before any manual backup:
 
   To pause {{% productName %}}:
 
-  - If you are an [**Enterprise**](../../set-up/enterprise/) user: **Run the `pachctl enterprise pause` command**. 
+  - If you are an [**Enterprise**](/{{%release%}}/set-up/enterprise/) user: **Run the `pachctl enterprise pause` command**. 
 
   - Alternatively, you can use `kubectl`:
 

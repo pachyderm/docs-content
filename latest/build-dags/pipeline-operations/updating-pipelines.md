@@ -22,7 +22,7 @@ Alternatively, you can update a pipeline using [jsonnet pipeline specification f
 ## After You Changed Your Specification File
 
 Run the `pachctl update pipeline` command to apply any change to your
-[pipeline specification](../../pipeline-spec) JSON file, such as change to the
+[pipeline specification](/{{%release%}}/build-dags/pipeline-spec) JSON file, such as change to the
 parallelism settings, change of an image tag, change of an input repository, etc...
 
 By default, a pipeline update does not trigger the reprocessing of the data
@@ -46,7 +46,7 @@ Similar to `create pipeline`, `update pipeline` with the `-f` flag can  take a U
 
 ## Using Jsonnet Pipeline Specification Files
 
-[Jsonnet pipeline specs](../jsonnet-pipeline-specs) allow you to bypass the "update-your -specification-file" step and 
+[Jsonnet pipeline specs](/{{%release%}}/build-dags/pipeline-operations/jsonnet-pipeline-specs) allow you to bypass the "update-your -specification-file" step and 
 apply your changes at once by running:
 
 ```s
@@ -90,7 +90,7 @@ This step comes in 3 flavors:
       image registry documentation. For example, if you use
       DockerHub, see [Docker Documentation](https://docs.docker.com/docker-hub/).
 
-   2. Update the [`transform.image`](../../pipeline-spec/transform) field of your pipeline spec with your new tag.
+   2. Update the [`transform.image`](/{{%release%}}/build-dags/pipeline-spec/transform) field of your pipeline spec with your new tag.
    
    {{% notice tip %}}
    Make sure to update your tag every time you re-build. Our pull policy is `IfNotPresent` (Only pull the image if it does not already exist on the node.). Failing to update your tag will result in your pipeline running on a previous version of your code.
@@ -102,7 +102,7 @@ This step comes in 3 flavors:
       pachctl update pipeline -f <pipeline.json>
       ```
 
-### **If you chose to use a [jsonnet version of your pipeline specs](../jsonnet-pipeline-specs)**
+### **If you chose to use a [jsonnet version of your pipeline specs](/{{%release%}}/build-dags/pipeline-operations/jsonnet-pipeline-specs)**
 
    * Pass the tag of your image to your jsonnet specs.
 
@@ -143,7 +143,7 @@ This step comes in 3 flavors:
 
 ### **If you use {{% productName %}} commands**
 
-   1. [Build your new image](../../../learn/developer-workflow/working-with-pipelines/#step-2-build-your-docker-image) using `docker build` (for example, in a makefile: `@docker build --platform linux/amd64 -t $(DOCKER_ACCOUNT)/$(CONTAINER_NAME) .`). No tag needed, the folllowing [`--push-images`](../../developer-workflow/push-images-flag/) flag will take care of it.
+   1. [Build your new image](/{{%release%}}/learn/developer-workflow/working-with-pipelines/#step-2-build-your-docker-image) using `docker build` (for example, in a makefile: `@docker build --platform linux/amd64 -t $(DOCKER_ACCOUNT)/$(CONTAINER_NAME) .`). No tag needed, the following [`--push-images`](/{{%release%}}/learn/developer-workflow/push-images-flag/) flag will take care of it.
 
 
    1. Run the following command:

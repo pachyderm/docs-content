@@ -13,7 +13,7 @@ label: Optional
 
 ## About
 
-[Enterprise Server](/{{% release %}}/enterprise/auth/enterprise-server) is a production management layer that centralizes  the licensing registration of multiple {{% productName %}} clusters for Enterprise use and the setup of user authorization/authentication via [OIDC](/{{% release %}}/manage/helm-values/oidc).
+[Enterprise Server](/{{%release%}}/set-up/enterprise-server) is a production management layer that centralizes  the licensing registration of multiple {{% productName %}} clusters for Enterprise use and the setup of user authorization/authentication via [OIDC](/{{%release%}}/manage/helm-values/oidc).
 
 ## Values 
 

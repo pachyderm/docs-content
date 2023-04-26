@@ -14,7 +14,7 @@ weight:
 Before you can deploy {{% productName %}}, you will need to perform the following actions:
 
 1. [Install kubectl](https://kubernetes.io/docs/tasks/tools/)
-2. [Install Helm]()
+2. Install Helm
 3. [Deploy Kubernetes on-premises](https://kubernetes.io/docs/setup/).
 4. [Deploy two Kubernetes persistent volumes for {{% productName %}} metadata storage](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#class-1). 
 5. Deploy an on-premises object store  using a storage provider like [MinIO](https://min.io), [EMC's ECS](https://www.delltechnologies.com/en-us/storage/ecs/index.htm), or [SwiftStack](https://www.swiftstack.com/) to provide S3-compatible access to your data storage.
@@ -73,5 +73,5 @@ helm upgrade pachyderm pachyderm/pachyderm -f values.yml
 
 ### 4. Install PachCTL
 
-Install [PachCTL](../../get-started/first-time-setup) and [PachCTL Auto-completion](../pachctl-autocomplete).
+Install [PachCTL](/{{%release%}}/get-started/first-time-setup) and [PachCTL Auto-completion](/{{%release%}}/set-up/pachctl-autocomplete).
    

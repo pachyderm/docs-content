@@ -16,7 +16,7 @@ Learn how to upgrade {{% productName %}} to access new features and performance 
 ## Before You Start 
 
 - Check the [release notes](https://github.com/pachyderm/pachyderm/blob/master/CHANGELOG.md) before upgrading
-- [Back up your cluster](../backup-restore/) 
+- [Back up your cluster](/{{%release%}}/manage/backup-restore/) 
 - Update your Helm chart values if applicable
 
 ## How to Upgrade {{% productName %}} 

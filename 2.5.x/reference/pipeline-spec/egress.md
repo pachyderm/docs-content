@@ -52,7 +52,7 @@ For a single-page view of all PPS options, go to the [PPS series page](/series/p
 
 The `egress` field in a {{%productName%}} Pipeline Spec is used to specify how the pipeline should write the output data. The `egress` field supports two types of outputs: writing to an object store and writing to a SQL database.
 
-Data is pushed after the user code finishes running but before the job is marked as successful. For more information, see [Egress Data to an object store](/{{% release %}}/how-tos/basic-data-operations/export-data-out-pachyderm/export-data-egress) or [Egress Data to a database](/{{% release %}}/how-tos/basic-data-operations/export-data-out-pachyderm/sql-egress/).
+Data is pushed after the user code finishes running but before the job is marked as successful. For more information, see [Egress Data to an object store](/{{%release%}}/how-tos/basic-data-operations/export-data-out-pachyderm/export-data-egress) or [Egress Data to a database](/{{%release%}}/how-tos/basic-data-operations/export-data-out-pachyderm/sql-egress/).
 
 
 This is required if the pipeline needs to write output data to an external storage system.

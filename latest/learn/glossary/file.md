@@ -11,6 +11,6 @@ seriesPart:
 --- 
 ## About 
 
-A file is a Unix filesystem object, which is a directory or file, that stores data. Unlike source code version-control systems that are most suitable for storing plain text files, you can store any type of file in {{% productName %}}, including binary files. 
+A file is a Unix filesystem object, which is a directory or file, that stores data. Unlike source code version-control systems that are most suitable for storing plain text files, you can store any type of file in {{%productName%}}, including binary files. 
 
-Often, data scientists operate with comma-separated values (CSV), JavaScript Object Notation (JSON), images, and other plain text and binary file formats. {{% productName %}} supports all file sizes and formats and applies storage optimization techniques, such as deduplication, in the background.
+Often, data scientists operate with comma-separated values (CSV), JavaScript Object Notation (JSON), images, and other plain text and binary file formats. {{%productName%}} supports all file sizes and formats and applies storage optimization techniques, such as deduplication, in the background.

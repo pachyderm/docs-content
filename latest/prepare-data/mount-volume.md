@@ -48,7 +48,7 @@ to create a diff. A diff for mounting a volume might look like this:
 This output needs to be converted into a one-liner and added to the
 pipeline spec.
 
-We will use the [OpenCV example](../../get-started/beginner-tutorial/).
+We will use the [OpenCV example](/{{%release%}}/get-started/beginner-tutorial/).
 to demonstrate this functionality.
 
 To mount a volume, complete the following steps:

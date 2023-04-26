@@ -12,7 +12,7 @@ mermaid: true
 --- 
 ## About 
 
-Provenance in {{% productName %}} refers to the tracking of the dependencies and relationships between datasets, as well as the ability to go back in time and see the state of a dataset or repository at a particular moment. {{% productName %}} models both [commit](/{{% release %}}/learn/glossary/commit) provenance and [branch](/{{% release %}}/learn/glossary/branch) provenance to represent the dependencies between data in the pipeline.
+Provenance in {{% productName %}} refers to the tracking of the dependencies and relationships between datasets, as well as the ability to go back in time and see the state of a dataset or repository at a particular moment. {{% productName %}} models both [commit](/{{%release%}}/learn/glossary/commit) provenance and [branch](/{{%release%}}/learn/glossary/branch) provenance to represent the dependencies between data in the pipeline.
 
 ### Commit Provenance
 Commit provenance refers to the relationship between commits in different repositories. If a commit in a repository is derived from a commit in another repository, the derived commit is provenant on the source commit. Capturing this relationship supports queries regarding how data in a commit was derived.

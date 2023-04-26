@@ -103,13 +103,13 @@ Note that you have the option to use GPUs for compute-intensive workloads on:
 
 Once your GPU-enabled Kubernetes cluster is set, 
 you can request a GPU tier in your pipeline specifications
-by [setting up GPU resource limits](../../build-dags/pipeline-spec/resource-request), along with its type and number of GPUs. 
+by [setting up GPU resource limits](/{{%release%}}/build-dags/pipeline-spec/resource-request), along with its type and number of GPUs. 
 
 {{% notice tip %}}
 By default, {{% productName %}} workers are spun up and wait for new input. That works great for pipelines that are processing a lot of new incoming commits. However, for lower volume of input commits, you could have your pipeline workers 'taking' the GPU resource as far as k8s is concerned, but 'idling' as far as you are concerned. 
 
  - Make sure to set the `autoscaling` field to `true` so that if your pipeline is not getting used, the worker pods get spun down and the GPU resource freed.
- - Additionally, specify how much of GPU your pipeline worker will need via the `resource_requests` fields in your [pipeline specification](../../../build-dags/pipeline-spec) with `resource_requests` <= `resource_limits`.
+ - Additionally, specify how much of GPU your pipeline worker will need via the `resource_requests` fields in your [pipeline specification](/{{%release%}}/build-dags/pipeline-spec) with `resource_requests` <= `resource_limits`.
 {{% /notice %}}
 
 Below is an example of a pipeline spec for a GPU-enabled pipeline from our [market sentiment analysis example](https://github.com/pachyderm/examples/tree/master/market-sentiment):

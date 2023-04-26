@@ -39,7 +39,7 @@ For a single-page view of all PPS options, go to the [PPS series page](/series/p
 ## Behavior 
 
 - Does not have a PFS input; instead, it consumes data from an outside source.
-- Can have a service added to it. See [Service](/{{% release %}}/reference/pipeline-spec/service).
+- Can have a service added to it. See [Service](/{{%release%}}/reference/pipeline-spec/service).
 
 ## When to Use 
 

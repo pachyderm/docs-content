@@ -136,7 +136,7 @@ helm install pachd pachyderm/pachyderm --set deployTarget=LOCAL --set proxy.enab
 ```
 {{% /wizardResult %}}
 {{% wizardResult val1="version/enterprise" %}}
-Are you using an [Enterprise](../../enterprise) trial key? If so, you can set up Enterprise {{% productName %}} locally by storing your trial key in a `license.txt` file and passing it into the following Helm command: 
+Are you using an [Enterprise](/{{%release%}}/set-up/enterprise) trial key? If so, you can set up Enterprise {{% productName %}} locally by storing your trial key in a `license.txt` file and passing it into the following Helm command: 
 
 ```s  
 helm install pachd pachyderm/pachyderm --set deployTarget=LOCAL --set proxy.enabled=true --set proxy.service.type=LoadBalancer --set pachd.enterpriseLicenseKey=$(cat license.txt) --set ingress.host=localhost

@@ -30,7 +30,7 @@ Restoring it involves re-populating the database(s) and the object store using t
 
 ## Backup A Standalone Enterprise Server
 
-Backing up and restoring an Enterprise Server is similar to the backing up and restoring of a regular [cluster](../cluster), with three slight variations:
+Backing up and restoring an Enterprise Server is similar to the backing up and restoring of a regular [cluster](/{{%release%}}/manage/backup-restore/cluster), with three slight variations:
 
 1. The name of its Kubernetes deployment is `pach-enterprise` versus `pachd` in the case of a regular cluster.
 2. The Enterprise Server does not use an Object Store.
@@ -64,6 +64,6 @@ Make sure that `pachctl` and `kubectl` are pointing to the right cluster. Check 
 
 ### Restore An Enterprise Server
 
-- [Follow the cluster restoration steps](../cluster) while skipping all tasks related to creating and populating a new object-store.
+- [Follow the cluster restoration steps](/{{%release%}}/manage/backup-restore/cluster) while skipping all tasks related to creating and populating a new object-store.
 
-- Once your cluster is up and running, check that all [your clusters are automatically registered with your new Enterprise Server](../../../set-up/enterprise-server/).
+- Once your cluster is up and running, check that all [your clusters are automatically registered with your new Enterprise Server](/{{%release%}}/set-up/enterprise-server/).

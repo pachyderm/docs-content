@@ -11,7 +11,7 @@ weight: 2
 ---
 ## Before You Start 
 
-This guide assumes that you have already tried [{{% productName %}} locally](../../local-deploy/) and have all of the following installed:
+This guide assumes that you have already tried [{{% productName %}} locally](/{{%release%}}/set-up/local-deploy/) and have all of the following installed:
 
 - [Kubectl](https://kubernetes.io/docs/tasks/tools/) 
 - Pachctl 

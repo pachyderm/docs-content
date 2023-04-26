@@ -10,7 +10,7 @@ seriesPart:
 weight: 
 ---
 
-You can defer processing operations for data in output repositories by configuring an [output branch](../../pipeline-spec/output-branch) field in your [pipeline specification](../../pipeline-spec). This allows you to accumulate data in an output branch before processing it. 
+You can defer processing operations for data in output repositories by configuring an [output branch](/{{%release%}}/build-dags/pipeline-spec/output-branch) field in your [pipeline specification](/{{%release%}}/build-dags/pipeline-spec). This allows you to accumulate data in an output branch before processing it. 
 
 ## How to Defer Processing in an Output Branch
 

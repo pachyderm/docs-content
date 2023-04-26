@@ -31,7 +31,7 @@ Let's make the `master` branch automatically trigger when there's 1 Megabyte of 
 ```s
 pachctl create repo data
 ```
-2. Create a master branch with trigger settings (see [pachctl create branch options](../../../run-commands/pachctl_create_branch#-options)) and a staging branch.
+2. Create a master branch with trigger settings (see [pachctl create branch options](/{{%release%}}/run-commands/pachctl_create_branch#options)) and a staging branch.
 
 ```s
 pachctl create branch data@master --trigger staging --trigger-size 1MB

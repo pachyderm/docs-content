@@ -16,7 +16,7 @@ more powerful by integrating it with your existing
 continuous integration and continuous deployment (CI/CD)
 workflows and systems. If you are just starting to use {{%productName%}}
 and not setting up automation for your {{%productName%}} build
-processes, see [Working with Pipelines](../working-with-pipelines).
+processes, see [Working with Pipelines](/{{%release%}}/learn/developer-workflow/working-with-pipelines).
 
 The following diagram demonstrates automated {{%productName%}}
 development workflow with CI:

@@ -10,7 +10,7 @@ seriesPart:
 directory: true 
 --- 
 
-Interested in contributing to {{% productName %}}'s code? Learn the conventions here! For setup instructions, see [Setup for Contributors](../setup).
+Interested in contributing to {{% productName %}}'s code? Learn the conventions here! For setup instructions, see [Setup for Contributors](/{{%release%}}/contribute/setup).
 
 ## Languages 
 
@@ -73,5 +73,5 @@ See the [Effective Go Style Guide](https://go.dev/doc/effective_go) for standard
 
 ## Documentation
 
-- When writing documentation, follow the [Style Guide](../docs-style-guide) conventions.
+- When writing documentation, follow the [Style Guide](/{{%release%}}/contribute/docs-style-guide) conventions.
 - PRs that have only documentation changes, such as typos, is a great place to start and we welcome your help!

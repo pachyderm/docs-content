@@ -36,7 +36,7 @@ Once deployed, {{% productName %}} stores your provided Enterprise license as th
 
 {{% /wizardResult%}}
 {{% wizardResult val1="activation-method/license-secret" %}}
-1. [Create a secret](../../../manage/secrets) for your Enterprise license.
+1. [Create a secret](/{{%release%}}/manage/secrets) for your Enterprise license.
 2. Open your Helm values.yml file. 
 3. Find the the `pachd.enterpriseLicenseKeySecretName` attribute.
 4. Input your license's secret name.

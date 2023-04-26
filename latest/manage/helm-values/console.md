@@ -12,7 +12,7 @@ label: Recommended
 --- 
 ## About 
 
-Console is the Graphical User Interface (GUI) for {{% productName %}}. Users that would prefer to navigate and manage through their project resources visually can connect to Console by authenticating against your configured [OIDC](/{{% release %}}/manage/helm-values/oidc). For personal-machine installations of {{% productName %}}, a user may access Console without authentication via [localhost](http://localhost).
+Console is the Graphical User Interface (GUI) for {{% productName %}}. Users that would prefer to navigate and manage through their project resources visually can connect to Console by authenticating against your configured [OIDC](/{{%release%}}/manage/helm-values/oidc). For personal-machine installations of {{% productName %}}, a user may access Console without authentication via [localhost](http://localhost).
 
 ## Values 
 

@@ -14,9 +14,9 @@ directory: true
 Before you read this section, make sure that you understand the concepts
 described in the following sections:
 
-- [Datum](../../learn/glossary/datum)
-- [Distributed Computing](../../learn/glossary/distributed-computing)
-- [Developer Workflow](../../learn/developer-workflow/)
+- [Datum](/{{%release%}}/learn/glossary/datum)
+- [Distributed Computing](/{{%release%}}/learn/glossary/distributed-computing)
+- [Developer Workflow](/{{%release%}}/learn/developer-workflow/)
 {{% /notice %}}
 
 If you are analyzing data that is changing over time, you might
@@ -36,7 +36,7 @@ two-week windows.
 
 ## Fixed Time Windows
 
-[Datum](../../learn/glossary/datum) is the basic
+[Datum](/{{%release%}}/learn/glossary/datum) is the basic
 unit of data partitioning in {{% productName %}}. The glob pattern property
 in the pipeline specification defines a datum. When you analyze data
 within fixed time windows, such as the data that corresponds to

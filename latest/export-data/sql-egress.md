@@ -11,10 +11,10 @@ directory: true
 ---
 
 {{% notice warning %}}
-SQL Egress is an [experimental feature](../../manage/supported-releases/#experimental).
+SQL Egress is an [experimental feature](/{{%release%}}/manage/supported-releases/#experimental).
 {{% /notice %}}
 
-{{% productName %}} already implements [egress to object storage](../export-data-egress) as an optional egress field in the pipeline specification. 
+{{% productName %}} already implements [egress to object storage](/{{%release%}}/export-data/export-data-egress) as an optional egress field in the pipeline specification. 
 Similarly, our **SQL egress** lets you seamlessly export data from a {{% productName %}}-powered pipeline output repo to an SQL database.
 
 Specifically, we help you connect to a remote database and push the content of CSV files to **interface tables**, matching their column names and casting their content into their respective SQL datatype. 
@@ -52,7 +52,7 @@ To egress data from the output commit of a pipeline to an SQL database, you will
 
 ### 1. Create a Secret 
 
-Create a **secret** containing your database password in the field `PACHYDERM_SQL_PASSWORD`. This secret is identical to the database secret of {{% productName %}} SQL Ingest. Refer to the SQL Ingest page for instructions on [how to create your secret](../../manage/secrets).
+Create a **secret** containing your database password in the field `PACHYDERM_SQL_PASSWORD`. This secret is identical to the database secret of {{% productName %}} SQL Ingest. Refer to the SQL Ingest page for instructions on [how to create your secret](/{{%release%}}/manage/secrets).
 
 ### 2. Update your Pipeline Spec
 
@@ -115,7 +115,7 @@ Append an egress section to your pipeline specification file, then fill in:
 The user code of your pipeline determines what data should be egressed and to which tables. 
 Data (in the form of CSV files) that the pipeline writes to the output repo is interpreted as tables corresponding to directories. 
 
-**Each top-level directory is named after the table you want to egress its content to**. All of the files reachable in the walk of each root directory are parsed in the given format indicated in the egress section of the pipeline specification file (CSV for now), then inserted in their corresponding table. Find more information on how to format your CSV file depending on your targeted SQL Data Type in our [SQL Ingest Formatting section](../../prepare-data/sql-ingest#formats).
+**Each top-level directory is named after the table you want to egress its content to**. All of the files reachable in the walk of each root directory are parsed in the given format indicated in the egress section of the pipeline specification file (CSV for now), then inserted in their corresponding table. Find more information on how to format your CSV file depending on your targeted SQL Data Type in our [SQL Ingest Formatting section](/{{%release%}}/prepare-data/sql-ingest#formats).
 
 {{% notice warning %}}
  - All interface tables must pre-exist before an insertion.

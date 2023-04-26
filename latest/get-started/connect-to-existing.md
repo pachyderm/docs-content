@@ -13,7 +13,7 @@ directory: true
 
 ## Before You Start
 
-- This guide assumes you have already [installed {{% productName %}}](../first-time-setup).
+- This guide assumes you have already [installed {{% productName %}}](/{{%release%}}/get-started/first-time-setup).
 
 ## How to Log in to a Cluster via IdP
 

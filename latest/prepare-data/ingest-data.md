@@ -50,7 +50,7 @@ At any time, run `pachctl put file --help` for the complete list of flags availa
 ## Filepath Formats
 
 {{% notice tip %}}
-{{% productName %}} uses `*?[]{}!()@+^` as reserved characters for [glob patterns](../../learn/glossary/glob-pattern). Because of this, you cannot use these characters in your filepath.
+{{% productName %}} uses `*?[]{}!()@+^` as reserved characters for [glob patterns](/{{%release%}}/learn/glossary/glob-pattern). Because of this, you cannot use these characters in your filepath.
 {{%/notice %}}
 
 In {{% productName %}}, you specify the path to file by using the `-f` option. A path

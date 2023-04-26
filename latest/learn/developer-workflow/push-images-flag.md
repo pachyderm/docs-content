@@ -30,5 +30,5 @@ The usage of the flag is shown below:
    ```
 
 {{% notice note %}}
-For more details on the `--push-images` flag, see [Update a Pipeline](../../../build-dags/pipeline-operations/updating-pipelines/#update-the-code-in-a-pipeline).
+For more details on the `--push-images` flag, see [Update a Pipeline](/{{%release%}}/build-dags/pipeline-operations/updating-pipelines/#update-the-code-in-a-pipeline).
 {{% /notice%}}

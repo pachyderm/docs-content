@@ -15,7 +15,7 @@ In this tutorial, we’ll build a scalable inference pipeline for breast cancer 
 ## Before You Start 
 
 - You must have a {{% productName %}} cluster up and running
-- You should have some basic familiarity with {{% productName %}} [pipeline specs](/{{%release%}}/build-dags/pipeline-spec) -- see the [Transform](/{{%release%}}/build-dags/pipeline-spec/transform), [Join Input](/{{%release%}}/build-dags/pipeline-spec/input-join), [Resource Limits](/{{%release%}}/build-dags/pipeline-spec/resource-limits), [Resource Requests](/{{%release%}}/build-dags/pipeline-spec/resource-requests), and [Parallelism](/{{%release%}}/build-dags/pipeline-spec/parallelism) sections in particular
+- You should have some basic familiarity with {{% productName %}} [pipeline specs](/{{%release%}}/build-dags/pipeline-spec) -- see the [Transform](/{{%release%}}/build-dags/pipeline-spec/transform), [Join Input](/{{%release%}}/build-dags/pipeline-spec/input-join), [Resource Limits](/{{%release%}}/build-dags/pipeline-spec/resource-limits), [Resource Requests](/{{%release%}}/build-dags/pipeline-spec/resource-request), and [Parallelism](/{{%release%}}/build-dags/pipeline-spec/parallelism) sections in particular
 
 ## Tutorial
 
@@ -45,7 +45,7 @@ Our Docker image's [user code](/{{%release%}}/learn/glossary/user-code) for this
 
 In task parallelism, we separate out the CPU-based preprocessing and GPU-related tasks, saving us cloud costs when scaling. By separating inference into multiple tasks, each task pipeline can be updated independently, allowing ease of model deployment and collaboration.
 
-We can split the `run.sh` script used in the previous tutorial ([Data Parallelism Pipeline](/{{%release%}}/build-dags/tutorials/data-parallelism#data-parallelism-pipeline-user-code-assets)) into 5 separate processing steps (4 already defined in the script + a visualization step) which will become Pachyderm pipelines, so each can be scaled separately. 
+We can split the `run.sh` script used in the previous tutorial ([Data Parallelism Pipeline](/{{%release%}}/build-dags/tutorials/data-parallelism)) into 5 separate processing steps (4 already defined in the script + a visualization step) which will become Pachyderm pipelines, so each can be scaled separately. 
 
 <p align="center">
   <img width="300" src="/images/task-parallelism/bc_diagram_resources.png">

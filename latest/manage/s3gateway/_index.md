@@ -20,12 +20,12 @@ The S3 gateway presents each branch from every {{% productName %}} repository as
 - The `master.foo.bar` bucket corresponds to the `master` branch of the repo `foo` within the `bar` project.
 - The `be97b64f110643389f171eb64697d4e1.master.foo.bar` bucket corresponds to the commit `be97b64f110643389f171eb64697d4e1` on the `master` branch of the `foo` repo within the `bar` project.
 
-If [auth is enabled](../../set-up/authorization/), credentials must be passed with
-each S3 gateway endpoint as mentioned in the [**S3 Client configuration steps**](./configure-s3client/#set-your-credentials).
+If [auth is enabled](/{{%release%}}/set-up/authorization/), credentials must be passed with
+each S3 gateway endpoint as mentioned in [**S3 Client configuration**](configure-s3client/).
 
 ### Command Examples 
 
-The following command examples assume that you have upgraded to use the [embedded proxy](../../manage/helm-values/proxy), which will become mandatory in future releases.
+The following command examples assume that you have upgraded to use the [embedded proxy](/{{%release%}}/manage/helm-values/proxy), which will become mandatory in future releases.
 
 #### Put Data Into {{% productName %}} Repo
 

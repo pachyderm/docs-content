@@ -101,7 +101,7 @@ a public or private image registry, such as
 Alternatively, you can use the {{%productName%}}'s built-in functionality to
 tag, and push images by running the `pachctl update pipeline` command
 with the `--push-images` flag. For more information, see
-[Update a pipeline](../../../build-dags/pipeline-operations/updating-pipelines).
+[Update a pipeline](/{{%release%}}/build-dags/pipeline-operations/updating-pipelines).
 
 1. Log in to an image registry.
 
@@ -142,7 +142,7 @@ require you to specify all of these parameters.
 Spout pipelines, for example, do not have input repos.
 {{% /notice %}}
 
-Check our reference [pipeline specification](../../../build-dags/pipeline-spec) page, for a list of all available fields in a pipeline specification file.
+Check our reference [pipeline specification](/{{%release%}}/build-dags/pipeline-spec) page, for a list of all available fields in a pipeline specification file.
 
 You can store your pipeline specifications locally or in a remote location, such
 as a GitHub repository.

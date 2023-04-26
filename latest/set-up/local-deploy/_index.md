@@ -16,7 +16,7 @@ A local installation means that you will allocate resources from your local mach
 
 ## Which Guide Should I Use?
 
-Both the Docker Desktop and Minikube installation guides support **MacOS**, **Windows**, and **Linux**. If this is your first time using Kubernetes, try [Docker Desktop](./docker) --- if you are experienced with Kubernetes, you can deploy using a variety of solutions not listed here ([KinD](https://kind.sigs.k8s.io/docs/user/quick-start/), [Rancher Desktop](https://docs.rancherdesktop.io/getting-started/installation/), [Podman](https://podman.io/getting-started/installation), etc.).
+Both the Docker Desktop and Minikube installation guides support **MacOS**, **Windows**, and **Linux**. If this is your first time using Kubernetes, try [Docker Desktop](docker) --- if you are experienced with Kubernetes, you can deploy using a variety of solutions not listed here ([KinD](https://kind.sigs.k8s.io/docs/user/quick-start/), [Rancher Desktop](https://docs.rancherdesktop.io/getting-started/installation/), [Podman](https://podman.io/getting-started/installation), etc.).
 
 
 {{% notice tip %}}

@@ -20,11 +20,11 @@ To delete all of your pipelines (be careful with this feature), use the addition
 When you delete a pipeline: 
 
 * Kubernetes deletes all resources associated with the pipeline - pods (if any), services, and replication controllers.
-* {{% productName %}} deletes the user [output repository](../../../learn/glossary/output-repo) **with all its data** as well as the system `meta` (stats) and `spec` (historical versions of the pipeline specification file) repositories. 
+* {{% productName %}} deletes the user [output repository](/{{%release%}}/learn/glossary/output-repo) **with all its data** as well as the system `meta` (stats) and `spec` (historical versions of the pipeline specification file) repositories. 
 
 
 {{% notice note %}}
-If you are using [{{% productName %}} authorization features](../../../set-up/authorization), only authorized users will be able to delete a given pipeline. In particular, they will have to be `repoOwner` of the output repo of the pipeline (i.e., have created the pipeline) or `clusterAdmin`. 
+If you are using [{{% productName %}} authorization features](/{{%release%}}/set-up/authorization), only authorized users will be able to delete a given pipeline. In particular, they will have to be `repoOwner` of the output repo of the pipeline (i.e., have created the pipeline) or `clusterAdmin`. 
 {{% /notice %}}
 
 You can **use the `--keep-repo` flag to preserve the output repo** with all its branches. However, important job metadata will still be deleted (including all historical versions of the pipeline specification file).

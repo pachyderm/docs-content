@@ -27,7 +27,7 @@ There are a few minor differences to note when deploying an Enterprise Server wh
 kubectl create namespace enterprise-server
 kubectl config set-context --current --namespace=enterprise-server
 ```
-1. Create a Helm chart `enterprise-server-values.yml` file for your enterprise server (see [Helm Chart Reference Guide](../../../manage/helm-values/enterprise-server/)). 
+1. Create a Helm chart `enterprise-server-values.yml` file for your enterprise server (see [Helm Chart Reference Guide](/{{%release%}}/manage/helm-values/enterprise-server/)). 
 2. Deploy the Enterprise Server cluster:
 ```s
 helm install enterprise-server pachyderm/pachyderm --f enterprise-server-values.yml

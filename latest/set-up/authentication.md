@@ -12,7 +12,7 @@ directory: true
 ---
 ## Before You Start 
 
-- You must be using [Enterprise](../enterprise) to set up authentication and authorization. 
+- You must be using [Enterprise](/{{%release%}}/set-up/enterprise) to set up authentication and authorization. 
 
 ## Activate User Access Management
 

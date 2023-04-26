@@ -17,8 +17,8 @@ whole job.
 
 {{% notice tip %}}
 Before you read this section, make sure that you understand such
-concepts as [Datum](../../learn/glossary/datum) and
-[Pipeline](../../learn/glossary/pipeline/).
+concepts as [Datum](/{{%release%}}/learn/glossary/datum) and
+[Pipeline](/{{%release%}}/learn/glossary/pipeline/).
 {{% /notice %}}
 
 When {{% productName %}} processes your data, it breaks it up into units of

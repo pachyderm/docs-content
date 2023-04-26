@@ -75,7 +75,7 @@ The pipeline writes the output to a PFS repo (`/pfs/out/`) created with the same
 
 ### 3. Upload the Housing Dataset
 
-1. Download our first example data set, [housing-simplified-1.csv](./data/housing-simplified-1.csv). 
+1. Download our first example data set, [housing-simplified-1.csv](data/housing-simplified-1.csv). 
 2. Add the data to your repo. Processing begins automatically --- anytime you add new data, the pipeline will re-run.
 
    ```s
@@ -128,7 +128,7 @@ Now let's update our dataset with additional examples.
 
 ### 5. Update the Dataset
 
-1. Download our second example data set, [housing-simplified-2.csv](./data/housing-simplified-2.csv).
+1. Download our second example data set, [housing-simplified-2.csv](data/housing-simplified-2.csv).
 2. Add the data to your repo.
 
    ```s

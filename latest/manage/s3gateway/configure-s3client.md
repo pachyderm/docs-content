@@ -12,7 +12,7 @@ seriesPart:
 ## Before You Start 
 
 - You must configure an S3 Client (Boto3, AWS, MinIO)
-- You must have [authentication](../../../set-up/authentication/) enabled.
+- You must have [authentication](/{{%release%}}/set-up/authentication/) enabled.
 
 
 ## How to Set Your Credentials
@@ -49,5 +49,5 @@ For example, you could set both values to `"x"`.
 {{</stack>}}
 
 ## Robot Users
-Depending on your use case, it might make sense to pass the credentials of a robot-user or another type of user altogether. Refer to the [RBAC](../../../set-up/rbac) for more information.
+Depending on your use case, it might make sense to pass the credentials of a robot-user or another type of user altogether. Refer to the [RBAC](/{{%release%}}/set-up/rbac) for more information.
 

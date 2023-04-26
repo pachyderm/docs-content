@@ -54,7 +54,7 @@ label: required
 |stdin| Passes an array of lines to your command on `stdin`.|
 |err_cmd| Passes a command executed on failed datums.|
 |err_stdin| Passes an array of lines to your error command on `stdin`.|
-|env| Enables a key-value map of [environment variables](/{{% release %}}/deploy-manage/deploy/environment-variables/) that {{% productName %}} injects into the container. |
+|env| Enables a key-value map of [environment variables](/{{%release%}}/set-up/environment-variables/) that {{% productName %}} injects into the container. |
 |secrets| Passes an array of secrets to embed sensitive data. |
 |image_pull_secrets| Passes an array of secrets that are mounted before the containers are created.|
 |accept_return_code| Passes an array of return codes that are considered acceptable when your Docker command exits.|

@@ -16,7 +16,7 @@ This section will walk you through the steps to enable your EKS cluster to retri
 
 ## Before You Start
 
-Make sure you have completed the steps found in the [AWS deployment instructions](../aws) before proceeding.
+Make sure you have completed the steps found in the [AWS deployment instructions](/{{%release%}}/set-up/cloud-deploy/aws) before proceeding.
 
 ## 1. Install The AWS Secrets and Configuration Provider (ASCP)
 

@@ -165,7 +165,7 @@ Update the following values as follows:
  `ISSUER`, `CLIENT-ID`, `CLIENT-SECRET`.
 {{% /notice %}}
 
-Check the [list of all available helm values](../../../manage/helm-values/) at your disposal in our reference documentation or on [Github](https://github.com/pachyderm/pachyderm/blob/{{% majorMinorVersion %}}/etc/helm/pachyderm/values.yaml).
+Check the [list of all available helm values](/{{%release%}}/manage/helm-values/) at your disposal in our reference documentation or on [Github](https://github.com/pachyderm/pachyderm/blob/{{% majorMinorVersion %}}/etc/helm/pachyderm/values.yaml).
 
 {{% notice warning %}} 
 - **When enterprise is enabled through Helm, auth is automatically activated** (i.e., you do not need to run `pachctl auth activate`) and a `pachyderm-auth` k8s secret is created containing a rootToken key. Use `{{"kubectl get secret pachyderm-auth -o go-template='{{.data.rootToken | base64decode }}'"}}` to retrieve it and save it where you see fit.
@@ -181,7 +181,7 @@ However, **this secret is only used when configuring through helm**:
 To enable the Enterprise Server on an existing cluster:
 
 - Activate your enterprise key and authentication
-- then proceed to [configuring IDP integrations](../../../set-up/connectors).
+- then proceed to [configuring IDP integrations](/{{%release%}}/set-up/connectors).
 
 ## 2. Activate Enterprise Licensing And Enable Authentication
 

@@ -51,7 +51,7 @@ pachctl license list-clusters
 ```s
 pachctl auth activate --enterprise
 ```
-1. [Set up your Identity Provider (IdP)](../../connectors/).
+1. [Set up your Identity Provider (IdP)](/{{%release%}}/set-up/connectors/).
 
 
 

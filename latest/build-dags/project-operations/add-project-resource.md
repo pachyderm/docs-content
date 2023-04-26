@@ -22,7 +22,7 @@ weight: 3
 
 {{% wizardResult val1="tool/pachctl-cli"%}}
 
-There are two main ways to add a resource to a project, depending on whether or not the project has been [set to your current pachyderm context](../set-project).
+There are two main ways to add a resource to a project, depending on whether or not the project has been [set to your current pachyderm context](/{{%release%}}/build-dags/project-operations/set-project).
 
 **Add Resource to Unset Project:**
 
@@ -54,4 +54,4 @@ pachctl create repo bar
 
 {{</stack>}}
 
-For more information about [Repos](../../../learn/glossary/input-repo).
+For more information about [Repos](/{{%release%}}/learn/glossary/input-repo).
