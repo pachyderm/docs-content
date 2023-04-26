@@ -11,7 +11,7 @@ weight: 2
 beta: false 
 ---
 
-In this tutorial, we'll build a multi-pipeline DAG to train a regression model on housing market data to predict the value of homes in Boston. This tutorial builds on the skills learned from the previous tutorials, ([Standard ML Pipeline]({{< ref "basic-ml" >}} "Standard ML Pipeline") and [AutoML Pipeline]({{< ref "auto-ml" >}} "AutoML Pipeline Tutorial")). 
+In this tutorial, we'll build a multi-pipeline DAG to train a regression model on housing market data to predict the value of homes in Boston. This tutorial builds on the skills learned from the previous tutorials, ([Standard ML Pipeline](/{{%release%}}/build-dags/tutorials/basic-ml) and [AutoML Pipeline](/{{%release%}}/build-dags/tutorials/auto-ml). 
 
 ## Before You Start 
 - You must have {{% productName %}} installed and running on your cluster
