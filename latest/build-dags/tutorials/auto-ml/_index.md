@@ -37,7 +37,7 @@ Our Docker image's [user code](/{{%release%}}/learn/glossary/user-code) for this
    ```s
    pachctl create repo csv-data
    ```
-4. Upload the [housing-simplified-1.csv](/{{%release%}}/build-dags/tutorials/basic-ml/data/housing-simplified-1.csv) file to the repo.
+4. Upload the [housing-simplified-1.csv](housing-simplified-1.csv) file to the repo.
    ```s
    pachctl put file csv_data@master:housing-simplified.csv -f /path/to/housing-simplified-1.csv
    ```
@@ -85,7 +85,7 @@ Our Docker image's [user code](/{{%release%}}/learn/glossary/user-code) for this
 
 ### 3. Upload the Dataset
 
-1. Update the dataset using [housing-simplified-2.csv](/{{%release%}}/build-dags/tutorials/basic-ml/data/housing-simplified-2.csv); {{% productName %}} retrains the model automatically.
+1. Update the dataset using [housing-simplified-2.csv](housing-simplified-2.csv); {{% productName %}} retrains the model automatically.
 
 ```bash
 pachctl put file csv_data@master:housing-simplified.csv -f /path/to/housing-simplified-2.csv

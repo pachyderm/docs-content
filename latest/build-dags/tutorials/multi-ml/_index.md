@@ -162,7 +162,7 @@ After the model is trained we output some visualizations to evaluate its effecti
    ```
 
 ### 3. Upload the Dataset
-1. Download our first example data set, [housing-simplified-1.csv](/{{%release%}}/build-dags/tutorials/multi-ml/data/housing-simplified-1.csv). 
+1. Download our first example data set, [housing-simplified-1.csv](housing-simplified-1.csv). 
 2. Add the data to your repo.
    ```s
    pachctl put file csv_data@master:housing-simplified.csv -f /path/to/housing-simplified-1.csv
@@ -176,7 +176,7 @@ Once the pipeline has finished, download the results.
 
 ### 5. Update the Dataset
 
-1. Download our second example data set, [housing-simplified-2.csv](/{{%release%}}/build-dags/tutorials/multi-ml/data/housing-simplified-2.csv). 
+1. Download our second example data set, [housing-simplified-2.csv](housing-simplified-2.csv). 
 2. Add the data to your repo.
    ```s
    pachctl put file csv_data@master:housing-simplified.csv -f /path/to/housing-simplified-2.csv
