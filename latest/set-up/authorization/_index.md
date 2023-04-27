@@ -7,6 +7,7 @@ date:
 tags: 
 series:
 seriesPart:
+weight: 4
 ---
 
 You can use {{% productName %}}'s Role-Based Access Control (RBAC) model to configure authorization for your users. Users can be assigned roles that grant certain permissions for interacting with {{% productName %}}'s resources. 

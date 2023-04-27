@@ -1,13 +1,13 @@
 ---
 # metadata # 
-title: Connect
+title: Connection
 description: Learn how to connect to your organization's publicly exposed cluster.
 date: 
 # taxonomy #
 tags: ["load balancer", "tcp", "pachctl connect", "ip"]
 series:
 seriesPart:
-weight: 
+weight: 5
 directory: true
 ---
 

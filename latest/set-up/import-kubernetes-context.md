@@ -8,6 +8,7 @@ tags: ["kubernetes"]
 series:
 seriesPart:
 directory: true
+weight: 6
 --- 
 
 After you have deployed {{%productName%}}, the Pachyderm context is not created. Therefore, **you need to manually create a new {{%productName%}} context with the embedded current Kubernetes context and activate that context**.

@@ -7,7 +7,7 @@ date:
 tags: 
 series:
 seriesPart:
-weight: 
+weight: 4
 directory: true
 ---
 

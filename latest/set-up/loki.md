@@ -7,7 +7,7 @@ date:
 tags: ["loki", "logs"]
 series:
 seriesPart:
-weight: 
+weight: 7
 directory: true 
 --- 
 

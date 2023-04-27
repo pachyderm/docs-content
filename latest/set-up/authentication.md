@@ -7,7 +7,7 @@ date:
 tags: 
 series:
 seriesPart:
-weight: 1
+weight: 4
 directory: true
 ---
 ## Before You Start 

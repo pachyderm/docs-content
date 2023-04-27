@@ -7,7 +7,7 @@ date:
 tags:  ["deployment"]
 series:
 seriesPart: 
-weight:
+weight: 20
 ---
 
 ## What is a Local Installation? 

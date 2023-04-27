@@ -7,7 +7,7 @@ date:
 tags:  ["deployment"]
 series:
 seriesPart: 
-weight:
+weight: 20
 ---
 ## Before you start 
 

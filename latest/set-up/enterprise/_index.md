@@ -7,7 +7,7 @@ date:
 tags: 
 series:
 seriesPart:
-weight: 
+weight: 10
 ---
 
 <!-- {{% notice tip %}} 

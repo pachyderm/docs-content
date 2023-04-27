@@ -8,6 +8,7 @@ tags: ["configuration", "permissions"]
 series:
 seriesPart:
 directory: true 
+weight: 5
 --- 
 
 {{% productName %}} has support for Kubernetes Role-Based Access

@@ -8,6 +8,7 @@ tags: ["s3"]
 series:
 seriesPart:
 directory: true 
+weight: 10
 ---
 
 This section outlines the operations exposed by {{% productName %}}'s HTTP API [S3 Gateway](/{{%release%}}/manage/s3gateway/). 
