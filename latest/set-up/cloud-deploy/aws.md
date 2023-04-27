@@ -153,27 +153,35 @@ pod/postgres-0                                 1/1     Running     0          2m
 
 ## 7. Connect to Cluster
 
-{{< stack type="wizard">}}
+You'll need your organization's cluster URL ([proxy.host](/{{%release%}}/manage/helm-values/proxy)) value to connect. 
 
-{{% wizardRow id="Method" %}}
-{{% wizardButton option="HTTP" state="active" %}}
-{{% wizardButton option="HTTPS (TLS)" %}}
-{{% /wizardRow %}}
-
-{{% wizardResults %}}
-{{% wizardResult val1="method/http" %}}
+1. Run the following command to get your cluster URL:
 ```s
-pachctl connect http://pachyderm.<your-proxy.host-value>
+kubectl get services | grep pachyderm-proxy | awk '{print $4}'
 ```
-{{% /wizardResult %}}
-{{% wizardResult val1="method/https-tls" %}}
-```s
-pachctl connect https://pachyderm.<your-proxy.host-value>
-```
-{{% /wizardResult %}}
-{{% /wizardResults%}}
+2. Connect to your cluster:
+   
+   {{< stack type="wizard">}}
 
-{{</stack>}}
+   {{% wizardRow id="Method" %}}
+   {{% wizardButton option="HTTP" state="active" %}}
+   {{% wizardButton option="HTTPS (TLS)" %}}
+   {{% /wizardRow %}}
+
+   {{% wizardResults %}}
+   {{% wizardResult val1="method/http" %}}
+   ```s
+   pachctl connect http://pachyderm.<your-proxy.host-value>
+   ```
+   {{% /wizardResult %}}
+   {{% wizardResult val1="method/https-tls" %}}
+   ```s
+   pachctl connect https://pachyderm.<your-proxy.host-value>
+   ```
+   {{% /wizardResult %}}
+   {{% /wizardResults%}}
+
+   {{</stack>}}
 
 
 

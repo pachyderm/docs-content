@@ -175,6 +175,13 @@ pachd:
     uploadConcurrencyLimit: 100  # object storage uploads per Pachd instance; analogous to  --upload-concurrency-limit argument to pachctl
     compactionShardSizeThreshold: 0 # the total size of the files in a shard.
     compactionShardCountThreshold: 0 # the total number of files in a shard.
+    memoryThreshold: 0
+    levelFactor: 0
+    maxFanIn: 10
+    maxOpenFileSets: 50
+    # diskCacheSize and memoryCacheSize are defined in units of 8 Mb chunks. The default is 100 chunks which is 800 Mb.
+    diskCacheSize: 100
+    memoryCacheSize: 100
 
   ppsWorkerGRPCPort: 1080
   storageGCPeriod: 0 # the number of seconds between PFS's garbage collection cycles; <0 disables garbage collection; 0 defaults to pachyderm's internal config.
@@ -202,12 +209,19 @@ pachd:
       name: "pachyderm-worker"  # sets the name of the worker service account; analogous to --worker-service-account argument to pachctl.
   rbac:
     create: true # indicates whether RBAC resources should be created; analogous to --no-rbac to pachctl
+  # Set up default resources for pipelines that don't include any requests or limits.  The values
+  # are k8s resource quantities, so "1Gi", "2", etc.  Set to "0" to disable setting any defaults.
+  defaultPipelineCPURequest: ""
+  defaultPipelineMemoryRequest: ""
+  defaultPipelineStorageRequest: ""
+  defaultSidecarCPURequest: ""
+  defaultSidecarMemoryRequest: ""
+  defaultSidecarStorageRequest: ""
 ```
 {{% /wizardResult %}}
 
 
 {{% wizardResult val1="options/without-secrets" %}}
-
 
 ```s
 pachd:
@@ -462,6 +476,14 @@ pachd:
     # If either criteria is met, a shard will be created.
     compactionShardSizeThreshold: 0
     compactionShardCountThreshold: 0
+    memoryThreshold: 0
+    levelFactor: 0
+    maxFanIn: 10
+    maxOpenFileSets: 50
+    # diskCacheSize and memoryCacheSize are defined in units of 8 Mb chunks. The default is 100 chunks which is 800 Mb.
+    diskCacheSize: 100
+  
+
   ppsWorkerGRPCPort: 1080
   # the number of seconds between PFS's garbage collection cycles.
   # if this value is set to 0, it will default to pachyderm's internal configuration.
@@ -499,6 +521,14 @@ pachd:
     # Setting it to false is analogous to passing --no-rbac to pachctl
     # deploy.
     create: true
+  # Set up default resources for pipelines that don't include any requests or limits.  The values
+  # are k8s resource quantities, so "1Gi", "2", etc.  Set to "0" to disable setting any defaults.
+  defaultPipelineCPURequest: ""
+  defaultPipelineMemoryRequest: ""
+  defaultPipelineStorageRequest: ""
+  defaultSidecarCPURequest: ""
+  defaultSidecarMemoryRequest: ""
+  defaultSidecarStorageRequest: ""
 ```
 {{% /wizardResult %}}
 {{% /wizardResults %}}

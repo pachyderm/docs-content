@@ -40,13 +40,35 @@ It also installs {{% productName %}} into the cluster.
 
 ## 3. Connect to Cluster
 
-1. Run the following:
+You'll need your organization's cluster URL ([proxy.host](/{{%release%}}/manage/helm-values/proxy)) value to connect. 
+
+1. Run the following command to get your cluster URL:
 ```s
-pachctl config import-kube local --overwrite
-pachctl config set active-context local
-pachctl port-forward
+kubectl get services | grep pachyderm-proxy | awk '{print $4}'
 ```
-2. Open your browser at [localhost:4000](https://localhost:4000).
+2. Connect to your cluster:
+   
+   {{< stack type="wizard">}}
+
+   {{% wizardRow id="Method" %}}
+   {{% wizardButton option="HTTP" state="active" %}}
+   {{% wizardButton option="HTTPS (TLS)" %}}
+   {{% /wizardRow %}}
+
+   {{% wizardResults %}}
+   {{% wizardResult val1="method/http" %}}
+   ```s
+   pachctl connect http://pachyderm.<your-proxy.host-value>
+   ```
+   {{% /wizardResult %}}
+   {{% wizardResult val1="method/https-tls" %}}
+   ```s
+   pachctl connect https://pachyderm.<your-proxy.host-value>
+   ```
+   {{% /wizardResult %}}
+   {{% /wizardResults%}}
+
+   {{</stack>}}
 
 {{% notice tip %}}
 
