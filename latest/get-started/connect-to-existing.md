@@ -14,6 +14,7 @@ directory: true
 ## Before You Start
 
 - This guide assumes you have already [installed {{% productName %}}](/{{%release%}}/get-started/first-time-setup).
+- You should know the URL of your organization's {{%productName%}} instance, located in your Helm Chart at [proxy.host](/{{%release%}}/manage/helm-values/proxy/#values).
 
 ## How to Log in to a Cluster via IdP
 
