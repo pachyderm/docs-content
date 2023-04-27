@@ -71,7 +71,45 @@ aws s3 ls
    kubectl get storageclass
    ```
 
-## 4. Create a Values.yaml
+## 4. Set up an RDS PostgreSQL Instance
+
+By default, {{%productName%}} runs with a bundled version of PostgreSQL. 
+For production environments, it is **strongly recommended that you disable the bundled version and use an RDS PostgreSQL instance**. 
+
+{{% notice warning %}}
+[Aurora Serverless PostgreSQL](https://aws.amazon.com/rds/aurora/serverless/) is not supported.
+{{% /notice %}}
+ 
+1. In the RDS console, create a database **in the region matching your {{%productName%}} cluster**. 
+2. Choose the **PostgreSQL** engine.
+3. Select a PostgreSQL version >= 13.3.
+4. Configure your DB instance as follows:
+
+| SETTING | Recommended value|
+|:----------------|:--------------------------------------------------------|
+| *DB instance identifier* | Fill in with a unique name across all of your DB instances in the current region.|
+| *Master username* | Choose your Admin username.|
+| *Master password* | Choose your Admin password.|
+| *DB instance class* | The standard default should work. You can change the instance type later on to optimize your performances and costs. |
+| *Storage type* and *Allocated storage*| If you select **io1**, keep the 100 GiB default size. <br> Read more [information on Storage for RDS on Amazon's website](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html). |
+| *Storage autoscaling* | If your workload is cyclical or unpredictable, enable storage autoscaling to allow RDS to scale up your storage when needed. |
+| *Standby instance* | We highly recommend creating a standby instance for production environments.|
+| *VPC* | **Select the VPC of your Kubernetes cluster**. Attention: After a database is created, you can't change its VPC. <br> Read more on [VPCs and RDS on Amazon documentation](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_VPC.html).| 
+| *Subnet group* | Pick a Subnet group or Create a new one. <br> Read more about [DB Subnet Groups on Amazon documentation](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_VPC.WorkingWithRDSInstanceinaVPC.html#USER_VPC.Subnets). |
+| *Public access* | Set the Public access to `No` for production environments. |
+| *VPC security group* | Create a new VPC security group and open the postgreSQL port or use an existing one. |
+| *Password authentication* or *Password and IAM database authentication* | Choose one or the other. |
+| *Database name* | In the *Database options* section, enter {{%productName%}}'s Database name (We are using `{{% productName %}}`in this example.) and click *Create database* to create your PostgreSQL service. Your instance is running. <br>Warning: If you do not specify a database name, Amazon RDS does not create a database.|
+
+   {{% notice info %}}
+  **Standalone Clusters**
+
+   If you plan to deploy a standalone cluster and not use a separate [Enteprise Server](/{{%release%}}/set-up/enterprise-server), you must create a second database named `dex` in your RDS instance for {{%productName%}}'s authentication service.  Read more about [dex on PostgreSQL in Dex's documentation](https://dexidp.io/docs/storage/#postgres). 
+   {{% /notice %}}
+   
+5. Create a new user account and **grant it full CRUD permissions to both `{{% productName %}}`and (when applicable) `dex` databases**. Read about managing PostgreSQL users and roles in this [blog](https://aws.amazon.com/blogs/database/managing-postgresql-users-and-roles/). {{%productName%}} will use the same username to connect to `{{% productName %}}`as well as to `dex`. 
+
+## 5. Create a Values.yaml
 
 {{< stack type="wizard" >}}
 {{% wizardRow id="version" %}}
@@ -82,52 +120,95 @@ aws s3 ls
 {{% wizardResults %}}
 {{% wizardResult val1="version/community-edition" %}}
 ```yaml
- deployTarget: "AMAZON"
- proxy:
+global:
+  postgresql:
+    postgresqlUsername: "username"
+    postgresqlPassword: "password" 
+    # The name of the database should be {{%productName%}}'s ("pachyderm" in the example above), not "dex" 
+    # See also 
+    # postgresqlExistingSecretName: "<yoursecretname>"
+    postgresqlDatabase: "databasename"
+    # The postgresql database host to connect to. Defaults to postgres service in subchart
+    postgresqlHost: "RDS CNAME"
+    # The postgresql database port to connect to. Defaults to postgres server in subchart
+    postgresqlPort: "5432"
+
+postgresql:
+  # turns off the install of the bundled postgres.
+  # If not using the built in Postgres, you must specify a Postgresql
+  # database server to connect to in global.postgresql
+  enabled: false
+
+deployTarget: "AMAZON"
+
+proxy:
   enabled: true
   service:
     type: LoadBalancer
- pachd:
-   storage:
-     amazon:
-       bucket: "bucket_name"      
-       # this is an example access key ID taken from https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html (AWS Credentials)
-       id: "AKIAIOSFODNN7EXAMPLE"                
-       # this is an example secret access key taken from https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html  (AWS Credentials)          
-       secret: "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
-       region: "us-east-2"
-   externalService:
-     enabled: true
+
+pachd:
+  storage:
+    amazon:
+      bucket: "bucket_name"      
+      # this is an example access key ID taken from https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html (AWS Credentials)
+      id: "AKIAIOSFODNN7EXAMPLE"                
+      # this is an example secret access key taken from https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html  (AWS Credentials)          
+      secret: "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
+      region: "us-east-2"
+  externalService:
+    enabled: true
+
  console:
    enabled: true
 ```
 {{% /wizardResult %}}
 {{% wizardResult val1="version/enterprise" %}}
 ```yaml
- deployTarget: "AMAZON"
- proxy:
+global:
+  postgresql:
+    postgresqlUsername: "username"
+    postgresqlPassword: "password" 
+    # The name of the database should be {{%productName%}}'s ("pachyderm" in the example above), not "dex" 
+    # See also 
+    # postgresqlExistingSecretName: "<yoursecretname>"
+    postgresqlDatabase: "databasename"
+    # The postgresql database host to connect to. Defaults to postgres service in subchart
+    postgresqlHost: "RDS CNAME"
+    # The postgresql database port to connect to. Defaults to postgres server in subchart
+    postgresqlPort: "5432"
+
+postgresql:
+  # turns off the install of the bundled postgres.
+  # If not using the built in Postgres, you must specify a Postgresql
+  # database server to connect to in global.postgresql
+  enabled: false
+
+deployTarget: "AMAZON"
+
+proxy:
   enabled: true
   service:
     type: LoadBalancer
- pachd:
-   storage:
-     amazon:
-       bucket: "bucket_name"                
-       # this is an example access key ID taken from https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html (AWS Credentials)
-       id: "AKIAIOSFODNN7EXAMPLE"                
-       # this is an example secret access key taken from https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html  (AWS Credentials)          
-       secret: "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
-       region: "us-east-2"
-   # Enterprise key 
-   enterpriseLicenseKey: "YOUR_ENTERPRISE_TOKEN"
- console:
-   enabled: true
+  
+pachd:
+  storage:
+    amazon:
+      bucket: "bucket_name"                
+      # this is an example access key ID taken from https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html (AWS Credentials)
+      id: "AKIAIOSFODNN7EXAMPLE"                
+      # this is an example secret access key taken from https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html  (AWS Credentials)          
+      secret: "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
+      region: "us-east-2"
+# Enterprise key 
+  enterpriseLicenseKey: "YOUR_ENTERPRISE_TOKEN"
+console:
+  enabled: true
 ```
 {{% /wizardResult %}}
 {{% /wizardResults %}}
 {{< /stack>}}
 
-## 5. Configure Helm
+## 6. Configure Helm
 
 Run the following to add the {{% productName %}} repo to Helm:
 ```s
@@ -135,7 +216,7 @@ helm repo add pach https://helm.pachyderm.com
 helm repo update
 helm install pachd pach/pachyderm -f my_pachyderm_values.yaml 
 ```
-## 6. Verify Installation 
+## 7. Verify Installation 
 
 1. In a new terminal, run the following command to check the status of your pods:
  ```s
@@ -151,7 +232,7 @@ pod/postgres-0                                 1/1     Running     0          2m
  ```
 2. Re-run this command after a few minutes if `pachd` is not ready.
 
-## 7. Connect to Cluster
+## 8. Connect to Cluster
 
 You'll need your organization's cluster URL ([proxy.host](/{{%release%}}/manage/helm-values/proxy)) value to connect. 
 
@@ -182,7 +263,6 @@ kubectl get services | grep pachyderm-proxy | awk '{print $4}'
    {{% /wizardResults%}}
 
    {{</stack>}}
-
 
 
 {{% notice note %}}
