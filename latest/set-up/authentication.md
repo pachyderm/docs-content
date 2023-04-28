@@ -10,9 +10,11 @@ seriesPart:
 weight: 4
 directory: true
 ---
+
+{{%productName%}} has an embedded Open ID Connect based on Dex, allowing for vendor-neutral authentication using your existing credentials from various back-ends. [Refer to our compatible connectors.](/{{%release%}}/set-up/connectors/)
 ## Before You Start 
 
-- You must be using [Enterprise](/{{%release%}}/set-up/enterprise) to set up authentication and authorization. 
+- You must be using [Enterprise](/{{%release%}}/set-up/enterprise) to set up authentication and [authorization]({{%release%}}/set-up/authorization). 
 
 ## Activate User Access Management
 
