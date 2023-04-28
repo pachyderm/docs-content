@@ -122,6 +122,7 @@ For production environments, it is **strongly recommended that you disable the b
 ```yaml
 global:
   postgresql:
+    postgresqlAuthType: "scram-sha-256" # use "md5" if using postgresql < 14
     postgresqlUsername: "username"
     postgresqlPassword: "password" 
     # The name of the database should be {{%productName%}}'s ("pachyderm" in the example above), not "dex" 
@@ -166,6 +167,7 @@ pachd:
 ```yaml
 global:
   postgresql:
+    postgresqlAuthType: "scram-sha-256" # use "md5" if using postgresql < 14
     postgresqlUsername: "username"
     postgresqlPassword: "password" 
     # The name of the database should be {{%productName%}}'s ("pachyderm" in the example above), not "dex" 
