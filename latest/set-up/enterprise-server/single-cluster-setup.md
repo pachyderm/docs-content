@@ -9,7 +9,7 @@ series:
 seriesPart:
 ---
 
-You can register an existing single-cluster {{% productName %}} instance to the embedded [Enterprise Server](/{{%release%}}/set-up/enterprise-server) that comes included with `pachd` using the steps in this guide. Doing so enables you to also activate [authentication](/{{%release%}}/set-up/authentication) and set up [IdP connectors](/{{%release%}}/set-up/connectors). 
+You can register an existing single-cluster {{% productName %}} instance to the embedded [Enterprise Server](/{{%release%}}/set-up/enterprise-server) that comes included with `pachd` using the steps in this guide. Doing so enables you to also activate [authentication](/{{%release%}}/set-up/connectors) and set up [IdP connectors](/{{%release%}}/set-up/connectors). 
 
 ## Before You Start
 

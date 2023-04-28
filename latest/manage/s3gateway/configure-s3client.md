@@ -12,7 +12,7 @@ seriesPart:
 ## Before You Start 
 
 - You must configure an S3 Client (Boto3, AWS, MinIO)
-- You must have [authentication](/{{%release%}}/set-up/authentication/) enabled.
+- You must have [authentication](/{{%release%}}/set-up/connectors/) enabled.
 
 
 ## How to Set Your Credentials
