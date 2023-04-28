@@ -57,9 +57,9 @@ Update your values.yaml with your enterprise license key and auth configurations
    ```
 {{% /notice %}}
 
-#### values.yaml for a stand-alone Enterprise Server as part of a multi-cluster deployment
+#### values.yaml for a standalone Enterprise Server as part of a multi-cluster deployment
 		
-	Deploying a stand-alone enterprise server requires setting the helm parameter `enterpriseServer.enabled` to `true` and the `pachd.enabled` to `false`. 
+Deploying a standalone enterprise server requires setting the helm parameter `enterpriseServer.enabled` to `true` and the `pachd.enabled` to `false`. 
 
 ```yaml
 	enterpriseServer:

@@ -104,10 +104,12 @@ For production environments, it is **strongly recommended that you disable the b
    {{% notice info %}}
   **Standalone Clusters**
 
-   If you plan to deploy a standalone cluster and not use a separate [Enteprise Server](/{{%release%}}/set-up/enterprise-server), you must create a second database named `dex` in your RDS instance for {{%productName%}}'s authentication service.  Read more about [dex on PostgreSQL in Dex's documentation](https://dexidp.io/docs/storage/#postgres). 
+   If you are deploying a standalone cluster, you must create a second database named `dex` in your RDS instance for {{%productName%}}'s authentication service. Read more about [dex on PostgreSQL in Dex's documentation](https://dexidp.io/docs/storage/#postgres). 
+   
+   Multi-cluster setups use [Enterprise Server](/{{%release%}}/set-up/enterprise-server) to handle authentication, so you do not need to create a `dex` database.
    {{% /notice %}}
    
-5. Create a new user account and **grant it full CRUD permissions to both `{{% productName %}}`and (when applicable) `dex` databases**. Read about managing PostgreSQL users and roles in this [blog](https://aws.amazon.com/blogs/database/managing-postgresql-users-and-roles/). {{%productName%}} will use the same username to connect to `{{% productName %}}`as well as to `dex`. 
+1. Create a new user account and **grant it full CRUD permissions to both `{{% productName %}}`and (when applicable) `dex` databases**. Read about managing PostgreSQL users and roles in this [blog](https://aws.amazon.com/blogs/database/managing-postgresql-users-and-roles/). {{%productName%}} will use the same username to connect to `{{% productName %}}`as well as to `dex`. 
 
 ## 5. Create a Values.yaml
 
