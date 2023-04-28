@@ -81,14 +81,10 @@ Use the [S3_ENDPOINT](/{{%release%}}/set-up/environment-variables/#pipeline-work
   aws --endpoint-url $S3_ENDPOINT s3 cp /tmp/result/ s3://out --recursive
   ```
 
-### If Authentication is Enabled
+## Triggering External Pipelines
 
-If auth is enabled on the {{% productName %}} cluster, credentials must be passed with
-each S3 gateway endpoint.
+If Authentication is enabled, you can access the `AWS_ACCESS_KEY_ID`  and `AWS_SECRET_ACCESS_KEY` env vars in your pipeline user code to forward your pipeline's auth credentials to third-party tools like Spark.
 
-{{% notice warning %}}
-The `Access Key` must equal the `Secret Key`. 
-{{% /notice %}}
 
 ---
 

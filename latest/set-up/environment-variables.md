@@ -50,7 +50,7 @@ environment variables.
 | `PEER_PORT`             | `653`             | The port for pachd-to-pachd communication. |
 | `NAMESPACE`            | `deafult`         | The namespace in which {{% productName %}} is deployed. |
 
-### pachd Configuration
+### PachD Configuration
 
 | Environment Variable       | Default Value | Description |
 | -------------------------- | ------------- | ----------- |
@@ -80,12 +80,9 @@ environment variables.
 
 ## Pipeline Worker Environment Variables
 
-{{% productName %}} defines many environment variables for each {{% productName %}}
-worker that runs your pipeline code. You can print the list
-of environment variables into your {{% productName %}} logs by including
-the `env` command into your pipeline specification. For example,
-if you have an `images` repository, you can configure your pipeline
-specification like this:
+{{% productName %}} defines many environment variables for each {{% productName %}} worker that runs your pipeline code. You can print the list
+of environment variables into your {{% productName %}} logs by including the `env` command into your pipeline specification. For example,
+if you have an `images` repository, you can configure your pipeline specification like this:
 
 ```json
 {
@@ -106,8 +103,7 @@ specification like this:
 }
 ```
 
-Run this pipeline and upon completion you can view the log with
-variables by running the following command:
+Run this pipeline and, upon completion, you can view the log with variables by running the following command:
 
 ```s
 pachctl logs --pipeline=env
@@ -119,15 +115,14 @@ KUBERNETES_PORT=tcp://10.96.0.1:443
 ...
 ```
 
-You should see a lengthy list of variables. Many of them define
-internal networking parameters that most probably you will not
-need to use.
+You should see a lengthy list of variables. Many of them define internal networking parameters that most probably you will not need to use.
 
-Most users find the following environment variables
-particularly useful:
+Most users find the following environment variables particularly useful:
 
 | Environment Variable       | Description |
-| -------------------------- | --------------------------------------------- |
+| -- | -- |
+|`AWS_ACCESS_KEY_ID`| The ID that contains your AWS access key; requires `pfs.s3: true` or `s3_out:true` in your pipeline spec.|
+|`AWS_SECRET_ACCESS_KEY`| The name of the secret which contains your AWS access key; requires `pfs.s3: true` or `s3_out:true` in your pipeline spec.|
 | `PACH_JOB_ID`              | The ID of the current job. For example, <br> `PACH_JOB_ID=8991d6e811554b2a8eccaff10ebfb341`. |
 | `PACH_DATUM_ID`             | The ID of the current Datum.|
 |`PACH_DATUM_<input.name>_JOIN_ON`|Exposes the `join_on` match to the pipeline's job. |
