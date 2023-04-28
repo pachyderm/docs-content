@@ -1,6 +1,6 @@
 ---
 # metadata # 
-title: TSL (SSL, HTTPS)
+title: TLS (SSL, HTTPS)
 description: Learn how to deploy a cluster with Transport Layer Security (TLS).
 date: 
 # taxonomy #
