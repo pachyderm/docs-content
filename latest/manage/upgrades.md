@@ -35,24 +35,27 @@ brew tap pachyderm/tap && brew install pachyderm/tap/pachctl@{{% majorMinorNumbe
 
 {{% wizardResults %}} 
 {{% wizardResult val1="deploy-method/production"%}}
-Note that the repo name input (`pachyderm`) must match the name you provided upon first install.
+Note that the repo name input (`pachd`) must match the name you provided upon first install.
+You can also pass in a specific version (e.g., `--version x.x.0-rc.1`) if you are testing a pre-released version of {{%productName%}}.
+
 ```s
 helm repo update
-helm upgrade pachyderm pachyderm/pachyderm -f my_pachyderm_values.yaml  --set proxy.enabled=true --set proxy.service.type=LoadBalancer 
+helm upgrade pachd pachyderm/pachyderm -f my_pachyderm_values.yaml  --set proxy.enabled=true --set proxy.service.type=LoadBalancer 
 ```
 {{% /wizardResult %}}
 
 {{% wizardResult val1="deploy-method/local-personal-machine"%}}
-Note that the repo name input (`pachyderm`) must match the name you provided upon first install.
+Note that the repo name input (`pachd`) must match the name you provided upon first install. You can also pass in a specific version (e.g., `--version x.x.0-rc.1`) if you are testing a pre-released version of {{%productName%}}.
+
 ```s
 helm repo update
-helm upgrade pachyderm pachyderm/pachyderm --set deployTarget=LOCAL --set proxy.enabled=true --set proxy.service.type=LoadBalancer 
+helm upgrade pachd pachyderm/pachyderm --set deployTarget=LOCAL --set proxy.enabled=true --set proxy.service.type=LoadBalancer 
 ```
 {{% /wizardResult %}} 
 {{% /wizardResults %}} 
 {{< /stack >}}
 
-3. Verify that the installation was successful by running `pachctl version`:  
+1. Verify that the installation was successful by running `pachctl version`:  
   
 ```s  
 pachctl version 

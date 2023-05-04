@@ -35,6 +35,13 @@ detection](https://en.wikipedia.org/wiki/Edge_detection) pipeline that processes
 
 ### 1. Create a Project 
 
+{{< stack type="wizard" >}}
+{{% wizardRow id="create-project"%}}
+{{% wizardButton option="CLI" state="active" %}}
+{{% wizardButton option="Console" %}}
+{{% /wizardRow %}}
+{{% wizardResults%}}
+{{% wizardResult val1="create-project/cli" %}}
 To keep our work organized, we're going to create a project named `openCV` and set it to our currently active context. 
 
 ```s
@@ -59,10 +66,33 @@ pachctl config get context local
 #   "project": "openCV"
 # }
 ```
+{{% /wizardResult %}}
+{{% wizardResult val1="create-project/console" %}}
+
+1. Open a tab in your browser and go to [localhost](http://localhost).
+2. Select **Create Project**.
+3. Provide details for the following values:
+   - Name 
+   - Description
+4. Select **Create**.
+
+{{% /wizardResult %}}
+{{% /wizardResults%}}
+{{</stack>}}
+
+
 
 ### 2. Create a Repo
 
 Repos should be dedicated to a single source of data such as log messages from a particular service, a users table, or training data. 
+
+{{< stack type="wizard" >}}
+{{% wizardRow id="create-repo"%}}
+{{% wizardButton option="CLI" state="active" %}}
+{{% wizardButton option="Console" %}}
+{{% /wizardRow %}}
+{{% wizardResults%}}
+{{% wizardResult val1="create-repo/cli" %}}
 
 ```s
 pachctl create repo images
@@ -76,6 +106,20 @@ pachctl list repo
 # NAME   CREATED       SIZE (MASTER) ACCESS LEVEL
 # images 4 seconds ago ≤ 0B          [repoOwner]
 ```
+ 
+{{% /wizardResult %}}
+{{% wizardResult val1="create-repo/console" %}}
+
+1. In Console, select **View Project**.
+2. Select **Create Your First Repo**.
+3. Provide details for the following values:
+   - Name 
+   - Description
+4. Select **Create**.
+
+{{% /wizardResult %}}
+{{% /wizardResults%}}
+{{</stack>}}
 
 
 ### 3. Add Data
@@ -83,7 +127,14 @@ In {{% productName %}}, you write data to an explicit `commit`. Commits are immu
 snapshots of your data which give {{% productName %}} its version control properties.
 You can add, remove, or update `files` in a given commit.
 
-#### Upload an Image File
+{{< stack type="wizard" >}}
+{{% wizardRow id="add-data"%}}
+{{% wizardButton option="CLI" state="active" %}}
+{{% wizardButton option="Console" %}}
+{{% /wizardRow %}}
+{{% wizardResults%}}
+{{% wizardResult val1="add-data/cli" %}}
+
 
 We're going to use the `pachctl put file` command, along with the `-f` flag, to upload an image.
 
@@ -115,8 +166,27 @@ pachctl list file images@master
 # NAME         TYPE SIZE     
 # /liberty.png file 57.27KiB
 ```
+ 
+{{% /wizardResult %}}
+{{% wizardResult val1="add-data/console" %}}
 
-#### View Image 
+1. From your Project's DAG view in console, select your repo. 
+2. Select the upload icon from the slideout menu.
+3. Complete one of the following:
+   - Provide the path of the file on your local machine.
+   - Select **Browse Files** and choose the file from your local machine.
+   - Drag-and-drop the file. 
+4. Select **Done**.
+
+{{% /wizardResult %}}
+{{% /wizardResults%}}
+{{</stack>}}
+
+
+
+#### Bonus: View Image 
+
+You can view the files you've uploaded in the Console or in your Terminal.
 
 #### In Terminal
 
@@ -147,7 +217,7 @@ pachctl get file images@master:liberty.png | display
 
 
 
-##### In Console 
+#### In Console 
 
 In your Console, click on the `images` repo to visualize its commit and inspect its file:
 
@@ -191,7 +261,7 @@ Take a moment to review the details of the provided pipeline spec so that you'll
 ```
 
 
-The following extract is the Python code run in this pipeline:
+The following extract is the Python [User Code]({{%release%}}/learn/glossary/user-code) run in this pipeline:
 
 ```python
 import cv2
