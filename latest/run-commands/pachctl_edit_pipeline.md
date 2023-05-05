@@ -16,7 +16,7 @@ pachctl edit pipeline <pipeline> [flags]
       --editor string    Editor to use for modifying the manifest.
   -h, --help             help for pipeline
   -o, --output string    Output format: "json" or "yaml" (default "json")
-      --project string   Project of pipeline to edit. (default "joins")
+      --project string   Project of pipeline to edit. (default "openCV")
       --reprocess        If true, reprocess datums that were already processed by previous version of the pipeline.
 ```
 

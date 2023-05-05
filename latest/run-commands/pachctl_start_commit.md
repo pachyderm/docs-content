@@ -31,7 +31,7 @@ $ pachctl start commit test@fork -p XXX
   -h, --help                 help for commit
   -m, --message string       A description of this commit's contents
   -p, --parent string        The parent of the new commit, unneeded if branch is specified and you want to use the previous head of the branch as the parent.
-      --project string       Project in which repo is located. (default "joins")
+      --project string       Project in which repo is located. (default "openCV")
 ```
 
 ### Options inherited from parent commands

@@ -15,7 +15,7 @@ pachctl update repo <repo> [flags]
 ```
   -d, --description string   A description of the repo.
   -h, --help                 help for repo
-      --project string       Project in which repo is located. (default "joins")
+      --project string       Project in which repo is located. (default "openCV")
 ```
 
 ### Options inherited from parent commands

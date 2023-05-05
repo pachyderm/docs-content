@@ -14,7 +14,7 @@ pachctl delete file <repo>@<branch-or-commit>:<path/in/pfs> [flags]
 
 ```
   -h, --help             help for file
-      --project string   Project in which repo is located. (default "joins")
+      --project string   Project in which repo is located. (default "openCV")
   -r, --recursive        Recursively delete the files in a directory.
 ```
 

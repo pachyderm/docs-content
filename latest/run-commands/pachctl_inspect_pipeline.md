@@ -16,7 +16,7 @@ pachctl inspect pipeline <pipeline> [flags]
       --full-timestamps   Return absolute timestamps (as opposed to the default, relative timestamps).
   -h, --help              help for pipeline
   -o, --output string     Output format when --raw is set: "json" or "yaml" (default "json")
-      --project string    Project of pipeline to inspect. (default "joins")
+      --project string    Project of pipeline to inspect. (default "openCV")
       --raw               Disable pretty printing; serialize data structures to an encoding such as json or yaml
 ```
 

@@ -39,7 +39,7 @@ $ pachctl list job -p foo -i bar@YYY
 ### Options
 
 ```
-      --all-projects        Show jobs from all projects.
+  -A, --all-projects        Show jobs from all projects.
   -x, --expand              Show one line for each sub-job and include more columns
       --full-timestamps     Return absolute timestamps (as opposed to the default, relative timestamps).
   -h, --help                help for job
@@ -48,7 +48,7 @@ $ pachctl list job -p foo -i bar@YYY
       --no-pager            Don't pipe output into a pager (i.e. less).
   -o, --output string       Output format when --raw is set: "json" or "yaml" (default "json")
   -p, --pipeline string     Limit to jobs made by pipeline.
-      --project string      Limit to jobs in the project specified. (default "joins")
+      --project string      Limit to jobs in the project specified. (default "openCV")
       --raw                 Disable pretty printing; serialize data structures to an encoding such as json or yaml
       --state stringArray   Return only sub-jobs with the specified state. Can be repeated to include multiple states
 ```

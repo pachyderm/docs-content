@@ -17,7 +17,7 @@ pachctl create pipeline [flags]
   -f, --file string       A JSON file (url or filepath) containing one or more pipelines. "-" reads from stdin (the default behavior). Exactly one of --file and --jsonnet must be set.
   -h, --help              help for pipeline
       --jsonnet string    BETA: A Jsonnet template file (url or filepath) for one or more pipelines. "-" reads from stdin. Exactly one of --file and --jsonnet must be set. Jsonnet templates must contain a top-level function; strings can be passed to this function with --arg (below)
-      --project string    The project in which to create the pipeline. (default "joins")
+      --project string    The project in which to create the pipeline. (default "openCV")
   -p, --push-images       If true, push local docker images into the docker registry.
   -r, --registry string   The registry to push images to. (default "index.docker.io")
   -u, --username string   The username to push images as.

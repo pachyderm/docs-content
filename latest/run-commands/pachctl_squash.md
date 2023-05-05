@@ -1,10 +1,10 @@
 ## pachctl squash
 
-Squash an existing {{% productName %}} resource.
+Squash an existing Pachyderm resource.
 
 ### Synopsis
 
-Squash an existing {{% productName %}} resource.
+Squash an existing Pachyderm resource.
 
 ### Options
 

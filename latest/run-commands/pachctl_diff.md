@@ -1,10 +1,10 @@
 ## pachctl diff
 
-Show the differences between two {{% productName %}} resources.
+Show the differences between two Pachyderm resources.
 
 ### Synopsis
 
-Show the differences between two {{% productName %}} resources.
+Show the differences between two Pachyderm resources.
 
 ### Options
 

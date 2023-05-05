@@ -14,11 +14,11 @@ pachctl delete pipeline (<pipeline>|--all) [flags]
 
 ```
       --all              delete all pipelines
-      --all-projects     delete pipelines from all projects; only valid with --all
+  -A, --all-projects     delete pipelines from all projects; only valid with --all
   -f, --force            delete the pipeline regardless of errors; use with care
   -h, --help             help for pipeline
       --keep-repo        delete the pipeline, but keep the output repo data around (the pipeline cannot be recreated later with the same name unless the repo is deleted)
-      --project string   project containing project (default "joins")
+      --project string   project containing project (default "openCV")
 ```
 
 ### Options inherited from parent commands

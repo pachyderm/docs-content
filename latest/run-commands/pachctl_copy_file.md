@@ -40,7 +40,7 @@ $ pachctl copy file srcRepo@master:/file destRepo@master:/file --src-project pro
   -a, --append                Append to the existing content of the file, either from previous commits or previous calls to 'put file' within this commit.
       --dest-project string   Project in which the destination repo is located. This overrides --project.
   -h, --help                  help for file
-      --project string        Project in which both source and destination repos are located. (default "joins")
+      --project string        Project in which both source and destination repos are located. (default "openCV")
       --src-project string    Project in which the source repo is located. This overrides --project.
 ```
 

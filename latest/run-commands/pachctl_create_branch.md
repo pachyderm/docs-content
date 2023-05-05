@@ -15,7 +15,7 @@ pachctl create branch <repo>@<branch> [flags]
 ```
       --head string           The head of the newly created branch. Either pass the commit with format: <branch-or-commit>, or fully-qualified as <repo>@<branch>=<id>
   -h, --help                  help for branch
-      --project string        Project in which repo is located. (default "joins")
+      --project string        Project in which repo is located. (default "openCV")
   -p, --provenance []string   The provenance for the branch. format: <repo>@<branch> (default [])
   -t, --trigger string        The branch to trigger this branch on.
       --trigger-all           Only trigger when all conditions are met, rather than when any are met.

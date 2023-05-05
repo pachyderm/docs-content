@@ -1,10 +1,10 @@
 ## pachctl auth get-config
 
-Retrieve {{% productName %}}'s current auth configuration
+Retrieve Pachyderm's current auth configuration
 
 ### Synopsis
 
-Retrieve {{% productName %}}'s current auth configuration
+Retrieve Pachyderm's current auth configuration
 
 ```
 pachctl auth get-config [flags]

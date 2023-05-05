@@ -17,7 +17,7 @@ pachctl draw pipeline [flags]
   -c, --commit string     Commit at which you would to draw the DAG
       --edge-height int   Number of vertical lines spanned by each edge (default 5)
   -h, --help              help for pipeline
-      --project string    Project containing pipelines. (default "joins")
+      --project string    Project containing pipelines. (default "openCV")
 ```
 
 ### Options inherited from parent commands

@@ -100,7 +100,7 @@ validator: {}
 ```
   -b, --branch string     The branch to use for generating the load.
   -h, --help              help for pfs-load-test
-      --project string    Project in which repo is located. (default "joins")
+      --project string    Project in which repo is located. (default "openCV")
   -s, --seed int          The seed to use for generating the load.
       --state-id string   The ID of the base state to use for the load.
 ```

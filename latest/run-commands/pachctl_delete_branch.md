@@ -15,7 +15,7 @@ pachctl delete branch <repo>@<branch> [flags]
 ```
   -f, --force            remove the branch regardless of errors; use with care
   -h, --help             help for branch
-      --project string   Project in which repo is located. (default "joins")
+      --project string   Project in which repo is located. (default "openCV")
 ```
 
 ### Options inherited from parent commands

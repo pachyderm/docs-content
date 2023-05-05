@@ -1,10 +1,10 @@
 ## pachctl diff file
 
-Return a diff of two file trees stored in {{% productName %}}
+Return a diff of two file trees stored in Pachyderm
 
 ### Synopsis
 
-Return a diff of two file trees stored in {{% productName %}}
+Return a diff of two file trees stored in Pachyderm
 
 ```
 pachctl diff file <new-repo>@<new-branch-or-commit>:<new-path> [<old-repo>@<old-branch-or-commit>:<old-path>] [flags]
@@ -32,7 +32,7 @@ $ pachctl diff file foo@master:path1 bar@master:path2
       --name-only             Show only the names of changed files.
       --no-pager              Don't pipe output into a pager (i.e. less).
       --old-project string    Project in which second, older repo is located.
-      --project string        Project in which first repo is located. (default "joins")
+      --project string        Project in which first repo is located. (default "openCV")
   -s, --shallow               Don't descend into sub directories.
 ```
 

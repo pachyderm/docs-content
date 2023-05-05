@@ -1,10 +1,10 @@
 ## pachctl run cron
 
-Run an existing {{% productName %}} cron pipeline now
+Run an existing Pachyderm cron pipeline now
 
 ### Synopsis
 
-Run an existing {{% productName %}} cron pipeline now
+Run an existing Pachyderm cron pipeline now
 
 ```
 pachctl run cron <pipeline> [flags]
@@ -22,7 +22,7 @@ pachctl run cron <pipeline> [flags]
 
 ```
   -h, --help             help for cron
-      --project string   Project containing pipeline. (default "joins")
+      --project string   Project containing pipeline. (default "openCV")
 ```
 
 ### Options inherited from parent commands

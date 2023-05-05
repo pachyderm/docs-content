@@ -1,10 +1,10 @@
 ## pachctl version
 
-Print {{% productName %}} version information.
+Print Pachyderm version information.
 
 ### Synopsis
 
-Print {{% productName %}} version information.
+Print Pachyderm version information.
 
 ```
 pachctl version [flags]

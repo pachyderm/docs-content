@@ -1,10 +1,10 @@
 ## pachctl delete
 
-Delete an existing {{% productName %}} resource.
+Delete an existing Pachyderm resource.
 
 ### Synopsis
 
-Delete an existing {{% productName %}} resource.
+Delete an existing Pachyderm resource.
 
 ### Options
 

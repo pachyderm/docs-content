@@ -1,10 +1,10 @@
 ## pachctl update
 
-Change the properties of an existing {{% productName %}} resource.
+Change the properties of an existing Pachyderm resource.
 
 ### Synopsis
 
-Change the properties of an existing {{% productName %}} resource.
+Change the properties of an existing Pachyderm resource.
 
 ### Options
 

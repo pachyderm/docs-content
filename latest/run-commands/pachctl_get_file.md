@@ -41,7 +41,7 @@ $ pachctl get file foo@master:XXX -r
       --offset int       The number of bytes in the file to skip ahead when reading.
   -o, --output string    The path where data will be downloaded.
       --progress         {true|false} Whether or not to print the progress bars. (default true)
-      --project string   Project in which repo is located. (default "joins")
+      --project string   Project in which repo is located. (default "openCV")
   -r, --recursive        Download multiple files, or recursively download a directory.
       --retry            {true|false} Whether to append the missing bytes to an existing file. No-op if the file doesn't exist.
 ```

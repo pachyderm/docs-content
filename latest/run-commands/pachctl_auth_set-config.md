@@ -1,10 +1,10 @@
 ## pachctl auth set-config
 
-Set {{% productName %}}'s current auth configuration
+Set Pachyderm's current auth configuration
 
 ### Synopsis
 
-Set {{% productName %}}'s current auth configuration
+Set Pachyderm's current auth configuration
 
 ```
 pachctl auth set-config [flags]

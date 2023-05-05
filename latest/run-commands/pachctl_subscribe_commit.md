@@ -34,7 +34,7 @@ $ pachctl subscribe commit test@master --new
       --new               subscribe to only new commits created from now on
       --origin string     only return commits of a specific type
   -o, --output string     Output format when --raw is set: "json" or "yaml" (default "json")
-      --project string    Project in which repo is located. (default "joins")
+      --project string    Project in which repo is located. (default "openCV")
       --raw               Disable pretty printing; serialize data structures to an encoding such as json or yaml
 ```
 

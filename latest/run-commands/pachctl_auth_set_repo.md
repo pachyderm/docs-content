@@ -14,7 +14,7 @@ pachctl auth set repo <repo> [role1,role2 | none ] <subject> [flags]
 
 ```
   -h, --help             help for repo
-      --project string   The project containing the repo. (default "joins")
+      --project string   The project containing the repo. (default "openCV")
 ```
 
 ### Options inherited from parent commands

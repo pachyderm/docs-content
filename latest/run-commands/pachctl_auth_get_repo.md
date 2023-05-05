@@ -14,7 +14,7 @@ pachctl auth get repo <repo> [flags]
 
 ```
   -h, --help             help for repo
-      --project string   The project containing the repo. (default "joins")
+      --project string   The project containing the repo. (default "openCV")
 ```
 
 ### Options inherited from parent commands

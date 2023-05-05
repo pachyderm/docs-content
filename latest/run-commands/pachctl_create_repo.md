@@ -15,7 +15,7 @@ pachctl create repo <repo> [flags]
 ```
   -d, --description string   A description of the repo.
   -h, --help                 help for repo
-      --project string       The project to create the repo in. (default "joins")
+      --project string       The project to create the repo in. (default "openCV")
 ```
 
 ### Options inherited from parent commands

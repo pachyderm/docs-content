@@ -14,7 +14,7 @@ pachctl start pipeline <pipeline> [flags]
 
 ```
   -h, --help             help for pipeline
-      --project string   Project containing pipeline. (default "joins")
+      --project string   Project containing pipeline. (default "openCV")
 ```
 
 ### Options inherited from parent commands

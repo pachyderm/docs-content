@@ -1,10 +1,10 @@
 ## pachctl finish
 
-Finish a {{% productName %}} resource.
+Finish a Pachyderm resource.
 
 ### Synopsis
 
-Finish a {{% productName %}} resource.
+Finish a Pachyderm resource.
 
 ### Options
 

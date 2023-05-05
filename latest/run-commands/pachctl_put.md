@@ -1,10 +1,10 @@
 ## pachctl put
 
-Insert data into {{% productName %}}.
+Insert data into Pachyderm.
 
 ### Synopsis
 
-Insert data into {{% productName %}}.
+Insert data into Pachyderm.
 
 ### Options
 

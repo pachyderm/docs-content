@@ -1,10 +1,10 @@
 ## pachctl enterprise
 
-Enterprise commands enable Enterprise features
+Enterprise commands enable Pachyderm Enterprise features
 
 ### Synopsis
 
-Enterprise commands enable Enterprise features
+Enterprise commands enable Pachyderm Enterprise features
 
 ### Options
 

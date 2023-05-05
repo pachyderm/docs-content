@@ -1,10 +1,10 @@
 ## pachctl auth
 
-Auth commands manage access to data in a {{% productName %}} cluster
+Auth commands manage access to data in a Pachyderm cluster
 
 ### Synopsis
 
-Auth commands manage access to data in a {{% productName %}} cluster
+Auth commands manage access to data in a Pachyderm cluster
 
 ### Options
 

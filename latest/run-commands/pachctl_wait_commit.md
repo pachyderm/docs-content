@@ -24,7 +24,7 @@ $ pachctl wait commit foo@XXX -b bar@baz
       --full-timestamps   Return absolute timestamps (as opposed to the default, relative timestamps).
   -h, --help              help for commit
   -o, --output string     Output format when --raw is set: "json" or "yaml" (default "json")
-      --project string    Project containing commit. (default "joins")
+      --project string    Project containing commit. (default "openCV")
       --raw               Disable pretty printing; serialize data structures to an encoding such as json or yaml
 ```
 

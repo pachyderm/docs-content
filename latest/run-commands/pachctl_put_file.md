@@ -44,7 +44,7 @@ $ pachctl put file repo@branch -i file
 
 # Put several files or URLs that are listed at URL.
 # NOTE this URL can reference local files, so it could cause you to put sensitive
-# files into your {{% productName %}} cluster.
+# files into your Pachyderm cluster.
 $ pachctl put file repo@branch -i http://host/path
 ```
 
@@ -52,14 +52,14 @@ $ pachctl put file repo@branch -i http://host/path
 
 ```
   -a, --append              Append to the existing content of the file, either from previous commits or previous calls to 'put file' within this commit.
-      --compress            Compress data during upload. This parameter might help you upload your uncompressed data, such as CSV files, to {{% productName %}} faster. Use 'compress' with caution, because if your data is already compressed, this parameter might slow down the upload speed instead of increasing.
+      --compress            Compress data during upload. This parameter might help you upload your uncompressed data, such as CSV files, to Pachyderm faster. Use 'compress' with caution, because if your data is already compressed, this parameter might slow down the upload speed instead of increasing.
   -f, --file strings        The file to be put, it can be a local file or a URL. (default [-])
       --full-path           If true, use the entire path provided to -f as the target filename in PFS. By default only the base of the path is used.
   -h, --help                help for file
   -i, --input-file string   Read filepaths or URLs from a file.  If - is used, paths are read from the standard input.
   -p, --parallelism int     The maximum number of files that can be uploaded in parallel. (default 10)
       --progress            Print progress bars. (default true)
-      --project string      Project in which repo is located. (default "joins")
+      --project string      Project in which repo is located. (default "openCV")
   -r, --recursive           Recursively put the files in a directory.
       --untar               If true, file(s) with the extension .tar are untarred and put as a separate file for each file within the tar stream(s). gzipped (.tar.gz or .tgz) tar file(s) are handled as well
 ```

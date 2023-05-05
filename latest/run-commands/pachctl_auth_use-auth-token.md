@@ -1,10 +1,10 @@
 ## pachctl auth use-auth-token
 
-Read a {{% productName %}} auth token from stdin, and write it to the current user's {{% productName %}} config file
+Read a Pachyderm auth token from stdin, and write it to the current user's Pachyderm config file
 
 ### Synopsis
 
-Read a {{% productName %}} auth token from stdin, and write it to the current user's {{% productName %}} config file
+Read a Pachyderm auth token from stdin, and write it to the current user's Pachyderm config file
 
 ```
 pachctl auth use-auth-token [flags]

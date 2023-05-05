@@ -17,7 +17,7 @@ pachctl finish commit <repo>@<branch-or-commit> [flags]
   -f, --force                finish the commit even if it has provenance, which could break jobs; prefer 'stop job'
   -h, --help                 help for commit
   -m, --message string       A description of this commit's contents (overwrites any existing commit description)
-      --project string       Project in which repo is located. (default "joins")
+      --project string       Project in which repo is located. (default "openCV")
 ```
 
 ### Options inherited from parent commands

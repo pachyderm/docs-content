@@ -14,7 +14,7 @@ pachctl delete job <pipeline>@<job> [flags]
 
 ```
   -h, --help             help for job
-      --project string   Project within which to delete job (default "joins")
+      --project string   Project within which to delete job (default "openCV")
 ```
 
 ### Options inherited from parent commands

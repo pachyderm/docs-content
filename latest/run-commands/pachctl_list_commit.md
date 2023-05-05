@@ -44,7 +44,7 @@ $ pachctl list commit foo@master --from XXX
   -n, --number int        list only this many commits; if set to zero, list all commits
       --origin string     only return commits of a specific type
   -o, --output string     Output format when --raw is set: "json" or "yaml" (default "json")
-      --project string    Project in which commit is located. (default "joins")
+      --project string    Project in which commit is located. (default "openCV")
       --raw               Disable pretty printing; serialize data structures to an encoding such as json or yaml
 ```
 

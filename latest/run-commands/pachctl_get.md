@@ -1,10 +1,10 @@
 ## pachctl get
 
-Get the raw data represented by a {{% productName %}} resource.
+Get the raw data represented by a Pachyderm resource.
 
 ### Synopsis
 
-Get the raw data represented by a {{% productName %}} resource.
+Get the raw data represented by a Pachyderm resource.
 
 ### Options
 

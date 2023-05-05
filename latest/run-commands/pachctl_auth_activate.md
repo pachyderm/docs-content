@@ -1,10 +1,10 @@
 ## pachctl auth activate
 
-Activate {{% productName %}}'s auth system
+Activate Pachyderm's auth system
 
 ### Synopsis
 
-Activate {{% productName %}}'s auth system, and restrict access to existing data to the root user
+Activate Pachyderm's auth system, and restrict access to existing data to the root user
 
 ```
 pachctl auth activate [flags]
