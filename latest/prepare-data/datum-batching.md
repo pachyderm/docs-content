@@ -59,83 +59,25 @@ flowchart LR
 
    {{< stack type="wizard">}}
    {{% wizardRow id="Language"%}}
-   {{% wizardButton option="Python" state="active" %}}
-   {{% wizardButton option="Go" %}}
-   {{% wizardButton option="JS" %}}
+   {{% wizardButton option="Bash" state="active" %}}
    {{% /wizardRow %}}
    {{% wizardResults  %}}
-   {{% wizardResult val1="language/python"%}}
+   {{% wizardResult val1="language/bash"%}}
    ```s
-   import subprocess
+   transformation() {
+     # Your transformation code goes here
+     echo "Transformation function executed"
+   }
 
-   def transformation(): 
-       # Your transformation code goes here
-
-   def main()
-
-       print("starting while loop")
-       while True:
-           subprocess.run(["pachctl", "next", "datum"])
-           print("next datum called")
-
-           transformation()
-
-   if __name__ == "__main__":
-       main()
+   echo "Starting while loop"
+   while true; do
+     pachctl next datum
+     echo "Next datum called"
+     transformation
+   done
    ```
    {{% /wizardResult %}}
-   {{% wizardResult val1="language/go"%}}
-   ```s
-   package main
-
-   import (
-       "fmt"
-       "os/exec"
-   )
-
-   func transformation() {
-       // Your transformation code goes here
-   }
-
-   func main() {
-       fmt.Println("starting while loop")
-       for {
-           cmd := exec.Command("pachctl", "next", "datum")
-           cmd.Run()
-           fmt.Println("next datum called")
-           transformation()
-       }
-   }
-
-   ```
-   {{% /wizardResult %}}
-   {{% wizardResult val1="language/js"%}}
-   ```s
-
-   const { exec } = require('child_process');
-
-   function transformation() {
-     // Your transformation code goes here
-   }
-
-   function main() {
-     console.log("starting while loop");
-     while (true) {
-       exec("pachctl next datum", (error, stdout, stderr) => {
-         if (error) {
-           console.error(`exec error: ${error}`);
-           return;
-         }
-         console.log("next datum called");
-         transformation();
-       });
-     }
-   }
-   
-   main();
-
-   ```
-   {{% /wizardResult %}}
+  
    {{% /wizardResults%}}
 
    {{< /stack >}}
