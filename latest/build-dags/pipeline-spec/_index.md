@@ -43,8 +43,10 @@ Generally speaking, the only attributes that are strictly required for all scena
 ```s
 {
   "pipeline": {
-    "project": projectName,
-    "name": "wordcount"
+    "name": "wordcount",
+    "project": {
+      name: "projectName"
+    }
   },
   "transform": {
     "image": "wordcount-image",
@@ -69,8 +71,10 @@ Generally speaking, the only attributes that are strictly required for all scena
 ```s
 {
   "pipeline": {
-    "project": projectName,
-    "name": "wordcount"
+    "name": "wordcount",
+    "project": {
+      name: "projectName"
+    }
   },
   "transform": {
     "image": "wordcount-image",
@@ -104,8 +108,10 @@ Generally speaking, the only attributes that are strictly required for all scena
 ```s
 {
   "pipeline": {
-    "project": projectName,
-    "name": "wordcount"
+    "name": "wordcount",
+    "project": {
+      name: "projectName"
+    }
   },
   "transform": {
     "image": "wordcount-image",
@@ -129,8 +135,10 @@ Generally speaking, the only attributes that are strictly required for all scena
 ```s
 {
   "pipeline": {
-    "project": projectName,
-    "name": "wordcount"
+    "name": "wordcount",
+    "project": {
+      name: "projectName"
+    }
   },
   "transform": {
     "image": "wordcount-image",
@@ -150,8 +158,10 @@ Generally speaking, the only attributes that are strictly required for all scena
 ```s
 {
   "pipeline": {
-    "project": projectName,
-    "name": "wordcount"
+    "name": "wordcount",
+    "project": {
+      name: "projectName"
+    }
   },
   "transform": {
     "image": "wordcount-image",
@@ -175,8 +185,10 @@ Generally speaking, the only attributes that are strictly required for all scena
 ```s
 {
   "pipeline": {
-    "project": projectName,
-    "name": "wordcount"
+    "name": "wordcount",
+    "project": {
+      name: "projectName"
+    }
   },
   "transform": {
     "image": "wordcount-image",
@@ -192,8 +204,10 @@ Generally speaking, the only attributes that are strictly required for all scena
 ```s
 {
   "pipeline": {
-    "project": projectName,
-    "name": "wordcount"
+    "name": "wordcount",
+    "project": {
+      name: "projectName"
+    }
   },
   "transform": {
     "image": "wordcount-image",
@@ -214,7 +228,10 @@ Generally speaking, the only attributes that are strictly required for all scena
 ```s
 {
   "pipeline": {
-    "name": string
+    "name": string,
+    "project": {
+      name: "projectName"
+    },
   },
   "description": string,
   "metadata": {

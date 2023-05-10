@@ -10,9 +10,6 @@ seriesPart:
 weight: 
 ---
 
-{{% notice warning %}}
-Do not delete your project before deleting resources inside of it.
-{{% /notice %}}
 
 ## How to Delete a Project
 
@@ -26,17 +23,6 @@ Do not delete your project before deleting resources inside of it.
 
 {{% wizardResult val1="tool/pachctl-cli"%}}
 
-In order to fully and safely delete a project, you must delete the resources inside of it first in the following order: 
-
-1. Delete all pipelines in your project.
-   ```s
-   pachctl delete pipeline <pipeline_name>
-   ```
-2. Delete all repos in your project.
-   ```s
-   pachctl delete repo <repo> 
-   ```
-3. Delete the project itself.
    ```s
    pachctl delete project <project>
    ```
