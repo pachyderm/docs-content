@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Set a Project as Current
-description: Learn how to switch to a project in {{% productName %}}.
+description: Learn how to switch to a different project.
 date: 
 # taxonomy #
 tags: ["projects"]
