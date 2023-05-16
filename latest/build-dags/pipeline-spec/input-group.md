@@ -16,6 +16,7 @@ label: Required for Group Inputs
   "group": [
     {
       "pfs": {
+        "project": string,
         "name": string,
         "repo": string,
         "branch": string,
@@ -28,6 +29,7 @@ label: Required for Group Inputs
     },
     {
       "pfs": {
+        "project": string,
         "name": string,
         "repo": string,
         "branch": string,

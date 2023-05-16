@@ -19,6 +19,7 @@ label: Required for Join Inputs
 "join": [
   {
     "pfs": {
+      "project": string,
       "name": string,
       "repo": string,
       "branch": string,
@@ -32,6 +33,7 @@ label: Required for Join Inputs
   },
   {
     "pfs": {
+      "project": string,
       "name": string,
       "repo": string,
       "branch": string,

@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Resource Requests PPS
-description: Set the exact amount of resources that a pipeline worker will consume.
+description: Set the minimum amount of resources that the user container will reserve.
 date: 
 # taxonomy #
 tags: ["pipelines", "pps"]

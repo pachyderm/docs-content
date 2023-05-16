@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Sidecar Resource Limits PPS
-description: Set the upper threshold of resources allocated to sidecar containers.
+description: Set the upper threshold of resources allocated to the storage container.
 date: 
 # taxonomy #
 tags: ["pipelines", "pps"]
