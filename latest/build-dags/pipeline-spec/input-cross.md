@@ -17,6 +17,7 @@ label: Required for Cross Inputs
   "cross": [
   {
     "pfs": {
+      "project": string,
       "name": string,
       "repo": string,
       "branch": string,
@@ -28,6 +29,7 @@ label: Required for Cross Inputs
   },
   {
     "pfs": {
+      "project": string,
       "name": string,
       "repo": string,
       "branch": string,

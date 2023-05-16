@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title:  Resource Limits PPS
-description: Set the upper threshold of allowed resources a given worker can consume.
+description: Set the upper threshold of allowed resources the user container can consume.
 date: 
 # taxonomy #
 tags: ["pipelines", "pps"]

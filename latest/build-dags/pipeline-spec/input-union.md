@@ -17,6 +17,7 @@ label: Required for Union Inputs
   "union": [
   {
     "pfs": {
+      "project": string,
       "name": string,
       "repo": string,
       "branch": string,
@@ -28,6 +29,7 @@ label: Required for Union Inputs
   },
   {
     "pfs": {
+      "project": string,
       "name": string,
       "repo": string,
       "branch": string,
