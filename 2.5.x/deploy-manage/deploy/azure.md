@@ -354,9 +354,9 @@ make sure that you are using the right Kubernetes context first.
 
 
     ```s
-    helm repo add pach https://helm.pachyderm.com
+    helm repo add pachyderm https://helm.pachyderm.com
     helm repo update
-    helm install pachd -f values.yaml pach/pachyderm --version <version-of-the-chart>
+    helm install pachyderm -f values.yaml pachyderm/pachyderm --version <version-of-the-chart>
     ```
 
     **System Response:**

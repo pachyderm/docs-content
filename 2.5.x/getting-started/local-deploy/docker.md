@@ -114,10 +114,10 @@ brew install helm
 ```
 2. Add the {{%productName%}} repo to Helm:
 ```s
-helm repo add {{% productName %}}https://helm.pachyderm.com  
+helm repo add pachyderm https://helm.pachyderm.com  
 helm repo update  
 ```
-3. Install PachD: 
+3. Install Pachyderm: 
 
 
 {{< stack type="wizard" >}}
@@ -129,14 +129,14 @@ helm repo update
 {{% wizardResults %}}
 {{% wizardResult val1="version/community-edition" %}}
 ```s
-helm install pachd pachyderm/pachyderm --set deployTarget=LOCAL --set proxy.enabled=true --set proxy.service.type=LoadBalancer 
+helm install pachyderm pachyderm/pachyderm --set deployTarget=LOCAL --set proxy.enabled=true --set proxy.service.type=LoadBalancer 
 ```
 {{% /wizardResult %}}
 {{% wizardResult val1="version/enterprise" %}}
 Are you using an [Enterprise](../../../enterprise) trial key? If so, you can set up Enterprise {{%productName%}} locally by storing your trial key in a `license.txt` file and passing it into the following Helm command: 
 
 ```s  
-helm install pachd pachyderm/pachyderm --set deployTarget=LOCAL --set proxy.enabled=true --set proxy.service.type=LoadBalancer --set pachd.enterpriseLicenseKey=$(cat license.txt) --set ingress.host=localhost
+helm install pachyderm pachyderm/pachyderm --set deployTarget=LOCAL --set proxy.enabled=true --set proxy.service.type=LoadBalancer --set pachd.enterpriseLicenseKey=$(cat license.txt) --set ingress.host=localhost
 ``` 
 This unlocks Enterprise features but also [requires user authentication](../../../deploy-manage/deploy/console/#connect-to-console)  to access Console. A mock user is created by default to get you started, with the **username**: `admin` and **password**: `password`.
 {{% /wizardResult %}}

@@ -409,9 +409,9 @@ global:
 - You can now deploy a {{%productName%}} cluster by running this command:
 
   ```s
-  helm repo add pach https://helm.pachyderm.com
+  helm repo add pachyderm https://helm.pachyderm.com
   helm repo update
-  helm install {{% productName %}}-f my_values.yaml pach/pachyderm
+  helm install {{% productName %}} -f my_values.yaml pachyderm/pachyderm
   ```
 
   **System Response:**

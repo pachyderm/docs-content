@@ -243,9 +243,9 @@ section in the [Azure Portal](https://portal.azure.com/) or by running the follo
 
 Run the following to add the {{%productName%}} repo to Helm:
 ```s
-helm repo add pach https://helm.pachyderm.com
+helm repo add pachyderm https://helm.pachyderm.com
 helm repo update
-helm install pachd pach/pachyderm -f my_pachyderm_values.yaml 
+helm install pachyderm pachyderm/pachyderm -f my_pachyderm_values.yaml 
 ```
 ## 5. Verify Installation 
 

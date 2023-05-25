@@ -40,7 +40,7 @@ You can also pass in a specific version (e.g., `--version x.x.0-rc.1`) if you ar
 
 ```s
 helm repo update
-helm upgrade pachd pachyderm/pachyderm -f my_pachyderm_values.yaml  --set proxy.enabled=true --set proxy.service.type=LoadBalancer 
+helm upgrade pachyderm pachyderm/pachyderm -f my_pachyderm_values.yaml  --set proxy.enabled=true --set proxy.service.type=LoadBalancer 
 ```
 {{% /wizardResult %}}
 
@@ -49,7 +49,7 @@ Note that the repo name input (`pachd`) must match the name you provided upon fi
 
 ```s
 helm repo update
-helm upgrade pachd pachyderm/pachyderm --set deployTarget=LOCAL --set proxy.enabled=true --set proxy.service.type=LoadBalancer 
+helm upgrade pachyderm pachyderm/pachyderm --set deployTarget=LOCAL --set proxy.enabled=true --set proxy.service.type=LoadBalancer 
 ```
 {{% /wizardResult %}} 
 {{% /wizardResults %}} 

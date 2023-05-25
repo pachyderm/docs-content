@@ -131,7 +131,7 @@ helm repo update
 {{% wizardResults %}}
 {{% wizardResult val1="version/community-edition" %}}
 ```s
-helm install pachd pachyderm/pachyderm \
+helm install pachyderm pachyderm/pachyderm \
   --set deployTarget=LOCAL \
   --set proxy.enabled=true \
   --set proxy.service.type=LoadBalancer \
@@ -143,7 +143,7 @@ helm install pachd pachyderm/pachyderm \
 Are you using an [Enterprise](/{{%release%}}/set-up/enterprise) trial key? If so, you can set up Enterprise Pachyderm locally by storing your trial key in a `license.txt` file and passing it into the following Helm command: 
 
 ```s  
-helm install pachd pachyderm/pachyderm \
+helm install pachyderm pachyderm/pachyderm \
   --set deployTarget=LOCAL \
   --set pachd.enterpriseLicenseKey="$(cat license.txt)" \
   --set proxy.enabled=true \
