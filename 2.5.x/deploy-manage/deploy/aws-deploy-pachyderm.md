@@ -404,9 +404,9 @@ Retain (ideally in version control) a copy of the Helm values used to deploy you
 - You can now deploy a {{%productName%}} cluster by running this command:
 
   ```s
-  helm repo add pach https://helm.pachyderm.com
+  helm repo add pachyderm https://helm.pachyderm.com
   helm repo update
-  helm install {{% productName %}}-f values.yaml pach/pachyderm --version <version-of-the-chart>
+  helm install {{% productName %}}-f values.yaml pachyderm/pachyderm --version <version-of-the-chart>
   ```
 
   **System Response:**

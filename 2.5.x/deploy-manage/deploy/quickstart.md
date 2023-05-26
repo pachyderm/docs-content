@@ -224,9 +224,9 @@ Jump to [Helm install](#3-helm-install)
 - You will be deploying the [latest GA release](../../../reference/supported-releases/#generally-available-ga) of {{%productName%}}:
 
     ```s
-    helm repo add pach https://helm.pachyderm.com
+    helm repo add pachyderm https://helm.pachyderm.com
     helm repo update
-    helm install pachd pach/pachyderm -f my_pachyderm_values.yaml 
+    helm install pachyderm pachyderm/pachyderm -f my_pachyderm_values.yaml 
     ```
 
 - Check your deployment:

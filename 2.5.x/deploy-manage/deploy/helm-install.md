@@ -65,7 +65,7 @@ For Production deployments, {{%productName%}} strongly recommends that you **[cr
 ###  Install {{%productName%}}'s Helm Chart
 1. Get your Helm Repo Info
     ```s
-    helm repo add pach https://helm.pachyderm.com
+    helm repo add pachyderm https://helm.pachyderm.com
     helm repo update
     ```
 
@@ -73,7 +73,7 @@ For Production deployments, {{%productName%}} strongly recommends that you **[cr
 
  You are ready to deploy {{%productName%}} on the environment of your choice.
  ```s
- helm install pachd -f my_pachyderm_values.yaml pach/pachyderm --version <your_chart_version>
+ helm install pachyderm -f my_pachyderm_values.yaml pachyderm/pachyderm --version <your_chart_version>
  ```
  {{% notice info %}}
  To choose a specific helm chart version
@@ -176,7 +176,7 @@ Deleting pvs will result in the loss of your data.
 When a new version of {{%productName%}}'s chart is released, or when you want to update some configuration parameters on your cluster, use the [helm upgrade](https://helm.sh/docs/helm/helm_upgrade/) command:
 
 ```s
-helm upgrade pachd -f my_new_pachyderm_values.yaml pach/pachyderm --version <your_chart_version>        
+helm upgrade pachyderm -f my_new_pachyderm_values.yaml pachyderm/pachyderm --version <your_chart_version>        
 ```
 
 ## READ BEFORE ANY INSTALL OR UPGRADE: {{%productName%}} Configuration Values and Platform Secrets

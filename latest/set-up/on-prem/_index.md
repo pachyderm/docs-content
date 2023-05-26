@@ -24,7 +24,7 @@ Before you can deploy {{% productName %}}, you will need to perform the followin
 ### 1. Install {{% productName %}} via Helm
 
 ```s
-helm repo add pach https://helm.pachyderm.com
+helm repo add pachyderm https://helm.pachyderm.com
 helm repo update
 ```
 

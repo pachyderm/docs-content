@@ -26,7 +26,7 @@ You are now ready to create a GKE Cluster.
 
 ## 2. Run Setup Script
 
-You can run [this setup script](https://github.com/pachyderm/pachyderm/blob/master/etc/deploy/gcp/gcp-doco-script.sh) either through the **Cloud Shell** or in a local terminal via the `gcloud` cli. Running this script creates all of the following:
+You can run [this setup script](https://github.com/pachyderm/pachyderm/blob/master/etc/deploy/gcp/gcp-doco-script.sh) either through the **Cloud Shell** or in a local terminal via the `gcloud` cli. Before running the install script change the values `PROJECT_ID`, to match the project created in step one, and `SQL_ADMIN_PASSWORD` to a secure value. Running this script creates all of the following:
 
 - One GKE cluster
 - Workload identity service accounts
