@@ -1,0 +1,20 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: pachyderm/docs-content
+Upstream-Contact: Hewlett Packard Enterprise 
+Source: https://github.com/pachyderm/docs-content
+
+Files: *
+Copyright: 2023 Hewlett Packard Enterprise
+License: Apache-2.0
+
+Files: images/opencv/liberty.jpg
+Copyright: 2019 Matthis Volquardsen via [Pexels.com](https://www.pexels.com/photo/statue-of-liberty-2179602/)
+License: LicenseRef-PexelsLicense
+
+Files: images/opencv/kitten.jpg
+Copyright: 2016 Arnie Chou via [Pexels.com](https://www.pexels.com/photo/cat-lying-on-ground-1102361/)
+License: LicenseRef-PexelsLicense
+
+Files: images/opencv/robot.jpg
+Copyright: 2020 Cottonbro Studio via [Pexels.com](https://www.pexels.com/photo/prosthetic-arm-on-blue-background-6153738/)
+License: LicenseRef-PexelsLicense
