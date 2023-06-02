@@ -10,37 +10,42 @@ seriesPart:
 label: Required for Cross Inputs
 ---
 ## Spec 
+This is a top-level attribute of the pipeline spec. 
 
 ```s
 
-"input": {
-  "cross": [
-  {
-    "pfs": {
-      "project": string,
-      "name": string,
-      "repo": string,
-      "branch": string,
-      "glob": string,
-      "lazy" bool,
-      "empty_files": bool,
-      "s3": bool
+{
+  "pipeline": {...},
+  "transform": {...},
+  "input": {
+    "cross": [
+    {
+      "pfs": {
+        "project": string,
+        "name": string,
+        "repo": string,
+        "branch": string,
+        "glob": string,
+        "lazy" bool,
+        "empty_files": bool,
+        "s3": bool
+      }
+    },
+    {
+      "pfs": {
+        "project": string,
+        "name": string,
+        "repo": string,
+        "branch": string,
+        "glob": string,
+        "lazy" bool,
+        "empty_files": bool,
+        "s3": bool
+      }
     }
-  },
-  {
-    "pfs": {
-      "project": string,
-      "name": string,
-      "repo": string,
-      "branch": string,
-      "glob": string,
-      "lazy" bool,
-      "empty_files": bool,
-      "s3": bool
-    }
-  }
+    ...
+  ]},
   ...
-]
 }
 
 ```

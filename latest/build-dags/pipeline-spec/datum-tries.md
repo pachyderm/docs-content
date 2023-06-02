@@ -10,6 +10,7 @@ seriesPart:
 label: optional
 ---
 ## Spec 
+This is a top-level attribute of the pipeline spec. 
 
 ```s
 

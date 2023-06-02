@@ -10,32 +10,35 @@ seriesPart:
 label: Required for PFS Inputs
 ---
 ## Spec 
-
+This is a top-level attribute of the pipeline spec. 
 
 ```s
-
-"input": {
-"pfs": {
-    "project": string,
-    "name": string,
-    "repo": string,
-    "repo_type":string,
-    "branch": string,
-    "glob": string,
-    "join_on":string,
-    "outer_join": bool,
-    "group_by": string,
-    "lazy" bool,
-    "empty_files": bool,
-    "s3": bool,
-    "trigger": {
+{
+    "pipeline": {...},
+    "transform": {...},
+    "input": {
+    "pfs": {
+        "project": string,
+        "name": string,
+        "repo": string,
+        "repo_type":string,
         "branch": string,
-        "all": bool,
-        "cron_spec": string,
-        },
-    }
+        "glob": string,
+        "join_on":string,
+        "outer_join": bool,
+        "group_by": string,
+        "lazy" bool,
+        "empty_files": bool,
+        "s3": bool,
+        "trigger": {
+            "branch": string,
+            "all": bool,
+            "cron_spec": string,
+            },
+        }
+    },
+    ...
 }
-
 ```
 
 ## Behavior 

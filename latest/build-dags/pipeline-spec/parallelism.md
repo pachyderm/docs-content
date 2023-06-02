@@ -11,12 +11,17 @@ label: Optional
 ---
 
 ## Spec
+This is a top-level attribute of the pipeline spec. 
 
 ```s
-
-"parallelism_spec": {
-  "constant": int
-},
+{
+  "pipeline": {...},
+  "transform": {...},
+  "parallelism_spec": {
+    "constant": int
+  },
+  ...
+}
 
 ```
 

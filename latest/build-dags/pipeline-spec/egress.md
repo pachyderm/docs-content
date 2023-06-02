@@ -11,26 +11,30 @@ label: optional
 ---
 
 ## Spec
+This is a top-level attribute of the pipeline spec. 
 
 ```s
-
-"egress": {
-    // Egress to an object store
-    "URL": "s3://bucket/dir"
-    // Egress to a database
-    "sql_database": {
-        "url": string,
-        "file_format": {
-            "type": string,
-            "columns": [string]
+{
+    "pipeline": {...},
+    "transform": {...},
+    "egress": {
+        // Egress to an object store
+        "URL": "s3://bucket/dir"
+        // Egress to a database
+        "sql_database": {
+            "url": string,
+            "file_format": {
+                "type": string,
+                "columns": [string]
+            },
+            "secret": {
+                "name": string,
+                "key": "PACHYDERM_SQL_PASSWORD"
+            }
         },
-        "secret": {
-            "name": string,
-            "key": "PACHYDERM_SQL_PASSWORD"
-        }
-    }
-},
-
+    },
+    ...
+}
 ```
 
 ## Attributes

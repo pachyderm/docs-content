@@ -11,41 +11,45 @@ label: Required for Join Inputs
 ---
 
 ## Spec 
-
+This is a top-level attribute of the pipeline spec. 
 
 ```s
-
-"input": {
-"join": [
-  {
-    "pfs": {
-      "project": string,
-      "name": string,
-      "repo": string,
-      "branch": string,
-      "glob": string,
-      "join_on": string,
-      "outer_join": bool,
-      "lazy": bool,
-      "empty_files": bool,
-      "s3": bool
-    }
+{
+  "pipeline": {...},
+  "transform": {...},
+  "input": {
+    "join": [
+      {
+        "pfs": {
+          "project": string,
+          "name": string,
+          "repo": string,
+          "branch": string,
+          "glob": string,
+          "join_on": string,
+          "outer_join": bool,
+          "lazy": bool,
+          "empty_files": bool,
+          "s3": bool
+        }
+      },
+      {
+        "pfs": {
+          "project": string,
+          "name": string,
+          "repo": string,
+          "branch": string,
+          "glob": string,
+          "join_on": string,
+          "outer_join": bool,
+          "lazy": bool,
+          "empty_files": bool,
+          "s3": bool
+        }
+      }
+    ]
   },
-  {
-    "pfs": {
-      "project": string,
-      "name": string,
-      "repo": string,
-      "branch": string,
-      "glob": string,
-      "join_on": string,
-      "outer_join": bool,
-      "lazy": bool,
-      "empty_files": bool,
-      "s3": bool
-    }
-  }
- ]
+  ...
 }
 
 ```

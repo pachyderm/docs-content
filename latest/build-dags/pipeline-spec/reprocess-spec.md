@@ -11,11 +11,15 @@ label: optional
 ---
 
 ## Spec
+This is a top-level attribute of the pipeline spec. 
 
 ```s
-
-"reprocess_spec": string,
-
+{
+    "pipeline": {...},
+    "transform": {...},
+    "reprocess_spec": string,
+    ...
+}
 ```
 
 ## Behavior 

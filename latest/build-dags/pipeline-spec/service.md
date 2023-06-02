@@ -11,13 +11,18 @@ label: optional
 ---
 
 ## Spec 
+This is a top-level attribute of the pipeline spec. 
 
 ```s
-
-"service": {
-  "internal_port": int,
-  "external_port": int
-},
+{
+  "pipeline": {...},
+  "transform": {...},
+  "service": {
+    "internal_port": int,
+    "external_port": int
+  },
+  ...
+}
 
 ```
 

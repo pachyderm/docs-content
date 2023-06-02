@@ -11,13 +11,18 @@ label: optional
 ---
 
 ## Spec 
+This is a top-level attribute of the pipeline spec. 
 
 ```s
-
-"scheduling_spec": {
-    "node_selector": {string: string},
-    "priority_class_name": string
-},
+{
+    "pipeline": {...},
+    "transform": {...},
+    "scheduling_spec": {
+        "node_selector": {string: string},
+        "priority_class_name": string
+    },
+    ...
+}
 
 ```
 

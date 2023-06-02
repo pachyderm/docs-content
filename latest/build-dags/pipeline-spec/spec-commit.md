@@ -11,25 +11,30 @@ label: auto-generated
 ---
 
 ## Spec 
+This is a top-level attribute of the pipeline spec. 
 
 ```s
-
-"spec_commit": {
-  "option": false,
-  "branch": {
+{
+  "pipeline": {...},
+  "transform": {...},
+  "spec_commit": {
     "option": false,
-    "repo": {
+    "branch": {
       "option": false,
-      "name": string,
-      "type": string,
-      "project":{
+      "repo": {
         "option": false,
         "name": string,
+        "type": string,
+        "project":{
+          "option": false,
+          "name": string,
+        },
       },
+      "name": string
     },
-    "name": string
+    "id": string,
   },
-  "id": string,
+  ...
 }
 
 ```

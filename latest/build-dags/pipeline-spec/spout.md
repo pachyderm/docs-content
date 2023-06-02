@@ -10,16 +10,21 @@ seriesPart:
 label: optional
 ---
 ## Spec 
+This is a top-level attribute of the pipeline spec. 
 
 ```s
-
-"spout": {
-\\ Optionally, you can combine a spout with a service:
-"service": {
-  "internal_port": int,
-  "external_port": int
-  }
-},
+{
+  "pipeline": {...},
+  "transform": {...},
+  "spout": {
+  \\ Optionally, you can combine a spout with a service:
+  "service": {
+    "internal_port": int,
+    "external_port": int
+    }
+  },
+  ...
+}
 
 ```
 

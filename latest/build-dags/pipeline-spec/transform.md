@@ -11,37 +11,41 @@ label: required
 ---
 
 ## Spec 
+This is a top-level attribute of the pipeline spec. 
 
 ```s
+{
+    "pipeline": {...},
+    "transform": {
+        "image": string,
+        "cmd": [ string ],
+        "datum_batching": bool,
+        "err_cmd": [ string ],
+        "env": {
+            string: string
+        },
 
-"transform": {
-    "image": string,
-    "cmd": [ string ],
-    "datum_batching": bool,
-    "err_cmd": [ string ],
-    "env": {
-        string: string
+        "secrets": [ {
+            "name": string,
+            "mount_path": string
+        },
+        {
+            "name": string,
+            "env_var": string,
+            "key": string
+        } ],
+        "image_pull_secrets": [ string ],
+        "stdin": [ string ],
+        "err_stdin": [ string ],
+        "accept_return_code": [ int ],
+        "debug": bool,
+        "user": string,
+        "working_dir": string,
+        "dockerfile": string,
+        "memory_volume": bool,
     },
-
-    "secrets": [ {
-        "name": string,
-        "mount_path": string
-    },
-    {
-        "name": string,
-        "env_var": string,
-        "key": string
-    } ],
-    "image_pull_secrets": [ string ],
-    "stdin": [ string ],
-    "err_stdin": [ string ],
-    "accept_return_code": [ int ],
-    "debug": bool,
-    "user": string,
-    "working_dir": string,
-    "dockerfile": string,
-    "memory_volume": bool,
-},
+    ...
+}
 
 ```
 

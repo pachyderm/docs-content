@@ -11,36 +11,41 @@ label: Required for Union Inputs
 ---
 
 ## Spec 
+This is a top-level attribute of the pipeline spec. 
 
 ```s
-"input": {
-  "union": [
-  {
-    "pfs": {
-      "project": string,
-      "name": string,
-      "repo": string,
-      "branch": string,
-      "glob": string,
-      "lazy" bool,
-      "empty_files": bool,
-      "s3": bool
+{
+  "pipeline": {...},
+  "transform": {...},
+  "input": {
+    "union": [
+    {
+      "pfs": {
+        "project": string,
+        "name": string,
+        "repo": string,
+        "branch": string,
+        "glob": string,
+        "lazy" bool,
+        "empty_files": bool,
+        "s3": bool
+      }
+    },
+    {
+      "pfs": {
+        "project": string,
+        "name": string,
+        "repo": string,
+        "branch": string,
+        "glob": string,
+        "lazy" bool,
+        "empty_files": bool,
+        "s3": bool
+      }
     }
-  },
-  {
-    "pfs": {
-      "project": string,
-      "name": string,
-      "repo": string,
-      "branch": string,
-      "glob": string,
-      "lazy" bool,
-      "empty_files": bool,
-      "s3": bool
-    }
-  }
+    ...
+  ]},
   ...
-]
 }
 
 ```

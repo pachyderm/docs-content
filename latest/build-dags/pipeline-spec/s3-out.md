@@ -11,10 +11,15 @@ label: optional
 ---
 
 ## Spec
+This is a top-level attribute of the pipeline spec. 
 
 ```s
-
-"s3_out": bool,
+{
+    "pipeline": {...},
+    "transform": {...},
+    "s3_out": bool,
+    ...
+}
 
 ```
 

@@ -11,17 +11,22 @@ label: Optional
 ---
 
 ## Spec 
+This is a top-level attribute of the pipeline spec. 
 
 ```s
-
-"metadata": {
-    "annotations": {
-        "annotation": string
+{
+    "pipeline": {...},
+    "transform": {...},
+    "metadata": {
+        "annotations": {
+            "annotation": string
+        },
+        "labels": {
+            "label": string
+        }
     },
-    "labels": {
-        "label": string
-    }
-},
+    ...
+}
 
 ```
 

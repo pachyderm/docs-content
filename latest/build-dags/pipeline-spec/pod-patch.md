@@ -11,10 +11,15 @@ label: optional
 ---
 
 ## Spec 
+This is a top-level attribute of the pipeline spec. 
 
 ```s
-
-"pod_patch": string,
+{
+    "pipeline": {...},
+    "transform": {...},
+    "pod_patch": string,
+    ...
+}
 
 ```
 

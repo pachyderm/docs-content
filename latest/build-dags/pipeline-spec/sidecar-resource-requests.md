@@ -11,18 +11,23 @@ label: optional
 
 ---
 ## Spec
+This is a top-level attribute of the pipeline spec. 
 
 ```s
-
-"sidecar_resource_requests": {
-  "cpu": number,
-  "memory": string,
-  "gpu": {
-    "type": string,
-    "number": int
-    }
-  "disk": string,
-},
+{
+  "pipeline": {...},
+  "transform": {...},
+  "sidecar_resource_requests": {
+    "cpu": number,
+    "memory": string,
+    "gpu": {
+      "type": string,
+      "number": int
+      }
+    "disk": string,
+  },
+  ...
+}
 
 ```
 ## Attributes

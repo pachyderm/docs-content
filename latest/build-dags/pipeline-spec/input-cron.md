@@ -11,19 +11,24 @@ label: Required for Cron Inputs
 ---
 
 ## Spec 
+This is a top-level attribute of the pipeline spec. 
 
 ```s
-
-"input": {
-  "cron": {
-    {
-        "name": string,
-        "spec": string,
-        "repo": string,
-        "start": time,
-        "overwrite": bool
+{
+  "pipeline": {...},
+  "transform": {...},
+  "input": {
+    "cron": {
+      {
+          "name": string,
+          "spec": string,
+          "repo": string,
+          "start": time,
+          "overwrite": bool
+      }
     }
-  }
+  },
+  ...
 }
 
 ```

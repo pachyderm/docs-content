@@ -10,10 +10,15 @@ seriesPart:
 label: optional
 ---
 ## Spec 
+This is a top-level attribute of the pipeline spec. 
 
 ```s
-
-"job_timeout": string,
+{
+    "pipeline": {...},
+    "transform": {...},
+    "job_timeout": string,
+    ...
+}
 
 ```
 

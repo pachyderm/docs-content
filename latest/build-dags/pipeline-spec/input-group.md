@@ -10,37 +10,43 @@ seriesPart:
 label: Required for Group Inputs
 ---
 ## Spec 
+This is a top-level attribute of the pipeline spec. 
 
 ```s
-"input": {
-  "group": [
-    {
-      "pfs": {
-        "project": string,
-        "name": string,
-        "repo": string,
-        "branch": string,
-        "glob": string,
-        "group_by": string,
-        "lazy": bool,
-        "empty_files": bool,
-        "s3": bool
+{
+  "pipeline": {...},
+  "transform": {...},
+  "input": {
+    "group": [
+      {
+        "pfs": {
+          "project": string,
+          "name": string,
+          "repo": string,
+          "branch": string,
+          "glob": string,
+          "group_by": string,
+          "lazy": bool,
+          "empty_files": bool,
+          "s3": bool
+        }
+      },
+      {
+        "pfs": {
+          "project": string,
+          "name": string,
+          "repo": string,
+          "branch": string,
+          "glob": string,
+          "group_by": string,
+          "lazy": bool,
+          "empty_files": bool,
+          "s3": bool
+        }
       }
-    },
-    {
-      "pfs": {
-        "project": string,
-        "name": string,
-        "repo": string,
-        "branch": string,
-        "glob": string,
-        "group_by": string,
-        "lazy": bool,
-        "empty_files": bool,
-        "s3": bool
-      }
-    }
-  ]
+    ]
+  },
+  ...
 }
 ```
 

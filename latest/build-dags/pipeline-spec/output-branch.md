@@ -11,10 +11,15 @@ label: optional
 ---
 
 ## Spec
+This is a top-level attribute of the pipeline spec. 
 
 ```s
-
-"output_branch": string,
+{
+    "pipeline": {...},
+    "transform": {...},
+    "output_branch": string,
+    ...
+}
 
 ```
 

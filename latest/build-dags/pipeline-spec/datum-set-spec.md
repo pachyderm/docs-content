@@ -11,12 +11,18 @@ label: optional
 ---
 
 ## Spec 
+This is a top-level attribute of the pipeline spec. 
 
 ```s
-"datum_set_spec": {
-    "number": 0,
-    "size_bytes": 0,
-    "per_worker": 0,
+{
+    "pipeline": {...},
+    "transform": {...},
+    "datum_set_spec": {
+        "number": 0,
+        "size_bytes": 0,
+        "per_worker": 0,
+    },
+    ...
 }
 ```
 
