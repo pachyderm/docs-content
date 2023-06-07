@@ -49,17 +49,14 @@ flowchart LR
   
 ```
 
-
-
 ## How to Batch Datums
-
-### Via PachCTL
 
 1. Define your user code and build a docker image. Your user code must call `pachctl next datum` to get the next datum to process.
 
    {{< stack type="wizard">}}
    {{% wizardRow id="Language"%}}
-   {{% wizardButton option="Bash" state="active" %}}
+   {{% wizardButton option="Bash" %}}
+   {{% wizardButton option="Python" state="active" %}}
    {{% /wizardRow %}}
    {{% wizardResults  %}}
    {{% wizardResult val1="language/bash"%}}
@@ -77,46 +74,9 @@ flowchart LR
    done
    ```
    {{% /wizardResult %}}
-  
-   {{% /wizardResults%}}
-
-   {{< /stack >}}
-
-2. Create a repo (e.g., `pachctl create repo repoName`).
-3. Define a pipeline spec in YAML or JSON that references your Docker image and repo.
-4. Add the following to the `transform` section of your pipeline spec:
-   - `datum_batching: true`
-
-   ```s
-   pipeline:
-     name: p_datum_batching_example
-   input:
-     pfs:
-       repo: repoName
-       glob: "/*"
-   transform:
-     datum_batching: true
-     image: user/docker-image:tag
-   ```
-5. Create the pipeline (e.g., `pachctl update pipeline -f pipeline.yaml`).
-6. Monitor the pipeline's state either via Console or via `pachctl list pipeline`.
-
-{{% notice tip %}}
-
-You can view the printed confirmation of "Next datum called" in the logs your pipeline's job. 
-
-{{% /notice %}}
-
-### Via Python
-
-1. Define your user code and build a docker image. Your user code can the `@batch_all_datums` convenience decorator to iterate through all datums. This will perform the `NextDatum` calls for you as well as prepare the environment for each datum.
-
-   {{< stack type="wizard">}}
-   {{% wizardRow id="Library"%}}
-   {{% wizardButton option="python-pachyderm" state="active" %}}
-   {{% /wizardRow %}}
-   {{% wizardResults  %}}
    {{% wizardResult val1="language/python"%}}
+   Your user code can apply the `@batch_all_datums` convenience decorator to iterate through all datums. This will perform the `NextDatum` calls for you as well as prepare the environment for each datum.
+
    ```py
    import os
    from python_pachyderm import batch_all_datums
@@ -163,7 +123,11 @@ You can view the printed confirmation of "Next datum called" in the logs your pi
 5. Create the pipeline (e.g., `pachctl update pipeline -f pipeline.yaml`).
 6. Monitor the pipeline's state either via Console or via `pachctl list pipeline`.
 
+{{% notice tip %}}
 
+You can view the printed confirmation of "Next datum called" in the logs your pipeline's job. 
+
+{{% /notice %}}
 ## FAQ
 
 **Q:** My pipeline started but no files from my input repo are present. Where are they?
