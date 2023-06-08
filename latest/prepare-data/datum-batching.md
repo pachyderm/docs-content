@@ -49,17 +49,14 @@ flowchart LR
   
 ```
 
-
-
 ## How to Batch Datums
-
-### Via PachCTL
 
 1. Define your user code and build a docker image. Your user code must call `pachctl next datum` to get the next datum to process.
 
    {{< stack type="wizard">}}
    {{% wizardRow id="Language"%}}
-   {{% wizardButton option="Bash" state="active" %}}
+   {{% wizardButton option="Bash" %}}
+   {{% wizardButton option="Python" state="active" %}}
    {{% /wizardRow %}}
    {{% wizardResults  %}}
    {{% wizardResult val1="language/bash"%}}
@@ -75,6 +72,31 @@ flowchart LR
      echo "Next datum called"
      transformation
    done
+   ```
+   {{% /wizardResult %}}
+   {{% wizardResult val1="language/python"%}}
+   Your user code can apply the `@batch_all_datums` convenience decorator to iterate through all datums. This will perform the `NextDatum` calls for you as well as prepare the environment for each datum.
+
+   ```py
+   import os
+   from python_pachyderm import batch_all_datums
+
+   @batch_all_datums
+   def main():
+      # Processing code goes here.
+      # This function will be run for each datum until all are processed.
+      # Once all datums are processed, the process is terminated.
+      print(f'datum processed: {os.environ["PACH_DATUM_ID"]}')
+
+   def init():
+      # Initializing code goes here.
+      # When this function is called, no input data is present.
+      print('Preparing for datum batching job')
+
+   if __name__ == '__main__':
+       init()
+       print('Starting datum processing')
+       main()
    ```
    {{% /wizardResult %}}
   
@@ -106,3 +128,8 @@ flowchart LR
 You can view the printed confirmation of "Next datum called" in the logs your pipeline's job. 
 
 {{% /notice %}}
+## FAQ
+
+**Q:** My pipeline started but no files from my input repo are present. Where are they?
+
+**A:** Files from the first datum are mounted following the first call to `NextDatum` or, when using the Python client, when code execution enters the decorated function.
