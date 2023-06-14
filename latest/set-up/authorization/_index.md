@@ -14,7 +14,7 @@ You can use {{% productName %}}'s Role-Based Access Control (RBAC) model to conf
 
 ## Before You Start 
 
-- You must be using [Enterprise](/{{%release%}}/set-up/enterprise) to set up [authentication]({{%release%}}/set-up/connectors) and authorization. 
+- You must be using [Enterprise](/{{%release%}}/set-up/enterprise) to set up [authentication](/{{%release%}}/set-up/connectors) and authorization. 
 
 ## Activate User Access Management
 
