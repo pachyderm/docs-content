@@ -129,14 +129,14 @@ helm repo update
 {{% wizardResults %}}
 {{% wizardResult val1="version/community-edition" %}}
 ```s
-helm install pachyderm pachyderm/pachyderm --set deployTarget=LOCAL --set proxy.enabled=true --set proxy.service.type=LoadBalancer 
+helm install pachyderm pachyderm/pachyderm --set deployTarget=LOCAL --set proxy.enabled=true --set proxy.service.type=NodePort 
 ```
 {{% /wizardResult %}}
 {{% wizardResult val1="version/enterprise" %}}
 Are you using an [Enterprise](/{{%release%}}/set-up/enterprise) trial key? If so, you can set up Enterprise Pachyderm locally by storing your trial key in a `license.txt` file and passing it into the following Helm command: 
 
 ```s  
-helm install pachyderm pachyderm/pachyderm --set deployTarget=LOCAL --set proxy.enabled=true --set proxy.service.type=LoadBalancer --set pachd.enterpriseLicenseKey=$(cat license.txt) --set ingress.host=localhost
+helm install pachyderm pachyderm/pachyderm --set deployTarget=LOCAL --set proxy.enabled=true --set proxy.service.type=NodePort --set pachd.enterpriseLicenseKey=$(cat license.txt) --set ingress.host=localhost
 ``` 
 A mock user is created by default to get you started, with the **username**: `admin` and **password**: `password`.
 {{% /wizardResult %}}
