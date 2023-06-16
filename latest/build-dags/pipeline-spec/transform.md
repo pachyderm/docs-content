@@ -84,6 +84,27 @@ an environment variable (`env_var`) that the value should be bound to.
 -  `0` is always considered a successful exit code.
 -  `tmpfs` is cleared on node reboot and any files you write count against your container's memory limit. This may be useful for workloads that are IO heavy or use memory caches.
 
+{{%notice tip%}}
+**Using a private registry? **
+
+You can use `image_pull_secrets` to mount a secret that contains your registry credentials.
+
+```s
+{
+  "pipeline": {
+    "name": "pipeline-a"
+  },
+  "description": "...",
+  "transform": {
+    "cmd": [ "python3", "/example.py" ],
+    "image": "<private container registry>/image:1.0",
+    "image_pull_secrets": [ "k8s-secret-with-creds" ]
+  },
+  ...
+}
+```
+{{%/notice%}}
+
 
 ## When to Use 
 
