@@ -58,7 +58,8 @@ with open(OUTPUT_FILE, "w") as f:
                 continue
 
             # Print the method heading
-            print(f"### {method_signature}\n")
+            print(f"### {method_name}\n")
+            print(f"`{method_signature}`\n")
             print(f"{method_docstring}\n")
 
         # Add a separator after each class

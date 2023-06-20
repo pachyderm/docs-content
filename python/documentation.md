@@ -40,7 +40,9 @@ We can do the following things in this trial class:
   ``step_optimizer(optimizer, clip_grads=...)`` provided by
   :class:`~determined.pytorch.PyTorchTrialContext`.
 
-### (self) -> Dict[str, determined.pytorch._callback.PyTorchCallback]
+### build_callbacks
+
+`(self) -> Dict[str, determined.pytorch._callback.PyTorchCallback]`
 
 Defines a dictionary of string names to callbacks to be used during
 training and/or validation.
@@ -48,19 +50,25 @@ training and/or validation.
 The string name will be used as the key to save and restore callback
 state for any callback that defines :meth:`load_state_dict` and :meth:`state_dict`.
 
-### (self) -> determined.pytorch._data.DataLoader
+### build_training_data_loader
+
+`(self) -> determined.pytorch._data.DataLoader`
 
 Defines the data loader to use during training.
 
 Must return an instance of :py:class:`determined.pytorch.DataLoader`.
 
-### (self) -> determined.pytorch._data.DataLoader
+### build_validation_data_loader
+
+`(self) -> determined.pytorch._data.DataLoader`
 
 Defines the data loader to use during validation.
 
 Must return an instance of :py:class:`determined.pytorch.DataLoader`.
 
-### (self, batch: Union[Dict[str, torch.Tensor], Sequence[torch.Tensor], torch.Tensor], batch_idx: int) -> Dict[str, Any]
+### evaluate_batch
+
+`(self, batch: Union[Dict[str, torch.Tensor], Sequence[torch.Tensor], torch.Tensor], batch_idx: int) -> Dict[str, Any]`
 
 Calculate validation metrics for a batch and return them as a
 dictionary mapping metric names to metric values. Per-batch validation metrics
@@ -84,7 +92,9 @@ Arguments:
     batch_idx (integer): index of the current batch among all the epochs processed
         per device (slot) since the start of training.
 
-### (self, data_loader: torch.utils.data.dataloader.DataLoader) -> Dict[str, Any]
+### evaluate_full_dataset
+
+`(self, data_loader: torch.utils.data.dataloader.DataLoader) -> Dict[str, Any]`
 
 Calculate validation metrics on the entire validation dataset and
 return them as a dictionary mapping metric names to reduced metric
@@ -101,12 +111,16 @@ The metrics returned from this function must be JSON-serializable.
 Arguments:
     data_loader (torch.utils.data.DataLoader): data loader for evaluating.
 
-### (self) -> Union[determined.pytorch._reducer.Reducer, Dict[str, determined.pytorch._reducer.Reducer]]
+### evaluation_reducer
+
+`(self) -> Union[determined.pytorch._reducer.Reducer, Dict[str, determined.pytorch._reducer.Reducer]]`
 
 Return a reducer for all evaluation metrics, or a dict mapping metric
 names to individual reducers. Defaults to :obj:`determined.pytorch.Reducer.AVG`.
 
-### (self, batch: Any) -> int
+### get_batch_length
+
+`(self, batch: Any) -> int`
 
 Count the number of records in a given batch.
 
@@ -135,7 +149,9 @@ For example, when using ``pytorch_geometric``:
 Arguments:
     batch (Any): input training or validation data batch object.
 
-### (self, batch: Union[Dict[str, torch.Tensor], Sequence[torch.Tensor], torch.Tensor], epoch_idx: int, batch_idx: int) -> Union[torch.Tensor, Dict[str, Any]]
+### train_batch
+
+`(self, batch: Union[Dict[str, torch.Tensor], Sequence[torch.Tensor], torch.Tensor], epoch_idx: int, batch_idx: int) -> Union[torch.Tensor, Dict[str, Any]]`
 
 Train on one batch.
 
