@@ -16,7 +16,7 @@ This page describes how {{% productName %}}'s Identity and Access Management (IA
 
 IAM works by managing access for **users** (human or robot) through assigned **roles**. Roles contain a set of granular **permissions** (create, read, update, delete) for a given **resource**. In {{% productName %}}, resources include clusters, projects, and repositories. 
 
-A user can have many roles, and some roles encompass the permissions of other roles. For example, if you have a `clusterAdminRole`, all other permissions belonging to more restricted roles are included. 
+A user can have many roles, and some roles encompass the permissions of other roles. For example, if you have a `clusterAdmin`, all other permissions belonging to more restricted roles are included. 
 
 ---
 
@@ -26,9 +26,9 @@ You can use the command `pachctl auth roles-for-permission <permission>` to look
 
 ## Admin Roles
 
-### clusterAdminRole
+### clusterAdmin 
 
-The ClusterAdminRole includes all of the previous permissions, plus the following:
+The `clusterAdmin` role includes all of the previous permissions, plus the following:
  
  | Permission |
 |---|
@@ -54,7 +54,7 @@ The ClusterAdminRole includes all of the previous permissions, plus the followin
 | CLUSTER_DELETE_ALL |
 | CLUSTER_ENTERPRISE_PAUSE |
 
-### oidcAppAdminRole
+### oidcAppAdmin 
 
 | Permission |
 |---|
@@ -65,7 +65,7 @@ The ClusterAdminRole includes all of the previous permissions, plus the followin
 | CLUSTER_IDENTITY_GET_OIDC_CLIENT |
 
 
-### idpAdminRole
+### idpAdmin 
 
 | Permission |
 |---|
@@ -75,7 +75,7 @@ The ClusterAdminRole includes all of the previous permissions, plus the followin
 | CLUSTER_IDENTITY_GET_IDP |
 | CLUSTER_IDENTITY_DELETE_IDP |
 
-### secretAdminRole
+### secretAdmin 
 
 | Permission |
 |---|
@@ -84,14 +84,14 @@ The ClusterAdminRole includes all of the previous permissions, plus the followin
 | SECRET_INSPECT |
 | SECRET_DELETE |
 
-### identityAdminRole
+### identityAdmin 
 
 | Permission |
 |---|
 | CLUSTER_IDENTITY_SET_CONFIG |
 | CLUSTER_IDENTITY_GET_CONFIG |
 
-### licenseAdminRole
+### licenseAdmin 
 
 | Permission |
 |---|
@@ -112,21 +112,21 @@ All users have the `PROJECT_LIST_REPO` and `PROJECT_CREATE_REPO` permissions by 
 You can view your access level by running the command `pachctl list project` and checking the `ACCESS_LEVEL` column.
 {{% /notice %}}
 
-### ProjectViewerRole
+### projectViewer 
 
 | Permission |
 |---|
 |PROJECT_LIST_REPO|
 
-### ProjectWriterRole 
+### projectWriter 
 
-The `ProjectWriterRole` includes all of the `ProjectViewerRole` permissions, plus the following:
+The `projectWriter` role includes all of the `projectViewer` permissions, plus the following:
 
 | Permission |
 |---|
 |PROJECT_CREATE_REPO|
 
-### ProjectOwnerRole
+### projectOwner
 
 <!-- The `ProjectOwnerRole` includes all of the `ProjectWriterRole`, `ProjectViewerRole`, and `RepoOwnerRole` permissions, plus the following: -->
 
@@ -135,7 +135,7 @@ The `ProjectWriterRole` includes all of the `ProjectViewerRole` permissions, plu
 |PROJECT_DELETE|
 |PROJECT_MODIFY_BINDINGS|
 
-### ProjectCreatorRole
+### projectCreator
 
 | Permission |
 |---|
@@ -145,7 +145,7 @@ The `ProjectWriterRole` includes all of the `ProjectViewerRole` permissions, plu
 
 ## Repo Roles
 
-### RepoReaderRole 
+### repoReader 
 
 | Permission |
 |---|
@@ -159,9 +159,9 @@ The `ProjectWriterRole` includes all of the `ProjectViewerRole` permissions, plu
 | REPO_REMOVE_PIPELINE_READER |
 | PIPELINE_LIST_JOB |
 
-### RepoWriterRole 
+### RepoWriter
 
-The `RepoWriterRole` includes all of the `RepoReaderRole` permissions, plus the following:
+The `repoWriter` role includes all of the `repoReader` permissions, plus the following:
 
 | Permission |
 |---|
@@ -171,9 +171,9 @@ The `RepoWriterRole` includes all of the `RepoReaderRole` permissions, plus the 
 | REPO_DELETE_BRANCH |
 | REPO_ADD_PIPELINE_WRITER |
 
-### RepoOwnerRole
+### RepoOwner
 
-The `RepoOwnerRole` includes all of the `RepoWriterRole` and  `RepoReaderRole` permissions, plus the following:
+The `repoOwner` role includes all of the `repoWriter` and  `repoReader` permissions, plus the following:
 
 | Permission |
 |---|
@@ -184,21 +184,21 @@ The `RepoOwnerRole` includes all of the `RepoWriterRole` and  `RepoReaderRole` p
 
 ## Misc Roles
 
-### debuggerRole
+### debugger
 
 | Permission |
 |---|
 | CLUSTER_DEBUG_DUMP |
 | CLUSTER_GET_PACHD_LOGS |
 
-### robotUserRole
+### robotUser
 
 | Permission |
 |---|
 | CLUSTER_AUTH_GET_ROBOT_TOKEN |
 
 
-### pachdLogReaderRole
+### pachdLogReader
 
 | Permission |
 |---|
