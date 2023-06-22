@@ -134,7 +134,7 @@ helm repo update
 helm install pachyderm pachyderm/pachyderm \
   --set deployTarget=LOCAL \
   --set proxy.enabled=true \
-  --set proxy.service.type=LoadBalancer \
+  --set proxy.service.type=NodePort  \
   --set proxy.host=localhost
 
 ```
@@ -147,7 +147,7 @@ helm install pachyderm pachyderm/pachyderm \
   --set deployTarget=LOCAL \
   --set pachd.enterpriseLicenseKey="$(cat license.txt)" \
   --set proxy.enabled=true \
-  --set proxy.service.type=LoadBalancer \
+  --set proxy.service.type=NodePort  \
   --set proxy.host=localhost
 
 ``` 
