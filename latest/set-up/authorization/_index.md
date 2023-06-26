@@ -14,31 +14,27 @@ You can use {{% productName %}}'s Role-Based Access Control (RBAC) model to conf
 
 ## Before You Start 
 
-- You must be using [Enterprise](/{{%release%}}/set-up/enterprise) to set up [authentication](/{{%release%}}/set-up/connectors) and authorization. 
+You must set up a DNS address used for {{%productName%}}; this can be a URL or an IP address, but it must be accessible from the internet.
 
-## Activate User Access Management
+## Enable Authorization
 
-1. Activate authentication using the following command:
+The following steps will enable authorization for your {{%productName%}} cluster using the **mockIDP connector**.
 
-```s
-pachctl auth activate 
-
-# {{% productName %}} root token:
-# 54778a770c554d0fb84563033c9cb808
-```
-2. Save the root token value in a secure place.
-
-You can use this token in the future to log in to the initial root admin user by entering the following comand: 
+1. Obtain an [Enterprise license](/{{%release%}}/set-up/enterprise).
+2. Create a [secret](/{{%release%}}/manage/secrets) for your license and add it to your values.yaml file.
+3. Update the `proxy.host` field in your values.yaml file with your DNS address.
+4. Run the `helm upgrade` command (or `helm install` if you are installing {{%productName%}} for the first time).
 
 ```s
-pachctl auth use-auth-token
-
-# Please paste your {{% productName %}} auth token:
+helm install pachyderm/pachyderm -f values.yaml
 ```
 
-As a *Root User* (or initial admin), 
-you can now configure {{% productName %}} to work with
-the identity management provider (IdP) of your choice.
+
+To enable authorization for your cluster using additional connectors, see the [Connectors](/{{%release%}}/set-up/connectors) page.
+
+{{% notice warning %}}
+If `proxy.host` is not set, {{%productName%}} will not be able to redirect users to the login page. `localhost` is not a valid value for `proxy.host` when using the mockIDP connector.
+{{% /notice %}}
 
 ## License Expiration 
 When an Enterprise License expires, a
