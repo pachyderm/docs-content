@@ -4,6 +4,7 @@ import inspect
 import sys
 import os
 import importlib.util
+import re
 
 # Specify the Python file to document
 PYTHON_FILE = "test.py"
@@ -37,6 +38,13 @@ with open(OUTPUT_FILE, "w") as f:
         if not class_docstring:
             continue
 
+        # Convert :class: mentions into bookmark links
+        class_docstring = re.sub(
+            r":class:`([^`]+)`",
+            r"[:\1](#{0})".format(module_name.lower() + "." + name.lower()),
+            class_docstring,
+        )
+        
         # Print the class heading
         print(f"## {name}\n")
         print(f"{class_docstring}\n")
@@ -57,6 +65,13 @@ with open(OUTPUT_FILE, "w") as f:
             if not method_docstring:
                 continue
 
+            # Convert :meth: mentions into bookmark links
+            method_docstring = re.sub(
+                r":meth:`([^`]+)`",
+                r"[:\1](#{0}.{1})".format(module_name.lower() + "." + name.lower(), method_name.lower()),
+                method_docstring,
+            )
+            
             # Print the method heading
             print(f"### {method_name}\n")
             print(f"`{method_signature}`\n")
