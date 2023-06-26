@@ -130,14 +130,26 @@ helm repo update
 
 {{% wizardResults %}}
 {{% wizardResult val1="version/community-edition" %}}
+
+**For Docker Desktop:**
+
+```s
+helm install pachyderm pachyderm/pachyderm \
+  --set deployTarget=LOCAL \
+  --set proxy.enabled=true \
+  --set proxy.service.type=LoadBalancer  \
+  --set proxy.host=localhost
+```
+**For Minikube:**
+
 ```s
 helm install pachyderm pachyderm/pachyderm \
   --set deployTarget=LOCAL \
   --set proxy.enabled=true \
   --set proxy.service.type=NodePort  \
   --set proxy.host=localhost
-
 ```
+
 {{% /wizardResult %}}
 {{% wizardResult val1="version/enterprise" %}}
 Are you using an [Enterprise](/{{%release%}}/set-up/enterprise) trial key? If so, you can set up Enterprise Pachyderm locally by storing your trial key in a `license.txt` file and passing it into the following Helm command: 
