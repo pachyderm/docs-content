@@ -18,27 +18,27 @@ You must set up a DNS address used for {{%productName%}}; this can be a URL or a
 
 ## Enable Authorization
 
-The following steps will enable authorization for your {{%productName%}} cluster using the **mockIDP connector**.
+The following steps will enable authorization for your {{%productName%}} cluster and use the **mockIDP connector**. By default, the mockIDP connector comes with a default root user `admin` with the password `password`. To use additional connectors, complete these steps and then see the [Connectors](/{{%release%}}/set-up/connectors) page.
 
 1. Obtain an [Enterprise license](/{{%release%}}/set-up/enterprise).
-2. Create a [secret](/{{%release%}}/manage/secrets) for your license and add it to your values.yaml file.
-    ```s
-    kubectl create secret generic enterprise-license \
-      --from-literal=enterprise-license-key=<your license key>
-    ```
-3. Update the `proxy.host` field in your values.yaml file with your DNS address.
-4. Run the `helm upgrade` command (or `helm install` if you are installing {{%productName%}} for the first time).
+2. Create a [secret](/{{%release%}}/manage/secrets) for your license.
+ ```s
+ kubectl create secret generic enterprise-license \
+   --from-literal=enterprise-license-key=<your license key>
+ ```
+3. Add the secret name to it to your values.yaml file at `pachd.enterpriseLicenseKeySecretName`.
+4. Update the `proxy.host` field in your values.yaml file with your DNS address.
+  {{% notice warning %}}
+   If `proxy.host` is not set, {{%productName%}} will not be able to redirect users to the login page. `localhost` is not a valid value for `proxy.host` when using the mockIDP connector.
+  {{% /notice %}}
+5. Run the `helm upgrade` command (or `helm install` if you are installing {{%productName%}} for the first time).
+   ```s
+   helm install pachyderm/pachyderm -f values.yaml
+   ```
+6. Connect using `pachctl connect <host>`, where `<host>` is the value of `proxy.host` in your values.yaml file.
+7. Log via the browser or by using `pachctl auth login`. You will be redirected to the login page.
 
-```s
-helm install pachyderm/pachyderm -f values.yaml
-```
 
-
-To enable authorization for your cluster using additional connectors, see the [Connectors](/{{%release%}}/set-up/connectors) page.
-
-{{% notice warning %}}
-If `proxy.host` is not set, {{%productName%}} will not be able to redirect users to the login page. `localhost` is not a valid value for `proxy.host` when using the mockIDP connector.
-{{% /notice %}}
 
 ## License Expiration 
 When an Enterprise License expires, a
