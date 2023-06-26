@@ -129,7 +129,7 @@ helm repo update
 {{% wizardResults %}}
 {{% wizardResult val1="version/community-edition" %}}
 ```s
-helm install pachyderm pachyderm/pachyderm --set deployTarget=LOCAL --set proxy.enabled=true --set proxy.service.type=NodePort 
+helm install pachyderm pachyderm/pachyderm --set deployTarget=LOCAL --set proxy.enabled=true --set proxy.service.type=LoadBalancer 
 ```
 {{% /wizardResult %}}
 {{% wizardResult val1="version/enterprise" %}}
