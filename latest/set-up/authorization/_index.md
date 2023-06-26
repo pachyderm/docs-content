@@ -22,6 +22,10 @@ The following steps will enable authorization for your {{%productName%}} cluster
 
 1. Obtain an [Enterprise license](/{{%release%}}/set-up/enterprise).
 2. Create a [secret](/{{%release%}}/manage/secrets) for your license and add it to your values.yaml file.
+    ```s
+    kubectl create secret generic enterprise-license \
+      --from-literal=enterprise-license-key=<your license key>
+    ```
 3. Update the `proxy.host` field in your values.yaml file with your DNS address.
 4. Run the `helm upgrade` command (or `helm install` if you are installing {{%productName%}} for the first time).
 
