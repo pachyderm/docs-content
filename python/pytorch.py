@@ -1398,7 +1398,7 @@ class PyTorchTrial(det.Trial):
 
       In the :meth:`__init__` method, initialize models, optimizers, and LR schedulers
       and wrap them with ``wrap_model``, ``wrap_optimizer``, ``wrap_lr_scheduler``
-      provided by :class:`~determined.pytorch.PyTorchTrialContext`.
+      provided by :class:`~determined.pytorch.PyTorchTrialConstructor`.
 
     * **Run forward and backward passes**.
 

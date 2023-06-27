@@ -7,7 +7,7 @@ import importlib.util
 import re
 
 # Specify the Python file to document
-PYTHON_FILE = "test.py"
+PYTHON_FILE = "pytorch.py"
 
 # Specify the output Markdown file
 OUTPUT_FILE = "documentation.md"
@@ -29,8 +29,21 @@ with open(OUTPUT_FILE, "w") as f:
     # Redirect the standard output to the file
     sys.stdout = f
 
+    # Generate yaml front matter (title, description, etc.) using the class name
+    
+    title = f"title: {module.__name__} module"
+    description = f"description: {module.__spec__.name} module"
+
+    print("---")
+    print(title)
+    print(description)
+    print("tags: [python]")
+    print("---")
+
+
     # Process each class in the module
     for name, cls in inspect.getmembers(module, inspect.isclass):
+
         # Get the class docstring
         class_docstring = inspect.getdoc(cls)
 
@@ -39,11 +52,18 @@ with open(OUTPUT_FILE, "w") as f:
             continue
 
         # Convert :class: mentions into bookmark links
+        # Example: :class:`~determined.pytorch.PyTorchTrial`
+        # get the module name by removing everything but the text between the two periods.
         class_docstring = re.sub(
-            r":class:`([^`]+)`",
-            r"[:\1](#{0})".format(module_name.lower() + "." + name.lower()),
+            r":class:`~?determined\.([^`]+)`",
+            lambda match: "[:{}](#{}-module-{})".format(
+                match.group(1),
+                match.group(1).split(".")[-2].lower().replace(".", "-"),
+                match.group(1).split(".")[-1].lower().replace(".", "-")
+            ),
             class_docstring,
         )
+
         
         # Print the class heading
         print(f"## {name}\n")
@@ -53,7 +73,9 @@ with open(OUTPUT_FILE, "w") as f:
         for method_name, method in inspect.getmembers(cls, inspect.isfunction):
             # Skip special and private methods
             if method_name.startswith("__"):
-                continue
+                # rename __init__ to constructor
+                if method_name == "__init__":
+                    method_name = name + "Constructor"
 
             # Get the method signature
             method_signature = inspect.signature(method)
@@ -68,9 +90,10 @@ with open(OUTPUT_FILE, "w") as f:
             # Convert :meth: mentions into bookmark links
             method_docstring = re.sub(
                 r":meth:`([^`]+)`",
-                r"[:\1](#{0}.{1})".format(module_name.lower() + "." + name.lower(), method_name.lower()),
+                lambda match: "[:{}](#{})".format(match.group(1), module_name.lower() + "-module-" + match.group(1).lower()),
                 method_docstring,
             )
+
             
             # Print the method heading
             print(f"### {method_name}\n")
