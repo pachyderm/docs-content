@@ -10,7 +10,7 @@ import re
 PYTHON_FILE = "pytorch.py"
 
 # Specify the output Markdown file
-OUTPUT_FILE = "documentation.md"
+OUTPUT_FILE = "api-pytorch-reference.md"
 
 # Get the absolute path to the Python file
 python_file_path = os.path.abspath(PYTHON_FILE)
