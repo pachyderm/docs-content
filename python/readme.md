@@ -1,6 +1,6 @@
 # Docstrings to Markdown Test
 
-The purpose of this test is to test that docstrings from python files can be processed and output as a markdown documentation page. The purpose is also to test that any mention of a class or method is a clickable bookmark, is properly formatted, and when clicked, navigates to the section where the class or method is documented.
+The purpose of this test is to test that docstrings from python files can be processed and output as a markdown documentation page. The purpose is also to test that any mention of a class or method is a clickable link, is properly formatted, and when clicked, navigates to the section where the class or method is documented.
 
 ## Test Files
 
