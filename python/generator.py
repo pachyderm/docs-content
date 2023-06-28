@@ -76,16 +76,44 @@ with open(OUTPUT_FILE, "w") as f:
             if not class_docstring:
                 continue
 
-            # Replace :class: mentions with hyperlinks to the class headings
+            # Convert :class: mentions into bookmark links
             class_docstring = re.sub(
                 r":class:`~?([\w\.]+)`",
-                lambda match: f"[{match.group(1)}](#{match.group(1).replace('.', '-')})" if match.group(1).replace('.', '-') in class_headings else match.group(0),
+                lambda match: f"[:{match.group(1)}](#{match.group(1).replace('.', '-')})" if match.group(1).replace('.', '-') in class_headings else match.group(0),
                 class_docstring,
             )
 
-            # Print the modified class docstring
+            # Print the class heading
             print(f"{class_headings.get(name)}\n")
             print(f"{class_docstring}\n")
+
+            # Process each method in the class
+            for method_name, method in inspect.getmembers(cls, inspect.isfunction):
+                # Skip special and private methods
+                if method_name.startswith("__"):
+                    continue
+
+                # Get the method signature
+                method_signature = inspect.signature(method)
+
+                # Get the method docstring
+                method_docstring = inspect.getdoc(method)
+
+                # Skip methods without docstrings
+                if not method_docstring:
+                    continue
+
+                # Convert :meth: mentions into bookmark links
+                method_docstring = re.sub(
+                    r":meth:`([^`]+)`",
+                    lambda match: f"[:{match.group(1)}](#{module_name.lower()}-module-{match.group(1).lower()})",
+                    method_docstring,
+                )
+
+                # Print the method heading
+                print(f"### {method_name}\n")
+                print(f"`{method_signature}`\n")
+                print(f"{method_docstring}\n")
 
     # Reset the standard output
     sys.stdout = sys.__stdout__
