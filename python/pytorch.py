@@ -1,14 +1,4 @@
-"docstrings test file"
-"to test docstrings using this file, "
-"uses sphinx autoclass directive to auto render the docstrings"
-"within the section class PyTorchTrial(det.Trial):"
-"when called by .. autoclass:: determined.pytorch.PyTorchTrial"
-"in the reference file api-pytorch-reference"
-"Then, to point to the class from another page such as a user guide," 
-"you would use the cross-reference,"
-":class:`~determined.pytorch.PyTorchTrial`"
-"example: api-pytorch-ug"
-"but how does it work in markdown?"
+# Test File for testing autodocs in markdown
 
 import collections.abc
 import contextlib
@@ -52,16 +42,7 @@ def dataloader_next(profiler: det.profiler.ProfilerAgent, dataloader_iter: Itera
 
 
 class TrainUnit:
-    """
-    TrainUnit is the base class for the supported training units (Batch, Epoch) containing
-    the value of unit, where the value can be an int or an implementable collections.abc.Container.
-
-    TrainUnits are used to define periodic training behavior such as checkpointing and validating.
-
-    int values are treated as periods, e.g. Batch(100) will checkpoint/validate every 100 batches.
-    collections.abc.Container values are treated as schedules, e.g. Batch(1,5,10) will
-    checkpoint/validate on batches 1, 5, and 10.
-    """
+# docstrings removed
 
     def __init__(self, value: Union[int, collections.abc.Container]):
         self.value = value
@@ -126,17 +107,13 @@ class TrainUnit:
 
 
 class Epoch(TrainUnit):
-    """
-    Epoch step type (e.g. Epoch(1) defines 1 epoch)
-    """
+    # docstrings removed
 
     pass
 
 
 class Batch(TrainUnit):
-    """
-    Batch step type (e.g. Batch(1) defines 1 batch)
-    """
+    # docstrings removed
 
     @staticmethod
     def _from_records(records: int, global_batch_size: int) -> "Batch":
@@ -158,9 +135,7 @@ class _TrainBoundary:
 
 
 class ShouldExit(Exception):
-    """
-    ShouldExit breaks out of the top-level train loop from inside function calls.
-    """
+    # docstrings removed
 
     def __init__(self, skip_exit_checkpoint: bool = False):
         self.skip_exit_checkpoint = skip_exit_checkpoint
@@ -824,9 +799,7 @@ class _PyTorchTrialController:
     def _auto_step_lr_scheduler_per_batch(
         self, batch_idx: int, lr_scheduler: pytorch.LRScheduler
     ) -> None:
-        """
-        This function automatically steps an LR scheduler. It should be called per batch.
-        """
+        # docstrings removed
         # Never step lr when we do not step optimizer.
         if not self.context._should_communicate_and_update():
             return
@@ -1396,9 +1369,13 @@ class PyTorchTrial(det.Trial):
 
     * **Define models, optimizers, and LR schedulers**.
 
+      TEST THAT THE METHOD LINKS TO THE ABSTRACT METHOD SECTION
+      TEST THAT THE CLASS LINKS TO THE PYTORCHTRIALCONTEXT SECTION
+      WHICH IS ACTUALLY SOURCED FROM ANOTHER SCRIPT CONTEXT DOT PY
+      
       In the :meth:`__init__` method, initialize models, optimizers, and LR schedulers
       and wrap them with ``wrap_model``, ``wrap_optimizer``, ``wrap_lr_scheduler``
-      provided by :class:`~determined.pytorch.PyTorchTrialConstructor`.
+      provided by :class:`~determined.pytorch.PyTorchTrialContext`.
 
     * **Run forward and backward passes**.
 
