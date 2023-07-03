@@ -69,7 +69,7 @@ You are now ready to continue to Step 1.
 
  {{% /wizardResult %}}
  {{% wizardResult val1="operating-system/linux" %}}
-  - You must have [Homebrew](https://brew.sh/) installed. 
+   - You can optionally install [Homebrew](https://brew.sh/) to easily install tools like Docker, Minikube, and Helm. 
 ```s
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```

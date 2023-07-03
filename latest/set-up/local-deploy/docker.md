@@ -64,7 +64,10 @@ All installation steps after [1. Install Docker Desktop](#1-install-docker-deskt
 You are now ready to continue to Step 1.
  {{% /wizardResult %}}
  {{% wizardResult val1="operating-system/linux" %}}
- You do not need to install Homebrew. 
+   - You can optionally install [Homebrew](https://brew.sh/) to easily install tools like Helm. 
+```s
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
  {{% /wizardResult %}}
 {{% /wizardResults %}}
 {{< /stack >}}

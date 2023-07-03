@@ -66,7 +66,7 @@ All installation steps after [1. Install Docker Desktop](#1-install-docker-deskt
 You are now ready to continue to Step 1.
  {{% /wizardResult %}}
  {{% wizardResult val1="operating-system/linux" %}}
-  - You must have [Homebrew](https://brew.sh/) installed. 
+  - You can optionally install [Homebrew](https://brew.sh/) to easily install tools like Helm. 
 ```s
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
@@ -84,15 +84,15 @@ You are now ready to continue to Step 1.
 
 
 ## 2. Install Pachctl CLI
-
 {{< stack type="wizard" >}}
  {{% wizardRow id="operating-system" %}}
-  {{% wizardButton option="MacOs, Windows, & Darwin" state="active" %}}
+  {{% wizardButton option="MacOs & Windows" state="active" %}}
   {{% wizardButton option="Debian" %}}
+  {{% wizardButton option="Linux" %}}
  {{% /wizardRow %}}
 
  {{% wizardResults %}}
- {{% wizardResult val1="operating-system/macos-windows-darwin" %}}
+ {{% wizardResult val1="operating-system/macos-windows" %}}
  ```s
 brew tap pachyderm/tap && brew install pachyderm/tap/pachctl@{{% majorMinorNumber %}}  
 ```
@@ -103,9 +103,21 @@ brew tap pachyderm/tap && brew install pachyderm/tap/pachctl@{{% majorMinorNumbe
 curl -o /tmp/pachctl.deb -L https://github.com/pachyderm/pachyderm/releases/download/v{{% latestPatchNumber %}}/pachctl_{{% latestPatchNumber %}}_amd64.deb && sudo dpkg -i /tmp/pachctl.deb
 ```
  {{% /wizardResult%}}
- {{% /wizardResults%}}
+
+ {{% wizardResult val1="operating-system/linux" %}}
+
+ **AMD**
+ ```s
+curl -o /tmp/pachctl.tar.gz -L https://github.com/pachyderm/pachyderm/releases/download/v{{%latestPatchNumber%}}/pachctl_{{%latestPatchNumber%}}_linux_amd64.tar.gz && tar -xvf /tmp/pachctl.tar.gz -C /tmp && sudo cp /tmp/pachctl_{{%latestPatchNumber%}}_linux_amd64/pachctl /usr/local/bin 
+ ```
+**ARM**
+```s
+curl -o /tmp/pachctl.tar.gz -L https://github.com/pachyderm/pachyderm/releases/download/v{{%latestPatchNumber%}}/pachctl_{{%latestPatchNumber%}}_linux_arm64.tar.gz && tar -xvf /tmp/pachctl.tar.gz -C /tmp && sudo cp /tmp/pachctl_{{%latestPatchNumber%}}_linux_arm64/pachctl /usr/local/bin 
+
+```
+ {{%/wizardResult%}}
+ {{%/wizardResults%}}
  {{</stack>}}
- 
 
 
 ## 3. Install & Configure Helm
