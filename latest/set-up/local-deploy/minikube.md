@@ -106,9 +106,40 @@ minikube start
 
 ## 3. Install Pachctl CLI 
 
-```s
+{{< stack type="wizard" >}}
+ {{% wizardRow id="operating-system" %}}
+  {{% wizardButton option="MacOs & Windows" state="active" %}}
+  {{% wizardButton option="Debian" %}}
+  {{% wizardButton option="Linux" %}}
+ {{% /wizardRow %}}
+
+ {{% wizardResults %}}
+ {{% wizardResult val1="operating-system/macos-windows" %}}
+ ```s
 brew tap pachyderm/tap && brew install pachyderm/tap/pachctl@{{% majorMinorNumber %}}  
 ```
+ {{% /wizardResult%}}
+ {{% wizardResult val1="operating-system/debian" %}}
+
+```s
+curl -o /tmp/pachctl.deb -L https://github.com/pachyderm/pachyderm/releases/download/v{{% latestPatchNumber %}}/pachctl_{{% latestPatchNumber %}}_amd64.deb && sudo dpkg -i /tmp/pachctl.deb
+```
+ {{% /wizardResult%}}
+
+ {{% wizardResult val1="operating-system/linux" %}}
+
+ **AMD**
+ ```s
+curl -o /tmp/pachctl.tar.gz -L https://github.com/pachyderm/pachyderm/releases/download/v{{%latestPatchNumber%}}/pachctl_{{%latestPatchNumber%}}_linux_amd64.tar.gz && tar -xvf /tmp/pachctl.tar.gz -C /tmp && sudo cp /tmp/pachctl_{{%latestPatchNumber%}}_linux_amd64/pachctl /usr/local/bin 
+ ```
+**ARM**
+```s
+curl -o /tmp/pachctl.tar.gz -L https://github.com/pachyderm/pachyderm/releases/download/v{{%latestPatchNumber%}}/pachctl_{{%latestPatchNumber%}}_linux_arm64.tar.gz && tar -xvf /tmp/pachctl.tar.gz -C /tmp && sudo cp /tmp/pachctl_{{%latestPatchNumber%}}_linux_arm64/pachctl /usr/local/bin 
+
+```
+ {{%/wizardResult%}}
+ {{%/wizardResults%}}
+ {{</stack>}}
 
 ## 4. Install & Configure Helm
 
