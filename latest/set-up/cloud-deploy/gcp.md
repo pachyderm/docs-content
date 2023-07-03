@@ -44,7 +44,7 @@ You'll need your organization's cluster URL ([proxy.host](/{{%release%}}/manage/
 
 1. Run the following command to get your cluster URL:
 ```s
-kubectl get services | grep pachyderm-proxy | awk '{print $4}'
+kubectl get services | grep pachd-lb | awk '{print $4}'
 ```
 2. Connect to your cluster:
    
