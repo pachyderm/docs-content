@@ -119,6 +119,10 @@ helm repo update
 ```
 3. Install PachD: 
 
+{{%notice tip%}}
+Open your browser and check `http://localhost` before installing. If any other tools are using the same port as {{%productName%}}, add the following argument to the below command: `--set proxy.service.httpPort=8080`
+{{%/notice%}}
+
 
 {{< stack type="wizard" >}}
  {{% wizardRow id="version" %}}
