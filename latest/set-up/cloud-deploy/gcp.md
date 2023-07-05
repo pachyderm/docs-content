@@ -30,7 +30,14 @@ This guide assumes that:
    gcloud services enable sqladmin.googleapis.com
    ```
 
-## 2. Create a GKE Cluster 
+## 2. Create a Static IP Address
+
+```s
+gcloud compute addresses create STATIC_IP_NAME --region=GCP_REGION
+
+STATIC_IP_ADDR=$(gcloud compute addresses describe STATIC_IP_NAME --region=GCP_REGION --format="json" --flatten="address" | jq .[])
+```
+## 3. Create a GKE Cluster 
 
 Make sure to replace the values in the following commands to suit your needs.
 
@@ -56,14 +63,6 @@ Make sure to replace the values in the following commands to suit your needs.
    ```s
    gcloud container clusters get-credentials CLUSTER_NAME
    ```
-
-## 3. Create a Static IP Address
-
-```s
-gcloud compute addresses create STATIC_IP_NAME --region=GCP_REGION
-
-STATIC_IP_ADDR=$(gcloud compute addresses describe STATIC_IP_NAME --region=GCP_REGION --format="json" --flatten="address" | jq .[])
-```
 
 ## 4. Create Storage Buckets
 
@@ -253,10 +252,3 @@ kubectl get services | grep pachd-lb | awk '{print $4}'
 
    {{</stack>}}
 
-{{% notice tip %}}
-
-You can also connect to Console via Google's Cloud Shell: 
-
-![console-in-browser](/images/gcp/console-in-browser.gif)
-
-{{% /notice %}}
