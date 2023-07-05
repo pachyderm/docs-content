@@ -88,14 +88,7 @@ You will find all you need to get you started or dive into the details of the av
 
 ## Node Client
 
-Our Javascript client `node-pachyderm` is a library officially supported by {{%productName%}} and **used in production by {{%productName%}} Console**.  
-
-Today, we provide only read operations as shown in Console. Over time, we will add additional functionality to the SDK. However, there are no near-term plans to reach parity with python-pachyderm yet.
-
-Please get in touch with us if you are [interested in contributing](https://github.com/pachyderm/node-pachyderm/blob/main/contributing.md) or ask your questions on our dedicated [slack channel](https://pachyderm-users.slack.com/archives/C028ZV066JY).
-
-You will find installations instructions and a first quick overview of how to use the library in our [public repository](https://github.com/pachyderm/node-pachyderm). 
-Check also our [opencv example](https://github.com/pachyderm/node-pachyderm/tree/main/examples/opencv).
+Our Javascript client `node-pachyderm` has been deprecated.
 
 ## Other languages
 
