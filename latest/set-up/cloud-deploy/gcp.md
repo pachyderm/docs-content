@@ -86,8 +86,6 @@ STATIC_IP_ADDR=$(gcloud compute addresses describe ${STATIC_IP_NAME} --region=${
 
 ## 3. Create a GKE Cluster 
 
-Make sure to replace the values in the following commands to suit your needs.
-
 1. Create a GKE cluster with the following command:
 
    ```s
@@ -121,9 +119,6 @@ gsutil mb -l ${GCP_REGION} gs://${LOKI_BUCKET_NAME}
 ```
 
 ## 5. Create a Cloud SQL Instance
-
-Make sure to replace the values in the following commands to suit your needs.
-
 
 1. Create a Cloud SQL instance with the following command:
 
