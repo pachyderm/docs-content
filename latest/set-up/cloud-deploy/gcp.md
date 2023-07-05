@@ -13,12 +13,13 @@ weight: 3
 
 This guide assumes that:
 -  You have already tried [{{%productName%}} locally](/{{%release%}}/set-up/local-deploy/) and have some familiarity with [Kubectl](https://kubernetes.io/docs/tasks/tools/), [Helm](https://helm.sh/docs/intro/install/), [Google Cloud SDK](https://cloud.google.com/sdk/) and [jq](https://stedolan.github.io/jq/download/).
-- You have access to a Google Cloud account linked to an active billing account.
+- You have access to a Google Cloud account linked to an active billing account `gcloud alpha billing accounts list`
 ---
 
 ## 1. Create a New Project 
 
-1. Create a new project (e.g.,`pachyderm-quickstart-project`).
+1. Create a new project (e.g.,`pachyderm-quickstart-project`). You can pre-define the project id using a between 6-30 characters, starting with a lowercase letter. This ID will be used to set up the cluster and will be referenced throughout this guide.
+   
    ```s
    gcloud projects create PROJECT_ID --name="Your Project Name" --set-as-default
    gcloud alpha billing projects link PROJECT_ID --billing-account=BILLING_ACCOUNT_ID
@@ -30,13 +31,22 @@ This guide assumes that:
    gcloud services enable sqladmin.googleapis.com
    ```
 
+
 ## 2. Create a Static IP Address
 
-```s
-gcloud compute addresses create STATIC_IP_NAME --region=GCP_REGION
+1. Create the static IP Address:
 
-STATIC_IP_ADDR=$(gcloud compute addresses describe STATIC_IP_NAME --region=GCP_REGION --format="json" --flatten="address" | jq .[])
+```s
+gcloud compute addresses create STATIC_IP_NAME --region=GCP_REGION 
 ```
+1. Get the static IP address:
+
+```s
+gcloud compute addresses describe elby-static-ip --region=us-east1 --format="json" --flatten="address" 
+```
+
+Save this IP address to use for your Helm vales file at `pachd.externalService.loadBalancerIP`.
+
 ## 3. Create a GKE Cluster 
 
 Make sure to replace the values in the following commands to suit your needs.
@@ -97,8 +107,10 @@ gcloud sql databases create dex -i CLOUDSQL_INSTANCE_NAME
 ```
 3. Get the Cloud SQL connection name:
 ```s
-CLOUDSQL_CONNECTION_NAME=$(gcloud sql instances describe CLOUDSQL_INSTANCE_NAME --format="json" | jq .connectionName)
+gcloud sql instances describe CLOUDSQL_INSTANCE_NAME --format="json" 
 ```
+
+Save this connection name to use for your Helm vales file at `cloudsqlAuthProxy.connectionName`.
 
 ## 6. Create a Service Accounts 
 
@@ -147,7 +159,7 @@ pachd:
   externalService:
     enabled: true
     aPIGrpcport: 31400
-    loadBalancerIP: STATIC_IP_ADDR
+    loadBalancerIP: "STATIC_IP_ADDRRESS"
   image:
     tag: "2.6.5"
   lokiDeploy: true
@@ -165,7 +177,7 @@ pachd:
 
 cloudsqlAuthProxy:
   enabled: true
-  connectionName: CLOUDSQL_CONNECTION_NAME
+  connectionName: "CLOUDSQL_CONNECTION_NAME"
   resources:
     requests:
       memory: "500Mi"
