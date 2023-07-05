@@ -55,7 +55,8 @@ Make sure to replace the values in the following commands to suit your needs.
 
    ```s
    gcloud container clusters create CLUSTER_NAME \
-     --machine-type=CLUSTER_MACHINE_TYPE \ # e.g., n1-standard-4 or n2-standard-2
+     --region=REGION \
+     --machine-type=TYPE \
      --workload-pool=PROJECT_ID.svc.id.goog \
      --enable-ip-alias \
      --create-subnetwork="" \
@@ -67,6 +68,7 @@ Make sure to replace the values in the following commands to suit your needs.
      --enable-autoupgrade \
      --disk-type="pd-ssd" \
      --image-type="COS_CONTAINERD"
+
    ```
 2. Connect to the cluster:
 
