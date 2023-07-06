@@ -150,7 +150,7 @@ gcloud sql databases create dex -i ${CLOUDSQL_INSTANCE_NAME}
 CLOUDSQL_CONNECTION_NAME=$(gcloud sql instances describe ${CLOUDSQL_INSTANCE_NAME} --format=json | jq ."connectionName")
 ```
 
-## 6. Create a Service Accounts 
+## 6. Create Service Accounts 
 
 Create a service account for {{%productName%}} and Loki. 
 
