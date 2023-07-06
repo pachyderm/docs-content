@@ -313,9 +313,26 @@ You'll need your organization's cluster URL ([proxy.host](/{{%release%}}/manage/
 kubectl get services | grep pachyderm-proxy | awk '{print $4}'
 ```
 2. Connect to your cluster:
+   
+   {{< stack type="wizard">}}
 
-```s
+   {{% wizardRow id="Method" %}}
+   {{% wizardButton option="HTTP" state="active" %}}
+   {{% wizardButton option="HTTPS (TLS)" %}}
+   {{% /wizardRow %}}
+
+   {{% wizardResults %}}
+   {{% wizardResult val1="method/http" %}}
+   ```s
    pachctl connect grpc://<your-proxy.host-value>:80
-```
+   ```
+   {{% /wizardResult %}}
+   {{% wizardResult val1="method/https-tls" %}}
+   ```s
+   pachctl connect grpcs://<your-proxy.host-value>:443
+   ```
+   {{% /wizardResult %}}
+   {{% /wizardResults%}}
 
-You can optionally run `port-forward` to connect to console in your dashboard at `http://localhost:4000/`.
+   {{</stack>}}
+3. You can optionally run `port-forward` to connect to console in your dashboard at `http://localhost:4000/`.
