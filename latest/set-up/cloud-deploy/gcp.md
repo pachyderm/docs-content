@@ -12,19 +12,19 @@ weight: 3
 ## Before You Start 
 
 This guide assumes that:
--  You have already tried [{{%productName%}} locally](/{{%release%}}/set-up/local-deploy/) and have some familiarity with [Kubectl](https://kubernetes.io/docs/tasks/tools/), [Helm](https://helm.sh/docs/intro/install/), [Google Cloud SDK](https://cloud.google.com/sdk/) and [jq](https://stedolan.github.io/jq/download/).
-- You have access to a Google Cloud account linked to an active billing account `gcloud alpha billing accounts list`
+-  You have already tried [{{%productName%}} locally](/{{%release%}}/set-up/local-deploy/) and have some familiarity with [Kubectl](https://kubernetes.io/docs/tasks/tools/), [Helm](https://helm.sh/docs/intro/install/), [Google Cloud SDK](https://cloud.google.com/sdk/) and [jq](https://stedolan.github.io/jq/download/)
+- You have access to a Google Cloud account linked to an active billing account (`gcloud alpha billing accounts list`)
 
 ### Configure Variables
 
-Configure these variables and set in a `.env` file and source them with `source .env` before starting the installation guide.
+Configure these variables and set in a `.env` file and source them by inputting `source .env` into the terminal before starting the installation guide.
 
 ```s
-PROJECT_ID="pachyderm-001"
+PROJECT_ID="pachyderm-001" # must be between 6-30 characters, starting with a lowercase letter
 PROJECT_NAME="pachyderm-gcp-example"
 NAME="fuzzy-alpaca"
 SQL_ADMIN_PASSWORD="batteryhorsestaple"
-BILLING_ACCOUNT_ID="000000-000000-000000"
+BILLING_ACCOUNT_ID="000000-000000-000000" # see `gcloud alpha billing accounts list`
 
 # This group of variables can be changed, but are sane defaults
 GCP_REGION="us-central1"
@@ -55,6 +55,8 @@ CLOUDSQLAUTHPROXY_WI="serviceAccount:${PROJECT_ID}.svc.id.goog[${K8S_NAMESPACE}/
 
 ---
 
+The following steps use a template to create a GKE cluster, a Cloud SQL instance, and a static IP address. The template also creates a service account for {{%productName%}} and Loki, and grants the service account the necessary permissions to access the Cloud SQL instance and storage buckets. You do not have to this template, but it's a good outline for understanding how to create your own set up.
+
 ## 1. Create a New Project 
 
 1. Create a new project (e.g.,`pachyderm-quickstart-project`). You can pre-define the project id using a between 6-30 characters, starting with a lowercase letter. This ID will be used to set up the cluster and will be referenced throughout this guide.
@@ -81,7 +83,7 @@ gcloud compute addresses create ${STATIC_IP_NAME} --region=${GCP_REGION}
 2. Get the static IP address:
 
 ```s
-STATIC_IP_ADDR=$(gcloud compute addresses describe ${STATIC_IP_NAME} --region=${GCP_REGION}--flatten=address)
+STATIC_IP_ADDR=$(gcloud compute addresses describe ${STATIC_IP_NAME} --region=${GCP_REGION} --format=json --flatten=address | jq .[]) 
 ```
 
 ## 3. Create a GKE Cluster 
@@ -108,7 +110,7 @@ STATIC_IP_ADDR=$(gcloud compute addresses describe ${STATIC_IP_NAME} --region=${
 2. Connect to the cluster:
 
    ```s
-   gcloud container clusters get-credentials ${CLUSTER_NAME}
+   gcloud container clusters get-credentials ${CLUSTER_NAME} --region=${GCP_REGION}
    ```
 
 ## 4. Create Storage Buckets
@@ -141,7 +143,7 @@ gcloud sql databases create dex -i ${CLOUDSQL_INSTANCE_NAME}
 ```
 3. Get the Cloud SQL connection name:
 ```s
-CLOUDSQL_CONNECTION_NAME=$(gcloud sql instances describe ${CLOUDSQL_INSTANCE_NAME} --flatten="connectionName")
+CLOUDSQL_CONNECTION_NAME=$(gcloud sql instances describe ${CLOUDSQL_INSTANCE_NAME} --format=json | jq ."connectionName")
 ```
 
 ## 6. Create a Service Accounts 
@@ -185,7 +187,6 @@ gcloud projects add-iam-policy-binding ${PROJECT_ID} \
 ```s
 kubectl create secret generic loki-service-account --from-file="${LOKI_GSA_NAME}-key.json"
 ```
-
 ## 8. Build a Helm Values File
 
 1. Create file.
@@ -196,9 +197,7 @@ deployTarget: "GOOGLE"
 pachd:
   enabled: true
   externalService:
-    enabled: true
-    aPIGrpcport: 31400
-    loadBalancerIP: ${STATIC_IP_ADDR}
+    enabled: false
   image:
     tag: "2.6.5"
   lokiDeploy: true
@@ -266,6 +265,34 @@ loki-stack:
           bucket_name: "${LOKI_BUCKET_NAME}"
   grafana:
     enabled: false
+
+proxy:
+  enabled: true
+  host: ""
+  replicas: 1 
+  image:
+    repository: "envoyproxy/envoy"
+    tag: "v1.22.0"
+    pullPolicy: "IfNotPresent"
+  resources:
+    requests:
+      cpu: 100m
+      memory: 512Mi
+    limits:
+      memory: 512Mi 
+  labels: {}
+  annotations: {}
+  service:  
+    type: LoadBalancer 
+    loadBalancerIP: "${STATIC_IP_ADDR}" 
+    httpPort: 80  
+    httpsPort: 443 
+    annotations: {}
+    labels: {} 
+  tls: 
+    enabled: false
+    secretName: "" 
+    secret: {} 
 EOF
 ```
 2. Install using the following command:
