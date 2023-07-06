@@ -33,6 +33,7 @@ K8S_NAMESPACE="default"
 CLUSTER_MACHINE_TYPE="n2-standard-2"
 SQL_CPU="2"
 SQL_MEM="7680MB"
+LOGGING="SYSTEM"
 
 # The following variables probably shouldn't be changed
 CLUSTER_NAME="${NAME}-gke"
@@ -45,6 +46,7 @@ STATIC_IP_NAME="${NAME}-ip"
 
 ROLE1="roles/cloudsql.client"
 ROLE2="roles/storage.admin"
+ROLE3="roles/storage.objectCreator"
 
 SERVICE_ACCOUNT="${GSA_NAME}@${PROJECT_ID}.iam.gserviceaccount.com"
 LOKI_SERVICE_ACCOUNT="${LOKI_GSA_NAME}@${PROJECT_ID}.iam.gserviceaccount.com"
@@ -70,6 +72,7 @@ The following steps use a template to create a GKE cluster, a Cloud SQL instance
    ```s
    gcloud services enable container.googleapis.com
    gcloud services enable sqladmin.googleapis.com
+   gcloud services enable compute.googleapis.com
    ```
 
 
@@ -97,6 +100,7 @@ STATIC_IP_ADDR=$(gcloud compute addresses describe ${STATIC_IP_NAME} --region=${
      --workload-pool=${PROJECT_ID}.svc.id.goog \
      --enable-ip-alias \
      --create-subnetwork="" \
+     --logging=${LOGGING} \
      --enable-dataplane-v2 \
      --enable-shielded-nodes \
      --release-channel="regular" \
@@ -160,6 +164,10 @@ gcloud projects add-iam-policy-binding ${PROJECT_ID} \
 gcloud projects add-iam-policy-binding ${PROJECT_ID} \
     --member="serviceAccount:${SERVICE_ACCOUNT}" \
     --role="${ROLE2}"
+
+gcloud projects add-iam-policy-binding ${PROJECT_ID} \
+    --member=serviceAccount:${SERVICE_ACCOUNT} 
+    --role="${ROLE3}"
 
 gcloud iam service-accounts add-iam-policy-binding ${SERVICE_ACCOUNT} \
     --role roles/iam.workloadIdentityUser \
@@ -225,9 +233,6 @@ cloudsqlAuthProxy:
     requests:
       memory: "500Mi"
       cpu: "250m"
-  service:
-    labels: {} 
-    type: ClusterIP
 
 postgresql:
   enabled: false
