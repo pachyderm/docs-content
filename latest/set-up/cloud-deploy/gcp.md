@@ -111,7 +111,18 @@ STATIC_IP_ADDR=$(gcloud compute addresses describe ${STATIC_IP_NAME} --region=${
      --image-type="COS_CONTAINERD"
 
    ```
-2. Connect to the cluster:
+2. Grant your user account the privileges needed for the `helm install` to work properly:
+   ```s
+   # By default, GKE clusters have RBAC enabled. To allow the 'helm install' to give the 'pachyderm' service account
+   # the requisite privileges via clusterrolebindings, you will need to grant *your user account* the privileges
+   # needed to create those clusterrolebindings.
+   #
+   # Note that this command is simple and concise, but gives your user account more privileges than necessary. See
+   # https://docs.pachyderm.io/en/latest/deploy-manage/deploy/rbac/ for the complete list of privileges that the
+   # Pachydermserviceaccount needs.
+   kubectl create clusterrolebinding cluster-admin-binding --clusterrole=cluster-admin --user=$(gcloud config get-value account)
+   ```
+3. Connect to the cluster:
 
    ```s
    gcloud container clusters get-credentials ${CLUSTER_NAME} --region=${GCP_REGION}
@@ -299,29 +310,12 @@ You'll need your organization's cluster URL ([proxy.host](/{{%release%}}/manage/
 
 1. Run the following command to get your cluster URL:
 ```s
-kubectl get services | grep pachd-lb | awk '{print $4}'
+kubectl get services | grep pachyderm-proxy | awk '{print $4}'
 ```
 2. Connect to your cluster:
-   
-   {{< stack type="wizard">}}
 
-   {{% wizardRow id="Method" %}}
-   {{% wizardButton option="HTTP" state="active" %}}
-   {{% wizardButton option="HTTPS (TLS)" %}}
-   {{% /wizardRow %}}
+```s
+   pachctl connect grpc://<your-proxy.host-value>:80
+```
 
-   {{% wizardResults %}}
-   {{% wizardResult val1="method/http" %}}
-   ```s
-   pachctl connect http://pachyderm.<your-proxy.host-value>
-   ```
-   {{% /wizardResult %}}
-   {{% wizardResult val1="method/https-tls" %}}
-   ```s
-   pachctl connect https://pachyderm.<your-proxy.host-value>
-   ```
-   {{% /wizardResult %}}
-   {{% /wizardResults%}}
-
-   {{</stack>}}
-
+You can optionally run `port-forward` to connect to console in your dashboard at `http://localhost:4000/`.
