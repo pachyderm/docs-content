@@ -190,7 +190,7 @@ gcloud projects add-iam-policy-binding ${PROJECT_ID} \
     --role="${ROLE2}"
 ```
 
-## 7. Create Loki a Secret
+## 7. Create a Loki Secret
 
 ```s
 kubectl create secret generic loki-service-account --from-file="${LOKI_GSA_NAME}-key.json"
