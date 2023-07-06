@@ -271,15 +271,9 @@ loki-stack:
 
 proxy:
   enabled: true
-  resources:
-    requests:
-      cpu: 100m
-      memory: 512Mi
-    limits:
-      memory: 512Mi 
   service:  
-    type: ClusterIP
-    loadBalancerIP: "${STATIC_IP_ADDR}" 
+    type: LoadBalancer
+    loadBalancerIP: ${STATIC_IP_ADDR} 
     httpPort: 80  
     httpsPort: 443 
   tls: 
