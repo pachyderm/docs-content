@@ -218,13 +218,16 @@ pachd:
       name: "pachyderm-worker"
 
 cloudsqlAuthProxy:
-  enabled: true
   connectionName: ${CLOUDSQL_CONNECTION_NAME}
   serviceAccount: "${SERVICE_ACCOUNT}"
-  resources:
+  enabled: true
+  resources: 
     requests:
       memory: "500Mi"
       cpu: "250m"
+  service:
+    labels: {} 
+    type: ClusterIP
 
 postgresql:
   enabled: false
@@ -268,31 +271,19 @@ loki-stack:
 
 proxy:
   enabled: true
-  host: ""
-  replicas: 1 
-  image:
-    repository: "envoyproxy/envoy"
-    tag: "v1.22.0"
-    pullPolicy: "IfNotPresent"
   resources:
     requests:
       cpu: 100m
       memory: 512Mi
     limits:
       memory: 512Mi 
-  labels: {}
-  annotations: {}
   service:  
-    type: LoadBalancer 
+    type: ClusterIP
     loadBalancerIP: "${STATIC_IP_ADDR}" 
     httpPort: 80  
     httpsPort: 443 
-    annotations: {}
-    labels: {} 
   tls: 
     enabled: false
-    secretName: "" 
-    secret: {} 
 EOF
 ```
 2. Install using the following command:
