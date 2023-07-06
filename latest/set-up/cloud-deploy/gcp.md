@@ -83,7 +83,7 @@ gcloud compute addresses create ${STATIC_IP_NAME} --region=${GCP_REGION}
 2. Get the static IP address:
 
 ```s
-STATIC_IP_ADDR=$(gcloud compute addresses describe ${STATIC_IP_NAME} --region=${GCP_REGION} --format=json --flatten=address | jq .[]) 
+STATIC_IP_ADDR=$(gcloud compute addresses describe ${STATIC_IP_NAME} --region=${GCP_REGION} --format="json" --flatten="address" | jq -r '.[]')
 ```
 
 ## 3. Create a GKE Cluster 
