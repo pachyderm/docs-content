@@ -1,0 +1,1692 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>pachyderm_sdk.api.enterprise API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>pachyderm_sdk.api.enterprise</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python"># Generated by the protocol buffer compiler.  DO NOT EDIT!
+# sources: api/enterprise/enterprise.proto
+# plugin: python-betterproto
+# This file has been @generated
+from dataclasses import dataclass
+from datetime import datetime
+from typing import (
+    TYPE_CHECKING,
+    Dict,
+    Optional,
+)
+
+import betterproto
+import betterproto.lib.google.protobuf as betterproto_lib_google_protobuf
+import grpc
+
+
+if TYPE_CHECKING:
+    import grpc
+
+
+class State(betterproto.Enum):
+    NONE = 0
+    ACTIVE = 1
+    EXPIRED = 2
+    HEARTBEAT_FAILED = 3
+
+
+class PauseStatusResponsePauseStatus(betterproto.Enum):
+    UNPAUSED = 0
+    PARTIALLY_PAUSED = 1
+    PAUSED = 2
+
+
+@dataclass(eq=False, repr=False)
+class LicenseRecord(betterproto.Message):
+    &#34;&#34;&#34;
+    LicenseRecord is the record we store in etcd for a Pachyderm enterprise
+    token that has been provided to a Pachyderm license server
+    &#34;&#34;&#34;
+
+    activation_code: str = betterproto.string_field(1)
+    expires: datetime = betterproto.message_field(2)
+
+
+@dataclass(eq=False, repr=False)
+class EnterpriseConfig(betterproto.Message):
+    &#34;&#34;&#34;
+    EnterpriseConfig is the configuration we store for heartbeating to the
+    license server.
+    &#34;&#34;&#34;
+
+    license_server: str = betterproto.string_field(1)
+    &#34;&#34;&#34;license_server is the address of the grpc license service&#34;&#34;&#34;
+
+    id: str = betterproto.string_field(2)
+    &#34;&#34;&#34;
+    id is the unique identifier for this pachd, which is registered with the
+    license service
+    &#34;&#34;&#34;
+
+    secret: str = betterproto.string_field(3)
+    &#34;&#34;&#34;secret is a shared secret between this pachd and the license service&#34;&#34;&#34;
+
+
+@dataclass(eq=False, repr=False)
+class EnterpriseRecord(betterproto.Message):
+    &#34;&#34;&#34;
+    EnterpriseRecord is a protobuf we cache in etcd to store the enterprise
+    status.
+    &#34;&#34;&#34;
+
+    license: &#34;LicenseRecord&#34; = betterproto.message_field(1)
+    &#34;&#34;&#34;
+    license is the cached LicenseRecord retrieved from the most recent
+    heartbeat to the license server.
+    &#34;&#34;&#34;
+
+    last_heartbeat: datetime = betterproto.message_field(2)
+    &#34;&#34;&#34;
+    last_heartbeat is the timestamp of the last successful heartbeat to the
+    license server
+    &#34;&#34;&#34;
+
+    heartbeat_failed: bool = betterproto.bool_field(3)
+    &#34;&#34;&#34;
+    heartbeat_failed is set if the license is still valid, but the pachd is no
+    longer registered with an enterprise server. This is the same as the
+    expired state, where auth is locked but not disabled.
+    &#34;&#34;&#34;
+
+
+@dataclass(eq=False, repr=False)
+class TokenInfo(betterproto.Message):
+    &#34;&#34;&#34;
+    TokenInfo contains information about the currently active enterprise token
+    &#34;&#34;&#34;
+
+    expires: datetime = betterproto.message_field(1)
+    &#34;&#34;&#34;
+    expires indicates when the current token expires (unset if there is no
+    current token)
+    &#34;&#34;&#34;
+
+
+@dataclass(eq=False, repr=False)
+class ActivateRequest(betterproto.Message):
+    license_server: str = betterproto.string_field(1)
+    id: str = betterproto.string_field(2)
+    secret: str = betterproto.string_field(3)
+
+
+@dataclass(eq=False, repr=False)
+class ActivateResponse(betterproto.Message):
+    pass
+
+
+@dataclass(eq=False, repr=False)
+class GetStateRequest(betterproto.Message):
+    pass
+
+
+@dataclass(eq=False, repr=False)
+class GetStateResponse(betterproto.Message):
+    state: &#34;State&#34; = betterproto.enum_field(1)
+    info: &#34;TokenInfo&#34; = betterproto.message_field(2)
+    activation_code: str = betterproto.string_field(3)
+    &#34;&#34;&#34;
+    activation_code will always be an empty string, call GetEnterpriseCode to
+    get the activation code
+    &#34;&#34;&#34;
+
+
+@dataclass(eq=False, repr=False)
+class GetActivationCodeRequest(betterproto.Message):
+    pass
+
+
+@dataclass(eq=False, repr=False)
+class GetActivationCodeResponse(betterproto.Message):
+    state: &#34;State&#34; = betterproto.enum_field(1)
+    info: &#34;TokenInfo&#34; = betterproto.message_field(2)
+    activation_code: str = betterproto.string_field(3)
+
+
+@dataclass(eq=False, repr=False)
+class HeartbeatRequest(betterproto.Message):
+    &#34;&#34;&#34;
+    Heartbeat in the enterprise service just triggers a heartbeat for testing
+    purposes. The RPC used to communicate with the license service is defined
+    in the license service.
+    &#34;&#34;&#34;
+
+    pass
+
+
+@dataclass(eq=False, repr=False)
+class HeartbeatResponse(betterproto.Message):
+    pass
+
+
+@dataclass(eq=False, repr=False)
+class DeactivateRequest(betterproto.Message):
+    pass
+
+
+@dataclass(eq=False, repr=False)
+class DeactivateResponse(betterproto.Message):
+    pass
+
+
+@dataclass(eq=False, repr=False)
+class PauseRequest(betterproto.Message):
+    pass
+
+
+@dataclass(eq=False, repr=False)
+class PauseResponse(betterproto.Message):
+    pass
+
+
+@dataclass(eq=False, repr=False)
+class UnpauseRequest(betterproto.Message):
+    pass
+
+
+@dataclass(eq=False, repr=False)
+class UnpauseResponse(betterproto.Message):
+    pass
+
+
+@dataclass(eq=False, repr=False)
+class PauseStatusRequest(betterproto.Message):
+    pass
+
+
+@dataclass(eq=False, repr=False)
+class PauseStatusResponse(betterproto.Message):
+    status: &#34;PauseStatusResponsePauseStatus&#34; = betterproto.enum_field(1)
+
+
+class ApiStub:
+    def __init__(self, channel: &#34;grpc.Channel&#34;):
+        self.__rpc_activate = channel.unary_unary(
+            &#34;/enterprise_v2.API/Activate&#34;,
+            request_serializer=ActivateRequest.SerializeToString,
+            response_deserializer=ActivateResponse.FromString,
+        )
+        self.__rpc_get_state = channel.unary_unary(
+            &#34;/enterprise_v2.API/GetState&#34;,
+            request_serializer=GetStateRequest.SerializeToString,
+            response_deserializer=GetStateResponse.FromString,
+        )
+        self.__rpc_get_activation_code = channel.unary_unary(
+            &#34;/enterprise_v2.API/GetActivationCode&#34;,
+            request_serializer=GetActivationCodeRequest.SerializeToString,
+            response_deserializer=GetActivationCodeResponse.FromString,
+        )
+        self.__rpc_heartbeat = channel.unary_unary(
+            &#34;/enterprise_v2.API/Heartbeat&#34;,
+            request_serializer=HeartbeatRequest.SerializeToString,
+            response_deserializer=HeartbeatResponse.FromString,
+        )
+        self.__rpc_deactivate = channel.unary_unary(
+            &#34;/enterprise_v2.API/Deactivate&#34;,
+            request_serializer=DeactivateRequest.SerializeToString,
+            response_deserializer=DeactivateResponse.FromString,
+        )
+        self.__rpc_pause = channel.unary_unary(
+            &#34;/enterprise_v2.API/Pause&#34;,
+            request_serializer=PauseRequest.SerializeToString,
+            response_deserializer=PauseResponse.FromString,
+        )
+        self.__rpc_unpause = channel.unary_unary(
+            &#34;/enterprise_v2.API/Unpause&#34;,
+            request_serializer=UnpauseRequest.SerializeToString,
+            response_deserializer=UnpauseResponse.FromString,
+        )
+        self.__rpc_pause_status = channel.unary_unary(
+            &#34;/enterprise_v2.API/PauseStatus&#34;,
+            request_serializer=PauseStatusRequest.SerializeToString,
+            response_deserializer=PauseStatusResponse.FromString,
+        )
+
+    def activate(
+        self, *, license_server: str = &#34;&#34;, id: str = &#34;&#34;, secret: str = &#34;&#34;
+    ) -&gt; &#34;ActivateResponse&#34;:
+        request = ActivateRequest()
+        request.license_server = license_server
+        request.id = id
+        request.secret = secret
+
+        return self.__rpc_activate(request)
+
+    def get_state(self) -&gt; &#34;GetStateResponse&#34;:
+        request = GetStateRequest()
+
+        return self.__rpc_get_state(request)
+
+    def get_activation_code(self) -&gt; &#34;GetActivationCodeResponse&#34;:
+        request = GetActivationCodeRequest()
+
+        return self.__rpc_get_activation_code(request)
+
+    def heartbeat(self) -&gt; &#34;HeartbeatResponse&#34;:
+        request = HeartbeatRequest()
+
+        return self.__rpc_heartbeat(request)
+
+    def deactivate(self) -&gt; &#34;DeactivateResponse&#34;:
+        request = DeactivateRequest()
+
+        return self.__rpc_deactivate(request)
+
+    def pause(self) -&gt; &#34;PauseResponse&#34;:
+        request = PauseRequest()
+
+        return self.__rpc_pause(request)
+
+    def unpause(self) -&gt; &#34;UnpauseResponse&#34;:
+        request = UnpauseRequest()
+
+        return self.__rpc_unpause(request)
+
+    def pause_status(self) -&gt; &#34;PauseStatusResponse&#34;:
+        request = PauseStatusRequest()
+
+        return self.__rpc_pause_status(request)
+
+
+class ApiBase:
+    def activate(
+        self, license_server: str, id: str, secret: str, context: &#34;grpc.ServicerContext&#34;
+    ) -&gt; &#34;ActivateResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def get_state(self, context: &#34;grpc.ServicerContext&#34;) -&gt; &#34;GetStateResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def get_activation_code(
+        self, context: &#34;grpc.ServicerContext&#34;
+    ) -&gt; &#34;GetActivationCodeResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def heartbeat(self, context: &#34;grpc.ServicerContext&#34;) -&gt; &#34;HeartbeatResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def deactivate(self, context: &#34;grpc.ServicerContext&#34;) -&gt; &#34;DeactivateResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def pause(self, context: &#34;grpc.ServicerContext&#34;) -&gt; &#34;PauseResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def unpause(self, context: &#34;grpc.ServicerContext&#34;) -&gt; &#34;UnpauseResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def pause_status(self, context: &#34;grpc.ServicerContext&#34;) -&gt; &#34;PauseStatusResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    __proto_path__ = &#34;enterprise_v2.API&#34;
+
+    @property
+    def __rpc_methods__(self):
+        return {
+            &#34;Activate&#34;: grpc.unary_unary_rpc_method_handler(
+                self.activate,
+                request_deserializer=ActivateRequest.FromString,
+                response_serializer=ActivateRequest.SerializeToString,
+            ),
+            &#34;GetState&#34;: grpc.unary_unary_rpc_method_handler(
+                self.get_state,
+                request_deserializer=GetStateRequest.FromString,
+                response_serializer=GetStateRequest.SerializeToString,
+            ),
+            &#34;GetActivationCode&#34;: grpc.unary_unary_rpc_method_handler(
+                self.get_activation_code,
+                request_deserializer=GetActivationCodeRequest.FromString,
+                response_serializer=GetActivationCodeRequest.SerializeToString,
+            ),
+            &#34;Heartbeat&#34;: grpc.unary_unary_rpc_method_handler(
+                self.heartbeat,
+                request_deserializer=HeartbeatRequest.FromString,
+                response_serializer=HeartbeatRequest.SerializeToString,
+            ),
+            &#34;Deactivate&#34;: grpc.unary_unary_rpc_method_handler(
+                self.deactivate,
+                request_deserializer=DeactivateRequest.FromString,
+                response_serializer=DeactivateRequest.SerializeToString,
+            ),
+            &#34;Pause&#34;: grpc.unary_unary_rpc_method_handler(
+                self.pause,
+                request_deserializer=PauseRequest.FromString,
+                response_serializer=PauseRequest.SerializeToString,
+            ),
+            &#34;Unpause&#34;: grpc.unary_unary_rpc_method_handler(
+                self.unpause,
+                request_deserializer=UnpauseRequest.FromString,
+                response_serializer=UnpauseRequest.SerializeToString,
+            ),
+            &#34;PauseStatus&#34;: grpc.unary_unary_rpc_method_handler(
+                self.pause_status,
+                request_deserializer=PauseStatusRequest.FromString,
+                response_serializer=PauseStatusRequest.SerializeToString,
+            ),
+        }</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="pachyderm_sdk.api.enterprise.State"><code class="flex name class">
+<span>class <span class="ident">State</span></span>
+<span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>An enumeration.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class State(betterproto.Enum):
+    NONE = 0
+    ACTIVE = 1
+    EXPIRED = 2
+    HEARTBEAT_FAILED = 3</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Enum</li>
+<li>enum.IntEnum</li>
+<li>builtins.int</li>
+<li>enum.Enum</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.enterprise.State.NONE"><code class="name">var <span class="ident">NONE</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.State.ACTIVE"><code class="name">var <span class="ident">ACTIVE</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.State.EXPIRED"><code class="name">var <span class="ident">EXPIRED</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.State.HEARTBEAT_FAILED"><code class="name">var <span class="ident">HEARTBEAT_FAILED</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.PauseStatusResponsePauseStatus"><code class="flex name class">
+<span>class <span class="ident">PauseStatusResponsePauseStatus</span></span>
+<span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>An enumeration.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class PauseStatusResponsePauseStatus(betterproto.Enum):
+    UNPAUSED = 0
+    PARTIALLY_PAUSED = 1
+    PAUSED = 2</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Enum</li>
+<li>enum.IntEnum</li>
+<li>builtins.int</li>
+<li>enum.Enum</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.enterprise.PauseStatusResponsePauseStatus.UNPAUSED"><code class="name">var <span class="ident">UNPAUSED</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.PauseStatusResponsePauseStatus.PARTIALLY_PAUSED"><code class="name">var <span class="ident">PARTIALLY_PAUSED</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.PauseStatusResponsePauseStatus.PAUSED"><code class="name">var <span class="ident">PAUSED</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.LicenseRecord"><code class="flex name class">
+<span>class <span class="ident">LicenseRecord</span></span>
+<span>(</span><span>activation_code: str = None, expires: datetime.datetime = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>LicenseRecord is the record we store in etcd for a Pachyderm enterprise
+token that has been provided to a Pachyderm license server</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class LicenseRecord(betterproto.Message):
+    &#34;&#34;&#34;
+    LicenseRecord is the record we store in etcd for a Pachyderm enterprise
+    token that has been provided to a Pachyderm license server
+    &#34;&#34;&#34;
+
+    activation_code: str = betterproto.string_field(1)
+    expires: datetime = betterproto.message_field(2)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.enterprise.LicenseRecord.activation_code"><code class="name">var <span class="ident">activation_code</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.LicenseRecord.expires"><code class="name">var <span class="ident">expires</span> : datetime.datetime</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.EnterpriseConfig"><code class="flex name class">
+<span>class <span class="ident">EnterpriseConfig</span></span>
+<span>(</span><span>license_server: str = None, id: str = None, secret: str = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>EnterpriseConfig is the configuration we store for heartbeating to the
+license server.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class EnterpriseConfig(betterproto.Message):
+    &#34;&#34;&#34;
+    EnterpriseConfig is the configuration we store for heartbeating to the
+    license server.
+    &#34;&#34;&#34;
+
+    license_server: str = betterproto.string_field(1)
+    &#34;&#34;&#34;license_server is the address of the grpc license service&#34;&#34;&#34;
+
+    id: str = betterproto.string_field(2)
+    &#34;&#34;&#34;
+    id is the unique identifier for this pachd, which is registered with the
+    license service
+    &#34;&#34;&#34;
+
+    secret: str = betterproto.string_field(3)
+    &#34;&#34;&#34;secret is a shared secret between this pachd and the license service&#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.enterprise.EnterpriseConfig.license_server"><code class="name">var <span class="ident">license_server</span> : str</code></dt>
+<dd>
+<div class="desc"><p>license_server is the address of the grpc license service</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.EnterpriseConfig.id"><code class="name">var <span class="ident">id</span> : str</code></dt>
+<dd>
+<div class="desc"><p>id is the unique identifier for this pachd, which is registered with the
+license service</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.EnterpriseConfig.secret"><code class="name">var <span class="ident">secret</span> : str</code></dt>
+<dd>
+<div class="desc"><p>secret is a shared secret between this pachd and the license service</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.EnterpriseRecord"><code class="flex name class">
+<span>class <span class="ident">EnterpriseRecord</span></span>
+<span>(</span><span>license: <a title="pachyderm_sdk.api.enterprise.LicenseRecord" href="#pachyderm_sdk.api.enterprise.LicenseRecord">LicenseRecord</a> = None, last_heartbeat: datetime.datetime = None, heartbeat_failed: bool = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>EnterpriseRecord is a protobuf we cache in etcd to store the enterprise
+status.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class EnterpriseRecord(betterproto.Message):
+    &#34;&#34;&#34;
+    EnterpriseRecord is a protobuf we cache in etcd to store the enterprise
+    status.
+    &#34;&#34;&#34;
+
+    license: &#34;LicenseRecord&#34; = betterproto.message_field(1)
+    &#34;&#34;&#34;
+    license is the cached LicenseRecord retrieved from the most recent
+    heartbeat to the license server.
+    &#34;&#34;&#34;
+
+    last_heartbeat: datetime = betterproto.message_field(2)
+    &#34;&#34;&#34;
+    last_heartbeat is the timestamp of the last successful heartbeat to the
+    license server
+    &#34;&#34;&#34;
+
+    heartbeat_failed: bool = betterproto.bool_field(3)
+    &#34;&#34;&#34;
+    heartbeat_failed is set if the license is still valid, but the pachd is no
+    longer registered with an enterprise server. This is the same as the
+    expired state, where auth is locked but not disabled.
+    &#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.enterprise.EnterpriseRecord.license"><code class="name">var <span class="ident">license</span> : <a title="pachyderm_sdk.api.enterprise.LicenseRecord" href="#pachyderm_sdk.api.enterprise.LicenseRecord">LicenseRecord</a></code></dt>
+<dd>
+<div class="desc"><p>license is the cached LicenseRecord retrieved from the most recent
+heartbeat to the license server.</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.EnterpriseRecord.last_heartbeat"><code class="name">var <span class="ident">last_heartbeat</span> : datetime.datetime</code></dt>
+<dd>
+<div class="desc"><p>last_heartbeat is the timestamp of the last successful heartbeat to the
+license server</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.EnterpriseRecord.heartbeat_failed"><code class="name">var <span class="ident">heartbeat_failed</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>heartbeat_failed is set if the license is still valid, but the pachd is no
+longer registered with an enterprise server. This is the same as the
+expired state, where auth is locked but not disabled.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.TokenInfo"><code class="flex name class">
+<span>class <span class="ident">TokenInfo</span></span>
+<span>(</span><span>expires: datetime.datetime = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TokenInfo contains information about the currently active enterprise token</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class TokenInfo(betterproto.Message):
+    &#34;&#34;&#34;
+    TokenInfo contains information about the currently active enterprise token
+    &#34;&#34;&#34;
+
+    expires: datetime = betterproto.message_field(1)
+    &#34;&#34;&#34;
+    expires indicates when the current token expires (unset if there is no
+    current token)
+    &#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.enterprise.TokenInfo.expires"><code class="name">var <span class="ident">expires</span> : datetime.datetime</code></dt>
+<dd>
+<div class="desc"><p>expires indicates when the current token expires (unset if there is no
+current token)</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.ActivateRequest"><code class="flex name class">
+<span>class <span class="ident">ActivateRequest</span></span>
+<span>(</span><span>license_server: str = None, id: str = None, secret: str = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>ActivateRequest(license_server: str = None, id: str = None, secret: str = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class ActivateRequest(betterproto.Message):
+    license_server: str = betterproto.string_field(1)
+    id: str = betterproto.string_field(2)
+    secret: str = betterproto.string_field(3)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.enterprise.ActivateRequest.license_server"><code class="name">var <span class="ident">license_server</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.ActivateRequest.id"><code class="name">var <span class="ident">id</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.ActivateRequest.secret"><code class="name">var <span class="ident">secret</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.ActivateResponse"><code class="flex name class">
+<span>class <span class="ident">ActivateResponse</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>ActivateResponse()</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class ActivateResponse(betterproto.Message):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.GetStateRequest"><code class="flex name class">
+<span>class <span class="ident">GetStateRequest</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>GetStateRequest()</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class GetStateRequest(betterproto.Message):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.GetStateResponse"><code class="flex name class">
+<span>class <span class="ident">GetStateResponse</span></span>
+<span>(</span><span>state: <a title="pachyderm_sdk.api.enterprise.State" href="#pachyderm_sdk.api.enterprise.State">State</a> = None, info: <a title="pachyderm_sdk.api.enterprise.TokenInfo" href="#pachyderm_sdk.api.enterprise.TokenInfo">TokenInfo</a> = None, activation_code: str = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>GetStateResponse(state: 'State' = None, info: 'TokenInfo' = None, activation_code: str = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class GetStateResponse(betterproto.Message):
+    state: &#34;State&#34; = betterproto.enum_field(1)
+    info: &#34;TokenInfo&#34; = betterproto.message_field(2)
+    activation_code: str = betterproto.string_field(3)
+    &#34;&#34;&#34;
+    activation_code will always be an empty string, call GetEnterpriseCode to
+    get the activation code
+    &#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.enterprise.GetStateResponse.state"><code class="name">var <span class="ident">state</span> : <a title="pachyderm_sdk.api.enterprise.State" href="#pachyderm_sdk.api.enterprise.State">State</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.GetStateResponse.info"><code class="name">var <span class="ident">info</span> : <a title="pachyderm_sdk.api.enterprise.TokenInfo" href="#pachyderm_sdk.api.enterprise.TokenInfo">TokenInfo</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.GetStateResponse.activation_code"><code class="name">var <span class="ident">activation_code</span> : str</code></dt>
+<dd>
+<div class="desc"><p>activation_code will always be an empty string, call GetEnterpriseCode to
+get the activation code</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.GetActivationCodeRequest"><code class="flex name class">
+<span>class <span class="ident">GetActivationCodeRequest</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>GetActivationCodeRequest()</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class GetActivationCodeRequest(betterproto.Message):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.GetActivationCodeResponse"><code class="flex name class">
+<span>class <span class="ident">GetActivationCodeResponse</span></span>
+<span>(</span><span>state: <a title="pachyderm_sdk.api.enterprise.State" href="#pachyderm_sdk.api.enterprise.State">State</a> = None, info: <a title="pachyderm_sdk.api.enterprise.TokenInfo" href="#pachyderm_sdk.api.enterprise.TokenInfo">TokenInfo</a> = None, activation_code: str = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>GetActivationCodeResponse(state: 'State' = None, info: 'TokenInfo' = None, activation_code: str = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class GetActivationCodeResponse(betterproto.Message):
+    state: &#34;State&#34; = betterproto.enum_field(1)
+    info: &#34;TokenInfo&#34; = betterproto.message_field(2)
+    activation_code: str = betterproto.string_field(3)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.enterprise.GetActivationCodeResponse.state"><code class="name">var <span class="ident">state</span> : <a title="pachyderm_sdk.api.enterprise.State" href="#pachyderm_sdk.api.enterprise.State">State</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.GetActivationCodeResponse.info"><code class="name">var <span class="ident">info</span> : <a title="pachyderm_sdk.api.enterprise.TokenInfo" href="#pachyderm_sdk.api.enterprise.TokenInfo">TokenInfo</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.GetActivationCodeResponse.activation_code"><code class="name">var <span class="ident">activation_code</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.HeartbeatRequest"><code class="flex name class">
+<span>class <span class="ident">HeartbeatRequest</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Heartbeat in the enterprise service just triggers a heartbeat for testing
+purposes. The RPC used to communicate with the license service is defined
+in the license service.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class HeartbeatRequest(betterproto.Message):
+    &#34;&#34;&#34;
+    Heartbeat in the enterprise service just triggers a heartbeat for testing
+    purposes. The RPC used to communicate with the license service is defined
+    in the license service.
+    &#34;&#34;&#34;
+
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.HeartbeatResponse"><code class="flex name class">
+<span>class <span class="ident">HeartbeatResponse</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>HeartbeatResponse()</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class HeartbeatResponse(betterproto.Message):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.DeactivateRequest"><code class="flex name class">
+<span>class <span class="ident">DeactivateRequest</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>DeactivateRequest()</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class DeactivateRequest(betterproto.Message):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.DeactivateResponse"><code class="flex name class">
+<span>class <span class="ident">DeactivateResponse</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>DeactivateResponse()</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class DeactivateResponse(betterproto.Message):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.PauseRequest"><code class="flex name class">
+<span>class <span class="ident">PauseRequest</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>PauseRequest()</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class PauseRequest(betterproto.Message):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.PauseResponse"><code class="flex name class">
+<span>class <span class="ident">PauseResponse</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>PauseResponse()</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class PauseResponse(betterproto.Message):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.UnpauseRequest"><code class="flex name class">
+<span>class <span class="ident">UnpauseRequest</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>UnpauseRequest()</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class UnpauseRequest(betterproto.Message):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.UnpauseResponse"><code class="flex name class">
+<span>class <span class="ident">UnpauseResponse</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>UnpauseResponse()</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class UnpauseResponse(betterproto.Message):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.PauseStatusRequest"><code class="flex name class">
+<span>class <span class="ident">PauseStatusRequest</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>PauseStatusRequest()</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class PauseStatusRequest(betterproto.Message):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.PauseStatusResponse"><code class="flex name class">
+<span>class <span class="ident">PauseStatusResponse</span></span>
+<span>(</span><span>status: <a title="pachyderm_sdk.api.enterprise.PauseStatusResponsePauseStatus" href="#pachyderm_sdk.api.enterprise.PauseStatusResponsePauseStatus">PauseStatusResponsePauseStatus</a> = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>PauseStatusResponse(status: 'PauseStatusResponsePauseStatus' = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class PauseStatusResponse(betterproto.Message):
+    status: &#34;PauseStatusResponsePauseStatus&#34; = betterproto.enum_field(1)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.enterprise.PauseStatusResponse.status"><code class="name">var <span class="ident">status</span> : <a title="pachyderm_sdk.api.enterprise.PauseStatusResponsePauseStatus" href="#pachyderm_sdk.api.enterprise.PauseStatusResponsePauseStatus">PauseStatusResponsePauseStatus</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.ApiStub"><code class="flex name class">
+<span>class <span class="ident">ApiStub</span></span>
+<span>(</span><span>channel: grpc.Channel)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ApiStub:
+    def __init__(self, channel: &#34;grpc.Channel&#34;):
+        self.__rpc_activate = channel.unary_unary(
+            &#34;/enterprise_v2.API/Activate&#34;,
+            request_serializer=ActivateRequest.SerializeToString,
+            response_deserializer=ActivateResponse.FromString,
+        )
+        self.__rpc_get_state = channel.unary_unary(
+            &#34;/enterprise_v2.API/GetState&#34;,
+            request_serializer=GetStateRequest.SerializeToString,
+            response_deserializer=GetStateResponse.FromString,
+        )
+        self.__rpc_get_activation_code = channel.unary_unary(
+            &#34;/enterprise_v2.API/GetActivationCode&#34;,
+            request_serializer=GetActivationCodeRequest.SerializeToString,
+            response_deserializer=GetActivationCodeResponse.FromString,
+        )
+        self.__rpc_heartbeat = channel.unary_unary(
+            &#34;/enterprise_v2.API/Heartbeat&#34;,
+            request_serializer=HeartbeatRequest.SerializeToString,
+            response_deserializer=HeartbeatResponse.FromString,
+        )
+        self.__rpc_deactivate = channel.unary_unary(
+            &#34;/enterprise_v2.API/Deactivate&#34;,
+            request_serializer=DeactivateRequest.SerializeToString,
+            response_deserializer=DeactivateResponse.FromString,
+        )
+        self.__rpc_pause = channel.unary_unary(
+            &#34;/enterprise_v2.API/Pause&#34;,
+            request_serializer=PauseRequest.SerializeToString,
+            response_deserializer=PauseResponse.FromString,
+        )
+        self.__rpc_unpause = channel.unary_unary(
+            &#34;/enterprise_v2.API/Unpause&#34;,
+            request_serializer=UnpauseRequest.SerializeToString,
+            response_deserializer=UnpauseResponse.FromString,
+        )
+        self.__rpc_pause_status = channel.unary_unary(
+            &#34;/enterprise_v2.API/PauseStatus&#34;,
+            request_serializer=PauseStatusRequest.SerializeToString,
+            response_deserializer=PauseStatusResponse.FromString,
+        )
+
+    def activate(
+        self, *, license_server: str = &#34;&#34;, id: str = &#34;&#34;, secret: str = &#34;&#34;
+    ) -&gt; &#34;ActivateResponse&#34;:
+        request = ActivateRequest()
+        request.license_server = license_server
+        request.id = id
+        request.secret = secret
+
+        return self.__rpc_activate(request)
+
+    def get_state(self) -&gt; &#34;GetStateResponse&#34;:
+        request = GetStateRequest()
+
+        return self.__rpc_get_state(request)
+
+    def get_activation_code(self) -&gt; &#34;GetActivationCodeResponse&#34;:
+        request = GetActivationCodeRequest()
+
+        return self.__rpc_get_activation_code(request)
+
+    def heartbeat(self) -&gt; &#34;HeartbeatResponse&#34;:
+        request = HeartbeatRequest()
+
+        return self.__rpc_heartbeat(request)
+
+    def deactivate(self) -&gt; &#34;DeactivateResponse&#34;:
+        request = DeactivateRequest()
+
+        return self.__rpc_deactivate(request)
+
+    def pause(self) -&gt; &#34;PauseResponse&#34;:
+        request = PauseRequest()
+
+        return self.__rpc_pause(request)
+
+    def unpause(self) -&gt; &#34;UnpauseResponse&#34;:
+        request = UnpauseRequest()
+
+        return self.__rpc_unpause(request)
+
+    def pause_status(self) -&gt; &#34;PauseStatusResponse&#34;:
+        request = PauseStatusRequest()
+
+        return self.__rpc_pause_status(request)</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pachyderm_sdk.api.enterprise.ApiStub.activate"><code class="name flex">
+<span>def <span class="ident">activate</span></span>(<span>self, *, license_server: str = '', id: str = '', secret: str = '') ‑> <a title="pachyderm_sdk.api.enterprise.ActivateResponse" href="#pachyderm_sdk.api.enterprise.ActivateResponse">ActivateResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def activate(
+    self, *, license_server: str = &#34;&#34;, id: str = &#34;&#34;, secret: str = &#34;&#34;
+) -&gt; &#34;ActivateResponse&#34;:
+    request = ActivateRequest()
+    request.license_server = license_server
+    request.id = id
+    request.secret = secret
+
+    return self.__rpc_activate(request)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.ApiStub.get_state"><code class="name flex">
+<span>def <span class="ident">get_state</span></span>(<span>self) ‑> <a title="pachyderm_sdk.api.enterprise.GetStateResponse" href="#pachyderm_sdk.api.enterprise.GetStateResponse">GetStateResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_state(self) -&gt; &#34;GetStateResponse&#34;:
+    request = GetStateRequest()
+
+    return self.__rpc_get_state(request)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.ApiStub.get_activation_code"><code class="name flex">
+<span>def <span class="ident">get_activation_code</span></span>(<span>self) ‑> <a title="pachyderm_sdk.api.enterprise.GetActivationCodeResponse" href="#pachyderm_sdk.api.enterprise.GetActivationCodeResponse">GetActivationCodeResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_activation_code(self) -&gt; &#34;GetActivationCodeResponse&#34;:
+    request = GetActivationCodeRequest()
+
+    return self.__rpc_get_activation_code(request)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.ApiStub.heartbeat"><code class="name flex">
+<span>def <span class="ident">heartbeat</span></span>(<span>self) ‑> <a title="pachyderm_sdk.api.enterprise.HeartbeatResponse" href="#pachyderm_sdk.api.enterprise.HeartbeatResponse">HeartbeatResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def heartbeat(self) -&gt; &#34;HeartbeatResponse&#34;:
+    request = HeartbeatRequest()
+
+    return self.__rpc_heartbeat(request)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.ApiStub.deactivate"><code class="name flex">
+<span>def <span class="ident">deactivate</span></span>(<span>self) ‑> <a title="pachyderm_sdk.api.enterprise.DeactivateResponse" href="#pachyderm_sdk.api.enterprise.DeactivateResponse">DeactivateResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def deactivate(self) -&gt; &#34;DeactivateResponse&#34;:
+    request = DeactivateRequest()
+
+    return self.__rpc_deactivate(request)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.ApiStub.pause"><code class="name flex">
+<span>def <span class="ident">pause</span></span>(<span>self) ‑> <a title="pachyderm_sdk.api.enterprise.PauseResponse" href="#pachyderm_sdk.api.enterprise.PauseResponse">PauseResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def pause(self) -&gt; &#34;PauseResponse&#34;:
+    request = PauseRequest()
+
+    return self.__rpc_pause(request)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.ApiStub.unpause"><code class="name flex">
+<span>def <span class="ident">unpause</span></span>(<span>self) ‑> <a title="pachyderm_sdk.api.enterprise.UnpauseResponse" href="#pachyderm_sdk.api.enterprise.UnpauseResponse">UnpauseResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def unpause(self) -&gt; &#34;UnpauseResponse&#34;:
+    request = UnpauseRequest()
+
+    return self.__rpc_unpause(request)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.ApiStub.pause_status"><code class="name flex">
+<span>def <span class="ident">pause_status</span></span>(<span>self) ‑> <a title="pachyderm_sdk.api.enterprise.PauseStatusResponse" href="#pachyderm_sdk.api.enterprise.PauseStatusResponse">PauseStatusResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def pause_status(self) -&gt; &#34;PauseStatusResponse&#34;:
+    request = PauseStatusRequest()
+
+    return self.__rpc_pause_status(request)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.ApiBase"><code class="flex name class">
+<span>class <span class="ident">ApiBase</span></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ApiBase:
+    def activate(
+        self, license_server: str, id: str, secret: str, context: &#34;grpc.ServicerContext&#34;
+    ) -&gt; &#34;ActivateResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def get_state(self, context: &#34;grpc.ServicerContext&#34;) -&gt; &#34;GetStateResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def get_activation_code(
+        self, context: &#34;grpc.ServicerContext&#34;
+    ) -&gt; &#34;GetActivationCodeResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def heartbeat(self, context: &#34;grpc.ServicerContext&#34;) -&gt; &#34;HeartbeatResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def deactivate(self, context: &#34;grpc.ServicerContext&#34;) -&gt; &#34;DeactivateResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def pause(self, context: &#34;grpc.ServicerContext&#34;) -&gt; &#34;PauseResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def unpause(self, context: &#34;grpc.ServicerContext&#34;) -&gt; &#34;UnpauseResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def pause_status(self, context: &#34;grpc.ServicerContext&#34;) -&gt; &#34;PauseStatusResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    __proto_path__ = &#34;enterprise_v2.API&#34;
+
+    @property
+    def __rpc_methods__(self):
+        return {
+            &#34;Activate&#34;: grpc.unary_unary_rpc_method_handler(
+                self.activate,
+                request_deserializer=ActivateRequest.FromString,
+                response_serializer=ActivateRequest.SerializeToString,
+            ),
+            &#34;GetState&#34;: grpc.unary_unary_rpc_method_handler(
+                self.get_state,
+                request_deserializer=GetStateRequest.FromString,
+                response_serializer=GetStateRequest.SerializeToString,
+            ),
+            &#34;GetActivationCode&#34;: grpc.unary_unary_rpc_method_handler(
+                self.get_activation_code,
+                request_deserializer=GetActivationCodeRequest.FromString,
+                response_serializer=GetActivationCodeRequest.SerializeToString,
+            ),
+            &#34;Heartbeat&#34;: grpc.unary_unary_rpc_method_handler(
+                self.heartbeat,
+                request_deserializer=HeartbeatRequest.FromString,
+                response_serializer=HeartbeatRequest.SerializeToString,
+            ),
+            &#34;Deactivate&#34;: grpc.unary_unary_rpc_method_handler(
+                self.deactivate,
+                request_deserializer=DeactivateRequest.FromString,
+                response_serializer=DeactivateRequest.SerializeToString,
+            ),
+            &#34;Pause&#34;: grpc.unary_unary_rpc_method_handler(
+                self.pause,
+                request_deserializer=PauseRequest.FromString,
+                response_serializer=PauseRequest.SerializeToString,
+            ),
+            &#34;Unpause&#34;: grpc.unary_unary_rpc_method_handler(
+                self.unpause,
+                request_deserializer=UnpauseRequest.FromString,
+                response_serializer=UnpauseRequest.SerializeToString,
+            ),
+            &#34;PauseStatus&#34;: grpc.unary_unary_rpc_method_handler(
+                self.pause_status,
+                request_deserializer=PauseStatusRequest.FromString,
+                response_serializer=PauseStatusRequest.SerializeToString,
+            ),
+        }</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pachyderm_sdk.api.enterprise.ApiBase.activate"><code class="name flex">
+<span>def <span class="ident">activate</span></span>(<span>self, license_server: str, id: str, secret: str, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.enterprise.ActivateResponse" href="#pachyderm_sdk.api.enterprise.ActivateResponse">ActivateResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def activate(
+    self, license_server: str, id: str, secret: str, context: &#34;grpc.ServicerContext&#34;
+) -&gt; &#34;ActivateResponse&#34;:
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details(&#34;Method not implemented!&#34;)
+    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.ApiBase.get_state"><code class="name flex">
+<span>def <span class="ident">get_state</span></span>(<span>self, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.enterprise.GetStateResponse" href="#pachyderm_sdk.api.enterprise.GetStateResponse">GetStateResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_state(self, context: &#34;grpc.ServicerContext&#34;) -&gt; &#34;GetStateResponse&#34;:
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details(&#34;Method not implemented!&#34;)
+    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.ApiBase.get_activation_code"><code class="name flex">
+<span>def <span class="ident">get_activation_code</span></span>(<span>self, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.enterprise.GetActivationCodeResponse" href="#pachyderm_sdk.api.enterprise.GetActivationCodeResponse">GetActivationCodeResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_activation_code(
+    self, context: &#34;grpc.ServicerContext&#34;
+) -&gt; &#34;GetActivationCodeResponse&#34;:
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details(&#34;Method not implemented!&#34;)
+    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.ApiBase.heartbeat"><code class="name flex">
+<span>def <span class="ident">heartbeat</span></span>(<span>self, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.enterprise.HeartbeatResponse" href="#pachyderm_sdk.api.enterprise.HeartbeatResponse">HeartbeatResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def heartbeat(self, context: &#34;grpc.ServicerContext&#34;) -&gt; &#34;HeartbeatResponse&#34;:
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details(&#34;Method not implemented!&#34;)
+    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.ApiBase.deactivate"><code class="name flex">
+<span>def <span class="ident">deactivate</span></span>(<span>self, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.enterprise.DeactivateResponse" href="#pachyderm_sdk.api.enterprise.DeactivateResponse">DeactivateResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def deactivate(self, context: &#34;grpc.ServicerContext&#34;) -&gt; &#34;DeactivateResponse&#34;:
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details(&#34;Method not implemented!&#34;)
+    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.ApiBase.pause"><code class="name flex">
+<span>def <span class="ident">pause</span></span>(<span>self, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.enterprise.PauseResponse" href="#pachyderm_sdk.api.enterprise.PauseResponse">PauseResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def pause(self, context: &#34;grpc.ServicerContext&#34;) -&gt; &#34;PauseResponse&#34;:
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details(&#34;Method not implemented!&#34;)
+    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.ApiBase.unpause"><code class="name flex">
+<span>def <span class="ident">unpause</span></span>(<span>self, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.enterprise.UnpauseResponse" href="#pachyderm_sdk.api.enterprise.UnpauseResponse">UnpauseResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def unpause(self, context: &#34;grpc.ServicerContext&#34;) -&gt; &#34;UnpauseResponse&#34;:
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details(&#34;Method not implemented!&#34;)
+    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.enterprise.ApiBase.pause_status"><code class="name flex">
+<span>def <span class="ident">pause_status</span></span>(<span>self, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.enterprise.PauseStatusResponse" href="#pachyderm_sdk.api.enterprise.PauseStatusResponse">PauseStatusResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def pause_status(self, context: &#34;grpc.ServicerContext&#34;) -&gt; &#34;PauseStatusResponse&#34;:
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details(&#34;Method not implemented!&#34;)
+    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<header>
+<style> img { max-width: 50%; } </style>
+<img src="https://raw.githubusercontent.com/pachyderm/pachyderm/master/Pachyderm_Icon-01.svg" alt="">
+</header>
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="pachyderm_sdk.api" href="../index.html">pachyderm_sdk.api</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="pachyderm_sdk.api.enterprise.State" href="#pachyderm_sdk.api.enterprise.State">State</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.enterprise.State.NONE" href="#pachyderm_sdk.api.enterprise.State.NONE">NONE</a></code></li>
+<li><code><a title="pachyderm_sdk.api.enterprise.State.ACTIVE" href="#pachyderm_sdk.api.enterprise.State.ACTIVE">ACTIVE</a></code></li>
+<li><code><a title="pachyderm_sdk.api.enterprise.State.EXPIRED" href="#pachyderm_sdk.api.enterprise.State.EXPIRED">EXPIRED</a></code></li>
+<li><code><a title="pachyderm_sdk.api.enterprise.State.HEARTBEAT_FAILED" href="#pachyderm_sdk.api.enterprise.State.HEARTBEAT_FAILED">HEARTBEAT_FAILED</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.enterprise.PauseStatusResponsePauseStatus" href="#pachyderm_sdk.api.enterprise.PauseStatusResponsePauseStatus">PauseStatusResponsePauseStatus</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.enterprise.PauseStatusResponsePauseStatus.UNPAUSED" href="#pachyderm_sdk.api.enterprise.PauseStatusResponsePauseStatus.UNPAUSED">UNPAUSED</a></code></li>
+<li><code><a title="pachyderm_sdk.api.enterprise.PauseStatusResponsePauseStatus.PARTIALLY_PAUSED" href="#pachyderm_sdk.api.enterprise.PauseStatusResponsePauseStatus.PARTIALLY_PAUSED">PARTIALLY_PAUSED</a></code></li>
+<li><code><a title="pachyderm_sdk.api.enterprise.PauseStatusResponsePauseStatus.PAUSED" href="#pachyderm_sdk.api.enterprise.PauseStatusResponsePauseStatus.PAUSED">PAUSED</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.enterprise.LicenseRecord" href="#pachyderm_sdk.api.enterprise.LicenseRecord">LicenseRecord</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.enterprise.LicenseRecord.activation_code" href="#pachyderm_sdk.api.enterprise.LicenseRecord.activation_code">activation_code</a></code></li>
+<li><code><a title="pachyderm_sdk.api.enterprise.LicenseRecord.expires" href="#pachyderm_sdk.api.enterprise.LicenseRecord.expires">expires</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.enterprise.EnterpriseConfig" href="#pachyderm_sdk.api.enterprise.EnterpriseConfig">EnterpriseConfig</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.enterprise.EnterpriseConfig.license_server" href="#pachyderm_sdk.api.enterprise.EnterpriseConfig.license_server">license_server</a></code></li>
+<li><code><a title="pachyderm_sdk.api.enterprise.EnterpriseConfig.id" href="#pachyderm_sdk.api.enterprise.EnterpriseConfig.id">id</a></code></li>
+<li><code><a title="pachyderm_sdk.api.enterprise.EnterpriseConfig.secret" href="#pachyderm_sdk.api.enterprise.EnterpriseConfig.secret">secret</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.enterprise.EnterpriseRecord" href="#pachyderm_sdk.api.enterprise.EnterpriseRecord">EnterpriseRecord</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.enterprise.EnterpriseRecord.license" href="#pachyderm_sdk.api.enterprise.EnterpriseRecord.license">license</a></code></li>
+<li><code><a title="pachyderm_sdk.api.enterprise.EnterpriseRecord.last_heartbeat" href="#pachyderm_sdk.api.enterprise.EnterpriseRecord.last_heartbeat">last_heartbeat</a></code></li>
+<li><code><a title="pachyderm_sdk.api.enterprise.EnterpriseRecord.heartbeat_failed" href="#pachyderm_sdk.api.enterprise.EnterpriseRecord.heartbeat_failed">heartbeat_failed</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.enterprise.TokenInfo" href="#pachyderm_sdk.api.enterprise.TokenInfo">TokenInfo</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.enterprise.TokenInfo.expires" href="#pachyderm_sdk.api.enterprise.TokenInfo.expires">expires</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.enterprise.ActivateRequest" href="#pachyderm_sdk.api.enterprise.ActivateRequest">ActivateRequest</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.enterprise.ActivateRequest.license_server" href="#pachyderm_sdk.api.enterprise.ActivateRequest.license_server">license_server</a></code></li>
+<li><code><a title="pachyderm_sdk.api.enterprise.ActivateRequest.id" href="#pachyderm_sdk.api.enterprise.ActivateRequest.id">id</a></code></li>
+<li><code><a title="pachyderm_sdk.api.enterprise.ActivateRequest.secret" href="#pachyderm_sdk.api.enterprise.ActivateRequest.secret">secret</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.enterprise.ActivateResponse" href="#pachyderm_sdk.api.enterprise.ActivateResponse">ActivateResponse</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.enterprise.GetStateRequest" href="#pachyderm_sdk.api.enterprise.GetStateRequest">GetStateRequest</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.enterprise.GetStateResponse" href="#pachyderm_sdk.api.enterprise.GetStateResponse">GetStateResponse</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.enterprise.GetStateResponse.state" href="#pachyderm_sdk.api.enterprise.GetStateResponse.state">state</a></code></li>
+<li><code><a title="pachyderm_sdk.api.enterprise.GetStateResponse.info" href="#pachyderm_sdk.api.enterprise.GetStateResponse.info">info</a></code></li>
+<li><code><a title="pachyderm_sdk.api.enterprise.GetStateResponse.activation_code" href="#pachyderm_sdk.api.enterprise.GetStateResponse.activation_code">activation_code</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.enterprise.GetActivationCodeRequest" href="#pachyderm_sdk.api.enterprise.GetActivationCodeRequest">GetActivationCodeRequest</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.enterprise.GetActivationCodeResponse" href="#pachyderm_sdk.api.enterprise.GetActivationCodeResponse">GetActivationCodeResponse</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.enterprise.GetActivationCodeResponse.state" href="#pachyderm_sdk.api.enterprise.GetActivationCodeResponse.state">state</a></code></li>
+<li><code><a title="pachyderm_sdk.api.enterprise.GetActivationCodeResponse.info" href="#pachyderm_sdk.api.enterprise.GetActivationCodeResponse.info">info</a></code></li>
+<li><code><a title="pachyderm_sdk.api.enterprise.GetActivationCodeResponse.activation_code" href="#pachyderm_sdk.api.enterprise.GetActivationCodeResponse.activation_code">activation_code</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.enterprise.HeartbeatRequest" href="#pachyderm_sdk.api.enterprise.HeartbeatRequest">HeartbeatRequest</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.enterprise.HeartbeatResponse" href="#pachyderm_sdk.api.enterprise.HeartbeatResponse">HeartbeatResponse</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.enterprise.DeactivateRequest" href="#pachyderm_sdk.api.enterprise.DeactivateRequest">DeactivateRequest</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.enterprise.DeactivateResponse" href="#pachyderm_sdk.api.enterprise.DeactivateResponse">DeactivateResponse</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.enterprise.PauseRequest" href="#pachyderm_sdk.api.enterprise.PauseRequest">PauseRequest</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.enterprise.PauseResponse" href="#pachyderm_sdk.api.enterprise.PauseResponse">PauseResponse</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.enterprise.UnpauseRequest" href="#pachyderm_sdk.api.enterprise.UnpauseRequest">UnpauseRequest</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.enterprise.UnpauseResponse" href="#pachyderm_sdk.api.enterprise.UnpauseResponse">UnpauseResponse</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.enterprise.PauseStatusRequest" href="#pachyderm_sdk.api.enterprise.PauseStatusRequest">PauseStatusRequest</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.enterprise.PauseStatusResponse" href="#pachyderm_sdk.api.enterprise.PauseStatusResponse">PauseStatusResponse</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.enterprise.PauseStatusResponse.status" href="#pachyderm_sdk.api.enterprise.PauseStatusResponse.status">status</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.enterprise.ApiStub" href="#pachyderm_sdk.api.enterprise.ApiStub">ApiStub</a></code></h4>
+<ul class="two-column">
+<li><code><a title="pachyderm_sdk.api.enterprise.ApiStub.activate" href="#pachyderm_sdk.api.enterprise.ApiStub.activate">activate</a></code></li>
+<li><code><a title="pachyderm_sdk.api.enterprise.ApiStub.get_state" href="#pachyderm_sdk.api.enterprise.ApiStub.get_state">get_state</a></code></li>
+<li><code><a title="pachyderm_sdk.api.enterprise.ApiStub.get_activation_code" href="#pachyderm_sdk.api.enterprise.ApiStub.get_activation_code">get_activation_code</a></code></li>
+<li><code><a title="pachyderm_sdk.api.enterprise.ApiStub.heartbeat" href="#pachyderm_sdk.api.enterprise.ApiStub.heartbeat">heartbeat</a></code></li>
+<li><code><a title="pachyderm_sdk.api.enterprise.ApiStub.deactivate" href="#pachyderm_sdk.api.enterprise.ApiStub.deactivate">deactivate</a></code></li>
+<li><code><a title="pachyderm_sdk.api.enterprise.ApiStub.pause" href="#pachyderm_sdk.api.enterprise.ApiStub.pause">pause</a></code></li>
+<li><code><a title="pachyderm_sdk.api.enterprise.ApiStub.unpause" href="#pachyderm_sdk.api.enterprise.ApiStub.unpause">unpause</a></code></li>
+<li><code><a title="pachyderm_sdk.api.enterprise.ApiStub.pause_status" href="#pachyderm_sdk.api.enterprise.ApiStub.pause_status">pause_status</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.enterprise.ApiBase" href="#pachyderm_sdk.api.enterprise.ApiBase">ApiBase</a></code></h4>
+<ul class="two-column">
+<li><code><a title="pachyderm_sdk.api.enterprise.ApiBase.activate" href="#pachyderm_sdk.api.enterprise.ApiBase.activate">activate</a></code></li>
+<li><code><a title="pachyderm_sdk.api.enterprise.ApiBase.get_state" href="#pachyderm_sdk.api.enterprise.ApiBase.get_state">get_state</a></code></li>
+<li><code><a title="pachyderm_sdk.api.enterprise.ApiBase.get_activation_code" href="#pachyderm_sdk.api.enterprise.ApiBase.get_activation_code">get_activation_code</a></code></li>
+<li><code><a title="pachyderm_sdk.api.enterprise.ApiBase.heartbeat" href="#pachyderm_sdk.api.enterprise.ApiBase.heartbeat">heartbeat</a></code></li>
+<li><code><a title="pachyderm_sdk.api.enterprise.ApiBase.deactivate" href="#pachyderm_sdk.api.enterprise.ApiBase.deactivate">deactivate</a></code></li>
+<li><code><a title="pachyderm_sdk.api.enterprise.ApiBase.pause" href="#pachyderm_sdk.api.enterprise.ApiBase.pause">pause</a></code></li>
+<li><code><a title="pachyderm_sdk.api.enterprise.ApiBase.unpause" href="#pachyderm_sdk.api.enterprise.ApiBase.unpause">unpause</a></code></li>
+<li><code><a title="pachyderm_sdk.api.enterprise.ApiBase.pause_status" href="#pachyderm_sdk.api.enterprise.ApiBase.pause_status">pause_status</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,2025 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>pachyderm_sdk.api.license API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>pachyderm_sdk.api.license</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python"># Generated by the protocol buffer compiler.  DO NOT EDIT!
+# sources: api/license/license.proto
+# plugin: python-betterproto
+# This file has been @generated
+from dataclasses import dataclass
+from datetime import datetime
+from typing import (
+    TYPE_CHECKING,
+    Dict,
+    List,
+    Optional,
+)
+
+import betterproto
+import betterproto.lib.google.protobuf as betterproto_lib_google_protobuf
+import grpc
+
+from .. import enterprise as _enterprise__
+
+
+if TYPE_CHECKING:
+    import grpc
+
+
+@dataclass(eq=False, repr=False)
+class ActivateRequest(betterproto.Message):
+    activation_code: str = betterproto.string_field(1)
+    &#34;&#34;&#34;
+    activation_code is a Pachyderm enterprise activation code. New users can
+    obtain trial activation codes
+    &#34;&#34;&#34;
+
+    expires: datetime = betterproto.message_field(2)
+    &#34;&#34;&#34;
+    expires is a timestamp indicating when this activation code will expire.
+    This should not generally be set (it&#39;s primarily used for testing), and is
+    only applied if it&#39;s earlier than the signed expiration time in
+    &#39;activation_code&#39;.
+    &#34;&#34;&#34;
+
+
+@dataclass(eq=False, repr=False)
+class ActivateResponse(betterproto.Message):
+    info: &#34;_enterprise__.TokenInfo&#34; = betterproto.message_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class GetActivationCodeRequest(betterproto.Message):
+    pass
+
+
+@dataclass(eq=False, repr=False)
+class GetActivationCodeResponse(betterproto.Message):
+    state: &#34;_enterprise__.State&#34; = betterproto.enum_field(1)
+    info: &#34;_enterprise__.TokenInfo&#34; = betterproto.message_field(2)
+    activation_code: str = betterproto.string_field(3)
+
+
+@dataclass(eq=False, repr=False)
+class DeactivateRequest(betterproto.Message):
+    pass
+
+
+@dataclass(eq=False, repr=False)
+class DeactivateResponse(betterproto.Message):
+    pass
+
+
+@dataclass(eq=False, repr=False)
+class AddClusterRequest(betterproto.Message):
+    id: str = betterproto.string_field(1)
+    &#34;&#34;&#34;id is the unique, immutable identifier for this cluster&#34;&#34;&#34;
+
+    address: str = betterproto.string_field(2)
+    &#34;&#34;&#34;address is the public GPRC address where the cluster can be reached&#34;&#34;&#34;
+
+    secret: str = betterproto.string_field(3)
+    &#34;&#34;&#34;
+    If set, secret specifies the shared secret this cluster will use to
+    authenticate to the license server. Otherwise a secret will be generated
+    and returned in the response.
+    &#34;&#34;&#34;
+
+    user_address: str = betterproto.string_field(4)
+    &#34;&#34;&#34;The pachd address for users to connect to.&#34;&#34;&#34;
+
+    cluster_deployment_id: str = betterproto.string_field(5)
+    &#34;&#34;&#34;The deployment ID value generated by each Cluster&#34;&#34;&#34;
+
+    enterprise_server: bool = betterproto.bool_field(6)
+    &#34;&#34;&#34;
+    This field indicates whether the address points to an enterprise server
+    &#34;&#34;&#34;
+
+
+@dataclass(eq=False, repr=False)
+class AddClusterResponse(betterproto.Message):
+    secret: str = betterproto.string_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class DeleteClusterRequest(betterproto.Message):
+    id: str = betterproto.string_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class DeleteClusterResponse(betterproto.Message):
+    pass
+
+
+@dataclass(eq=False, repr=False)
+class ClusterStatus(betterproto.Message):
+    id: str = betterproto.string_field(1)
+    address: str = betterproto.string_field(2)
+    version: str = betterproto.string_field(3)
+    auth_enabled: bool = betterproto.bool_field(4)
+    client_id: str = betterproto.string_field(7)
+    last_heartbeat: datetime = betterproto.message_field(5)
+    created_at: datetime = betterproto.message_field(6)
+
+
+@dataclass(eq=False, repr=False)
+class UpdateClusterRequest(betterproto.Message):
+    &#34;&#34;&#34;
+    Note: Updates of the enterprise-server field are not allowed. In the worst
+    case, a user can recreate their cluster if they need the field updated.
+    &#34;&#34;&#34;
+
+    id: str = betterproto.string_field(1)
+    address: str = betterproto.string_field(2)
+    user_address: str = betterproto.string_field(3)
+    cluster_deployment_id: str = betterproto.string_field(4)
+    secret: str = betterproto.string_field(5)
+
+
+@dataclass(eq=False, repr=False)
+class UpdateClusterResponse(betterproto.Message):
+    pass
+
+
+@dataclass(eq=False, repr=False)
+class ListClustersRequest(betterproto.Message):
+    pass
+
+
+@dataclass(eq=False, repr=False)
+class ListClustersResponse(betterproto.Message):
+    clusters: List[&#34;ClusterStatus&#34;] = betterproto.message_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class DeleteAllRequest(betterproto.Message):
+    pass
+
+
+@dataclass(eq=False, repr=False)
+class DeleteAllResponse(betterproto.Message):
+    pass
+
+
+@dataclass(eq=False, repr=False)
+class HeartbeatRequest(betterproto.Message):
+    id: str = betterproto.string_field(1)
+    secret: str = betterproto.string_field(2)
+    version: str = betterproto.string_field(3)
+    auth_enabled: bool = betterproto.bool_field(4)
+    client_id: str = betterproto.string_field(5)
+
+
+@dataclass(eq=False, repr=False)
+class HeartbeatResponse(betterproto.Message):
+    license: &#34;_enterprise__.LicenseRecord&#34; = betterproto.message_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class UserClusterInfo(betterproto.Message):
+    id: str = betterproto.string_field(1)
+    cluster_deployment_id: str = betterproto.string_field(2)
+    address: str = betterproto.string_field(3)
+    enterprise_server: bool = betterproto.bool_field(4)
+
+
+@dataclass(eq=False, repr=False)
+class ListUserClustersRequest(betterproto.Message):
+    pass
+
+
+@dataclass(eq=False, repr=False)
+class ListUserClustersResponse(betterproto.Message):
+    clusters: List[&#34;UserClusterInfo&#34;] = betterproto.message_field(1)
+
+
+class ApiStub:
+    def __init__(self, channel: &#34;grpc.Channel&#34;):
+        self.__rpc_activate = channel.unary_unary(
+            &#34;/license_v2.API/Activate&#34;,
+            request_serializer=ActivateRequest.SerializeToString,
+            response_deserializer=ActivateResponse.FromString,
+        )
+        self.__rpc_get_activation_code = channel.unary_unary(
+            &#34;/license_v2.API/GetActivationCode&#34;,
+            request_serializer=GetActivationCodeRequest.SerializeToString,
+            response_deserializer=GetActivationCodeResponse.FromString,
+        )
+        self.__rpc_delete_all = channel.unary_unary(
+            &#34;/license_v2.API/DeleteAll&#34;,
+            request_serializer=DeleteAllRequest.SerializeToString,
+            response_deserializer=DeleteAllResponse.FromString,
+        )
+        self.__rpc_add_cluster = channel.unary_unary(
+            &#34;/license_v2.API/AddCluster&#34;,
+            request_serializer=AddClusterRequest.SerializeToString,
+            response_deserializer=AddClusterResponse.FromString,
+        )
+        self.__rpc_delete_cluster = channel.unary_unary(
+            &#34;/license_v2.API/DeleteCluster&#34;,
+            request_serializer=DeleteClusterRequest.SerializeToString,
+            response_deserializer=DeleteClusterResponse.FromString,
+        )
+        self.__rpc_list_clusters = channel.unary_unary(
+            &#34;/license_v2.API/ListClusters&#34;,
+            request_serializer=ListClustersRequest.SerializeToString,
+            response_deserializer=ListClustersResponse.FromString,
+        )
+        self.__rpc_update_cluster = channel.unary_unary(
+            &#34;/license_v2.API/UpdateCluster&#34;,
+            request_serializer=UpdateClusterRequest.SerializeToString,
+            response_deserializer=UpdateClusterResponse.FromString,
+        )
+        self.__rpc_heartbeat = channel.unary_unary(
+            &#34;/license_v2.API/Heartbeat&#34;,
+            request_serializer=HeartbeatRequest.SerializeToString,
+            response_deserializer=HeartbeatResponse.FromString,
+        )
+        self.__rpc_list_user_clusters = channel.unary_unary(
+            &#34;/license_v2.API/ListUserClusters&#34;,
+            request_serializer=ListUserClustersRequest.SerializeToString,
+            response_deserializer=ListUserClustersResponse.FromString,
+        )
+
+    def activate(
+        self, *, activation_code: str = &#34;&#34;, expires: datetime = None
+    ) -&gt; &#34;ActivateResponse&#34;:
+        request = ActivateRequest()
+        request.activation_code = activation_code
+        if expires is not None:
+            request.expires = expires
+
+        return self.__rpc_activate(request)
+
+    def get_activation_code(self) -&gt; &#34;GetActivationCodeResponse&#34;:
+        request = GetActivationCodeRequest()
+
+        return self.__rpc_get_activation_code(request)
+
+    def delete_all(self) -&gt; &#34;DeleteAllResponse&#34;:
+        request = DeleteAllRequest()
+
+        return self.__rpc_delete_all(request)
+
+    def add_cluster(
+        self,
+        *,
+        id: str = &#34;&#34;,
+        address: str = &#34;&#34;,
+        secret: str = &#34;&#34;,
+        user_address: str = &#34;&#34;,
+        cluster_deployment_id: str = &#34;&#34;,
+        enterprise_server: bool = False
+    ) -&gt; &#34;AddClusterResponse&#34;:
+        request = AddClusterRequest()
+        request.id = id
+        request.address = address
+        request.secret = secret
+        request.user_address = user_address
+        request.cluster_deployment_id = cluster_deployment_id
+        request.enterprise_server = enterprise_server
+
+        return self.__rpc_add_cluster(request)
+
+    def delete_cluster(self, *, id: str = &#34;&#34;) -&gt; &#34;DeleteClusterResponse&#34;:
+        request = DeleteClusterRequest()
+        request.id = id
+
+        return self.__rpc_delete_cluster(request)
+
+    def list_clusters(self) -&gt; &#34;ListClustersResponse&#34;:
+        request = ListClustersRequest()
+
+        return self.__rpc_list_clusters(request)
+
+    def update_cluster(
+        self,
+        *,
+        id: str = &#34;&#34;,
+        address: str = &#34;&#34;,
+        user_address: str = &#34;&#34;,
+        cluster_deployment_id: str = &#34;&#34;,
+        secret: str = &#34;&#34;
+    ) -&gt; &#34;UpdateClusterResponse&#34;:
+        request = UpdateClusterRequest()
+        request.id = id
+        request.address = address
+        request.user_address = user_address
+        request.cluster_deployment_id = cluster_deployment_id
+        request.secret = secret
+
+        return self.__rpc_update_cluster(request)
+
+    def heartbeat(
+        self,
+        *,
+        id: str = &#34;&#34;,
+        secret: str = &#34;&#34;,
+        version: str = &#34;&#34;,
+        auth_enabled: bool = False,
+        client_id: str = &#34;&#34;
+    ) -&gt; &#34;HeartbeatResponse&#34;:
+        request = HeartbeatRequest()
+        request.id = id
+        request.secret = secret
+        request.version = version
+        request.auth_enabled = auth_enabled
+        request.client_id = client_id
+
+        return self.__rpc_heartbeat(request)
+
+    def list_user_clusters(self) -&gt; &#34;ListUserClustersResponse&#34;:
+        request = ListUserClustersRequest()
+
+        return self.__rpc_list_user_clusters(request)
+
+
+class ApiBase:
+    def activate(
+        self, activation_code: str, expires: datetime, context: &#34;grpc.ServicerContext&#34;
+    ) -&gt; &#34;ActivateResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def get_activation_code(
+        self, context: &#34;grpc.ServicerContext&#34;
+    ) -&gt; &#34;GetActivationCodeResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def delete_all(self, context: &#34;grpc.ServicerContext&#34;) -&gt; &#34;DeleteAllResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def add_cluster(
+        self,
+        id: str,
+        address: str,
+        secret: str,
+        user_address: str,
+        cluster_deployment_id: str,
+        enterprise_server: bool,
+        context: &#34;grpc.ServicerContext&#34;,
+    ) -&gt; &#34;AddClusterResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def delete_cluster(
+        self, id: str, context: &#34;grpc.ServicerContext&#34;
+    ) -&gt; &#34;DeleteClusterResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def list_clusters(self, context: &#34;grpc.ServicerContext&#34;) -&gt; &#34;ListClustersResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def update_cluster(
+        self,
+        id: str,
+        address: str,
+        user_address: str,
+        cluster_deployment_id: str,
+        secret: str,
+        context: &#34;grpc.ServicerContext&#34;,
+    ) -&gt; &#34;UpdateClusterResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def heartbeat(
+        self,
+        id: str,
+        secret: str,
+        version: str,
+        auth_enabled: bool,
+        client_id: str,
+        context: &#34;grpc.ServicerContext&#34;,
+    ) -&gt; &#34;HeartbeatResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def list_user_clusters(
+        self, context: &#34;grpc.ServicerContext&#34;
+    ) -&gt; &#34;ListUserClustersResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    __proto_path__ = &#34;license_v2.API&#34;
+
+    @property
+    def __rpc_methods__(self):
+        return {
+            &#34;Activate&#34;: grpc.unary_unary_rpc_method_handler(
+                self.activate,
+                request_deserializer=ActivateRequest.FromString,
+                response_serializer=ActivateRequest.SerializeToString,
+            ),
+            &#34;GetActivationCode&#34;: grpc.unary_unary_rpc_method_handler(
+                self.get_activation_code,
+                request_deserializer=GetActivationCodeRequest.FromString,
+                response_serializer=GetActivationCodeRequest.SerializeToString,
+            ),
+            &#34;DeleteAll&#34;: grpc.unary_unary_rpc_method_handler(
+                self.delete_all,
+                request_deserializer=DeleteAllRequest.FromString,
+                response_serializer=DeleteAllRequest.SerializeToString,
+            ),
+            &#34;AddCluster&#34;: grpc.unary_unary_rpc_method_handler(
+                self.add_cluster,
+                request_deserializer=AddClusterRequest.FromString,
+                response_serializer=AddClusterRequest.SerializeToString,
+            ),
+            &#34;DeleteCluster&#34;: grpc.unary_unary_rpc_method_handler(
+                self.delete_cluster,
+                request_deserializer=DeleteClusterRequest.FromString,
+                response_serializer=DeleteClusterRequest.SerializeToString,
+            ),
+            &#34;ListClusters&#34;: grpc.unary_unary_rpc_method_handler(
+                self.list_clusters,
+                request_deserializer=ListClustersRequest.FromString,
+                response_serializer=ListClustersRequest.SerializeToString,
+            ),
+            &#34;UpdateCluster&#34;: grpc.unary_unary_rpc_method_handler(
+                self.update_cluster,
+                request_deserializer=UpdateClusterRequest.FromString,
+                response_serializer=UpdateClusterRequest.SerializeToString,
+            ),
+            &#34;Heartbeat&#34;: grpc.unary_unary_rpc_method_handler(
+                self.heartbeat,
+                request_deserializer=HeartbeatRequest.FromString,
+                response_serializer=HeartbeatRequest.SerializeToString,
+            ),
+            &#34;ListUserClusters&#34;: grpc.unary_unary_rpc_method_handler(
+                self.list_user_clusters,
+                request_deserializer=ListUserClustersRequest.FromString,
+                response_serializer=ListUserClustersRequest.SerializeToString,
+            ),
+        }</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="pachyderm_sdk.api.license.ActivateRequest"><code class="flex name class">
+<span>class <span class="ident">ActivateRequest</span></span>
+<span>(</span><span>activation_code: str = None, expires: datetime.datetime = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>ActivateRequest(activation_code: str = None, expires: datetime.datetime = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class ActivateRequest(betterproto.Message):
+    activation_code: str = betterproto.string_field(1)
+    &#34;&#34;&#34;
+    activation_code is a Pachyderm enterprise activation code. New users can
+    obtain trial activation codes
+    &#34;&#34;&#34;
+
+    expires: datetime = betterproto.message_field(2)
+    &#34;&#34;&#34;
+    expires is a timestamp indicating when this activation code will expire.
+    This should not generally be set (it&#39;s primarily used for testing), and is
+    only applied if it&#39;s earlier than the signed expiration time in
+    &#39;activation_code&#39;.
+    &#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.license.ActivateRequest.activation_code"><code class="name">var <span class="ident">activation_code</span> : str</code></dt>
+<dd>
+<div class="desc"><p>activation_code is a Pachyderm enterprise activation code. New users can
+obtain trial activation codes</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.license.ActivateRequest.expires"><code class="name">var <span class="ident">expires</span> : datetime.datetime</code></dt>
+<dd>
+<div class="desc"><p>expires is a timestamp indicating when this activation code will expire.
+This should not generally be set (it's primarily used for testing), and is
+only applied if it's earlier than the signed expiration time in
+'activation_code'.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.license.ActivateResponse"><code class="flex name class">
+<span>class <span class="ident">ActivateResponse</span></span>
+<span>(</span><span>info: _enterprise__.TokenInfo = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>ActivateResponse(info: '_enterprise__.TokenInfo' = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class ActivateResponse(betterproto.Message):
+    info: &#34;_enterprise__.TokenInfo&#34; = betterproto.message_field(1)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.license.ActivateResponse.info"><code class="name">var <span class="ident">info</span> : <a title="pachyderm_sdk.api.enterprise.TokenInfo" href="../enterprise/index.html#pachyderm_sdk.api.enterprise.TokenInfo">TokenInfo</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.license.GetActivationCodeRequest"><code class="flex name class">
+<span>class <span class="ident">GetActivationCodeRequest</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>GetActivationCodeRequest()</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class GetActivationCodeRequest(betterproto.Message):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+</dd>
+<dt id="pachyderm_sdk.api.license.GetActivationCodeResponse"><code class="flex name class">
+<span>class <span class="ident">GetActivationCodeResponse</span></span>
+<span>(</span><span>state: _enterprise__.State = None, info: _enterprise__.TokenInfo = None, activation_code: str = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>GetActivationCodeResponse(state: '_enterprise__.State' = None, info: '_enterprise__.TokenInfo' = None, activation_code: str = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class GetActivationCodeResponse(betterproto.Message):
+    state: &#34;_enterprise__.State&#34; = betterproto.enum_field(1)
+    info: &#34;_enterprise__.TokenInfo&#34; = betterproto.message_field(2)
+    activation_code: str = betterproto.string_field(3)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.license.GetActivationCodeResponse.state"><code class="name">var <span class="ident">state</span> : <a title="pachyderm_sdk.api.enterprise.State" href="../enterprise/index.html#pachyderm_sdk.api.enterprise.State">State</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.license.GetActivationCodeResponse.info"><code class="name">var <span class="ident">info</span> : <a title="pachyderm_sdk.api.enterprise.TokenInfo" href="../enterprise/index.html#pachyderm_sdk.api.enterprise.TokenInfo">TokenInfo</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.license.GetActivationCodeResponse.activation_code"><code class="name">var <span class="ident">activation_code</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.license.DeactivateRequest"><code class="flex name class">
+<span>class <span class="ident">DeactivateRequest</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>DeactivateRequest()</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class DeactivateRequest(betterproto.Message):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+</dd>
+<dt id="pachyderm_sdk.api.license.DeactivateResponse"><code class="flex name class">
+<span>class <span class="ident">DeactivateResponse</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>DeactivateResponse()</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class DeactivateResponse(betterproto.Message):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+</dd>
+<dt id="pachyderm_sdk.api.license.AddClusterRequest"><code class="flex name class">
+<span>class <span class="ident">AddClusterRequest</span></span>
+<span>(</span><span>id: str = None, address: str = None, secret: str = None, user_address: str = None, cluster_deployment_id: str = None, enterprise_server: bool = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>AddClusterRequest(id: str = None, address: str = None, secret: str = None, user_address: str = None, cluster_deployment_id: str = None, enterprise_server: bool = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class AddClusterRequest(betterproto.Message):
+    id: str = betterproto.string_field(1)
+    &#34;&#34;&#34;id is the unique, immutable identifier for this cluster&#34;&#34;&#34;
+
+    address: str = betterproto.string_field(2)
+    &#34;&#34;&#34;address is the public GPRC address where the cluster can be reached&#34;&#34;&#34;
+
+    secret: str = betterproto.string_field(3)
+    &#34;&#34;&#34;
+    If set, secret specifies the shared secret this cluster will use to
+    authenticate to the license server. Otherwise a secret will be generated
+    and returned in the response.
+    &#34;&#34;&#34;
+
+    user_address: str = betterproto.string_field(4)
+    &#34;&#34;&#34;The pachd address for users to connect to.&#34;&#34;&#34;
+
+    cluster_deployment_id: str = betterproto.string_field(5)
+    &#34;&#34;&#34;The deployment ID value generated by each Cluster&#34;&#34;&#34;
+
+    enterprise_server: bool = betterproto.bool_field(6)
+    &#34;&#34;&#34;
+    This field indicates whether the address points to an enterprise server
+    &#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.license.AddClusterRequest.id"><code class="name">var <span class="ident">id</span> : str</code></dt>
+<dd>
+<div class="desc"><p>id is the unique, immutable identifier for this cluster</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.license.AddClusterRequest.address"><code class="name">var <span class="ident">address</span> : str</code></dt>
+<dd>
+<div class="desc"><p>address is the public GPRC address where the cluster can be reached</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.license.AddClusterRequest.secret"><code class="name">var <span class="ident">secret</span> : str</code></dt>
+<dd>
+<div class="desc"><p>If set, secret specifies the shared secret this cluster will use to
+authenticate to the license server. Otherwise a secret will be generated
+and returned in the response.</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.license.AddClusterRequest.user_address"><code class="name">var <span class="ident">user_address</span> : str</code></dt>
+<dd>
+<div class="desc"><p>The pachd address for users to connect to.</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.license.AddClusterRequest.cluster_deployment_id"><code class="name">var <span class="ident">cluster_deployment_id</span> : str</code></dt>
+<dd>
+<div class="desc"><p>The deployment ID value generated by each Cluster</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.license.AddClusterRequest.enterprise_server"><code class="name">var <span class="ident">enterprise_server</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>This field indicates whether the address points to an enterprise server</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.license.AddClusterResponse"><code class="flex name class">
+<span>class <span class="ident">AddClusterResponse</span></span>
+<span>(</span><span>secret: str = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>AddClusterResponse(secret: str = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class AddClusterResponse(betterproto.Message):
+    secret: str = betterproto.string_field(1)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.license.AddClusterResponse.secret"><code class="name">var <span class="ident">secret</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.license.DeleteClusterRequest"><code class="flex name class">
+<span>class <span class="ident">DeleteClusterRequest</span></span>
+<span>(</span><span>id: str = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>DeleteClusterRequest(id: str = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class DeleteClusterRequest(betterproto.Message):
+    id: str = betterproto.string_field(1)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.license.DeleteClusterRequest.id"><code class="name">var <span class="ident">id</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.license.DeleteClusterResponse"><code class="flex name class">
+<span>class <span class="ident">DeleteClusterResponse</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>DeleteClusterResponse()</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class DeleteClusterResponse(betterproto.Message):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+</dd>
+<dt id="pachyderm_sdk.api.license.ClusterStatus"><code class="flex name class">
+<span>class <span class="ident">ClusterStatus</span></span>
+<span>(</span><span>id: str = None, address: str = None, version: str = None, auth_enabled: bool = None, client_id: str = None, last_heartbeat: datetime.datetime = None, created_at: datetime.datetime = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>ClusterStatus(id: str = None, address: str = None, version: str = None, auth_enabled: bool = None, client_id: str = None, last_heartbeat: datetime.datetime = None, created_at: datetime.datetime = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class ClusterStatus(betterproto.Message):
+    id: str = betterproto.string_field(1)
+    address: str = betterproto.string_field(2)
+    version: str = betterproto.string_field(3)
+    auth_enabled: bool = betterproto.bool_field(4)
+    client_id: str = betterproto.string_field(7)
+    last_heartbeat: datetime = betterproto.message_field(5)
+    created_at: datetime = betterproto.message_field(6)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.license.ClusterStatus.id"><code class="name">var <span class="ident">id</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.license.ClusterStatus.address"><code class="name">var <span class="ident">address</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.license.ClusterStatus.version"><code class="name">var <span class="ident">version</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.license.ClusterStatus.auth_enabled"><code class="name">var <span class="ident">auth_enabled</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.license.ClusterStatus.client_id"><code class="name">var <span class="ident">client_id</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.license.ClusterStatus.last_heartbeat"><code class="name">var <span class="ident">last_heartbeat</span> : datetime.datetime</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.license.ClusterStatus.created_at"><code class="name">var <span class="ident">created_at</span> : datetime.datetime</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.license.UpdateClusterRequest"><code class="flex name class">
+<span>class <span class="ident">UpdateClusterRequest</span></span>
+<span>(</span><span>id: str = None, address: str = None, user_address: str = None, cluster_deployment_id: str = None, secret: str = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Note: Updates of the enterprise-server field are not allowed. In the worst
+case, a user can recreate their cluster if they need the field updated.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class UpdateClusterRequest(betterproto.Message):
+    &#34;&#34;&#34;
+    Note: Updates of the enterprise-server field are not allowed. In the worst
+    case, a user can recreate their cluster if they need the field updated.
+    &#34;&#34;&#34;
+
+    id: str = betterproto.string_field(1)
+    address: str = betterproto.string_field(2)
+    user_address: str = betterproto.string_field(3)
+    cluster_deployment_id: str = betterproto.string_field(4)
+    secret: str = betterproto.string_field(5)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.license.UpdateClusterRequest.id"><code class="name">var <span class="ident">id</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.license.UpdateClusterRequest.address"><code class="name">var <span class="ident">address</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.license.UpdateClusterRequest.user_address"><code class="name">var <span class="ident">user_address</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.license.UpdateClusterRequest.cluster_deployment_id"><code class="name">var <span class="ident">cluster_deployment_id</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.license.UpdateClusterRequest.secret"><code class="name">var <span class="ident">secret</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.license.UpdateClusterResponse"><code class="flex name class">
+<span>class <span class="ident">UpdateClusterResponse</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>UpdateClusterResponse()</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class UpdateClusterResponse(betterproto.Message):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+</dd>
+<dt id="pachyderm_sdk.api.license.ListClustersRequest"><code class="flex name class">
+<span>class <span class="ident">ListClustersRequest</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>ListClustersRequest()</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class ListClustersRequest(betterproto.Message):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+</dd>
+<dt id="pachyderm_sdk.api.license.ListClustersResponse"><code class="flex name class">
+<span>class <span class="ident">ListClustersResponse</span></span>
+<span>(</span><span>clusters: List[ForwardRef('<a title="pachyderm_sdk.api.license.ClusterStatus" href="#pachyderm_sdk.api.license.ClusterStatus">ClusterStatus</a>')] = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>ListClustersResponse(clusters: List[ForwardRef('ClusterStatus')] = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class ListClustersResponse(betterproto.Message):
+    clusters: List[&#34;ClusterStatus&#34;] = betterproto.message_field(1)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.license.ListClustersResponse.clusters"><code class="name">var <span class="ident">clusters</span> : List[<a title="pachyderm_sdk.api.license.ClusterStatus" href="#pachyderm_sdk.api.license.ClusterStatus">ClusterStatus</a>]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.license.DeleteAllRequest"><code class="flex name class">
+<span>class <span class="ident">DeleteAllRequest</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>DeleteAllRequest()</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class DeleteAllRequest(betterproto.Message):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+</dd>
+<dt id="pachyderm_sdk.api.license.DeleteAllResponse"><code class="flex name class">
+<span>class <span class="ident">DeleteAllResponse</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>DeleteAllResponse()</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class DeleteAllResponse(betterproto.Message):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+</dd>
+<dt id="pachyderm_sdk.api.license.HeartbeatRequest"><code class="flex name class">
+<span>class <span class="ident">HeartbeatRequest</span></span>
+<span>(</span><span>id: str = None, secret: str = None, version: str = None, auth_enabled: bool = None, client_id: str = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>HeartbeatRequest(id: str = None, secret: str = None, version: str = None, auth_enabled: bool = None, client_id: str = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class HeartbeatRequest(betterproto.Message):
+    id: str = betterproto.string_field(1)
+    secret: str = betterproto.string_field(2)
+    version: str = betterproto.string_field(3)
+    auth_enabled: bool = betterproto.bool_field(4)
+    client_id: str = betterproto.string_field(5)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.license.HeartbeatRequest.id"><code class="name">var <span class="ident">id</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.license.HeartbeatRequest.secret"><code class="name">var <span class="ident">secret</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.license.HeartbeatRequest.version"><code class="name">var <span class="ident">version</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.license.HeartbeatRequest.auth_enabled"><code class="name">var <span class="ident">auth_enabled</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.license.HeartbeatRequest.client_id"><code class="name">var <span class="ident">client_id</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.license.HeartbeatResponse"><code class="flex name class">
+<span>class <span class="ident">HeartbeatResponse</span></span>
+<span>(</span><span>license: _enterprise__.LicenseRecord = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>HeartbeatResponse(license: '_enterprise__.LicenseRecord' = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class HeartbeatResponse(betterproto.Message):
+    license: &#34;_enterprise__.LicenseRecord&#34; = betterproto.message_field(1)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.license.HeartbeatResponse.license"><code class="name">var <span class="ident">license</span> : <a title="pachyderm_sdk.api.enterprise.LicenseRecord" href="../enterprise/index.html#pachyderm_sdk.api.enterprise.LicenseRecord">LicenseRecord</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.license.UserClusterInfo"><code class="flex name class">
+<span>class <span class="ident">UserClusterInfo</span></span>
+<span>(</span><span>id: str = None, cluster_deployment_id: str = None, address: str = None, enterprise_server: bool = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>UserClusterInfo(id: str = None, cluster_deployment_id: str = None, address: str = None, enterprise_server: bool = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class UserClusterInfo(betterproto.Message):
+    id: str = betterproto.string_field(1)
+    cluster_deployment_id: str = betterproto.string_field(2)
+    address: str = betterproto.string_field(3)
+    enterprise_server: bool = betterproto.bool_field(4)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.license.UserClusterInfo.id"><code class="name">var <span class="ident">id</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.license.UserClusterInfo.cluster_deployment_id"><code class="name">var <span class="ident">cluster_deployment_id</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.license.UserClusterInfo.address"><code class="name">var <span class="ident">address</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.license.UserClusterInfo.enterprise_server"><code class="name">var <span class="ident">enterprise_server</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.license.ListUserClustersRequest"><code class="flex name class">
+<span>class <span class="ident">ListUserClustersRequest</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>ListUserClustersRequest()</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class ListUserClustersRequest(betterproto.Message):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+</dd>
+<dt id="pachyderm_sdk.api.license.ListUserClustersResponse"><code class="flex name class">
+<span>class <span class="ident">ListUserClustersResponse</span></span>
+<span>(</span><span>clusters: List[ForwardRef('<a title="pachyderm_sdk.api.license.UserClusterInfo" href="#pachyderm_sdk.api.license.UserClusterInfo">UserClusterInfo</a>')] = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>ListUserClustersResponse(clusters: List[ForwardRef('UserClusterInfo')] = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class ListUserClustersResponse(betterproto.Message):
+    clusters: List[&#34;UserClusterInfo&#34;] = betterproto.message_field(1)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.license.ListUserClustersResponse.clusters"><code class="name">var <span class="ident">clusters</span> : List[<a title="pachyderm_sdk.api.license.UserClusterInfo" href="#pachyderm_sdk.api.license.UserClusterInfo">UserClusterInfo</a>]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.license.ApiStub"><code class="flex name class">
+<span>class <span class="ident">ApiStub</span></span>
+<span>(</span><span>channel: grpc.Channel)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ApiStub:
+    def __init__(self, channel: &#34;grpc.Channel&#34;):
+        self.__rpc_activate = channel.unary_unary(
+            &#34;/license_v2.API/Activate&#34;,
+            request_serializer=ActivateRequest.SerializeToString,
+            response_deserializer=ActivateResponse.FromString,
+        )
+        self.__rpc_get_activation_code = channel.unary_unary(
+            &#34;/license_v2.API/GetActivationCode&#34;,
+            request_serializer=GetActivationCodeRequest.SerializeToString,
+            response_deserializer=GetActivationCodeResponse.FromString,
+        )
+        self.__rpc_delete_all = channel.unary_unary(
+            &#34;/license_v2.API/DeleteAll&#34;,
+            request_serializer=DeleteAllRequest.SerializeToString,
+            response_deserializer=DeleteAllResponse.FromString,
+        )
+        self.__rpc_add_cluster = channel.unary_unary(
+            &#34;/license_v2.API/AddCluster&#34;,
+            request_serializer=AddClusterRequest.SerializeToString,
+            response_deserializer=AddClusterResponse.FromString,
+        )
+        self.__rpc_delete_cluster = channel.unary_unary(
+            &#34;/license_v2.API/DeleteCluster&#34;,
+            request_serializer=DeleteClusterRequest.SerializeToString,
+            response_deserializer=DeleteClusterResponse.FromString,
+        )
+        self.__rpc_list_clusters = channel.unary_unary(
+            &#34;/license_v2.API/ListClusters&#34;,
+            request_serializer=ListClustersRequest.SerializeToString,
+            response_deserializer=ListClustersResponse.FromString,
+        )
+        self.__rpc_update_cluster = channel.unary_unary(
+            &#34;/license_v2.API/UpdateCluster&#34;,
+            request_serializer=UpdateClusterRequest.SerializeToString,
+            response_deserializer=UpdateClusterResponse.FromString,
+        )
+        self.__rpc_heartbeat = channel.unary_unary(
+            &#34;/license_v2.API/Heartbeat&#34;,
+            request_serializer=HeartbeatRequest.SerializeToString,
+            response_deserializer=HeartbeatResponse.FromString,
+        )
+        self.__rpc_list_user_clusters = channel.unary_unary(
+            &#34;/license_v2.API/ListUserClusters&#34;,
+            request_serializer=ListUserClustersRequest.SerializeToString,
+            response_deserializer=ListUserClustersResponse.FromString,
+        )
+
+    def activate(
+        self, *, activation_code: str = &#34;&#34;, expires: datetime = None
+    ) -&gt; &#34;ActivateResponse&#34;:
+        request = ActivateRequest()
+        request.activation_code = activation_code
+        if expires is not None:
+            request.expires = expires
+
+        return self.__rpc_activate(request)
+
+    def get_activation_code(self) -&gt; &#34;GetActivationCodeResponse&#34;:
+        request = GetActivationCodeRequest()
+
+        return self.__rpc_get_activation_code(request)
+
+    def delete_all(self) -&gt; &#34;DeleteAllResponse&#34;:
+        request = DeleteAllRequest()
+
+        return self.__rpc_delete_all(request)
+
+    def add_cluster(
+        self,
+        *,
+        id: str = &#34;&#34;,
+        address: str = &#34;&#34;,
+        secret: str = &#34;&#34;,
+        user_address: str = &#34;&#34;,
+        cluster_deployment_id: str = &#34;&#34;,
+        enterprise_server: bool = False
+    ) -&gt; &#34;AddClusterResponse&#34;:
+        request = AddClusterRequest()
+        request.id = id
+        request.address = address
+        request.secret = secret
+        request.user_address = user_address
+        request.cluster_deployment_id = cluster_deployment_id
+        request.enterprise_server = enterprise_server
+
+        return self.__rpc_add_cluster(request)
+
+    def delete_cluster(self, *, id: str = &#34;&#34;) -&gt; &#34;DeleteClusterResponse&#34;:
+        request = DeleteClusterRequest()
+        request.id = id
+
+        return self.__rpc_delete_cluster(request)
+
+    def list_clusters(self) -&gt; &#34;ListClustersResponse&#34;:
+        request = ListClustersRequest()
+
+        return self.__rpc_list_clusters(request)
+
+    def update_cluster(
+        self,
+        *,
+        id: str = &#34;&#34;,
+        address: str = &#34;&#34;,
+        user_address: str = &#34;&#34;,
+        cluster_deployment_id: str = &#34;&#34;,
+        secret: str = &#34;&#34;
+    ) -&gt; &#34;UpdateClusterResponse&#34;:
+        request = UpdateClusterRequest()
+        request.id = id
+        request.address = address
+        request.user_address = user_address
+        request.cluster_deployment_id = cluster_deployment_id
+        request.secret = secret
+
+        return self.__rpc_update_cluster(request)
+
+    def heartbeat(
+        self,
+        *,
+        id: str = &#34;&#34;,
+        secret: str = &#34;&#34;,
+        version: str = &#34;&#34;,
+        auth_enabled: bool = False,
+        client_id: str = &#34;&#34;
+    ) -&gt; &#34;HeartbeatResponse&#34;:
+        request = HeartbeatRequest()
+        request.id = id
+        request.secret = secret
+        request.version = version
+        request.auth_enabled = auth_enabled
+        request.client_id = client_id
+
+        return self.__rpc_heartbeat(request)
+
+    def list_user_clusters(self) -&gt; &#34;ListUserClustersResponse&#34;:
+        request = ListUserClustersRequest()
+
+        return self.__rpc_list_user_clusters(request)</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pachyderm_sdk.api.license.ApiStub.activate"><code class="name flex">
+<span>def <span class="ident">activate</span></span>(<span>self, *, activation_code: str = '', expires: datetime.datetime = None) ‑> <a title="pachyderm_sdk.api.license.ActivateResponse" href="#pachyderm_sdk.api.license.ActivateResponse">ActivateResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def activate(
+    self, *, activation_code: str = &#34;&#34;, expires: datetime = None
+) -&gt; &#34;ActivateResponse&#34;:
+    request = ActivateRequest()
+    request.activation_code = activation_code
+    if expires is not None:
+        request.expires = expires
+
+    return self.__rpc_activate(request)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.license.ApiStub.get_activation_code"><code class="name flex">
+<span>def <span class="ident">get_activation_code</span></span>(<span>self) ‑> <a title="pachyderm_sdk.api.license.GetActivationCodeResponse" href="#pachyderm_sdk.api.license.GetActivationCodeResponse">GetActivationCodeResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_activation_code(self) -&gt; &#34;GetActivationCodeResponse&#34;:
+    request = GetActivationCodeRequest()
+
+    return self.__rpc_get_activation_code(request)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.license.ApiStub.delete_all"><code class="name flex">
+<span>def <span class="ident">delete_all</span></span>(<span>self) ‑> <a title="pachyderm_sdk.api.license.DeleteAllResponse" href="#pachyderm_sdk.api.license.DeleteAllResponse">DeleteAllResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def delete_all(self) -&gt; &#34;DeleteAllResponse&#34;:
+    request = DeleteAllRequest()
+
+    return self.__rpc_delete_all(request)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.license.ApiStub.add_cluster"><code class="name flex">
+<span>def <span class="ident">add_cluster</span></span>(<span>self, *, id: str = '', address: str = '', secret: str = '', user_address: str = '', cluster_deployment_id: str = '', enterprise_server: bool = False) ‑> <a title="pachyderm_sdk.api.license.AddClusterResponse" href="#pachyderm_sdk.api.license.AddClusterResponse">AddClusterResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_cluster(
+    self,
+    *,
+    id: str = &#34;&#34;,
+    address: str = &#34;&#34;,
+    secret: str = &#34;&#34;,
+    user_address: str = &#34;&#34;,
+    cluster_deployment_id: str = &#34;&#34;,
+    enterprise_server: bool = False
+) -&gt; &#34;AddClusterResponse&#34;:
+    request = AddClusterRequest()
+    request.id = id
+    request.address = address
+    request.secret = secret
+    request.user_address = user_address
+    request.cluster_deployment_id = cluster_deployment_id
+    request.enterprise_server = enterprise_server
+
+    return self.__rpc_add_cluster(request)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.license.ApiStub.delete_cluster"><code class="name flex">
+<span>def <span class="ident">delete_cluster</span></span>(<span>self, *, id: str = '') ‑> <a title="pachyderm_sdk.api.license.DeleteClusterResponse" href="#pachyderm_sdk.api.license.DeleteClusterResponse">DeleteClusterResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def delete_cluster(self, *, id: str = &#34;&#34;) -&gt; &#34;DeleteClusterResponse&#34;:
+    request = DeleteClusterRequest()
+    request.id = id
+
+    return self.__rpc_delete_cluster(request)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.license.ApiStub.list_clusters"><code class="name flex">
+<span>def <span class="ident">list_clusters</span></span>(<span>self) ‑> <a title="pachyderm_sdk.api.license.ListClustersResponse" href="#pachyderm_sdk.api.license.ListClustersResponse">ListClustersResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def list_clusters(self) -&gt; &#34;ListClustersResponse&#34;:
+    request = ListClustersRequest()
+
+    return self.__rpc_list_clusters(request)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.license.ApiStub.update_cluster"><code class="name flex">
+<span>def <span class="ident">update_cluster</span></span>(<span>self, *, id: str = '', address: str = '', user_address: str = '', cluster_deployment_id: str = '', secret: str = '') ‑> <a title="pachyderm_sdk.api.license.UpdateClusterResponse" href="#pachyderm_sdk.api.license.UpdateClusterResponse">UpdateClusterResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def update_cluster(
+    self,
+    *,
+    id: str = &#34;&#34;,
+    address: str = &#34;&#34;,
+    user_address: str = &#34;&#34;,
+    cluster_deployment_id: str = &#34;&#34;,
+    secret: str = &#34;&#34;
+) -&gt; &#34;UpdateClusterResponse&#34;:
+    request = UpdateClusterRequest()
+    request.id = id
+    request.address = address
+    request.user_address = user_address
+    request.cluster_deployment_id = cluster_deployment_id
+    request.secret = secret
+
+    return self.__rpc_update_cluster(request)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.license.ApiStub.heartbeat"><code class="name flex">
+<span>def <span class="ident">heartbeat</span></span>(<span>self, *, id: str = '', secret: str = '', version: str = '', auth_enabled: bool = False, client_id: str = '') ‑> <a title="pachyderm_sdk.api.license.HeartbeatResponse" href="#pachyderm_sdk.api.license.HeartbeatResponse">HeartbeatResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def heartbeat(
+    self,
+    *,
+    id: str = &#34;&#34;,
+    secret: str = &#34;&#34;,
+    version: str = &#34;&#34;,
+    auth_enabled: bool = False,
+    client_id: str = &#34;&#34;
+) -&gt; &#34;HeartbeatResponse&#34;:
+    request = HeartbeatRequest()
+    request.id = id
+    request.secret = secret
+    request.version = version
+    request.auth_enabled = auth_enabled
+    request.client_id = client_id
+
+    return self.__rpc_heartbeat(request)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.license.ApiStub.list_user_clusters"><code class="name flex">
+<span>def <span class="ident">list_user_clusters</span></span>(<span>self) ‑> <a title="pachyderm_sdk.api.license.ListUserClustersResponse" href="#pachyderm_sdk.api.license.ListUserClustersResponse">ListUserClustersResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def list_user_clusters(self) -&gt; &#34;ListUserClustersResponse&#34;:
+    request = ListUserClustersRequest()
+
+    return self.__rpc_list_user_clusters(request)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.license.ApiBase"><code class="flex name class">
+<span>class <span class="ident">ApiBase</span></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ApiBase:
+    def activate(
+        self, activation_code: str, expires: datetime, context: &#34;grpc.ServicerContext&#34;
+    ) -&gt; &#34;ActivateResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def get_activation_code(
+        self, context: &#34;grpc.ServicerContext&#34;
+    ) -&gt; &#34;GetActivationCodeResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def delete_all(self, context: &#34;grpc.ServicerContext&#34;) -&gt; &#34;DeleteAllResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def add_cluster(
+        self,
+        id: str,
+        address: str,
+        secret: str,
+        user_address: str,
+        cluster_deployment_id: str,
+        enterprise_server: bool,
+        context: &#34;grpc.ServicerContext&#34;,
+    ) -&gt; &#34;AddClusterResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def delete_cluster(
+        self, id: str, context: &#34;grpc.ServicerContext&#34;
+    ) -&gt; &#34;DeleteClusterResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def list_clusters(self, context: &#34;grpc.ServicerContext&#34;) -&gt; &#34;ListClustersResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def update_cluster(
+        self,
+        id: str,
+        address: str,
+        user_address: str,
+        cluster_deployment_id: str,
+        secret: str,
+        context: &#34;grpc.ServicerContext&#34;,
+    ) -&gt; &#34;UpdateClusterResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def heartbeat(
+        self,
+        id: str,
+        secret: str,
+        version: str,
+        auth_enabled: bool,
+        client_id: str,
+        context: &#34;grpc.ServicerContext&#34;,
+    ) -&gt; &#34;HeartbeatResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def list_user_clusters(
+        self, context: &#34;grpc.ServicerContext&#34;
+    ) -&gt; &#34;ListUserClustersResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    __proto_path__ = &#34;license_v2.API&#34;
+
+    @property
+    def __rpc_methods__(self):
+        return {
+            &#34;Activate&#34;: grpc.unary_unary_rpc_method_handler(
+                self.activate,
+                request_deserializer=ActivateRequest.FromString,
+                response_serializer=ActivateRequest.SerializeToString,
+            ),
+            &#34;GetActivationCode&#34;: grpc.unary_unary_rpc_method_handler(
+                self.get_activation_code,
+                request_deserializer=GetActivationCodeRequest.FromString,
+                response_serializer=GetActivationCodeRequest.SerializeToString,
+            ),
+            &#34;DeleteAll&#34;: grpc.unary_unary_rpc_method_handler(
+                self.delete_all,
+                request_deserializer=DeleteAllRequest.FromString,
+                response_serializer=DeleteAllRequest.SerializeToString,
+            ),
+            &#34;AddCluster&#34;: grpc.unary_unary_rpc_method_handler(
+                self.add_cluster,
+                request_deserializer=AddClusterRequest.FromString,
+                response_serializer=AddClusterRequest.SerializeToString,
+            ),
+            &#34;DeleteCluster&#34;: grpc.unary_unary_rpc_method_handler(
+                self.delete_cluster,
+                request_deserializer=DeleteClusterRequest.FromString,
+                response_serializer=DeleteClusterRequest.SerializeToString,
+            ),
+            &#34;ListClusters&#34;: grpc.unary_unary_rpc_method_handler(
+                self.list_clusters,
+                request_deserializer=ListClustersRequest.FromString,
+                response_serializer=ListClustersRequest.SerializeToString,
+            ),
+            &#34;UpdateCluster&#34;: grpc.unary_unary_rpc_method_handler(
+                self.update_cluster,
+                request_deserializer=UpdateClusterRequest.FromString,
+                response_serializer=UpdateClusterRequest.SerializeToString,
+            ),
+            &#34;Heartbeat&#34;: grpc.unary_unary_rpc_method_handler(
+                self.heartbeat,
+                request_deserializer=HeartbeatRequest.FromString,
+                response_serializer=HeartbeatRequest.SerializeToString,
+            ),
+            &#34;ListUserClusters&#34;: grpc.unary_unary_rpc_method_handler(
+                self.list_user_clusters,
+                request_deserializer=ListUserClustersRequest.FromString,
+                response_serializer=ListUserClustersRequest.SerializeToString,
+            ),
+        }</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pachyderm_sdk.api.license.ApiBase.activate"><code class="name flex">
+<span>def <span class="ident">activate</span></span>(<span>self, activation_code: str, expires: datetime.datetime, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.license.ActivateResponse" href="#pachyderm_sdk.api.license.ActivateResponse">ActivateResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def activate(
+    self, activation_code: str, expires: datetime, context: &#34;grpc.ServicerContext&#34;
+) -&gt; &#34;ActivateResponse&#34;:
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details(&#34;Method not implemented!&#34;)
+    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.license.ApiBase.get_activation_code"><code class="name flex">
+<span>def <span class="ident">get_activation_code</span></span>(<span>self, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.license.GetActivationCodeResponse" href="#pachyderm_sdk.api.license.GetActivationCodeResponse">GetActivationCodeResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_activation_code(
+    self, context: &#34;grpc.ServicerContext&#34;
+) -&gt; &#34;GetActivationCodeResponse&#34;:
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details(&#34;Method not implemented!&#34;)
+    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.license.ApiBase.delete_all"><code class="name flex">
+<span>def <span class="ident">delete_all</span></span>(<span>self, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.license.DeleteAllResponse" href="#pachyderm_sdk.api.license.DeleteAllResponse">DeleteAllResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def delete_all(self, context: &#34;grpc.ServicerContext&#34;) -&gt; &#34;DeleteAllResponse&#34;:
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details(&#34;Method not implemented!&#34;)
+    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.license.ApiBase.add_cluster"><code class="name flex">
+<span>def <span class="ident">add_cluster</span></span>(<span>self, id: str, address: str, secret: str, user_address: str, cluster_deployment_id: str, enterprise_server: bool, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.license.AddClusterResponse" href="#pachyderm_sdk.api.license.AddClusterResponse">AddClusterResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_cluster(
+    self,
+    id: str,
+    address: str,
+    secret: str,
+    user_address: str,
+    cluster_deployment_id: str,
+    enterprise_server: bool,
+    context: &#34;grpc.ServicerContext&#34;,
+) -&gt; &#34;AddClusterResponse&#34;:
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details(&#34;Method not implemented!&#34;)
+    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.license.ApiBase.delete_cluster"><code class="name flex">
+<span>def <span class="ident">delete_cluster</span></span>(<span>self, id: str, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.license.DeleteClusterResponse" href="#pachyderm_sdk.api.license.DeleteClusterResponse">DeleteClusterResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def delete_cluster(
+    self, id: str, context: &#34;grpc.ServicerContext&#34;
+) -&gt; &#34;DeleteClusterResponse&#34;:
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details(&#34;Method not implemented!&#34;)
+    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.license.ApiBase.list_clusters"><code class="name flex">
+<span>def <span class="ident">list_clusters</span></span>(<span>self, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.license.ListClustersResponse" href="#pachyderm_sdk.api.license.ListClustersResponse">ListClustersResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def list_clusters(self, context: &#34;grpc.ServicerContext&#34;) -&gt; &#34;ListClustersResponse&#34;:
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details(&#34;Method not implemented!&#34;)
+    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.license.ApiBase.update_cluster"><code class="name flex">
+<span>def <span class="ident">update_cluster</span></span>(<span>self, id: str, address: str, user_address: str, cluster_deployment_id: str, secret: str, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.license.UpdateClusterResponse" href="#pachyderm_sdk.api.license.UpdateClusterResponse">UpdateClusterResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def update_cluster(
+    self,
+    id: str,
+    address: str,
+    user_address: str,
+    cluster_deployment_id: str,
+    secret: str,
+    context: &#34;grpc.ServicerContext&#34;,
+) -&gt; &#34;UpdateClusterResponse&#34;:
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details(&#34;Method not implemented!&#34;)
+    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.license.ApiBase.heartbeat"><code class="name flex">
+<span>def <span class="ident">heartbeat</span></span>(<span>self, id: str, secret: str, version: str, auth_enabled: bool, client_id: str, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.license.HeartbeatResponse" href="#pachyderm_sdk.api.license.HeartbeatResponse">HeartbeatResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def heartbeat(
+    self,
+    id: str,
+    secret: str,
+    version: str,
+    auth_enabled: bool,
+    client_id: str,
+    context: &#34;grpc.ServicerContext&#34;,
+) -&gt; &#34;HeartbeatResponse&#34;:
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details(&#34;Method not implemented!&#34;)
+    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.license.ApiBase.list_user_clusters"><code class="name flex">
+<span>def <span class="ident">list_user_clusters</span></span>(<span>self, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.license.ListUserClustersResponse" href="#pachyderm_sdk.api.license.ListUserClustersResponse">ListUserClustersResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def list_user_clusters(
+    self, context: &#34;grpc.ServicerContext&#34;
+) -&gt; &#34;ListUserClustersResponse&#34;:
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details(&#34;Method not implemented!&#34;)
+    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<header>
+<style> img { max-width: 50%; } </style>
+<img src="https://raw.githubusercontent.com/pachyderm/pachyderm/master/Pachyderm_Icon-01.svg" alt="">
+</header>
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="pachyderm_sdk.api" href="../index.html">pachyderm_sdk.api</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="pachyderm_sdk.api.license.ActivateRequest" href="#pachyderm_sdk.api.license.ActivateRequest">ActivateRequest</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.license.ActivateRequest.activation_code" href="#pachyderm_sdk.api.license.ActivateRequest.activation_code">activation_code</a></code></li>
+<li><code><a title="pachyderm_sdk.api.license.ActivateRequest.expires" href="#pachyderm_sdk.api.license.ActivateRequest.expires">expires</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.license.ActivateResponse" href="#pachyderm_sdk.api.license.ActivateResponse">ActivateResponse</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.license.ActivateResponse.info" href="#pachyderm_sdk.api.license.ActivateResponse.info">info</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.license.GetActivationCodeRequest" href="#pachyderm_sdk.api.license.GetActivationCodeRequest">GetActivationCodeRequest</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.license.GetActivationCodeResponse" href="#pachyderm_sdk.api.license.GetActivationCodeResponse">GetActivationCodeResponse</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.license.GetActivationCodeResponse.state" href="#pachyderm_sdk.api.license.GetActivationCodeResponse.state">state</a></code></li>
+<li><code><a title="pachyderm_sdk.api.license.GetActivationCodeResponse.info" href="#pachyderm_sdk.api.license.GetActivationCodeResponse.info">info</a></code></li>
+<li><code><a title="pachyderm_sdk.api.license.GetActivationCodeResponse.activation_code" href="#pachyderm_sdk.api.license.GetActivationCodeResponse.activation_code">activation_code</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.license.DeactivateRequest" href="#pachyderm_sdk.api.license.DeactivateRequest">DeactivateRequest</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.license.DeactivateResponse" href="#pachyderm_sdk.api.license.DeactivateResponse">DeactivateResponse</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.license.AddClusterRequest" href="#pachyderm_sdk.api.license.AddClusterRequest">AddClusterRequest</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.license.AddClusterRequest.id" href="#pachyderm_sdk.api.license.AddClusterRequest.id">id</a></code></li>
+<li><code><a title="pachyderm_sdk.api.license.AddClusterRequest.address" href="#pachyderm_sdk.api.license.AddClusterRequest.address">address</a></code></li>
+<li><code><a title="pachyderm_sdk.api.license.AddClusterRequest.secret" href="#pachyderm_sdk.api.license.AddClusterRequest.secret">secret</a></code></li>
+<li><code><a title="pachyderm_sdk.api.license.AddClusterRequest.user_address" href="#pachyderm_sdk.api.license.AddClusterRequest.user_address">user_address</a></code></li>
+<li><code><a title="pachyderm_sdk.api.license.AddClusterRequest.cluster_deployment_id" href="#pachyderm_sdk.api.license.AddClusterRequest.cluster_deployment_id">cluster_deployment_id</a></code></li>
+<li><code><a title="pachyderm_sdk.api.license.AddClusterRequest.enterprise_server" href="#pachyderm_sdk.api.license.AddClusterRequest.enterprise_server">enterprise_server</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.license.AddClusterResponse" href="#pachyderm_sdk.api.license.AddClusterResponse">AddClusterResponse</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.license.AddClusterResponse.secret" href="#pachyderm_sdk.api.license.AddClusterResponse.secret">secret</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.license.DeleteClusterRequest" href="#pachyderm_sdk.api.license.DeleteClusterRequest">DeleteClusterRequest</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.license.DeleteClusterRequest.id" href="#pachyderm_sdk.api.license.DeleteClusterRequest.id">id</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.license.DeleteClusterResponse" href="#pachyderm_sdk.api.license.DeleteClusterResponse">DeleteClusterResponse</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.license.ClusterStatus" href="#pachyderm_sdk.api.license.ClusterStatus">ClusterStatus</a></code></h4>
+<ul class="two-column">
+<li><code><a title="pachyderm_sdk.api.license.ClusterStatus.id" href="#pachyderm_sdk.api.license.ClusterStatus.id">id</a></code></li>
+<li><code><a title="pachyderm_sdk.api.license.ClusterStatus.address" href="#pachyderm_sdk.api.license.ClusterStatus.address">address</a></code></li>
+<li><code><a title="pachyderm_sdk.api.license.ClusterStatus.version" href="#pachyderm_sdk.api.license.ClusterStatus.version">version</a></code></li>
+<li><code><a title="pachyderm_sdk.api.license.ClusterStatus.auth_enabled" href="#pachyderm_sdk.api.license.ClusterStatus.auth_enabled">auth_enabled</a></code></li>
+<li><code><a title="pachyderm_sdk.api.license.ClusterStatus.client_id" href="#pachyderm_sdk.api.license.ClusterStatus.client_id">client_id</a></code></li>
+<li><code><a title="pachyderm_sdk.api.license.ClusterStatus.last_heartbeat" href="#pachyderm_sdk.api.license.ClusterStatus.last_heartbeat">last_heartbeat</a></code></li>
+<li><code><a title="pachyderm_sdk.api.license.ClusterStatus.created_at" href="#pachyderm_sdk.api.license.ClusterStatus.created_at">created_at</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.license.UpdateClusterRequest" href="#pachyderm_sdk.api.license.UpdateClusterRequest">UpdateClusterRequest</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.license.UpdateClusterRequest.id" href="#pachyderm_sdk.api.license.UpdateClusterRequest.id">id</a></code></li>
+<li><code><a title="pachyderm_sdk.api.license.UpdateClusterRequest.address" href="#pachyderm_sdk.api.license.UpdateClusterRequest.address">address</a></code></li>
+<li><code><a title="pachyderm_sdk.api.license.UpdateClusterRequest.user_address" href="#pachyderm_sdk.api.license.UpdateClusterRequest.user_address">user_address</a></code></li>
+<li><code><a title="pachyderm_sdk.api.license.UpdateClusterRequest.cluster_deployment_id" href="#pachyderm_sdk.api.license.UpdateClusterRequest.cluster_deployment_id">cluster_deployment_id</a></code></li>
+<li><code><a title="pachyderm_sdk.api.license.UpdateClusterRequest.secret" href="#pachyderm_sdk.api.license.UpdateClusterRequest.secret">secret</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.license.UpdateClusterResponse" href="#pachyderm_sdk.api.license.UpdateClusterResponse">UpdateClusterResponse</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.license.ListClustersRequest" href="#pachyderm_sdk.api.license.ListClustersRequest">ListClustersRequest</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.license.ListClustersResponse" href="#pachyderm_sdk.api.license.ListClustersResponse">ListClustersResponse</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.license.ListClustersResponse.clusters" href="#pachyderm_sdk.api.license.ListClustersResponse.clusters">clusters</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.license.DeleteAllRequest" href="#pachyderm_sdk.api.license.DeleteAllRequest">DeleteAllRequest</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.license.DeleteAllResponse" href="#pachyderm_sdk.api.license.DeleteAllResponse">DeleteAllResponse</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.license.HeartbeatRequest" href="#pachyderm_sdk.api.license.HeartbeatRequest">HeartbeatRequest</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.license.HeartbeatRequest.id" href="#pachyderm_sdk.api.license.HeartbeatRequest.id">id</a></code></li>
+<li><code><a title="pachyderm_sdk.api.license.HeartbeatRequest.secret" href="#pachyderm_sdk.api.license.HeartbeatRequest.secret">secret</a></code></li>
+<li><code><a title="pachyderm_sdk.api.license.HeartbeatRequest.version" href="#pachyderm_sdk.api.license.HeartbeatRequest.version">version</a></code></li>
+<li><code><a title="pachyderm_sdk.api.license.HeartbeatRequest.auth_enabled" href="#pachyderm_sdk.api.license.HeartbeatRequest.auth_enabled">auth_enabled</a></code></li>
+<li><code><a title="pachyderm_sdk.api.license.HeartbeatRequest.client_id" href="#pachyderm_sdk.api.license.HeartbeatRequest.client_id">client_id</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.license.HeartbeatResponse" href="#pachyderm_sdk.api.license.HeartbeatResponse">HeartbeatResponse</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.license.HeartbeatResponse.license" href="#pachyderm_sdk.api.license.HeartbeatResponse.license">license</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.license.UserClusterInfo" href="#pachyderm_sdk.api.license.UserClusterInfo">UserClusterInfo</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.license.UserClusterInfo.id" href="#pachyderm_sdk.api.license.UserClusterInfo.id">id</a></code></li>
+<li><code><a title="pachyderm_sdk.api.license.UserClusterInfo.cluster_deployment_id" href="#pachyderm_sdk.api.license.UserClusterInfo.cluster_deployment_id">cluster_deployment_id</a></code></li>
+<li><code><a title="pachyderm_sdk.api.license.UserClusterInfo.address" href="#pachyderm_sdk.api.license.UserClusterInfo.address">address</a></code></li>
+<li><code><a title="pachyderm_sdk.api.license.UserClusterInfo.enterprise_server" href="#pachyderm_sdk.api.license.UserClusterInfo.enterprise_server">enterprise_server</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.license.ListUserClustersRequest" href="#pachyderm_sdk.api.license.ListUserClustersRequest">ListUserClustersRequest</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.license.ListUserClustersResponse" href="#pachyderm_sdk.api.license.ListUserClustersResponse">ListUserClustersResponse</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.license.ListUserClustersResponse.clusters" href="#pachyderm_sdk.api.license.ListUserClustersResponse.clusters">clusters</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.license.ApiStub" href="#pachyderm_sdk.api.license.ApiStub">ApiStub</a></code></h4>
+<ul class="two-column">
+<li><code><a title="pachyderm_sdk.api.license.ApiStub.activate" href="#pachyderm_sdk.api.license.ApiStub.activate">activate</a></code></li>
+<li><code><a title="pachyderm_sdk.api.license.ApiStub.get_activation_code" href="#pachyderm_sdk.api.license.ApiStub.get_activation_code">get_activation_code</a></code></li>
+<li><code><a title="pachyderm_sdk.api.license.ApiStub.delete_all" href="#pachyderm_sdk.api.license.ApiStub.delete_all">delete_all</a></code></li>
+<li><code><a title="pachyderm_sdk.api.license.ApiStub.add_cluster" href="#pachyderm_sdk.api.license.ApiStub.add_cluster">add_cluster</a></code></li>
+<li><code><a title="pachyderm_sdk.api.license.ApiStub.delete_cluster" href="#pachyderm_sdk.api.license.ApiStub.delete_cluster">delete_cluster</a></code></li>
+<li><code><a title="pachyderm_sdk.api.license.ApiStub.list_clusters" href="#pachyderm_sdk.api.license.ApiStub.list_clusters">list_clusters</a></code></li>
+<li><code><a title="pachyderm_sdk.api.license.ApiStub.update_cluster" href="#pachyderm_sdk.api.license.ApiStub.update_cluster">update_cluster</a></code></li>
+<li><code><a title="pachyderm_sdk.api.license.ApiStub.heartbeat" href="#pachyderm_sdk.api.license.ApiStub.heartbeat">heartbeat</a></code></li>
+<li><code><a title="pachyderm_sdk.api.license.ApiStub.list_user_clusters" href="#pachyderm_sdk.api.license.ApiStub.list_user_clusters">list_user_clusters</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.license.ApiBase" href="#pachyderm_sdk.api.license.ApiBase">ApiBase</a></code></h4>
+<ul class="two-column">
+<li><code><a title="pachyderm_sdk.api.license.ApiBase.activate" href="#pachyderm_sdk.api.license.ApiBase.activate">activate</a></code></li>
+<li><code><a title="pachyderm_sdk.api.license.ApiBase.get_activation_code" href="#pachyderm_sdk.api.license.ApiBase.get_activation_code">get_activation_code</a></code></li>
+<li><code><a title="pachyderm_sdk.api.license.ApiBase.delete_all" href="#pachyderm_sdk.api.license.ApiBase.delete_all">delete_all</a></code></li>
+<li><code><a title="pachyderm_sdk.api.license.ApiBase.add_cluster" href="#pachyderm_sdk.api.license.ApiBase.add_cluster">add_cluster</a></code></li>
+<li><code><a title="pachyderm_sdk.api.license.ApiBase.delete_cluster" href="#pachyderm_sdk.api.license.ApiBase.delete_cluster">delete_cluster</a></code></li>
+<li><code><a title="pachyderm_sdk.api.license.ApiBase.list_clusters" href="#pachyderm_sdk.api.license.ApiBase.list_clusters">list_clusters</a></code></li>
+<li><code><a title="pachyderm_sdk.api.license.ApiBase.update_cluster" href="#pachyderm_sdk.api.license.ApiBase.update_cluster">update_cluster</a></code></li>
+<li><code><a title="pachyderm_sdk.api.license.ApiBase.heartbeat" href="#pachyderm_sdk.api.license.ApiBase.heartbeat">heartbeat</a></code></li>
+<li><code><a title="pachyderm_sdk.api.license.ApiBase.list_user_clusters" href="#pachyderm_sdk.api.license.ApiBase.list_user_clusters">list_user_clusters</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>
