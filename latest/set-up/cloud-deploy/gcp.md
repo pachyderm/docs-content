@@ -20,9 +20,7 @@ This guide assumes that:
 Configure these variables and set in a `.env` file and source them by inputting `source .env` into the terminal before starting the installation guide.
 
 ```s
-PROJECT_ID="pachyderm-001" # must be between 6-30 characters, starting with a lowercase letter
-PROJECT_NAME="pachyderm-gcp-example"
-NAME="fuzzy-alpaca"
+PROJECT_NAME="pachyderm-0001"
 SQL_ADMIN_PASSWORD="batteryhorsestaple"
 BILLING_ACCOUNT_ID="000000-000000-000000" # see `gcloud alpha billing accounts list`
 
@@ -34,6 +32,13 @@ CLUSTER_MACHINE_TYPE="n2-standard-2"
 SQL_CPU="2"
 SQL_MEM="7680MB"
 LOGGING="SYSTEM"
+PROJECT_ID=$(echo "pach-$(openssl rand -base64 32 | tr -dc 'a-z0-9-' | fold -w 2-26 | head -n 1)")
+
+## optional name generator, useful if you are creating multiple clusters or testing.
+adjective=("happy" "silly" "brave" "witty" "elegant" "fierce" "gentle" "clever" "vibrant" "charming")
+color=("red" "blue" "green" "yellow" "purple" "orange" "pink" "black" "white" "gray")
+animal=("cat" "dog" "elephant" "lion" "tiger" "panda" "giraffe" "zebra" "monkey" "bear")
+NAME="${adjective[$RANDOM % ${#adjective[@]}]}-${color[$RANDOM % ${#color[@]}]}-${animal[$RANDOM % ${#animal[@]}]}"
 
 # The following variables probably shouldn't be changed
 CLUSTER_NAME="${NAME}-gke"
@@ -53,8 +58,8 @@ LOKI_SERVICE_ACCOUNT="${LOKI_GSA_NAME}@${PROJECT_ID}.iam.gserviceaccount.com"
 PACH_WI="serviceAccount:${PROJECT_ID}.svc.id.goog[${K8S_NAMESPACE}/pachyderm]"
 SIDECAR_WI="serviceAccount:${PROJECT_ID}.svc.id.goog[${K8S_NAMESPACE}/pachyderm-worker]"
 CLOUDSQLAUTHPROXY_WI="serviceAccount:${PROJECT_ID}.svc.id.goog[${K8S_NAMESPACE}/k8s-cloudsql-auth-proxy]"
-```
 
+```
 ---
 
 The following steps use a template to create a GKE cluster, a Cloud SQL instance, and a static IP address. The template also creates a service account for {{%productName%}} and Loki, and grants the service account the necessary permissions to access the Cloud SQL instance and storage buckets. You do not have to this template, but it's a good outline for understanding how to create your own set up.
@@ -199,6 +204,10 @@ gcloud iam service-accounts keys create "${LOKI_GSA_NAME}-key.json" --iam-accoun
 gcloud projects add-iam-policy-binding ${PROJECT_ID} \
     --member="serviceAccount:${LOKI_SERVICE_ACCOUNT}" \
     --role="${ROLE2}"
+
+gcloud projects add-iam-policy-binding ${PROJECT_ID} \
+    --member="serviceAccount:${LOKI_SERVICE_ACCOUNT}" \
+    --role="${ROLE3}"
 ```
 
 ## 7. Create a Loki Secret
