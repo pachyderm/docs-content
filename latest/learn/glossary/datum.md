@@ -46,3 +46,7 @@ the `pachctl list job <jobID>` command:
 {{% notice note %}}
 Datums that failed are still included in the total, but not shown in the progress indicator.
 {{%/notice%}}
+
+## Restarts 
+
+A job restarts when an internal error (not the user code) occurs while processing a job. These occurrences are counted in the `RESTART` column.
