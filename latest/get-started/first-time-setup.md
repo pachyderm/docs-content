@@ -206,10 +206,10 @@ pod/postgres-0                                 1/1     Running     0          2m
 ## 5. Connect to Cluster
 
 ```s
-pachctl connect http://localhost:8080 
+pachctl connect http://localhost:80
 ```
-{{% notice note %}}
-If the connection commands did not work together, run each separately.
+{{% notice warning %}}
+If you set the `httpPort` to a new value, such as `8080`, use that value in the command. `pachctl connect http://localhost:8080`
 {{%/notice %}}
 
 Optionally open your browser and navigate to the [Console UI](http://localhost).
