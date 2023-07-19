@@ -8,7 +8,7 @@ tags:
 series:
 seriesPart:
 cascade:
-    latestPatch: 2.6.56
+    latestPatch: 2.6.6
     majorMinor: 2.6
     clientPython: 7.3
     extensionJupyterLab: 2.6.6
