@@ -373,8 +373,8 @@ pachctl get file edges@master:liberty.png | display
 1. Create two new commits:
 
 ```s
-pachctl put file images@master:AT-AT.png -f https://github.com/pachyderm/docs-content/blob/main/images/opencv/robot.jpg?raw=true
-pachctl put file images@master:kitten.png -f https://github.com/pachyderm/docs-content/blob/main/images/opencv/kitten.jpg?raw=true
+pachctl put file images@master:AT-AT.png -f https://github.com/pachyderm/docs-content/blob/main/images/opencv/robot.jpg
+pachctl put file images@master:kitten.png -f https://github.com/pachyderm/docs-content/blob/main/images/opencv/kitten.jpg
 ```
 
 2. View the list of jobs that have started:

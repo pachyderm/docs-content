@@ -133,3 +133,14 @@ You can view the printed confirmation of "Next datum called" in the logs your pi
 **Q:** My pipeline started but no files from my input repo are present. Where are they?
 
 **A:** Files from the first datum are mounted following the first call to `NextDatum` or, when using the Python client, when code execution enters the decorated function.
+
+**Q:** How can I set environment variables when the datum runs?
+
+**A:**  You can use the `.env` file accessible from the `/pfs` directory. To easily locate your `.env` file, you can do the following:
+
+```python
+def find_files(pattern):
+    return [f for f in glob.glob(os.path.join("/pfs", "**", pattern), recursive=True)]
+
+env_file = find_files(".env")
+```
