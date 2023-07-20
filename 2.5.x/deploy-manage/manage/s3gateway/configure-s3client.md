@@ -38,7 +38,7 @@ more ~/.pachyderm/config.json
 {{% /wizardResult %}}
 
 {{% wizardResult val1="auth/disabled" %}}
-You must set `ACCESS_KEY_ID` and `SECRET_ACCESS_KEY` to any matching, non-empty string. 
+You must set `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` to any matching, non-empty string. 
 
 For example, you could set both values to `"x"`. 
 
