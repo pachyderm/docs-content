@@ -8,6 +8,7 @@ tags:
 series:
 seriesPart:
 weight: 21
+hidden: true
 --- 
 
 {{% notice note %}}

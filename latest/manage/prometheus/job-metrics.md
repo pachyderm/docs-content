@@ -7,6 +7,7 @@ date:
 tags: 
 series:
 seriesPart:
+hidden: true
 --- 
 
 pachyderm_worker_datum_count

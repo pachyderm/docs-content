@@ -7,6 +7,7 @@ date:
 tags: 
 series:
 seriesPart:
+hidden: true
 --- 
 
 pachyderm_pachd_auth_log_req_seconds_count
