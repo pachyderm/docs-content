@@ -11,7 +11,7 @@ aliases: ["job-metrics", "pachd-metrics"]
 --- 
 
 ## Job Metrics
-The following job metrics are available for {{%productName%}}.
+The following job metrics are available for {{%productName%}}. These metrics come from the user container.
 
 | Metric | Type | Description |
 |---|---|---|
@@ -29,7 +29,7 @@ The following job metrics are available for {{%productName%}}.
 
 ## PachD Metrics
 
-The following PachD metrics are available for {{%productName%}}.
+The following PachD metrics are available for {{%productName%}}. These metrics come from the main PachD and can be printed out to your terminal via `curl -s 'localhost:9090/api/v1/metadata' | jq '.data | with_entries(select(.key | startswith("pachyderm")))'`
 
  | Metric | Type | Help |
 |---|---|---|
