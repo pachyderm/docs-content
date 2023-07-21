@@ -11,7 +11,7 @@ aliases: ["job-metrics", "pachd-metrics"]
 --- 
 
 ## Job Metrics
-The following job metrics are available for {{%productName%}}. These metrics come from the user container.
+The following job metrics are available for {{%productName%}}.
 
 | Metric | Type | Description |
 |---|---|---|
@@ -26,13 +26,6 @@ The following job metrics are available for {{%productName%}}. These metrics com
 | pachyderm_worker_datum_download_bytes_count | Counter | Counts the total size of input data downloaded by a pipeline. |
 | pachyderm_worker_datum_upload_size | Histogram | Tracks the size of output data uploaded by a pipeline. |
 | pachyderm_worker_datum_upload_bytes_count | Counter | Counts the total size of output data uploaded by a pipeline. |
-
-## PachD Metrics
-
-The following PachD metrics are available for {{%productName%}}. These metrics come from the main PachD and can be printed out to your terminal via `curl -s 'localhost:9090/api/v1/metadata' | jq '.data | with_entries(select(.key | startswith("pachyderm")))'`
-
- | Metric | Type | Help |
-|---|---|---|
 | pachyderm_auth_dex_approval_errors_total | Counter | Counts the number of HTTP requests to /approval that ended in error. |
 | pachyderm_auth_dex_http_requests_duration_seconds | Histogram | Histogram of time spent processing Dex requests, by response status code and HTTP method. |
 | pachyderm_auth_dex_http_requests_in_flight | Gauge | Tracks the number of requests currently being handled by Dex. |
