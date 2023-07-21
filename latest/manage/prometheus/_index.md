@@ -8,7 +8,6 @@ tags:
 series:
 seriesPart:
 weight: 21
-hidden: true
 --- 
 
 {{% notice note %}}
@@ -93,11 +92,11 @@ Prometheus' **Kubernetes cluster monitoring** using the Prometheus Operator:
    {{% /notice %}}
     
 ## Port-Forward
-One last step before you can collect your metrics:
-If you followed the instruction above, you can connect to Prometheus by using kubectl port-forward.
+
+Connect to Prometheus using the following command:
 
 ```s
-  kubectl port-forward pod/prometheus-<a-release-name>-kube-prometheus-stack-prometheus-0 9090
+  kubectl port-forward service/<release-name>-kube-prometheus-prometheus 9090
 ```
 If you have an existing Prometheus deployment, please navigate to your Prometheus GUI.
 
