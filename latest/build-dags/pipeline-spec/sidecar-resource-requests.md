@@ -8,7 +8,7 @@ tags: ["pipelines", "pps"]
 series: ["pps"]
 seriesPart: 
 label: optional 
-
+weight: 1
 ---
 ## Spec
 This is a top-level attribute of the pipeline spec. 

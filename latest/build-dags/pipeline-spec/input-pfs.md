@@ -8,6 +8,7 @@ tags: ["pipelines", "pps"]
 series: ["pps"]
 seriesPart:
 label: Required for PFS Inputs
+weight: 1
 ---
 ## Spec 
 This is a top-level attribute of the pipeline spec. 

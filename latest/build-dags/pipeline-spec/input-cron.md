@@ -8,6 +8,7 @@ tags: ["pipelines", "pps"]
 series: ["pps"]
 seriesPart:
 label: Required for Cron Inputs
+weight: 1
 ---
 
 ## Spec 

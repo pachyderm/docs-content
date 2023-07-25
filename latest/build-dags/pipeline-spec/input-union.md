@@ -8,6 +8,7 @@ tags: ["pipelines", "pps"]
 series: ["pps"]
 seriesPart:
 label: Required for Union Inputs
+weight: 1
 ---
 
 ## Spec 

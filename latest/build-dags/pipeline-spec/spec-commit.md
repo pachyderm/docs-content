@@ -8,6 +8,7 @@ tags: ["pipelines", "pps"]
 series: ["pps"]
 seriesPart:
 label: auto-generated
+weight: 1
 ---
 
 ## Spec 
