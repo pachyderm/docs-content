@@ -24,7 +24,7 @@ pip install pachyderm_sdk
 To use the Client class, you need to import it from the Pachyderm SDK:
 
 ```python
-from pachyderm_sdk.client import Client
+from pachyderm_sdk import Client
 ```
 
 ## 3. Creating a Client Instance
