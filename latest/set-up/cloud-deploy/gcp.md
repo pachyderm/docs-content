@@ -259,7 +259,7 @@ postgresql:
 
 global:
   postgresql:
-    postgresqlHost: "cloudsql-auth-proxy.default.svc.cluster.local."
+    postgresqlHost: "cloudsql-auth-proxy.${K8S_NAMESPACE}.svc.cluster.local."
     postgresqlPort: "5432"
     postgresqlSSL: "disable"
     postgresqlUsername: "postgres"
