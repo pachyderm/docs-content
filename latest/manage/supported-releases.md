@@ -22,7 +22,7 @@ weight: 7
 
 | Version  | Release Status | Support |
 | -------- | -------------- | ------- |
-| 2.6.x    | Upcoming       | Upcoming|
+| 2.6.x    | GA             | Yes     |
 | 2.5.x    | GA             | Yes     |           
 | 2.4.x    | GA             | Yes     |
 | 2.3.x    | GA             | No      |
