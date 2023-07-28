@@ -42,6 +42,8 @@ pachctl create project foo
    - `Description`
 4. Click **Create**.
 
+![create new project](/images/projects/console-create-new-project.gif)
+
 {{% /wizardResult %}}
 
 {{% /wizardResults  %}}

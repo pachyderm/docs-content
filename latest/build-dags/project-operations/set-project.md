@@ -57,11 +57,12 @@ You can check the details of your active context using the following commands:
 1. Open the Console UI.
 2. Navigate to the top-level Projects view. 
 3. Scroll to a project you wish to work on.
-4. Select **View Project**. 
+4. Select the **Ellipsis Icon**. 
+5. Copy and paste the PachCTL command into your terminal.
 
 You can now work within the project from Console.
 
-![switch active project](/images/projects/projects-console-switch.gif)
+![set active project](/images/projects/set-active-project.gif)
 
 {{% /wizardResult %}}
 
