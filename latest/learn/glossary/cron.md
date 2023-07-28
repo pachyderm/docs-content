@@ -8,6 +8,7 @@ date:
 tags: ["concepts", "triggers", "data-operations", "pipeline"]
 series: ["glossary"]
 seriesPart:
+hidden: true
 --- 
 
 ## About 
