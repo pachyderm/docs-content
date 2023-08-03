@@ -10,9 +10,6 @@ seriesPart:
 aliases: ["job-metrics", "pachd-metrics"]
 --- 
 
-## Job Metrics
-The following job metrics are available for {{%productName%}}.
-
 | Metric | Type | Description |
 |---|---|---|
 | pachyderm_worker_datum_count | Counter | Counts the number of datums processed by a pipeline. |
