@@ -10,8 +10,6 @@ seriesPart:
 aliases: ["job-metrics", "pachd-metrics"]
 --- 
 
-## Job Metrics
-The following job metrics are available for {{%productName%}}.
 
 | Metric | Type | Description |
 |---|---|---|
