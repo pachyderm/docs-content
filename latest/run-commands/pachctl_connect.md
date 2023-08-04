@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl connect"
+slug: "Learn about the pachctl_connect command"
+---
+
 ## pachctl connect
 
 Connect to a Pachyderm Cluster
@@ -13,7 +19,8 @@ pachctl connect <address> [flags]
 ### Options
 
 ```
-  -h, --help   help for connect
+      --alias string   Alias for the context that is created
+  -h, --help           help for connect
 ```
 
 ### Options inherited from parent commands
@@ -22,4 +29,8 @@ pachctl connect <address> [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl](/commands/pachctl/)	 - 
 

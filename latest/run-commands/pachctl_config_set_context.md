@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl config set context"
+slug: "Learn about the pachctl_config_set_context command"
+---
+
 ## pachctl config set context
 
 Set a context.
@@ -23,4 +29,8 @@ pachctl config set context <context> [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl config set](/commands/pachctl_config_set/)	 - Commands for setting pachyderm config values
 

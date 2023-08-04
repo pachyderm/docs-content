@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl exit"
+slug: "Learn about the pachctl_exit command"
+---
+
 ## pachctl exit
 
 Exit the pachctl shell.
@@ -22,4 +28,8 @@ pachctl exit [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl](/commands/pachctl/)	 - 
 

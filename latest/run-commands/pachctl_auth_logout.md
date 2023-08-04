@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl auth logout"
+slug: "Learn about the pachctl_auth_logout command"
+---
+
 ## pachctl auth logout
 
 Log out of Pachyderm by deleting your local credential
@@ -23,4 +29,8 @@ pachctl auth logout [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl auth](/commands/pachctl_auth/)	 - Auth commands manage access to data in a Pachyderm cluster
 

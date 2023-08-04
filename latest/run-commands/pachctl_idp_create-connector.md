@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl idp create-connector"
+slug: "Learn about the pachctl_idp_create-connector command"
+---
+
 ## pachctl idp create-connector
 
 Create a new identity provider connector.
@@ -23,4 +29,8 @@ pachctl idp create-connector [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl idp](/commands/pachctl_idp/)	 - Commands to manage identity provider integrations
 

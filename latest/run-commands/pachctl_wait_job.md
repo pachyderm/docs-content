@@ -1,13 +1,29 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl wait job"
+slug: "Learn about the pachctl_wait_job command"
+---
+
 ## pachctl wait job
 
 Wait for a job to finish then return info about the job.
 
 ### Synopsis
 
-Wait for a job to finish then return info about the job.
+This command waits for a job to finish then return info about the job.
 
 ```
 pachctl wait job <job>|<pipeline>@<job> [flags]
+```
+
+### Examples
+
+```
+	- pachctl wait job e0f68a2fcda7458880c9e2e2dae9e678 
+	- pachctl wait job foo@e0f68a2fcda7458880c9e2e2dae9e678 
+	- pachctl wait job foo@e0f68a2fcda7458880c9e2e2dae9e678 --project bar 
+	- pachctl wait job foo@e0f68a2fcda7458880c9e2e2dae9e678 --project bar --raw --output yaml 
+
 ```
 
 ### Options
@@ -16,7 +32,7 @@ pachctl wait job <job>|<pipeline>@<job> [flags]
       --full-timestamps   Return absolute timestamps (as opposed to the default, relative timestamps).
   -h, --help              help for job
   -o, --output string     Output format when --raw is set: "json" or "yaml" (default "json")
-      --project string    project containing job (default "openCV")
+      --project string    Specify the project (by name) containing the parent pipeline for this job. (default "standard-ml-tutorial")
       --raw               Disable pretty printing; serialize data structures to an encoding such as json or yaml
 ```
 
@@ -26,4 +42,8 @@ pachctl wait job <job>|<pipeline>@<job> [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl wait](/commands/pachctl_wait/)	 - Wait for the side-effects of a Pachyderm resource to propagate.
 

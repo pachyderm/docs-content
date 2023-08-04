@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl inspect transaction"
+slug: "Learn about the pachctl_inspect_transaction command"
+---
+
 ## pachctl inspect transaction
 
 Print information about an open transaction.
@@ -25,4 +31,8 @@ pachctl inspect transaction [<transaction>] [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl inspect](/commands/pachctl_inspect/)	 - Show detailed information about a Pachyderm resource.
 

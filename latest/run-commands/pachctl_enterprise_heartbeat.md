@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl enterprise heartbeat"
+slug: "Learn about the pachctl_enterprise_heartbeat command"
+---
+
 ## pachctl enterprise heartbeat
 
 Sync the enterprise state with the license server immediately.
@@ -23,4 +29,8 @@ pachctl enterprise heartbeat [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl enterprise](/commands/pachctl_enterprise/)	 - Enterprise commands enable Pachyderm Enterprise features
 

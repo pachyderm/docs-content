@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl config update context"
+slug: "Learn about the pachctl_config_update_context command"
+---
+
 ## pachctl config update context
 
 Updates a context.
@@ -29,4 +35,8 @@ pachctl config update context [<context>] [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl config update](/commands/pachctl_config_update/)	 - Commands for updating pachyderm config values
 

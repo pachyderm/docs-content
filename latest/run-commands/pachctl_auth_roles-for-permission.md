@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl auth roles-for-permission"
+slug: "Learn about the pachctl_auth_roles-for-permission command"
+---
+
 ## pachctl auth roles-for-permission
 
 List roles that grant the given permission
@@ -22,4 +28,8 @@ pachctl auth roles-for-permission <permission> [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl auth](/commands/pachctl_auth/)	 - Auth commands manage access to data in a Pachyderm cluster
 

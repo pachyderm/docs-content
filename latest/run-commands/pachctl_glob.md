@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl glob"
+slug: "Learn about the pachctl_glob command"
+---
+
 ## pachctl glob
 
 Print a list of Pachyderm resources matching a glob pattern.
@@ -18,4 +24,9 @@ Print a list of Pachyderm resources matching a glob pattern.
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl](/commands/pachctl/)	 - 
+* [pachctl glob file](/commands/pachctl_glob_file/)	 - Return files that match a glob pattern in a commit.
 

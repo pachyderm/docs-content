@@ -1,19 +1,33 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl delete project"
+slug: "Learn about the pachctl_delete_project command"
+---
+
 ## pachctl delete project
 
 Delete a project.
 
 ### Synopsis
 
-Delete a project.
+This command deletes a project.
 
 ```
 pachctl delete project <project> [flags]
 ```
 
+### Examples
+
+```
+	- pachctl delete project foo-project 
+	- pachctl delete project foo-project --force 
+
+```
+
 ### Options
 
 ```
-  -f, --force   remove the project regardless of errors; use with care
+  -f, --force   Force delete the project regardless of errors; use with caution.
   -h, --help    help for project
 ```
 
@@ -23,4 +37,8 @@ pachctl delete project <project> [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl delete](/commands/pachctl_delete/)	 - Delete an existing Pachyderm resource.
 

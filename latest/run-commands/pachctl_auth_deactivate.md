@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl auth deactivate"
+slug: "Learn about the pachctl_auth_deactivate command"
+---
+
 ## pachctl auth deactivate
 
 Delete all ACLs, tokens, admins, IDP integrations and OIDC clients, and deactivate Pachyderm auth
@@ -23,4 +29,8 @@ pachctl auth deactivate [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl auth](/commands/pachctl_auth/)	 - Auth commands manage access to data in a Pachyderm cluster
 

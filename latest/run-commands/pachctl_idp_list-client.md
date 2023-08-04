@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl idp list-client"
+slug: "Learn about the pachctl_idp_list-client command"
+---
+
 ## pachctl idp list-client
 
 List OIDC clients.
@@ -22,4 +28,8 @@ pachctl idp list-client [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl idp](/commands/pachctl_idp/)	 - Commands to manage identity provider integrations
 

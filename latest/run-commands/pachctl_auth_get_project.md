@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl auth get project"
+slug: "Learn about the pachctl_auth_get_project command"
+---
+
 ## pachctl auth get project
 
 Get the role bindings for 'project'
@@ -22,4 +28,8 @@ pachctl auth get project <project> [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl auth get](/commands/pachctl_auth_get/)	 - Get the role bindings for a resource
 

@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl completion"
+slug: "Learn about the pachctl_completion command"
+---
+
 ## pachctl completion
 
 Print or install terminal completion code.
@@ -18,4 +24,10 @@ Print or install terminal completion code.
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl](/commands/pachctl/)	 - 
+* [pachctl completion bash](/commands/pachctl_completion_bash/)	 - Print or install the bash completion code.
+* [pachctl completion zsh](/commands/pachctl_completion_zsh/)	 - Print or install the zsh completion code.
 

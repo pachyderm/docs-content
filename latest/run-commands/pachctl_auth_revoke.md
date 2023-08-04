@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl auth revoke"
+slug: "Learn about the pachctl_auth_revoke command"
+---
+
 ## pachctl auth revoke
 
 Revoke a Pachyderm auth token
@@ -25,4 +31,8 @@ pachctl auth revoke [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl auth](/commands/pachctl_auth/)	 - Auth commands manage access to data in a Pachyderm cluster
 

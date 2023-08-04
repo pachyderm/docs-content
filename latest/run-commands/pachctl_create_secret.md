@@ -1,13 +1,25 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl create secret"
+slug: "Learn about the pachctl_create_secret command"
+---
+
 ## pachctl create secret
 
 Create a secret on the cluster.
 
 ### Synopsis
 
-Create a secret on the cluster.
+This command creates a secret on the cluster.
 
 ```
 pachctl create secret [flags]
+```
+
+### Examples
+
+```
+	- pachctl create secret --file my-secret.json
 ```
 
 ### Options
@@ -23,4 +35,8 @@ pachctl create secret [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl create](/commands/pachctl_create/)	 - Create a new instance of a Pachyderm resource.
 

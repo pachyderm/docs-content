@@ -1,20 +1,34 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl stop pipeline"
+slug: "Learn about the pachctl_stop_pipeline command"
+---
+
 ## pachctl stop pipeline
 
 Stop a running pipeline.
 
 ### Synopsis
 
-Stop a running pipeline.
+This command stops a running pipeline.
 
 ```
 pachctl stop pipeline <pipeline> [flags]
+```
+
+### Examples
+
+```
+	- pachctl stop pipeline foo 
+	- pachctl stop pipeline foo --project bar 
+
 ```
 
 ### Options
 
 ```
   -h, --help             help for pipeline
-      --project string   Project containing pipeline. (default "openCV")
+      --project string   Project containing pipeline. (default "standard-ml-tutorial")
 ```
 
 ### Options inherited from parent commands
@@ -23,4 +37,8 @@ pachctl stop pipeline <pipeline> [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl stop](/commands/pachctl_stop/)	 - Cancel an ongoing task.
 

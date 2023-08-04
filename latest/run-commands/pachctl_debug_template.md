@@ -1,10 +1,10 @@
 ---
 date: 2023-08-04T13:05:50-04:00
-title: "pachctl debug dump"
-slug: "Learn about the pachctl_debug_dump command"
+title: "pachctl debug template"
+slug: "Learn about the pachctl_debug_template command"
 ---
 
-## pachctl debug dump
+## pachctl debug template
 
 Collect a standard set of debugging information.
 
@@ -13,14 +13,13 @@ Collect a standard set of debugging information.
 Collect a standard set of debugging information.
 
 ```
-pachctl debug dump <file> [flags]
+pachctl debug template <file> [flags]
 ```
 
 ### Options
 
 ```
-  -h, --help              help for dump
-  -t, --template string   A template to customize the output of the debug dump operation.
+  -h, --help   help for template
 ```
 
 ### Options inherited from parent commands

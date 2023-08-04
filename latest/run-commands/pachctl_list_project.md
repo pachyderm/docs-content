@@ -1,13 +1,27 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl list project"
+slug: "Learn about the pachctl_list_project command"
+---
+
 ## pachctl list project
 
 Return all projects.
 
 ### Synopsis
 
-Return all projects.
+This command returns all projects.
 
 ```
 pachctl list project <repo> [flags]
+```
+
+### Examples
+
+```
+	- pachctl list project 
+	- pachctl list project --raw 
+
 ```
 
 ### Options
@@ -24,4 +38,8 @@ pachctl list project <repo> [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl list](/commands/pachctl_list/)	 - Print a list of Pachyderm resources of a specific type.
 

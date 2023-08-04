@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl enterprise get-state"
+slug: "Learn about the pachctl_enterprise_get-state command"
+---
+
 ## pachctl enterprise get-state
 
 Check whether the Pachyderm cluster has enterprise features activated
@@ -23,4 +29,8 @@ pachctl enterprise get-state [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl enterprise](/commands/pachctl_enterprise/)	 - Enterprise commands enable Pachyderm Enterprise features
 

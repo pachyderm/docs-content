@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl mount"
+slug: "Learn about the pachctl_mount command"
+---
+
 ## pachctl mount
 
 Mount pfs locally. This command blocks.
@@ -26,4 +32,8 @@ pachctl mount <path/to/mount/point> [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl](/commands/pachctl/)	 - 
 

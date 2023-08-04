@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl idp set-config"
+slug: "Learn about the pachctl_idp_set-config command"
+---
+
 ## pachctl idp set-config
 
 Set the identity server config
@@ -23,4 +29,8 @@ pachctl idp set-config [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl idp](/commands/pachctl_idp/)	 - Commands to manage identity provider integrations
 

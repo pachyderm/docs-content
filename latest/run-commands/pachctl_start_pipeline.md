@@ -1,20 +1,34 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl start pipeline"
+slug: "Learn about the pachctl_start_pipeline command"
+---
+
 ## pachctl start pipeline
 
 Restart a stopped pipeline.
 
 ### Synopsis
 
-Restart a stopped pipeline.
+This command restarts a stopped pipeline.
 
 ```
 pachctl start pipeline <pipeline> [flags]
+```
+
+### Examples
+
+```
+	- pachctl start pipeline foo 
+	- pachctl start pipeline foo --project bar 
+
 ```
 
 ### Options
 
 ```
   -h, --help             help for pipeline
-      --project string   Project containing pipeline. (default "openCV")
+      --project string   Project containing pipeline. (default "standard-ml-tutorial")
 ```
 
 ### Options inherited from parent commands
@@ -23,4 +37,8 @@ pachctl start pipeline <pipeline> [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl start](/commands/pachctl_start/)	 - Start a Pachyderm resource.
 

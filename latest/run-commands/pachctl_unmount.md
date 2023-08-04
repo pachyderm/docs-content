@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl unmount"
+slug: "Learn about the pachctl_unmount command"
+---
+
 ## pachctl unmount
 
 Unmount pfs.
@@ -23,4 +29,8 @@ pachctl unmount <path/to/mount/point> [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl](/commands/pachctl/)	 - 
 

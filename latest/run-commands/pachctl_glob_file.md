@@ -1,10 +1,19 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl glob file"
+slug: "Learn about the pachctl_glob_file command"
+---
+
 ## pachctl glob file
 
 Return files that match a glob pattern in a commit.
 
 ### Synopsis
 
-Return files that match a glob pattern in a commit (that is, match a glob pattern in a repo at the state represented by a commit). Glob patterns are documented [here](https://golang.org/pkg/path/filepath/#Match).
+This command returns files that match a glob pattern in a commit (that is, match a glob pattern in a repo at the state represented by a commit). Glob patterns are documented [here](https://golang.org/pkg/path/filepath/#Match). 
+
+	- To specify the project where the repo is located, use the `--project flag` 
+
 
 ```
 pachctl glob file "<repo>@<branch-or-commit>:<pattern>" [flags]
@@ -13,16 +22,9 @@ pachctl glob file "<repo>@<branch-or-commit>:<pattern>" [flags]
 ### Examples
 
 ```
-
-# Return files in repo "foo" on branch "master" that start
-# with the character "A".  Note how the double quotation marks around the
-# parameter are necessary because otherwise your shell might interpret the "*".
-$ pachctl glob file "foo@master:A*"
-
-# Return files in repo "foo" on branch "master" under directory "data".
-$ pachctl glob file "foo@master:data/*"
-
-# If you only want to view all files on a given repo branch, use "list file -f <repo>@<branch>" instead.
+	- pachctl glob file "foo@master:A*"
+	- pachctl glob file "foo@0001a0100b1c10d01111e001fg00h00i:data/*"
+	- pachctl glob file "foo@master:data/*"
 ```
 
 ### Options
@@ -31,7 +33,7 @@ $ pachctl glob file "foo@master:data/*"
       --full-timestamps   Return absolute timestamps (as opposed to the default, relative timestamps).
   -h, --help              help for file
   -o, --output string     Output format when --raw is set: "json" or "yaml" (default "json")
-      --project string    Project in which repo is located. (default "openCV")
+      --project string    Specify the project (by name) where the repo with potential matching file(s) is located. (default "standard-ml-tutorial")
       --raw               Disable pretty printing; serialize data structures to an encoding such as json or yaml
 ```
 
@@ -41,4 +43,8 @@ $ pachctl glob file "foo@master:data/*"
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl glob](/commands/pachctl_glob/)	 - Print a list of Pachyderm resources matching a glob pattern.
 
