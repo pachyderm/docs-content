@@ -8,14 +8,14 @@ date:
 tags: ["concepts", "triggers", "data-operations", "pipeline"]
 series: ["glossary"]
 seriesPart:
-hidden: true
+hidden: false
 --- 
 
 ## About 
 
 A [cron](https://en.wikipedia.org/wiki/Cron), short for "chronograph," is a time-based job scheduler that allows users to schedule and automate the execution of recurring tasks or commands at specific intervals. These tasks, referred to as cron jobs, are typically scripts or commands that perform specific actions.
 
-{{% productName %}} uses the concept of crons in two ways: a [cron pipeline spec](/{{%release%}}/learn/glossary/input-cron), and a [cron trigger](/{{%release%}}/build-dags/branch-operations/set-branch-triggers).
+{{% productName %}} uses the concept of crons in two ways: a [cron pipeline spec](/{{%release%}}/build-dags/pipeline-spec/input-cron/), and a [cron trigger](/{{%release%}}/build-dags/branch-operations/set-branch-triggers).
 
 ### Cron Pipelines vs Cron Triggers
 
