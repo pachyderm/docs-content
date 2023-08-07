@@ -54,15 +54,7 @@ pg-bouncer-686db6477c-rjwgl                  1/1     Running     0          13m
 postgres-0                                   1/1     Running     0          13m```
 ```
 
-If the pod named `pachyderm-preflight-check` says `completed`, you can then set `pachd.preflightchecks.enabled` back to `false` and run the following command:
-
-```s
-kubectl delete job pachyderm-preflight-checks
-```
-
-You are now ready to continue with the upgrade.
-
-
+If the pod named `pachyderm-preflight-check` says `completed`, you can then continue with the upgrade.
 
 ### 2. Upgrade
 
