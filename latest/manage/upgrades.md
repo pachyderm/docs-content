@@ -23,7 +23,7 @@ Learn how to upgrade {{% productName %}} to access new features and performance 
 
 ### 1. Run a Preflight Check
 
-PachD has a preflight check mode that you can enable in your Helm chart by setting `pachd.preflightchecks.enabled` to `true`. Preflight checks run as a Kubernetes job, and can use a different version of {{%productName%}} than the rest of the chart. In this case, you will set it to the version you are upgrading to (**{{%latestPatchNumber%}}**).
+PachD has a preflight check mode that you can enable in your Helm chart by setting `pachd.preflightchecks.enabled` to `true`. Preflight checks run as a Kubernetes job, and can use a different version of {{%productName%}} than the rest of the chart. In this case, you will set it to the version you are upgrading to (for example, the latest version is **{{%latestPatchNumber%}}**).
 
 Example configuration:
 
