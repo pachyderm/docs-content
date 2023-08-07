@@ -24,7 +24,7 @@ weight: 7
 | -------- | -------------- | ------- |
 | 2.6.x    | GA             | Yes     |
 | 2.5.x    | GA             | Yes     |           
-| 2.4.x    | EOL            | No     |
+| 2.4.x    | GA            | No     |
 | 2.3.x    | EOL            | No      |
 | 2.2.x    | EOL             | No      |
 | 2.1.x    | EOL             | No      |
