@@ -34,7 +34,10 @@ preflightCheckJob:
         tag: "{{%latestPatchNumber%}}"
 ```
 
-You'll see a pod named `pachyderm-preflight-check` was created to perform the preflight checks. If its status says `completed`, you are ready to continue with the upgrade.
+You'll see a pod named `pachyderm-preflight-check` was created to perform the preflight checks. 
+
+- If its status says `completed`, you are ready to continue with the upgrade.
+- If its status does not say `completed`, reach out to the {{%productName%}} team for assistance with your upgrade.
 
 ```s
 kubectl get pods
