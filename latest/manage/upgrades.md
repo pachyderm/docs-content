@@ -51,7 +51,7 @@ pachyderm-preflight-check-rh9rp              0/1     Completed   0          13m
 pachyderm-promtail-h29zv                     1/1     Running     0          13m
 pachyderm-proxy-7956c766bd-drndd             1/1     Running     0          13m
 pg-bouncer-686db6477c-rjwgl                  1/1     Running     0          13m
-postgres-0                                   1/1     Running     0          13m```
+postgres-0                                   1/1     Running     0          13m
 ```
 
 If the pod named `pachyderm-preflight-check` says `completed`, you can then continue with the upgrade.
