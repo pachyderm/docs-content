@@ -11,30 +11,60 @@ directory: true
 weight: 3
 ---
 
-{{% notice warning %}}
-
-**We do not currently recommend upgrading to 2.6.x at this time.**  If you have questions, please reach out to us on Slack.
-
-Upgrading to 2.6.5 from older versions involves a data migration. This migration can take a long time depending on the size of your cluster. If you are looking to upgrade a long-lived cluster, we recommend waiting for 2.7.0.  For a newer cluster, if you still wish to upgrade, we recommend that you:
-
-- Backup your cluster before upgrading
-- Upgrade to 2.6.5 during a time when your cluster is not in use
-- Run the following check before upgrading: 
-  
-  ```s
-  pachctl misc test-migrations postgres://USERNAME:PASSWORD@HOST:PORT/pachyderm
-  ```
-{{% /notice %}}
-
 Learn how to upgrade {{% productName %}} to access new features and performance enhancements.
 
 ## Before You Start 
 
-- Check the [release notes](https://github.com/pachyderm/pachyderm/blob/master/CHANGELOG.md) before upgrading
+- Check the [release notes](/changelog) before upgrading
 - [Back up your cluster](/{{%release%}}/manage/backup-restore/) 
 - Update your Helm chart values if applicable
 
 ## How to Upgrade {{% productName %}} 
+
+### 1. Run a Preflight Check
+
+PachD has a preflight check mode that you can enable in your Helm chart by setting `pachd.preflightchecks.enabled` to `true`. Preflight checks run as a Kubernetes job, and can use a different version of {{%productName%}} than the rest of the chart. In this case, you will set it to the version you are upgrading to (**{{%latestPatchNumber%}}**).
+
+Example configuration:
+
+```yaml
+preflightCheckJob:
+    enabled: true
+    image:
+        tag: "{{%latestPatchNumber%}}"
+```
+
+You'll see a pod created to perform the preflight checks:
+
+```s
+kubectl get pods
+NAME                                         READY   STATUS      RESTARTS   AGE
+console-76f5fd8c58-zwvj5                     1/1     Running     0          13m
+default-edges-v1-bl6cf                       2/2     Running     0          12m
+default-montage-v1-tbj6p                     2/2     Running     0          12m
+etcd-0                                       1/1     Running     0          13m
+minio-0                                      1/1     Running     0          14m
+pachd-6c99fc7448-vsjbn                       1/1     Running     0          13m
+pachyderm-kube-event-tail-5957785f5d-4557j   1/1     Running     0          13m
+pachyderm-loki-0                             1/1     Running     0          13m
+pachyderm-preflight-check-rh9rp              0/1     Completed   0          13m
+pachyderm-promtail-h29zv                     1/1     Running     0          13m
+pachyderm-proxy-7956c766bd-drndd             1/1     Running     0          13m
+pg-bouncer-686db6477c-rjwgl                  1/1     Running     0          13m
+postgres-0                                   1/1     Running     0          13m```
+```
+
+If the pod named `pachyderm-preflight-check` says `completed`, you can then set `pachd.preflightchecks.enabled` back to `false` and run the following command:
+
+```s
+kubectl delete job pachyderm-preflight-checks
+```
+
+You are now ready to continue with the upgrade.
+
+
+
+### 2. Upgrade
 
 1. Run the following brew command or [download & install the latest release assets](https://github.com/pachyderm/pachyderm/releases/latest):
 ```s  
