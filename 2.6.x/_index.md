@@ -14,5 +14,5 @@ cascade:
     extensionJupyterLab: 2.6.8
     mountServerBinary: 2.6.8
     release: 2.6.x   # used by sitemap.xml in themes folder
-hidden: true
+hidden: false
 ---

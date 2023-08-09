@@ -1,18 +1,18 @@
 ---
 # metadata # 
 title: Latest
-description: Version 2.6.x 
+description: Version 2.7.x 
 date: 
 # taxonomy #
 tags:
 series:
 seriesPart:
 cascade:
-    latestPatch: 2.6.8
-    majorMinor: 2.6
+    latestPatch: 2.7.0
+    majorMinor: 2.7
     clientPython: 7.3
-    extensionJupyterLab: 2.6.8
-    mountServerBinary: 2.6.8
+    extensionJupyterLab: 2.7.0
+    mountServerBinary: 2.7.0
     release: latest  # used by sitemap.xml in themes folder
 
 ---
