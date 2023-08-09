@@ -41,6 +41,8 @@ pachctl config update context --project foo
 3. Scroll to the project you want to delete.
 4. Select the ellipsis (...) icon and click **Delete Project**.
 
+![delete a project](/images/projects/console-delete-project.gif)
+
 {{% /wizardResult %}}
 
 {{% /wizardResults  %}}
