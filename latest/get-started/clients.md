@@ -4,7 +4,7 @@ title:  Language Clients
 description: Learn about our available language clients. 
 date: 
 # taxonomy #
-tags: ["sdks", "golang", "python","javascript","developers"]
+tags: ["sdk", "sdks", "golang", "python","javascript","developers", "client", "python-pachyderm"]
 series:
 seriesPart:
 directory: true 
@@ -70,10 +70,22 @@ See the [OpenCV Example in Go](https://github.com/pachyderm/pachyderm/tree/{{% m
 information.
 {{% /chunk %}}
 
-## Python Client
+## Python Clients
 
-The Python client `python-pachyderm` is officially supported by the {{%productName%}} team. 
-It implements most of the functionalities provided with the `pachctl` CLI tool allowing you to easily integrate operations like `create repo`, `put a file,` or `create pipeline` into your python applications.
+### Pachyderm-SDK (New)
+
+The Python cilent `pachyderm-sdk` is the new Python client for {{%productName%}} and is officially supported by the {{%productName%}} team. 
+
+- [Reference Docs](/sdk)
+- [Client Initialization](/latest/sdk/install)
+- [Starter Project](/latest/sdk/starter-project/)
+<!-- - Tutorials (coming soon!) -->
+
+### Python-Pachyderm (Old)
+
+{{%notice warning%}}
+The Python client `python-pachyderm` will be deprecated in 9 months as of 08/10/2023.
+{{%/notice%}}
 
 {{% notice note %}}
 Use **python-pachyderm {{% pythonClientVersion %}}** with {{%productName%}} {{% majorMinorVersion %}}. 

@@ -6,11 +6,6 @@ directory: true
 
 The [Python SDK](https://pypi.org/project/pachyderm-sdk/) enables you to interact with {{%productName%}}'s API, client, and configuration directly in a powerful way.
 
-{{% notice warning %}}
-The SDK is in an Alpha stage. We'd love to hear about your experience using our new SDK. You can share your thoughts by joining our open source Slack community.
-{{% /notice %}}
-
-
 ## 1. Installation
 
 Before using the Pachyderm SDK, make sure you have it installed. You can install the SDK using pip:
