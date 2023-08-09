@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl config"
+slug: "Learn about the pachctl_config command"
+---
+
 ## pachctl config
 
 Manages the pachyderm config.
@@ -18,4 +24,3 @@ Gets/sets pachyderm config values.
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
-

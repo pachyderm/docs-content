@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl config list context"
+slug: "Learn about the pachctl_config_list_context command"
+---
+
 ## pachctl config list context
 
 Lists contexts.
@@ -22,4 +28,3 @@ pachctl config list context [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
-

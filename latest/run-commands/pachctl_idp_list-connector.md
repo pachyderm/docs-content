@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl idp list-connector"
+slug: "Learn about the pachctl_idp_list-connector command"
+---
+
 ## pachctl idp list-connector
 
 List identity provider connectors

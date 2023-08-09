@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl debug binary"
+slug: "Learn about the pachctl_debug_binary command"
+---
+
 ## pachctl debug binary
 
 Collect a set of binaries.

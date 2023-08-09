@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl wait"
+slug: "Learn about the pachctl_wait command"
+---
+
 ## pachctl wait
 
 Wait for the side-effects of a Pachyderm resource to propagate.

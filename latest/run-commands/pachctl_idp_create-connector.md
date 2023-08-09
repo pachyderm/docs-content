@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl idp create-connector"
+slug: "Learn about the pachctl_idp_create-connector command"
+---
+
 ## pachctl idp create-connector
 
 Create a new identity provider connector.

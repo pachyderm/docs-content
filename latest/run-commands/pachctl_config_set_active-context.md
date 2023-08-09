@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl config set active-context"
+slug: "Learn about the pachctl_config_set_active-context command"
+---
+
 ## pachctl config set active-context
 
 Sets the currently active context.
@@ -22,4 +28,3 @@ pachctl config set active-context <context> [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
-

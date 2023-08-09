@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl license add-cluster"
+slug: "Learn about the pachctl_license_add-cluster command"
+---
+
 ## pachctl license add-cluster
 
 Register a new cluster with the license server.

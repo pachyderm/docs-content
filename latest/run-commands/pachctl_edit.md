@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl edit"
+slug: "Learn about the pachctl_edit command"
+---
+
 ## pachctl edit
 
 Edit the value of an existing Pachyderm resource.

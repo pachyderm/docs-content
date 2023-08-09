@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl auth activate"
+slug: "Learn about the pachctl_auth_activate command"
+---
+
 ## pachctl auth activate
 
 Activate Pachyderm's auth system

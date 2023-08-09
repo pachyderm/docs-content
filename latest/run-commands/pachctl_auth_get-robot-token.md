@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl auth get-robot-token"
+slug: "Learn about the pachctl_auth_get-robot-token command"
+---
+
 ## pachctl auth get-robot-token
 
 Get an auth token for a robot user with the specified name.
@@ -25,4 +31,3 @@ pachctl auth get-robot-token [username] [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
-

@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl debug log-level"
+slug: "Learn about the pachctl_debug_log-level command"
+---
+
 ## pachctl debug log-level
 
 Change the log level across Pachyderm.

@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl enterprise deactivate"
+slug: "Learn about the pachctl_enterprise_deactivate command"
+---
+
 ## pachctl enterprise deactivate
 
 Deactivate the enterprise service

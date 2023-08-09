@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl auth check"
+slug: "Learn about the pachctl_auth_check command"
+---
+
 ## pachctl auth check
 
 Check whether a subject has a permission on a resource
@@ -18,4 +24,3 @@ Check whether a subject has a permission on a resource
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
-

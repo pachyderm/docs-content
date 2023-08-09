@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl find"
+slug: "Learn about the pachctl_find command"
+---
+
 ## pachctl find
 
 Find a file addition, modification, or deletion in a commit.

@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl enterprise heartbeat"
+slug: "Learn about the pachctl_enterprise_heartbeat command"
+---
+
 ## pachctl enterprise heartbeat
 
 Sync the enterprise state with the license server immediately.

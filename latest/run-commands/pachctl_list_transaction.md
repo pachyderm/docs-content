@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl list transaction"
+slug: "Learn about the pachctl_list_transaction command"
+---
+
 ## pachctl list transaction
 
 List transactions.

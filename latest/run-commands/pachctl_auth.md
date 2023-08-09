@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl auth"
+slug: "Learn about the pachctl_auth command"
+---
+
 ## pachctl auth
 
 Auth commands manage access to data in a Pachyderm cluster
@@ -18,4 +24,3 @@ Auth commands manage access to data in a Pachyderm cluster
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
-

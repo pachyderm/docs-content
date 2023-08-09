@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl subscribe"
+slug: "Learn about the pachctl_subscribe command"
+---
+
 ## pachctl subscribe
 
 Wait for notifications of changes to a Pachyderm resource.

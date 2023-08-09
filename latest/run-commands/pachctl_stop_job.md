@@ -1,10 +1,19 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl stop job"
+slug: "Learn about the pachctl_stop_job command"
+---
+
 ## pachctl stop job
 
 Stop a job.
 
 ### Synopsis
 
-Stop a job.  The job will be stopped immediately.
+This command stops a job immediately.	
+
+  - To specify the project where the parent pipeline lives, use the `--project` flag 
+
 
 ```
 pachctl stop job <pipeline>@<job> [flags]
@@ -14,7 +23,7 @@ pachctl stop job <pipeline>@<job> [flags]
 
 ```
   -h, --help             help for job
-      --project string   Project containing the job (default "openCV")
+      --project string   Specify the project (by name) containing the parent pipeline for the job. (default "standard-ml-tutorial")
 ```
 
 ### Options inherited from parent commands

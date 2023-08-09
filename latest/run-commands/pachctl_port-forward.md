@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl port-forward"
+slug: "Learn about the pachctl_port-forward command"
+---
+
 ## pachctl port-forward
 
 Forward a port on the local machine to pachd. This command blocks.

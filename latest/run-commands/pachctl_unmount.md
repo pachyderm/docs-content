@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl unmount"
+slug: "Learn about the pachctl_unmount command"
+---
+
 ## pachctl unmount
 
 Unmount pfs.

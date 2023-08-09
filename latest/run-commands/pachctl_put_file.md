@@ -1,10 +1,33 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl put file"
+slug: "Learn about the pachctl_put_file command"
+---
+
 ## pachctl put file
 
 Put a file into the filesystem.
 
 ### Synopsis
 
-Put a file into the filesystem.  This command supports a number of ways to insert data into PFS.
+This command puts a file into the filesystem.  This command supports a number of ways to insert data into PFS. 
+
+Files, Directories, & URLs: 
+	- To upload via local filesystem, use the `-f` flag 
+	- To upload via URL, use the `-f` flag with a URL as the argument 
+	- To upload via filepaths & urls within a file, use the `i` flag 
+	- To upload to a specific path in the repo, use the `-f` flag and add the path to the `repo@branch:/path` 
+	- To upload recursively from a directory, use the `-r` flag 
+	- To upload tar files and have them automatically untarred, use the `-untar` flag 
+
+Compression, Parallelization, Appends: 
+	- To compress files before uploading, use the `-c` flag 
+	- To define the maximum number of files that can be uploaded in parallel, use the `-p` flag 
+	- To append to an existing file, use the `-a` flag 
+
+Other: 
+	- To enable progress bars, use the `-P` flag 
+
 
 ```
 pachctl put file <repo>@<branch-or-commit>[:<path/to/file>] [flags]
@@ -13,55 +36,34 @@ pachctl put file <repo>@<branch-or-commit>[:<path/to/file>] [flags]
 ### Examples
 
 ```
+	- pachctl put file repo@master-f image.png 
+	- pachctl put file repo@master:/logs/log-1.txt  
+	- pachctl put file -r repo@master -f my-directory 
+	- pachctl put file -r repo@branch:/path -f my-directory 
+	- pachctl put file repo@branch -f http://host/example.png 
+	- pachctl put file repo@branch:/dir -f http://host/example.png 
+	- pachctl put file repo@branch -r -f s3://my_bucket 
+	- pachctl put file repo@branch -i file 
+	- pachctl put file repo@branch -i http://host/path 
+	- pachctl put file repo@branch -f -untar dir.tar 
+	- pachctl put file repo@branch -f -c image.png 
 
-# Put data from stdin at repo@branch:/path
-$ echo "data" | pachctl put file repo@branch:/path
-
-# Put a file from the local filesystem at repo@branch:/file
-$ pachctl put file repo@branch -f file
-
-# Put a file from the local filesystem at repo@branch:/path
-$ pachctl put file repo@branch:/path -f file
-
-# Put the contents of a directory at repo@branch:/dir/file
-$ pachctl put file -r repo@branch -f dir
-
-# Put the contents of a directory at repo@branch:/path/file (without /dir)
-$ pachctl put file -r repo@branch:/path -f dir
-
-# Put the data from a URL at repo@branch:/example.png
-$ pachctl put file repo@branch -f http://host/example.png
-
-# Put the data from a URL at repo@branch:/dir/example.png
-$ pachctl put file repo@branch:/dir -f http://host/example.png
-
-# Put the data from an S3 bucket at repo@branch:/s3_object
-$ pachctl put file repo@branch -r -f s3://my_bucket
-
-# Put several files or URLs that are listed in file.
-# Files and URLs should be newline delimited.
-$ pachctl put file repo@branch -i file
-
-# Put several files or URLs that are listed at URL.
-# NOTE this URL can reference local files, so it could cause you to put sensitive
-# files into your Pachyderm cluster.
-$ pachctl put file repo@branch -i http://host/path
 ```
 
 ### Options
 
 ```
-  -a, --append              Append to the existing content of the file, either from previous commits or previous calls to 'put file' within this commit.
-      --compress            Compress data during upload. This parameter might help you upload your uncompressed data, such as CSV files, to Pachyderm faster. Use 'compress' with caution, because if your data is already compressed, this parameter might slow down the upload speed instead of increasing.
-  -f, --file strings        The file to be put, it can be a local file or a URL. (default [-])
-      --full-path           If true, use the entire path provided to -f as the target filename in PFS. By default only the base of the path is used.
+  -a, --append              Specify file contents should be appended to existing content from previous commits or previous calls to 'pachctl put file' within this commit.
+      --compress            Specify data should be compressed during upload. This parameter might help you upload your uncompressed data, such as CSV files, to Pachyderm faster. Use 'compress' with caution, because if your data is already compressed, this parameter might slow down the upload speed instead of increasing.
+  -f, --file strings        Specify the file to be put; it can be a local file or a URL. (default [-])
+      --full-path           Specify entire path provided to -f should be the target filename in PFS; by default only the base of the path is used.
   -h, --help                help for file
-  -i, --input-file string   Read filepaths or URLs from a file.  If - is used, paths are read from the standard input.
-  -p, --parallelism int     The maximum number of files that can be uploaded in parallel. (default 10)
+  -i, --input-file string   Specify file provided contains a list of files to be put (as paths or URLs).
+  -p, --parallelism int     Set the maximum number of files that can be uploaded in parallel. (default 10)
       --progress            Print progress bars. (default true)
-      --project string      Project in which repo is located. (default "openCV")
-  -r, --recursive           Recursively put the files in a directory.
-      --untar               If true, file(s) with the extension .tar are untarred and put as a separate file for each file within the tar stream(s). gzipped (.tar.gz or .tgz) tar file(s) are handled as well
+      --project string      Specify the project (by name) where the repo for uploading this file is located. (default "standard-ml-tutorial")
+  -r, --recursive           Specify files should be recursively put into a directory.
+      --untar               Specify file(s) with the extension .tar should be untarred and put as a separate file for each file within the tar stream(s); gzipped (.tar.gz or .tgz) tar file(s) are handled as well
 ```
 
 ### Options inherited from parent commands

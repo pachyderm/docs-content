@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl config get active-context"
+slug: "Learn about the pachctl_config_get_active-context command"
+---
+
 ## pachctl config get active-context
 
 Gets the currently active context.
@@ -22,4 +28,3 @@ pachctl config get active-context [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
-

@@ -1,10 +1,22 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl get file"
+slug: "Learn about the pachctl_get_file command"
+---
+
 ## pachctl get file
 
 Return the contents of a file.
 
 ### Synopsis
 
-Return the contents of a file.
+This command returns the contents of a file. While using this command, take special note of how you can use ancestry syntax (e.g., appending`^2` or `.-1` to `repo@branch`) to retrieve the contents of a file from a previous commit. 
+
+	- To specify the project where the repo is located, use the --project flag 
+	- To specify the output path, use the --output flag 
+	- To specify the number of bytes to offset the read by, use the --offset-bytes flag 
+	- To retry the operation if it fails, use the --retry flag 
+
 
 ```
 pachctl get file <repo>@<branch-or-commit>:<path/in/pfs> [flags]
@@ -13,24 +25,18 @@ pachctl get file <repo>@<branch-or-commit>:<path/in/pfs> [flags]
 ### Examples
 
 ```
-
-# get a single file "XXX" on branch "master" in repo "foo"
-$ pachctl get file foo@master:XXX
-
-# get file "XXX" in the parent of the current head of branch "master"
-# in repo "foo"
-$ pachctl get file foo@master^:XXX
-
-# get file "XXX" in the grandparent of the current head of branch "master"
-# in repo "foo"
-$ pachctl get file foo@master^2:XXX
-
-# get file "test[].txt" on branch "master" in repo "foo"
-# the path is interpreted as a glob pattern: quote and protect regex characters
-$ pachctl get file 'foo@master:/test\[\].txt'
-
-# get all files under the directory "XXX" on branch "master" in repo "foo"
-$ pachctl get file foo@master:XXX -r
+	- pachctl get file foo@master:image.png 
+	- pachctl get file foo@0001a0100b1c10d01111e001fg00h00i:image.png 
+	- pachctl get file foo@master:/directory -r 
+	- pachctl get file foo@master:image.png --output /path/to/image.png 
+	- pachctl get file foo@master:/logs/log.txt--offset-bytes 100 
+	- pachctl get file foo@master:image.png --retry 
+	- pachctl get file foo@master:/logs/log.txt --output /path/to/image.png --offset-bytes 100 --retry 
+	- pachctl get file foo@master^:chart.png 
+	- pachctl get file foo@master^2:chart.png  
+	- pachctl get file foo@master.1:chart.png  
+	- pachctl get file foo@master.-1:chart.png  
+	- pachctl get file 'foo@master:/test\[\].txt'
 
 ```
 
@@ -38,10 +44,10 @@ $ pachctl get file foo@master:XXX -r
 
 ```
   -h, --help             help for file
-      --offset int       The number of bytes in the file to skip ahead when reading.
-  -o, --output string    The path where data will be downloaded.
+      --offset int       Set the number of bytes in the file to skip ahead when reading.
+  -o, --output string    Set the path where data will be downloaded.
       --progress         {true|false} Whether or not to print the progress bars. (default true)
-      --project string   Project in which repo is located. (default "openCV")
+      --project string   Specify the project (by name) where the file's repo is located. (default "standard-ml-tutorial")
   -r, --recursive        Download multiple files, or recursively download a directory.
       --retry            {true|false} Whether to append the missing bytes to an existing file. No-op if the file doesn't exist.
 ```

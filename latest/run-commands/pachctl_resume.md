@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl resume"
+slug: "Learn about the pachctl_resume command"
+---
+
 ## pachctl resume
 
 Resume a stopped task.

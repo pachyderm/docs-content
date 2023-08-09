@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl draw"
+slug: "Learn about the pachctl_draw command"
+---
+
 ## pachctl draw
 
 Draw an ASCII representation of an existing Pachyderm resource.

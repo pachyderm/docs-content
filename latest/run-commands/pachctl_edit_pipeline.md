@@ -1,22 +1,39 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl edit pipeline"
+slug: "Learn about the pachctl_edit_pipeline command"
+---
+
 ## pachctl edit pipeline
 
 Edit the manifest for a pipeline in your text editor.
 
 ### Synopsis
 
-Edit the manifest for a pipeline in your text editor.
+This command edits the manifest for a pipeline in your text editor.
 
 ```
 pachctl edit pipeline <pipeline> [flags]
 ```
 
+### Examples
+
+```
+	- pachctl edit pipeline foo 
+	- pachctl edit pipeline foo --project bar 
+	- pachctl edit pipeline foo --project bar --editor vim 
+	- pachctl edit pipeline foo --project bar --editor vim --output yaml 
+	- pachctl edit pipeline foo --project bar --editor vim --reprocess 
+
+```
+
 ### Options
 
 ```
-      --editor string    Editor to use for modifying the manifest.
+      --editor string    Specify the editor to use for modifying the manifest.
   -h, --help             help for pipeline
-  -o, --output string    Output format: "json" or "yaml" (default "json")
-      --project string   Project of pipeline to edit. (default "openCV")
+  -o, --output string    Specify the output format: "json" or "yaml" (default "json")
+      --project string   Specify the project (by name) containing pipeline to edit. (default "standard-ml-tutorial")
       --reprocess        If true, reprocess datums that were already processed by previous version of the pipeline.
 ```
 

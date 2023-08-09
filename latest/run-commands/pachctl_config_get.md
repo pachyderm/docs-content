@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl config get"
+slug: "Learn about the pachctl_config_get command"
+---
+
 ## pachctl config get
 
 Commands for getting pachyderm config values
@@ -18,4 +24,3 @@ Commands for getting pachyderm config values
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
-

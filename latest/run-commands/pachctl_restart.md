@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl restart"
+slug: "Learn about the pachctl_restart command"
+---
+
 ## pachctl restart
 
 Cancel and restart an ongoing task.

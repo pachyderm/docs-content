@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl config import-kube"
+slug: "Learn about the pachctl_config_import-kube command"
+---
+
 ## pachctl config import-kube
 
 Import a kubernetes context as a Pachyderm context, and set the active Pachyderm context.
@@ -26,4 +32,3 @@ pachctl config import-kube <context> [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
-

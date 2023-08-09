@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl completion zsh"
+slug: "Learn about the pachctl_completion_zsh command"
+---
+
 ## pachctl completion zsh
 
 Print or install the zsh completion code.
@@ -24,4 +30,3 @@ pachctl completion zsh [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
-

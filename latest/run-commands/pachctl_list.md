@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl list"
+slug: "Learn about the pachctl_list command"
+---
+
 ## pachctl list
 
 Print a list of Pachyderm resources of a specific type.

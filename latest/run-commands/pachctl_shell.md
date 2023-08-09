@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl shell"
+slug: "Learn about the pachctl_shell command"
+---
+
 ## pachctl shell
 
 Run the pachyderm shell.

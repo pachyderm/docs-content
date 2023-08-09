@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl enterprise pause"
+slug: "Learn about the pachctl_enterprise_pause command"
+---
+
 ## pachctl enterprise pause
 
 Pause the cluster.

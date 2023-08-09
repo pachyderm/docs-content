@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl create"
+slug: "Learn about the pachctl_create command"
+---
+
 ## pachctl create
 
 Create a new instance of a Pachyderm resource.

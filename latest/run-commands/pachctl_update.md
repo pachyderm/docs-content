@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl update"
+slug: "Learn about the pachctl_update command"
+---
+
 ## pachctl update
 
 Change the properties of an existing Pachyderm resource.

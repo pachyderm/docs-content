@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl auth set project"
+slug: "Learn about the pachctl_auth_set_project command"
+---
+
 ## pachctl auth set project
 
 Set the roles that 'subject' has on 'project'
@@ -22,4 +28,3 @@ pachctl auth set project <project> [role1,role2 | none ] <subject> [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
-

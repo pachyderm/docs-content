@@ -1,24 +1,40 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl delete pipeline"
+slug: "Learn about the pachctl_delete_pipeline command"
+---
+
 ## pachctl delete pipeline
 
 Delete a pipeline.
 
 ### Synopsis
 
-Delete a pipeline.
+This command deletes a pipeline.
 
 ```
 pachctl delete pipeline (<pipeline>|--all) [flags]
 ```
 
+### Examples
+
+```
+    - pachctl delete pipeline foo	
+    - pachctl delete pipeline --all	
+    - pachctl delete pipeline foo --force	
+    - pachctl delete pipeline foo --keep-repo	
+    - pachctl delete pipeline foo --project bar --keep-repo
+```
+
 ### Options
 
 ```
-      --all              delete all pipelines
-  -A, --all-projects     delete pipelines from all projects; only valid with --all
-  -f, --force            delete the pipeline regardless of errors; use with care
+      --all              Delete all pipelines
+  -A, --all-projects     Delete pipelines from all projects; only valid with --all
+  -f, --force            Delete the pipeline regardless of errors; use with care
   -h, --help             help for pipeline
-      --keep-repo        delete the pipeline, but keep the output repo data around (the pipeline cannot be recreated later with the same name unless the repo is deleted)
-      --project string   project containing project (default "openCV")
+      --keep-repo        Specify that the pipeline's output repo should be saved after pipeline deletion; to reuse this pipeline's name, you'll also need to delete this output repo.
+      --project string   Specify the project (by name) containing project (default "standard-ml-tutorial")
 ```
 
 ### Options inherited from parent commands

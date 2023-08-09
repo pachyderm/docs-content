@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl license delete-all"
+slug: "Learn about the pachctl_license_delete-all command"
+---
+
 ## pachctl license delete-all
 
 Delete all data from the license server

@@ -1,13 +1,29 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl inspect repo"
+slug: "Learn about the pachctl_inspect_repo command"
+---
+
 ## pachctl inspect repo
 
 Return info about a repo.
 
 ### Synopsis
 
-Return info about a repo.
+This command returns details of the repo such as: `Name`, `Description`, `Created`, and `Size of HEAD on Master`. By default, PachCTL checks for a matching repo in the project that is set to your active context (initially the `default` project).
+
+	- To specify the project containing the repo you want to inspect, use the `--project` flag 
+
 
 ```
 pachctl inspect repo <repo> [flags]
+```
+
+### Examples
+
+```
+	- pachctl inspect repo foo  
+	- pachctl inspect repo foo --project myproject
 ```
 
 ### Options
@@ -16,7 +32,7 @@ pachctl inspect repo <repo> [flags]
       --full-timestamps   Return absolute timestamps (as opposed to the default, relative timestamps).
   -h, --help              help for repo
   -o, --output string     Output format when --raw is set: "json" or "yaml" (default "json")
-      --project string    Project in which repo is located. (default "openCV")
+      --project string    Specify the project (by name) where the repo is located. (default "standard-ml-tutorial")
       --raw               Disable pretty printing; serialize data structures to an encoding such as json or yaml
 ```
 

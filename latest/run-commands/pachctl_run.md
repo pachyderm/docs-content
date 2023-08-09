@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl run"
+slug: "Learn about the pachctl_run command"
+---
+
 ## pachctl run
 
 Manually run a Pachyderm resource.

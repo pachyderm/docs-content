@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl exit"
+slug: "Learn about the pachctl_exit command"
+---
+
 ## pachctl exit
 
 Exit the pachctl shell.

@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl diff"
+slug: "Learn about the pachctl_diff command"
+---
+
 ## pachctl diff
 
 Show the differences between two Pachyderm resources.

@@ -1,13 +1,26 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl list secret"
+slug: "Learn about the pachctl_list_secret command"
+---
+
 ## pachctl list secret
 
 List all secrets from a namespace in the cluster.
 
 ### Synopsis
 
-List all secrets from a namespace in the cluster.
+This command lists all secrets from a namespace in the cluster.
 
 ```
 pachctl list secret [flags]
+```
+
+### Examples
+
+```
+	- pachctl list secret 
+
 ```
 
 ### Options

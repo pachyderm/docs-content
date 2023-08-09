@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl idp"
+slug: "Learn about the pachctl_idp command"
+---
+
 ## pachctl idp
 
 Commands to manage identity provider integrations

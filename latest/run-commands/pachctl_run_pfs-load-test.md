@@ -1,10 +1,16 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl run pfs-load-test"
+slug: "Learn about the pachctl_run_pfs-load-test command"
+---
+
 ## pachctl run pfs-load-test
 
 Run a PFS load test.
 
 ### Synopsis
 
-Run a PFS load test.
+This command runs a PFS load test.
 
 ```
 pachctl run pfs-load-test <spec-file> [flags]
@@ -98,11 +104,11 @@ validator: {}
 ### Options
 
 ```
-  -b, --branch string     The branch to use for generating the load.
+  -b, --branch string     Specify the branch to use for generating the load.
   -h, --help              help for pfs-load-test
-      --project string    Project in which repo is located. (default "openCV")
-  -s, --seed int          The seed to use for generating the load.
-      --state-id string   The ID of the base state to use for the load.
+      --project string    Specify the project (by name) where the repo is located. (default "standard-ml-tutorial")
+  -s, --seed int          Set the seed to use for generating the load.
+      --state-id string   Set the ID of the base state to use for the load.
 ```
 
 ### Options inherited from parent commands

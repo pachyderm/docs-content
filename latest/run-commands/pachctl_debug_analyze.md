@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl debug analyze"
+slug: "Learn about the pachctl_debug_analyze command"
+---
+
 ## pachctl debug analyze
 
 Start a local pachd server to analyze a debug dump.

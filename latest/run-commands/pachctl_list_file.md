@@ -1,10 +1,19 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl list file"
+slug: "Learn about the pachctl_list_file command"
+---
+
 ## pachctl list file
 
 Return the files in a directory.
 
 ### Synopsis
 
-Return the files in a directory.
+This command returns the files in a directory. While using this command, take special note of how you can use ancestry syntax (e.g., appending`^2` or `.-1` to `repo@branch`) to inspect the contents of a file from a previous commit. 
+
+    - To specify the project where the repo is located, use the --project flag 
+
 
 ```
 pachctl list file <repo>@<branch-or-commit>[:<path/in/pfs>] [flags]
@@ -13,24 +22,13 @@ pachctl list file <repo>@<branch-or-commit>[:<path/in/pfs>] [flags]
 ### Examples
 
 ```
+	- pachctl list file foo@master 
+	- pachctl list file foo@master:dir 
+	- pachctl list file foo@master^ 
+	- pachctl list file foo@master^2 
+	- pachctl list file repo@master.-2  --project foo 
+	- pachctl list file 'foo@master:dir\[1\]'
 
-# list top-level files on branch "master" in repo "foo"
-$ pachctl list file foo@master
-
-# list files under directory "dir" on branch "master" in repo "foo"
-$ pachctl list file foo@master:dir
-
-# list top-level files in the parent commit of the current head of "master"
-# in repo "foo"
-$ pachctl list file foo@master^
-
-# list top-level files in the grandparent of the current head of "master"
-# in repo "foo"
-$ pachctl list file foo@master^2
-
-# list file under directory "dir[1]" on branch "master" in repo "foo"
-# : quote and protect regex characters
-$ pachctl list file 'foo@master:dir\[1\]'
 ```
 
 ### Options
@@ -39,7 +37,7 @@ $ pachctl list file 'foo@master:dir\[1\]'
       --full-timestamps   Return absolute timestamps (as opposed to the default, relative timestamps).
   -h, --help              help for file
   -o, --output string     Output format when --raw is set: "json" or "yaml" (default "json")
-      --project string    Project in which repo is located. (default "openCV")
+      --project string    Specify the project (by name) where repo is located. (default "standard-ml-tutorial")
       --raw               Disable pretty printing; serialize data structures to an encoding such as json or yaml
 ```
 

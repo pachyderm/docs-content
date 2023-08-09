@@ -1,3 +1,9 @@
+---
+date: 2023-08-04T13:05:50-04:00
+title: "pachctl glob"
+slug: "Learn about the pachctl_glob command"
+---
+
 ## pachctl glob
 
 Print a list of Pachyderm resources matching a glob pattern.
