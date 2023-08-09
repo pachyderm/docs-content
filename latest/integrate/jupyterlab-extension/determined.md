@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Run in Determined
-description: Learn how to install and use the JupyterLab Mount Extension using a Docker image.
+description: Learn how to run the JupyterLab Mount Extension inside of Determined.
 date: 
 # taxonomy #
 tags: ["integrations", "jupyterlab", "notebooks", "docker", "determined"]
