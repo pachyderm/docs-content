@@ -1,7 +1,6 @@
 ---
 date: 2023-08-04T13:05:50-04:00
 title: "pachctl inspect file"
-slug: "Learn about the pachctl_inspect_file command"
 ---
 
 ## pachctl inspect file

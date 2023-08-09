@@ -1,7 +1,6 @@
 ---
 date: 2023-08-04T13:05:50-04:00
 title: "pachctl run pps-load-test"
-slug: "Learn about the pachctl_run_pps-load-test command"
 ---
 
 ## pachctl run pps-load-test

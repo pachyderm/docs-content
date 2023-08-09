@@ -1,7 +1,6 @@
 ---
 date: 2023-08-04T13:05:50-04:00
 title: "pachctl auth use-auth-token"
-slug: "Learn about the pachctl_auth_use-auth-token command"
 ---
 
 ## pachctl auth use-auth-token

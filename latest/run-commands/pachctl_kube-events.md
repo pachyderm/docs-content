@@ -1,7 +1,6 @@
 ---
 date: 2023-08-04T13:05:50-04:00
 title: "pachctl kube-events"
-slug: "Learn about the pachctl_kube-events command"
 ---
 
 ## pachctl kube-events

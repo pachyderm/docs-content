@@ -1,7 +1,6 @@
 ---
 date: 2023-08-04T13:05:50-04:00
 title: "pachctl run pfs-load-test"
-slug: "Learn about the pachctl_run_pfs-load-test command"
 ---
 
 ## pachctl run pfs-load-test

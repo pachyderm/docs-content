@@ -1,7 +1,6 @@
 ---
 date: 2023-08-04T13:05:50-04:00
 title: "pachctl finish transaction"
-slug: "Learn about the pachctl_finish_transaction command"
 ---
 
 ## pachctl finish transaction

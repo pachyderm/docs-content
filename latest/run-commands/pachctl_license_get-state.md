@@ -1,7 +1,6 @@
 ---
 date: 2023-08-04T13:05:50-04:00
 title: "pachctl license get-state"
-slug: "Learn about the pachctl_license_get-state command"
 ---
 
 ## pachctl license get-state

@@ -1,7 +1,6 @@
 ---
 date: 2023-08-04T13:05:50-04:00
 title: "pachctl start pipeline"
-slug: "Learn about the pachctl_start_pipeline command"
 ---
 
 ## pachctl start pipeline

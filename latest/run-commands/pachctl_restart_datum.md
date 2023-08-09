@@ -1,7 +1,6 @@
 ---
 date: 2023-08-04T13:05:50-04:00
 title: "pachctl restart datum"
-slug: "Learn about the pachctl_restart_datum command"
 ---
 
 ## pachctl restart datum

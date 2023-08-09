@@ -1,7 +1,6 @@
 ---
 date: 2023-08-04T13:05:50-04:00
 title: "pachctl idp delete-connector"
-slug: "Learn about the pachctl_idp_delete-connector command"
 ---
 
 ## pachctl idp delete-connector

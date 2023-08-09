@@ -1,7 +1,6 @@
 ---
 date: 2023-08-04T13:05:50-04:00
 title: "pachctl license update-cluster"
-slug: "Learn about the pachctl_license_update-cluster command"
 ---
 
 ## pachctl license update-cluster

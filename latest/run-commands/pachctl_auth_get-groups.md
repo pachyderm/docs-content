@@ -1,7 +1,6 @@
 ---
 date: 2023-08-04T13:05:50-04:00
 title: "pachctl auth get-groups"
-slug: "Learn about the pachctl_auth_get-groups command"
 ---
 
 ## pachctl auth get-groups

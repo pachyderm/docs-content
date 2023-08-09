@@ -1,7 +1,6 @@
 ---
 date: 2023-08-04T13:05:50-04:00
 title: "pachctl update repo"
-slug: "Learn about the pachctl_update_repo command"
 ---
 
 ## pachctl update repo

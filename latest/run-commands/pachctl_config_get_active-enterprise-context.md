@@ -1,7 +1,6 @@
 ---
 date: 2023-08-04T13:05:50-04:00
 title: "pachctl config get active-enterprise-context"
-slug: "Learn about the pachctl_config_get_active-enterprise-context command"
 ---
 
 ## pachctl config get active-enterprise-context

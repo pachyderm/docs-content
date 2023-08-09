@@ -1,7 +1,6 @@
 ---
 date: 2023-08-04T13:05:50-04:00
 title: "pachctl run cron"
-slug: "Learn about the pachctl_run_cron command"
 ---
 
 ## pachctl run cron

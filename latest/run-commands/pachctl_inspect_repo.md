@@ -1,7 +1,6 @@
 ---
 date: 2023-08-04T13:05:50-04:00
 title: "pachctl inspect repo"
-slug: "Learn about the pachctl_inspect_repo command"
 ---
 
 ## pachctl inspect repo

@@ -1,7 +1,6 @@
 ---
 date: 2023-08-04T13:05:50-04:00
 title: "pachctl auth login"
-slug: "Learn about the pachctl_auth_login command"
 ---
 
 ## pachctl auth login

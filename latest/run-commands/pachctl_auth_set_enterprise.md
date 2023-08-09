@@ -1,7 +1,6 @@
 ---
 date: 2023-08-04T13:05:50-04:00
 title: "pachctl auth set enterprise"
-slug: "Learn about the pachctl_auth_set_enterprise command"
 ---
 
 ## pachctl auth set enterprise
