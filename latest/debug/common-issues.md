@@ -10,9 +10,11 @@ seriesPart:
 directory: true 
 ---
 
-## Cannot connect via `pachctl` - context deadline exceeded
+## Cannot Connect via PachCTL
 
-### Symptom
+### Context Deadline Exceeded
+
+#### Symptom
 
 You may be using the pachd address config value or environment variable to specify how `pachctl` talks to your {{%productName%}} cluster, or you may be forwarding the {{% productName %}}port.  In any event, you might see something similar to:
 
@@ -25,11 +27,65 @@ context deadline exceeded
 
 Also, you might get this message if `pachd` is not running.
 
-### Recourse
+#### Recourse
 
 It's possible that the connection is just taking a while. Occasionally this can happen if your cluster is far away (deployed in a region across the country). Check your internet connection.
 
 It's also possible that you haven't poked a hole in the firewall to access the node on this port. Usually to do that you adjust a security rule (in AWS parlance a security group). For example, on AWS, if you find your node in the web console and click on it, you should see a link to the associated security group. Inspect that group. There should be a way to "add a rule" to the group. You'll want to enable TCP access (ingress) on port 30650. You'll usually be asked which incoming IPs should be whitelisted. You can choose to use your own, or enable it for everyone (0.0.0.0/0).
+
+### Could not get Cluster ID + Could Not Inspect Project
+
+#### Symptom
+
+You are trying to connect to a {{%productName%}} cluster using `pachctl` and you see the following error:
+
+```s
+could not get cluster ID: failed to inspect cluster: rpc error: code = NotFound desc = could not inspect project "foo": error getting project "foo": project "foo" not found
+```
+
+##### Recourse
+
+1. Check your `./pachyderm/config.json` file to see if an entry for your active context has an existing conflicting contexts with other details, such as a `cluster_deployment_id` saved. This can happen if you have reinstalled {{%productName%}} and left the old configurations in place. Uninstalling {{%productName%}} does not remove these old configurations.
+   
+   {{%notice tip %}}
+
+   The following example is an output for a `./pachyderm/config.json` file with duplicate entries for the same context.
+
+   ```s
+   {
+     "user_id": "7b2f2427f72f418ea4a14287c76e63ea",
+     "v2": {
+       "active_context": "http://localhost:80",
+       "contexts": {
+           "grpc://localhost:80": {
+               "pachd_address": "grpc://localhost:80",
+               "cluster_deployment_id": "oO29fP0PC1Q3O39MSDgpVRgdpXraLJfw",
+               "project": "foo"
+           },
+           "http://localhost:80": {
+               "pachd_address": "grpc://localhost:80",
+               "session_token": "672e166adf994b7ebdd7f32bffa44375",
+               "cluster_deployment_id": "GaM2j0EknVSQIcfEHzNof25Z525QAf7S",
+               "project": "standard-ml-tutorial"
+           },
+           "https://localhost:80": {
+               "pachd_address": "grpcs://localhost:80"
+           },
+       }
+     }
+   }
+   ```
+   {{% /notice%}}
+
+2. Delete the conflicting contexts from the `./pachyderm/config.json` file. When you run `pachctl connect`, a new context will be created.
+3. Reset your default project if the conflicting contexts had an old project set as the default. 
+   
+   ```s 
+   pachctl config update context --project default
+   ```
+4. Run `pachctl connect` again to connect to your {{%productName%}} cluster.
+5. Run `pachctl version` to verify that you are connected to your {{%productName%}} cluster.
+
 
 
 ## Certificate Error When Using Kubectl
