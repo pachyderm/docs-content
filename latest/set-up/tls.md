@@ -47,7 +47,7 @@ kubectl create secret tls <name> --key=tls.key --cert=tls.crt
 ```
 3. Verify your certificate:
 ```s
-kubectl get certificate
+kubectl get secrets
 ```
 ### 2.  Enable TLS in Your Helm Chart Values.
 

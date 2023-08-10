@@ -12,7 +12,7 @@ print("Pachyderm Version:", version)
 print("Pachd Address:", context.pachd_address)
 
 # Creates a project, repo, and branch
-project = pfs.Project(name="sdk-basic-pipeline-4")
+project = pfs.Project(name="sdk-basic-pipeline-6")
 repo = pfs.Repo(name="housing_data", project=project)
 branch = pfs.Branch.from_uri(f"{repo}@main")
 
