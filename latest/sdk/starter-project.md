@@ -7,7 +7,7 @@ directory: true
 This tutorial is based on the [Standard ML Pipeline Tutorial](/latest/build-dags/tutorials/basic-ml/) found in the [Build Pipelines & DAGs](/latest/build-dags) section of the documentation. The end result is a simple machine learning pipeline that trains a regression model on housing market data to predict the value of homes in Boston.
 
 
-## 1. Import the dependencies.
+## 1. Import the dependencies
 
 ```python
 from pachyderm_sdk import Client 
@@ -16,7 +16,7 @@ from pachyderm_sdk import pfs, pps
 
 The imports you'll need for future projects depend on the setup of your instance and the operations you want to perform; see the [API submodules](/sdk/api/) reference documentation for more information. 
 
-## 2. Initiate the Client.
+## 2. Initiate the Client
 
 ```python
 client = Client(host="localhost", port="80")
