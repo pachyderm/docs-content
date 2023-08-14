@@ -208,7 +208,7 @@ kubernetes-dashboard   kubernetes-dashboard-5fd5574d9f-c7ptx        1/1     Runn
 
 ## 6. Connect to Cluster
 
-1. Run `minikube tunnel` to start your cluster. 
+1. Run `minikube tunnel` to start a tunnel. 
 2. In a separate terminal, get the external IP address of the `pachyderm-proxy` service:
    ```s
    kubectl get all
