@@ -208,12 +208,18 @@ kubernetes-dashboard   kubernetes-dashboard-5fd5574d9f-c7ptx        1/1     Runn
 
 ## 6. Connect to Cluster
 
+1. Run `minikube tunnel` to start your cluster. 
+2. In a separate terminal, get the external IP address of the `pachyderm-proxy` service:
+   ```s
+   kubectl get all
+   ```
+   ```s
+   service/pachyderm-proxy             LoadBalancer   10.110.148.228   127.0.0.1     80:32024/TCP   
+   ```
+3. Run the following command to connect to your cluster:
 ```s
-pachctl connect http://localhost:80 
+pachctl connect 127.0.0.1:80 
 ```
-{{% notice note %}}
-If the connection commands did not work together, run each separately.
-{{%/notice %}}
 
 Optionally open your browser and navigate to the [Console UI](http://localhost).
 
