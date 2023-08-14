@@ -16,7 +16,7 @@ to interact with a {{%productName%}} cluster in your terminal.
 However,  external applications might need to
 interact with {{%productName%}} directly through our APIs.
 
-In this case, {{%productName%}} offers language specific SDKs in Go, Python, and JS.
+In this case, {{%productName%}} offers language specific SDKs in Go and Python.
 
 {{% chunk go %}}
 ## Go Client
