@@ -1,10 +1,10 @@
 ---
 title: Client Initialization (Start Here)
-description: Learn how to install the Python SDK, import a client, and initialize it with your configuration settings.
+description: Learn how to install the Pachyderm SDK, import a client, and initialize it with your configuration settings.
 directory: true 
 ---
 
-The [Python SDK](https://pypi.org/project/pachyderm-sdk/) enables you to interact with {{%productName%}}'s API, client, and configuration directly in a powerful way.
+The [Pachyderm SDK](https://pypi.org/project/pachyderm-sdk/) enables you to interact with {{%productName%}}'s API, client, and configuration directly in a powerful way.
 
 ## 1. Installation
 
@@ -90,7 +90,7 @@ client = Client.from_config('path-to-config-file')
 
 ## Test Connection
 
-If you'd like to quickly test out working with the Python SDK on your local machine (e.g., using a locally deployed Docker Desktop instance), try out the following:
+If you'd like to quickly test out working with the Pachyderm SDK on your local machine (e.g., using a locally deployed Docker Desktop instance), try out the following:
 
 ```python
 from pachyderm_sdk import Client 

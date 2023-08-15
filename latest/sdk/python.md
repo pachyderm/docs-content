@@ -1,6 +1,6 @@
 ---
 title: Reference Docs
-description: The official Python SDK for Pachyderm.
+description: The official python-based Pachyderm SDK for Pachyderm.
 directory: true 
 layout: sdk
 ---
