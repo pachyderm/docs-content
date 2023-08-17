@@ -11,18 +11,14 @@ weight: 2
 directory: true 
 ---
 
-{{% productName %}} autocompletion allows you to automatically finish
-partially typed commands by pressing `TAB`. Autocompletion needs
-to be installed separately when `pachctl` is already
-available on your client machine.
+{{% productName %}} auto-completion allows you to automatically finish partially typed commands by pressing `TAB`. 
 
-{{% productName %}} autocompletion is supported for `bash` and `zsh` shells.
-You must have either of them preinstalled
-before installing {{% productName %}} autocompletion.
+## Before You Start 
 
-{{% notice tip %}}
-Type `pachctl completion --help` to display help information about the command.
-{{% /notice %}}
+- You must already have PachCTL installed
+
+
+## How to Install Auto-Completion
 
 {{< stack type="wizard" >}}
  {{% wizardRow id="Command Shell" %}}
@@ -72,43 +68,50 @@ Type `pachctl completion --help` to display help information about the command.
 
 {{% wizardResult val1="command-shell/zsh"%}}
 
-1. Verify that `zsh-completions` are installed on your machine.
-   For example, if you have installed zsh completion by using Homebrew,
-   type:
-
-   ```zsh
-   brew info zsh-completions
+1. Install `zsh-completions`: 
+   ```s
+   brew install zsh-completions
    ```
 
-   You should see the directory in which `zsh-completions` are installed
-   and instructions to add the correct path in the `~/.zshrc` file. Make sure
-   you add the required path. If you do not have the `~/.zshrc` file on
-   your computer, create one. For more information about setting up zsh
-   completions, see
-   [zsh-completions](https://github.com/zsh-users/zsh-completions).
+2. Install `pachctl` autocompletion:
 
-2. Install `pachctl` autocompletion for `zsh`:
+   {{% notice tip %}}
+   
+   You'll need to install this in the same directory your `zsh-completions` are installed in. You can run the following to find the correct path:
+   ```s
+   echo $fpath
+   ```
+   {{% /notice %}}
 
-   ```zsh
-   pachctl completion zsh --install --path <path/to/zsh-completions>
+   ```s
+   pachctl completion bash --install --path /opt/homebrew/share/zsh-completions/_pachctl
    ```
 
-   **Example:**
+3. Restart your terminal; `pachctl` autocomplete should now be enabled in your system. 
+   
+   If you run into warnings in your terminal related to `zsh compinit: insecure directories`, you can run the following to fix it:
 
-   ```zsh
-   pachctl completion zsh --install --path /usr/local/share/zsh-completions/_pachctl
+   ```s
+   chmod go-w /opt/homebrew/share
    ```
-
-   **System response:**
-
-   ```
-   Completions installed in "_pachctl", you must restart your terminal to enable them.
-   ```
-
-3. Restart your terminal.
-
-   `pachctl` autocomplete should now be enabled in your system.
 {{% /wizardResult %}}
 {{% /wizardResults %}}
  {{< /stack >}}
  
+
+## Testing
+
+You can perform the following tests to verify that `pachctl` autocompletion is working:
+
+1. Open a new terminal.
+2. Input the following:
+
+   ```s
+   pachctl v
+   ```
+3. Hit `TAB`. You should see the following output:
+
+```s
+validate  -- Validate the specification of a Pachyderm resource.
+version   -- Print Pachyderm version information.
+```
