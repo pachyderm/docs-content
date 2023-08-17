@@ -74,7 +74,7 @@ information.
 
 ### Pachyderm-SDK (New)
 
-The Python cilent `pachyderm-sdk` is the new Python client for {{%productName%}} and is officially supported by the {{%productName%}} team. 
+The Python client `pachyderm-sdk` is the new Python client for {{%productName%}} and is officially supported by the {{%productName%}} team. 
 
 - [Reference Docs](/sdk)
 - [Client Initialization](/latest/sdk/install)
