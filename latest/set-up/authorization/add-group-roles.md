@@ -13,7 +13,7 @@ weight: 2
 ## Before You Start 
 
 - Your IdP must support groups to use these instructions.
-- Review the [permissions](/{{%release%}}/set-up/rbac) assigned to each role.
+- Review the [permissions](/{{%release%}}/set-up/authorization/permissions) assigned to each role.
 - This guide assumes resources (projects, repositories) have already been created in your cluster.
 - This guide uses Auth0 as an example IdP.
 
