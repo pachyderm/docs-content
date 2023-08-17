@@ -1,10 +1,10 @@
 ---
 # metadata # 
-title:  IAM
+title:  IAM & RBAC
 description: Learn how to manage access to resources using roles.
 date: 
 # taxonomy #
-tags: ["permissions", "management", "roles"]
+tags: ["permissions", "management", "roles", "RBAC"]
 series:
 seriesPart:
 ---
