@@ -139,7 +139,7 @@ You can add, remove, or update `files` in a given commit.
 We're going to use the `pachctl put file` command, along with the `-f` flag, to upload an image.
 
 ```s
-pachctl put file images@master:liberty.png -f https://github.com/pachyderm/docs-content/blob/main/images/opencv/liberty.jpg
+pachctl put file images@master:liberty.png -f https://raw.githubusercontent.com/pachyderm/docs-content/blob/main/images/opencv/liberty.jpg
 ```
 
 `pachctl put file` automatically starts and finishes a commit for you so you can add files
@@ -373,8 +373,8 @@ pachctl get file edges@master:liberty.png | display
 1. Create two new commits:
 
 ```s
-pachctl put file images@master:AT-AT.png -f https://github.com/pachyderm/docs-content/blob/main/images/opencv/robot.jpg
-pachctl put file images@master:kitten.png -f https://github.com/pachyderm/docs-content/blob/main/images/opencv/kitten.jpg
+pachctl put file images@master:AT-AT.png -f https://raw.githubusercontent.com/pachyderm/docs-content/blob/main/images/opencv/robot.jpg
+pachctl put file images@master:kitten.png -f https://raw.githubusercontent.com/pachyderm/docs-content/blob/main/images/opencv/kitten.jpg
 ```
 
 2. View the list of jobs that have started:
