@@ -291,6 +291,11 @@ loki-stack:
       storage_config:
         gcs:
           bucket_name: "${LOKI_BUCKET_NAME}"
+        bigtable:
+          project: project
+          instance: instance
+        boltdb:
+          directory: /data/loki/indices
   grafana:
     enabled: false
 
