@@ -282,20 +282,21 @@ loki-stack:
         configs:
           - from: 1989-11-09
             object_store: gcs
-            store: boltdb
+            store: boltdb-shipper
             schema: v11
             index:
+              period: 24h
               prefix: loki_index_
             chunks:
               prefix: loki_chunks_
       storage_config:
+        boltdb_shipper:
+          active_index_directory: /data/loki/boltdb-shipper-active
+          cache_location: /data/loki/boltdb-shipper-cache
+          cache_ttl: 24h
+          shared_store: gcs
         gcs:
           bucket_name: "${LOKI_BUCKET_NAME}"
-        bigtable:
-          project: project
-          instance: instance
-        boltdb:
-          directory: /data/loki/indices
   grafana:
     enabled: false
 
