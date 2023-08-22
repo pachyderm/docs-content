@@ -19,8 +19,8 @@ seriesPart:
 
 {{<stack type="wizard">}}
 {{% wizardRow id="Activation Method" %}}
-{{% wizardButton  option="License" state="active" %}}
-{{% wizardButton  option="License Secret" %}}
+{{% wizardButton  option="License" %}}
+{{% wizardButton  option="License Secret" state="active" %}}
 {{% /wizardRow %}}
 
 {{% wizardResults %}}
@@ -37,10 +37,25 @@ Once deployed, {{% productName %}} stores your provided Enterprise license as th
 {{% /wizardResult%}}
 {{% wizardResult val1="activation-method/license-secret" %}}
 1. [Create a secret](/{{%release%}}/manage/secrets) for your Enterprise license.
-2. Open your Helm values.yml file. 
-3. Find the the `pachd.enterpriseLicenseKeySecretName` attribute.
-4. Input your license's secret name.
-5. Upgrade your cluster by running the following command:
+   ```s
+   kubectl create secret generic pachyderm-enterprise-key \
+   --from-literal=enterprise-license-key='<replace-with-key>'\
+   --output=json > pachyderm-enterprise-key.json
+   ```
+2. Upload the secret to your cluster.
+   ```s
+   pachctl create secret -f pachyderm-enterprise-key.json
+   ```
+   {{%notice note %}}
+   You may have to rename the `metadata.name` in `pachyderm-enterprise-key.json` if pachctl says the secret already exists.
+   {{%/notice%}}
+3. Obtain your current user-input helm values:
+    ```s
+    helm get values pachyderm/pachyderm --show-only-overrides > values.yaml
+    ```
+4. Find the the `pachd.enterpriseLicenseKeySecretName` attribute.
+5. Input your license's secret name found in `meta.name` of `pachyderm-enterprise-key.json` (e.g., `pachyderm-enterprise-key-secret`).
+6. Upgrade your cluster by running the following command:
 ```s
 helm upgrade pachyderm pachyderm/pachyderm -f values.yml
 ```
