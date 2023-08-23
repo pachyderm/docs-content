@@ -16,14 +16,17 @@ When you enable authentication, you gain access to {{%productName%}}'s [authoriz
 
 ## Useful Auth PachCTL Commands
 
-- `pachctl auth login`:  Logs in to the cluster
-- `pachctl auth logout`: Logs out of the cluster
-- `pachctl auth whoami`: Returns the current user's username
-- `pachctl auth get-groups`: Returns the current user's groups
-- `pachctl auth get-config`: Returns the instance's current auth configuration
-- `pachctl auth get cluster`: Returns the role bindings for the cluster
-- `pachctl auth get project <project-name>`: Returns the role bindings for a project
-- `pachctl auth get repo <repo-name>`: Returns the role bindings for a repo
+| Command                                      | Description                                      |
+|----------------------------------------------|--------------------------------------------------|
+| `pachctl auth login`                        | Logs in to the cluster                          |
+| `pachctl auth logout`                       | Logs out of the cluster                         |
+| `pachctl auth whoami`                       | Returns the current user’s username             |
+| `pachctl auth get-groups`                   | Returns the current user’s groups               |
+| `pachctl auth get-config`                   | Returns the instance’s current auth configuration|
+| `pachctl auth get cluster`                  | Returns the role bindings for the cluster       |
+| `pachctl auth get project <project-name>`   | Returns the role bindings for a project         |
+| `pachctl auth get repo <repo-name>`         | Returns the role bindings for a repo            |
+
 
 
 ## Before You Start 
