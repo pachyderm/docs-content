@@ -14,7 +14,7 @@ MockIDP is used for testing and development so that you can run {{% productName 
 
 ## Before You Start 
 
-- You must have [Enterprise enabled](/latest/set-up/enterprise/activate-via-helm/) on your cluster.
+- You must have [Enterprise](/latest/set-up/enterprise/activate-via-helm/) enabled on your cluster
 
 ## How to Activate MockIDP 
 

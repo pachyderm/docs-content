@@ -26,9 +26,3 @@ When you enable authentication, you gain access to {{%productName%}}'s [authoriz
 | `pachctl auth get cluster`                  | Returns the role bindings for the cluster       |
 | `pachctl auth get project <project-name>`   | Returns the role bindings for a project         |
 | `pachctl auth get repo <repo-name>`         | Returns the role bindings for a repo            |
-
-
-
-## Before You Start 
-
-- You must be using [Enterprise](/{{%release%}}/set-up/enterprise) to set up authentication
