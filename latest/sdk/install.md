@@ -2,6 +2,7 @@
 title: Client Initialization (Start Here)
 description: Learn how to install the Pachyderm SDK, import a client, and initialize it with your configuration settings.
 directory: true 
+weight: 01
 ---
 
 The [Pachyderm SDK](https://pypi.org/project/pachyderm-sdk/) enables you to interact with {{%productName%}}'s API, client, and configuration directly in a powerful way.
