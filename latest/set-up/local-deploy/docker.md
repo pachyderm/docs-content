@@ -107,12 +107,11 @@ curl -o /tmp/pachctl.deb -L https://github.com/pachyderm/pachyderm/releases/down
 
  **AMD**
  ```s
-curl -o /tmp/pachctl.tar.gz -L https://github.com/pachyderm/pachyderm/releases/download/v{{%latestPatchNumber%}}/pachctl_{{%latestPatchNumber%}}_linux_amd64.tar.gz && tar -xvf /tmp/pachctl.tar.gz -C /tmp && sudo cp /tmp/pachctl_{{%latestPatchNumber%}}_linux_amd64/pachctl /usr/local/bin 
+ curl -L https://github.com/pachyderm/pachyderm/releases/download/v{{%latestPatchNumber%}}/pachctl_{{%latestPatchNumber%}}_linux_amd64.tar.gz | sudo tar -xzv --strip-components=1 -C /usr/local/bin
  ```
 **ARM**
 ```s
-curl -o /tmp/pachctl.tar.gz -L https://github.com/pachyderm/pachyderm/releases/download/v{{%latestPatchNumber%}}/pachctl_{{%latestPatchNumber%}}_linux_arm64.tar.gz && tar -xvf /tmp/pachctl.tar.gz -C /tmp && sudo cp /tmp/pachctl_{{%latestPatchNumber%}}_linux_arm64/pachctl /usr/local/bin 
-
+curl-L https://github.com/pachyderm/pachyderm/releases/download/v{{%latestPatchNumber%}}/pachctl_{{%latestPatchNumber%}}_linux_arm64.tar.gz | sudo sudo tar -xzv --strip-components=1 -C /usr/local/bin
 ```
  {{%/wizardResult%}}
  {{%/wizardResults%}}
