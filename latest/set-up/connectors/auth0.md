@@ -7,6 +7,7 @@ date:
 tags:  ["identity-providers", "permissions", "management", "integrations"]
 series:
 seriesPart:
+weight: 02
 ---
 
 ## Before You Start 

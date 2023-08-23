@@ -12,12 +12,15 @@ weight: 2
 
 ## Before You Start 
 
-- Your IdP must support groups to use these instructions.
-- Review the [permissions](/{{%release%}}/set-up/authorization/permissions) assigned to each role.
-- This guide assumes resources (projects, repositories) have already been created in your cluster.
-- This guide uses Auth0 as an example IdP.
-
+- You must have an active Enterprise key 
+- You must have an [Authentication Provider (IdP)](/{{%release%}}/set-up/connectors) set up that supports groups
+    - [Auth0](/{{%release%}}/set-up/connectors/auth0)
+    - [Okta](/{{%release%}}/set-up/connectors/okta)
+- Review the [Access Control (RBAC) Roles & Permissions](/{{%release%}}/set-up/authorization/permissions).
+- Confirm you have the right role(s) to grant a user access to a given resource.
 ## How to Assign Roles to a Group 
+
+This guide uses Auth0 and assumes resources (projects, repositories) have already been created in your cluster.
 
 1. Enable group management in your [IdP of choice](https://dexidp.io/docs/connectors/) .
 2. Update your connector config to include the [appropriate attributes](https://dexidp.io/docs/connectors/oidc/). 

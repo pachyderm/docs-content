@@ -1,6 +1,6 @@
 ---
 # metadata # 
-title:  IAM & RBAC
+title:  Access Control (RBAC) Roles & Permissions
 description: Learn how to manage access to resources using roles.
 date: 
 # taxonomy #
@@ -9,12 +9,12 @@ series:
 seriesPart:
 ---
 
-This page describes how {{% productName %}}'s Identity and Access Management (IAM) system works and how you can use it to manage access in {{% productName %}}. Use IAM to grant granular access to specific {{% productName %}} resources.
+This page describes how {{% productName %}}'s access control system works and how you can use it to manage access in {{% productName %}}. Use IAM to grant granular access to specific {{% productName %}} resources.
 
 
-## How IAM Works 
+## How RBAC Works 
 
-IAM works by managing access for **users** (human or robot) through assigned **roles**. Roles contain a set of granular **permissions** (create, read, update, delete) for a given **resource**. In {{% productName %}}, resources include clusters, projects, and repositories. 
+Role-based Access Control works by managing access for **users** (human or robot) through assigned **roles**. Roles contain a set of granular **permissions** (create, read, update, delete) for a given **resource**. In {{% productName %}}, resources include clusters, projects, and repositories. 
 
 A user can have many roles, and some roles encompass the permissions of other roles. For example, if you have a `clusterAdmin`, all other permissions belonging to more restricted roles are included. 
 
@@ -25,6 +25,7 @@ You can use the command `pachctl auth roles-for-permission <permission>` to look
 {{% /notice %}}
 
 ## Admin Roles
+
 
 ### clusterAdmin 
 

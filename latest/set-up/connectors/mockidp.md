@@ -7,6 +7,7 @@ date:
 tags:  ["identity-providers", "permissions", "management", "mockidp"]
 series:
 seriesPart:
+weight: 01
 ---
 
 MockIDP is used for testing and development so that you can run {{% productName %}} and experiment with [permissions](/latest/set-up/authorization/permissions/) locally without having to set up an external identity provider.

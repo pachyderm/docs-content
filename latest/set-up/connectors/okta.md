@@ -7,6 +7,7 @@ date:
 tags:  ["identity-providers", "permissions", "management", "integrations"]
 series:
 seriesPart:
+weight: 03
 ---
 
 If [Okta® access management software](https://www.okta.com) is your preferred choice of IdP, you can configure {{% productName %}} to use Okta as an OpenID Connect (OIDC)  identity provider using the following steps. 
