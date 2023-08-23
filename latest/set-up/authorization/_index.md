@@ -1,6 +1,6 @@
 ---
 # metadata # 
-title:  Authorization & Access Control
+title:  Authorization (RBAC)
 description: Learn how to set up and manage Role-Based Access Control (RBAC).
 date: 
 # taxonomy #
