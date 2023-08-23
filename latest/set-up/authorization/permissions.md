@@ -160,7 +160,7 @@ The `projectWriter` role includes all of the `projectViewer` permissions, plus t
 | REPO_REMOVE_PIPELINE_READER |
 | PIPELINE_LIST_JOB |
 
-### RepoWriter
+### repoWriter
 
 The `repoWriter` role includes all of the `repoReader` permissions, plus the following:
 
@@ -172,7 +172,7 @@ The `repoWriter` role includes all of the `repoReader` permissions, plus the fol
 | REPO_DELETE_BRANCH |
 | REPO_ADD_PIPELINE_WRITER |
 
-### RepoOwner
+### repoOwner
 
 The `repoOwner` role includes all of the `repoWriter` and  `repoReader` permissions, plus the following:
 
