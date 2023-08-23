@@ -2,6 +2,7 @@
 title: First Project
 description: Learn how to create your first project, including repos and branches, using the SDK.
 directory: true 
+weight: 03
 ---
 
 This tutorial is based on the [Standard ML Pipeline Tutorial](/latest/build-dags/tutorials/basic-ml/) found in the [Build Pipelines & DAGs](/latest/build-dags) section of the documentation. The end result is a simple machine learning pipeline that trains a regression model on housing market data to predict the value of homes in Boston.

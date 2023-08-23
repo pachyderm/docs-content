@@ -3,6 +3,7 @@ title: Method Mapping
 description: Use this quick reference guide for mapping methods between Python Pachyderm and the new Pachyderm SDK
 directory: true 
 tags: ["python","sdk", "methods"]
+weight: 02
 ---
 
 ## About
