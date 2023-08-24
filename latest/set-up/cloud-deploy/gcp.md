@@ -17,8 +17,7 @@ This guide assumes that:
 
 ### Configure Variables
 
-Configure these variables and set in a `.env` file and source them by inputting `source .env` into the terminal before starting the installation guide.
-
+1. Configure the following variables.
 ```s
 PROJECT_NAME="pachyderm-0001"
 SQL_ADMIN_PASSWORD="batteryhorsestaple"
@@ -60,13 +59,17 @@ SIDECAR_WI="serviceAccount:${PROJECT_ID}.svc.id.goog[${K8S_NAMESPACE}/pachyderm-
 CLOUDSQLAUTHPROXY_WI="serviceAccount:${PROJECT_ID}.svc.id.goog[${K8S_NAMESPACE}/k8s-cloudsql-auth-proxy]"
 
 ```
+2. Save to an `.env` file.
+3. Source them by inputting `source .env` into the terminal before starting the installation guide.
+
+
 ---
 
-The following steps use a template to create a GKE cluster, a Cloud SQL instance, and a static IP address. The template also creates a service account for {{%productName%}} and Loki, and grants the service account the necessary permissions to access the Cloud SQL instance and storage buckets. You do not have to this template, but it's a good outline for understanding how to create your own set up.
+The following steps use a template to create a GKE cluster, a Cloud SQL instance, and a static IP address. The template also creates a service account for {{%productName%}} and Loki, and grants the service account the necessary permissions to access the Cloud SQL instance and storage buckets. You do not have to use this template, but it's a good outline for understanding how to create your own set up.
 
 ## 1. Create a New Project 
 
-1. Create a new project (e.g.,`pachyderm-quickstart-project`). You can pre-define the project id using a between 6-30 characters, starting with a lowercase letter. This ID will be used to set up the cluster and will be referenced throughout this guide.
+1. Create a new project (e.g.,`pachyderm-quickstart-project`). You can pre-define the project ID using between 6-30 characters, starting with a lowercase letter. This ID will be used to set up the cluster and will be referenced throughout this guide.
    
    ```s
    gcloud projects create ${PROJECT_ID} --name=${PROJECT_NAME} --set-as-default
@@ -146,7 +149,7 @@ gsutil mb -l ${GCP_REGION} gs://${LOKI_BUCKET_NAME}
 
 ```s
 gcloud sql instances create ${CLOUDSQL_INSTANCE_NAME} \
-  --database-version=POSTGRES_13 \
+  --database-version=POSTGRES_14 \
   --cpu=${SQL_CPU} \
   --memory=${SQL_MEM} \
   --zone=${GCP_ZONE} \
@@ -182,7 +185,7 @@ gcloud projects add-iam-policy-binding ${PROJECT_ID} \
     --role="${ROLE2}"
 
 gcloud projects add-iam-policy-binding ${PROJECT_ID} \
-    --member=serviceAccount:${SERVICE_ACCOUNT} 
+    --member=serviceAccount:${SERVICE_ACCOUNT} \
     --role="${ROLE3}"
 
 gcloud iam service-accounts add-iam-policy-binding ${SERVICE_ACCOUNT} \
@@ -259,6 +262,7 @@ postgresql:
 
 global:
   postgresql:
+    postgresqlAuthType: "scram-sha-256"
     postgresqlHost: "cloudsql-auth-proxy.${K8S_NAMESPACE}.svc.cluster.local."
     postgresqlPort: "5432"
     postgresqlSSL: "disable"
