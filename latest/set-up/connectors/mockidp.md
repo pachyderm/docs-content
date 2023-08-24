@@ -40,28 +40,28 @@ The following steps assume that you are deploying locally and wish to have Conso
      userAccessibleOauthIssuerHost: http://localhost
     ```
     A minimal `values.yaml` file should look like this:
-     ```yaml
-    deployTarget: LOCAL
+   ```yaml
+   deployTarget: LOCAL
    proxy:
-     enabled: true
-     host: 127.0.0.1
-     service:
-       type: LoadBalancer
+    enabled: true
+    host: 127.0.0.1
+    service:
+      type: LoadBalancer
    console:
-     disableTelemetry: true
-     config:
-       oauthRedirectURI: http://localhost/oauth/callback/?inline=true
-       oauthClientSecret: '123'
+    disableTelemetry: true
+    config:
+      oauthRedirectURI: http://localhost/oauth/callback/?inline=true
+      oauthClientSecret: '123'
    pachd:
-     metrics:
-       enabled: false
-     additionalTrustedPeers:
-       - console-local
-     enterpriseLicenseKeySecretName: pachyderm-enterprise-key-secret
+    metrics:
+      enabled: false
+    additionalTrustedPeers:
+     - console-local
+    enterpriseLicenseKeySecretName: pachyderm-enterprise-key-secret
    oidc:
-     issuerURI: "http://pachd:30658/dex"
-     userAccessibleOauthIssuerHost: http://localhost
-    ```
+    issuerURI: "http://pachd:30658/dex"
+    userAccessibleOauthIssuerHost: http://localhost
+   ```
 
 5. Upgrade your cluster:
     ```s

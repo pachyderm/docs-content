@@ -4,7 +4,7 @@ title: Activate Enterprise via Helm
 description: Learn how to deploy the Enterprise edition using Helm.
 date: 
 # taxonomy #
-tags: ["enterprise"]
+tags: ["enterprise", "setup", "activate", "enterprise key", "license"]
 series:
 seriesPart:
 ---
