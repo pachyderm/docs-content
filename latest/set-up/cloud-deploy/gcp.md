@@ -230,7 +230,7 @@ pachd:
   externalService:
     enabled: false
   image:
-    tag: "2.6.5"
+    tag: "{{% latestPatchVersion %}}"
   lokiDeploy: true
   lokiLogging: true
   storage:
