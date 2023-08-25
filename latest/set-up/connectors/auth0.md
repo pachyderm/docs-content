@@ -12,25 +12,32 @@ weight: 02
 
 ## Before You Start 
 
-- You must have an Enterprise Server set up.
-- This guide assumes you are using the embedded proxy.
-- This guide uses Auth0 as an example; if you do not have an Auth0 account, [sign up for one](https://auth0.com) and create your Pool of Users.
-  
+- You must have the following enabled on your cluster:
+  - [Enterprise](/{{%release%}}/set-up/enterprise/activate-via-helm)
+  - [TLS](/{{%release%}}/set-up/tls) 
+- You must have an [Auth0](https://auth0.com) account
+- You should know the value of your [`proxy.host`](/{{%release%}}/manage/helm-values/proxy/) setting in your Helm `values.yaml` file
 
-## 1. Register With Your IdP
+
+## How to Enable Auth0 as an IdP
+
+{{%notice warning%}}
+The following guide does not cover how to create user pools in Auth0; once initially configured, any user with a Gmail account can log in to your {{%productName%}} instance. Refer to the [official Auth0 documentation](https://auth0.com/docs/manage-users/user-accounts/manage-user-access-to-applications) on how to manage users.
+{{%/notice%}}
+
+### 1. Create an App on Auth0
 
 1. Log in to your Auth0 account.
 2. In **Applications**, click **Create Application**.
-3. Type the name of your application, such as **{{% productName %}}**.
+3. Type the name of your application, such as **{{%productName%}}**.
 4. In the application type, select **Regular Web Application**.
 5. Click **Create**.
 6. Go to the application settings.
 7. Scroll down to **Application URIs**.
-8. In the **Allowed Callback URLs**, add the {{% productName %}} callback link in the
+8. In the **Allowed Callback URLs**, add the {{%productName%}} callback link in the
    following format:
  ```s
- # Dex's issuer URL + "/callback"
- http(s)://<insert-external-ip-or-dns-name>/dex/callback
+ https://<your.proxy.host.value>/dex/callback
  ```
 9. Scroll down to **Show Advanced Settings**.
 10.  Select **Grant Types**.
@@ -38,16 +45,20 @@ weight: 02
 
    ![Auth0 Grant Settings](/images/auth0-grant-settings.png)
 
+### 2. Define Helm Config
 
+The following steps add the [OIDC](/{{%release%}}/manage/helm-values/oidc/) section to your Helm chart. When an upstream IdP is successfully added to the list, {{%productName%}}'s default [MockIdP](/{{%release%}}/set-up/connectors/mockidp) is disabled automatically. You can add multiple IdPs to `upstreamIDPs`.
 
-## 2. Set Up Connector
-
-1. Create a JSON or YAML connector config file that matches your [IdP](https://dexidp.io/docs/connectors/).
+1. Navigate to your `values.yamls` file or obtain your current Helm `values.yaml` overrides:
+   ```s
+   helm get values pachyderm/pachyderm --show-only-overrides > values.yaml
+   ```
+2. Add the following section:
 
 {{< stack type="wizard" >}}
 {{% wizardRow id="Syntax" %}}
- {{% wizardButton option="json" state="active" %}}
- {{% wizardButton option="yaml" %}}
+ {{% wizardButton option="json" %}}
+ {{% wizardButton option="yaml" state="active"%}}
 {{% /wizardRow %}}
 
 {{% wizardResults %}}
@@ -55,41 +66,47 @@ weight: 02
 {{% wizardResult val1="syntax/json" %}}
 ``` json
 {
-"type": "oidc",
-"id": "auth0",
-"name": "Auth0",
-"version": 1,
-"config":{
-  "issuer": "https://dev-k34x5yjn.us.auth0.com/",
-  "clientID": "hegmOc5rTotLPu5ByRDXOvBAzgs3wuw5",
-  "clientSecret": "7xk8O71Uhp5T-bJp_aP2Squwlh4zZTJs65URPma-2UT7n1iigDaMUD9ArhUR-2aL",
-  "redirectURI": "http(s)://<insert-external-ip-or-dns-name>/dex/callback",
-  "insecureEnableGroups": true,
-  "insecureSkipEmailVerified": true,
-  "insecureSkipIssuerCallbackDomainCheck": false,
-  "forwardedLoginParams": ["login_hint"] 
+  "oidc": {
+    "upstreamIDPs": [
+      {
+        "type": "oidc",
+        "id": "auth0",
+        "name": "Auth0",
+        "version": 1,
+        "config": {
+          "issuer": "https://<auth0.app.domain.url>/",
+          "clientID": "FbTzaVdABC9TbX07pXqxHwofuEOux004",
+          "clientSecret": "1kbxtx22DLLMNOrjJgV-RaaUsmTzGoQ3h4UEeQ2hmduP1qPLK5yTOsrmwwVNXP9U",
+          "redirectURI": "https://<proxy.host.value.com>/dex/callback",
+          "insecureEnableGroups": true,
+          "insecureSkipEmailVerified": true,
+          "insecureSkipIssuerCallbackDomainCheck": false
+        }
+      }
+    ]
   }
 }
+
 ```
 {{% /wizardResult %}}
 
 {{% wizardResult val1="syntax/yaml" %}}
 
 ``` yaml
-  type: oidc
-  id: auth0
-  name: Auth0
-  version: 1
-  config:
-      issuer: https://dev-k34x5yjn.us.auth0.com/
-      clientID: hegmOc5rTotLPu5ByRDXOvBAzgs3wuw5
-      clientSecret: 7xk8O71Uhp5T-bJp_aP2Squwlh4zZTJs65URPma-2UT7n1iigDaMUD9ArhUR-2aL
-      redirectURI: http(s)://<insert-external-ip-or-dns-name>/dex/callback
-      insecureEnableGroups: true
-      insecureSkipEmailVerified: true
-      insecureSkipIssuerCallbackDomainCheck: false,
-      forwardedLoginParams:
-      - login_hint
+oidc:
+  upstreamIDPs:
+  - type: oidc
+    id: auth0
+    name: Auth0
+    version: 1
+    config:
+        issuer: https://<auth0.app.domain.url>/
+        clientID: FbTzaVdFCB9TbX07pXqxBwofuEOux004
+        clientSecret: 1kbxtx22DLGSULrjJgV-TaaUsmTzGoQ3h4UZeQ2hmduP1qPLK5yTOsrmwwVNXP9U
+        redirectURI: https://<proxy.host.value.com>/dex/callback 
+        insecureEnableGroups: true
+        insecureSkipEmailVerified: true
+        insecureSkipIssuerCallbackDomainCheck: false
 ```
 {{% notice note %}}
 Note that {{% productName %}}'s YAML format is **a simplified version** of Dex's [sample config](https://dexidp.io/docs/connectors/oidc/).
@@ -101,62 +118,26 @@ Note that {{% productName %}}'s YAML format is **a simplified version** of Dex's
 
 {{</stack>}}
 
-2. Update the following attributes:
+3. Update the following attributes:
+   
+| Field          | Description                                                                                     |
+|----------------|-------------------------------------------------------------------------------------------------|
+| `issuer`       | The Auth0 App's domain URL, found under **Settings** > **Basic Information**; must have `https://` and a trailing slash `/`. |
+| `clientID`     | The Auth0 App's client ID, found under **Settings** > **Basic Information**.                    |
+| `clientSecret` | The Auth0 App's client secret, found under **Settings** > **Basic Information**.                |
+| `redirectURI`  | A combination of your proxy host value and `/dex/callback`. For example, `https://console.pachdemo.com/dex/callback`. |
 
-|Attribute|Description|
-|-|-|
-|id|The unique identifier of your connector (string).|
-|name| Its full name (string).|
-|type|The type of connector. (oidc, saml).|
-|version| The version of your connector (integer - default to 0 when creating a new connector)|
-|issuer| The domain of your application (here in Auth0). For example, `https://dev-k34x5yjn.us.auth0.com/`. **Note the trailing slash**.|
-|client_id| The {{% productName %}} **Client ID** (here in Auth0). The client ID consists of alphanumeric characters and can be found on the application
-settings page.|
-|client_secret| The {{% productName %}} client secret (here in Auth0) located on the application settings page.
-|redirect_uri|This parameter should match what you have added to **Allowed Callback URLs** when registering {{% productName %}} on your IdP website.|
+4. Save your changes and upgrade your cluster:
+   ```s
+   helm upgrade pachyderm pachyderm/pachyderm -f values.yaml
+   ```
 
-3. Open your Helm `values.yml` file.
-4. Find the [oidc.upstreamIDPs](https://github.com/pachyderm/pachyderm/blob/{{% majorMinorVersion %}}/etc/helm/pachyderm/values.yaml#L774) section.
-5. Input your connector info; {{% productName %}} stores this value in the platform secret `pachyderm-identity` in the key `upstream-idps`.
-```yaml
-stringData:
-upstream-idps: |
-    - type: github
-    id: github
-    name: GitHub
-    jsonConfig: >-
-        {
-        "clientID": "xxx",
-        "clientSecret": "xxx",
-        "redirectURI": "https://pach.pachdemo.cloud/dex/callback",
-        "loadAllGroups": true
-        }
-```
-
-
+{{%notice tip%}}
 
 Alternatively, you can [create a secret](/{{%release%}}/manage/secrets) containing your dex connectors (Key: upstream-idps) and reference its name in the field [oidc.upstreamIDPsSecretName](https://github.com/pachyderm/pachyderm/blob/{{% majorMinorVersion %}}/etc/helm/pachyderm/values.yaml#L805).
 
+{{%/notice%}}
  
 ### 3. Login
 The users registered with your IdP are now ready to [Log in to {{% productName %}}](/{{%release%}}/get-started/connect-to-existing)
 
-## Considerations 
-
-### Ingress 
-
-**When using an [ingress](/{{%release%}}/manage/helm-values/ingress)**:
-
-- `redirect_uri` must be changed to point to `https://domain-name/dex/callback`. (Note the additional **/dex/**) 
-- TLS requires all non-localhost redirectURIs to be **HTTPS**.
-- AZURE USERS: 
-    - You must use TLS when deploying on Azure.
-    - When using Azure Active Directory, add the following to the oidc config:
-    ``` yaml
-    "config":{
-        "claimMapping": {
-            "email": "preferred_username"
-        } 
-    }      
- 
-    ```

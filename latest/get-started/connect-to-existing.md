@@ -23,8 +23,8 @@ directory: true
    {{< stack type="wizard">}}
 
    {{% wizardRow id="Method" %}}
-   {{% wizardButton option="HTTP" state="active" %}}
-   {{% wizardButton option="HTTPS (TLS)" %}}
+   {{% wizardButton option="HTTP" %}}
+   {{% wizardButton option="HTTPS (TLS)" state="active" %}}
    {{% /wizardRow %}}
 
    {{% wizardResults %}}
@@ -35,7 +35,7 @@ directory: true
    {{% /wizardResult %}}
    {{% wizardResult val1="method/https-tls" %}}
    ```s
-   pachctl connect https://pachyderm.<your-proxy.host-value>
+   pachctl connect https://<your-proxy.host-value>
    ```
    {{% /wizardResult %}}
    {{% /wizardResults%}}
