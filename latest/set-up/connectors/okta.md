@@ -138,3 +138,7 @@ You can obtain your pod logs by running: `kubectl logs <pachd-pod-name> > logs.t
 ```s
 create connector with ID: "okta": unable to open connector: failed to get provider: oidc: issuer did not match the issuer returned by provider, expected "https://trial-1839456.okta.com/" got "https://trial-1839456.okta.com"
 ```
+
+### Okta QR Code / Login Link Doesn't Work
+
+You may need to download the [Okta Verify](https://www.okta.com/integrations/okta-verify/) app on your mobile device and scan the QR code through the app log in.
