@@ -132,6 +132,9 @@ If you encounter a `CrashLoopBackOff` error after running the `kubectl get pods`
   - you have an unexpected field such as `version` in the config section `oidc.updstreamIDPs entry`. 
 
 **Example Error in PachD Pod logs**
+
+You can obtain your pod logs by running: `kubectl logs <pachd-pod-name> > logs.txt`
+
 ```s
 create connector with ID: "okta": unable to open connector: failed to get provider: oidc: issuer did not match the issuer returned by provider, expected "https://trial-1839456.okta.com/" got "https://trial-1839456.okta.com"
 ```
