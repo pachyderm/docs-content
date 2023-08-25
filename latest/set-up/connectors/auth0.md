@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Auth0
-description: Learn how to authenticate with Auth0.
+description: Learn how to enable authentication through Auth0 as an Identity Provider.
 date: 
 # taxonomy #
 tags:  ["identity-providers", "permissions", "management", "integrations"]

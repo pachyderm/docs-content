@@ -96,7 +96,11 @@ The following steps are just one example of how to obtain a signed certificate f
 
 3. Create a secret (replace `<your.proxy.host.value>`):
    ```s
-   kubectl create secret tls pachyderm-tls-secret-001 --cert /etc/letsencrypt/live/<your.proxy.host.value>/fullchain.pem --key /etc/letsencrypt/live/<your.proxy.host.value>/privkey.pem --dry-run=client --output=yaml > pachyderm-tls-secret-001.yaml
+   kubectl create secret tls pachyderm-tls-secret-001 \
+    --cert /etc/letsencrypt/live/<your.proxy.host.value>/fullchain.pem \
+    --key /etc/letsencrypt/live/<your.proxy.host.value>/privkey.pem \
+    --dry-run=client \
+    --output=yaml > pachyderm-tls-secret-001.yaml
    ```
 4. Apply the secret:
    ```s
