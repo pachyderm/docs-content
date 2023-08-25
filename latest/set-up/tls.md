@@ -4,7 +4,7 @@ title: TLS (SSL, HTTPS)
 description: Learn how to deploy a cluster with Transport Layer Security (TLS).
 date: 
 # taxonomy #
-tags: ["deployment"]
+tags: ["deployment", "TLS", "SSL", "HTTPS", "security","authentication","authorization","enterprise"]
 series:
 seriesPart:
 weight: 10
@@ -119,3 +119,14 @@ The following steps are just one example of how to obtain a signed certificate f
    ```
 
 That's it! You can now consider setting up [Authentication](/{{%release%}}/set-up/connectors) to take advantage of our [Authorization (RBAC) system](/{{%release%}}/set-up/authorization).
+
+## Troubleshooting
+
+### Can't Connect to Console Through Subdomain
+
+It's possible that the external IP address of your cluster has changed during a Helm upgrade. To check, run the following command:
+```s
+kubectl get service pachyderm-proxy -o wide | grep pachyderm-proxy | awk '{print $4}'
+```
+
+If that IP address does not match the IP address found in your `A` DNS record, you will need to update your DNS records to point to the new IP address.
