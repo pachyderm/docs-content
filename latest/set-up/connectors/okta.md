@@ -10,151 +10,128 @@ seriesPart:
 weight: 03
 ---
 
-If [Okta® access management software](https://www.okta.com) is your preferred choice of IdP, you can configure {{% productName %}} to use Okta as an OpenID Connect (OIDC)  identity provider using the following steps. 
+## Before You Start 
 
-{{% notice note %}}
-Before you can configure {{% productName %}} to work with Okta, log in or create an account at https://www.okta.com/login/. 
-{{% /notice %}}
+- You must have the following enabled on your cluster:
+  - [Enterprise](/{{%release%}}/set-up/enterprise/activate-via-helm)
+  - [TLS](/{{%release%}}/set-up/tls) 
+- You must have an [Okta](https://okta.com) account
+- You should know the value of your [`proxy.host`](/{{%release%}}/manage/helm-values/proxy/) setting in your Helm `values.yaml` file
 
+## How to Enable Okta as an IdP
 
-## Register {{% productName %}} with Okta
+### 1. Create an App on Okta
 
-For more detailed step by step instructions, follow this [documentation](https://developer.okta.com/docs/guides/add-an-external-idp/apple/register-app-in-okta/).
-
-1. Sign in to your Okta organization with your administrator account.
-1. From the Admin Console side navigation, click **Applications > Applications**.
-1. Click **Add Application**.
-1. Click **Create New App** (or search for your existing app).
-1. Select **Platform: Web** and sign-on method **OpenID Connect**.
-1. Click **Create**.
-1. Type the name of your application, such as **{{% productName %}}**.
-1. Add the following Login redirect URI. 
+1. Log in to Okta.
+2. Navigate to **Applications** > **Applications**.
+3. Select **Create App Integration**.
+4. Choose the **`OIDC - OpenID Connect`** sign-in method.
+5. Choose the **`Web Application`** application type.
+6. Click **Next**.
+7. Name the application, such as **{{% productName %}}**.
+8. Navigate to **General Settings** > **Grant Type** and check the following:
+      - [x] **Authorization Code**
+      - [x] **Refresh Token**
+9. Navigate to **Sign-in Redirect URIs** and input the following:
       ```s
-      http://<ip>:30658/callback
+      https://<your.proxy.host.value>/dex/callback
       ```
-      Note: Your port number should be whatever is routing to the Identity Service:658.
+10. Navigate to **Assignments** and select your preferred Controlled Access policy.
+11. Click **Save**.
 
-      The IP address is the address of your {{% productName %}} host. For example,
-      if you are running {{% productName %}} in Minikube, you can find the IP
-      address by running `minikube ip`.
+### 2. Define Helm Config
 
-1. Click **Save**
-1. Click **Edit** to change the General Settings pane. In the Allowed grant types section, enable **Authorization Code** and **Refresh Token**.
-1. Click **Save**
-1. On the Assignments tab, click **Assign** to assign the app integration to any user or group in your org. Click **Done** when the assignments are complete.
+The following steps add the [OIDC](/{{%release%}}/manage/helm-values/oidc/) section to your Helm chart. When an upstream IdP is successfully added to the list, {{%productName%}}'s default [MockIdP](/{{%release%}}/set-up/connectors/mockidp) is disabled automatically. You can add multiple IdPs to `upstreamIDPs`.
 
+1. Navigate to your `values.yamls` file or obtain your current Helm `values.yaml` overrides:
+   ```s
+   helm get values pachyderm/pachyderm --show-only-overrides > values.yaml
+   ```
+2. Add the following section:
 
-## Set up an create an Idp-{{% productName %}} connector
-
-After you have configured a {{% productName %}} application in Okta, you
-need to create an OIDC connector config file with the Okta parameters.
-All the required parameters, such as `client_id`, `client_secret`, 
-and others, are located on the App General tab.
-
-To configure {{% productName %}} Auth, complete the following steps:
-
-
-1. Go to the terminal and forward the `pachd` pod to the OIDC port:
-
-   1. Get the `pachd` pod ID:
-
-      ```s
-      kubectl get pod
-      ```
-
-      **Example system response:**
-
-      ```s
-      pachd-79f7f68c65-9qs8g      1/1     Running   0          4h2m
-      ...
-      ```
-
-   2. Forward the `pachd` pod to the OIDC port:
-
-      **Example:**
-
-      ```s
-      kubectl port-forward pachd-79f7f68c65-9qs8g 30657
-      ```
-
-2. Enable {{% productName %}} authentication:
-
-      ```s
-      pachctl auth activate --initial-admin=robot:admin
-      ```
-
-      {{% productName %}} returns a token.
-
-      **WARNING!** You must save the token to a secure location
-      to avoid being locked out of your cluster.
-
-3. Log in as the admin user with the token you received in the previous
-step:
-
-      ```s
-      pachctl auth use-auth-token
-      ```
-
-1. Set up the authentication config:
-
-    ```s
-    pachctl auth set-config <<EOF
+{{< stack type="wizard" >}}
+{{% wizardRow id="Syntax" %}}
+ {{% wizardButton option="json" %}}
+ {{% wizardButton option="yaml" state="active"%}}
+{{% /wizardRow %}}
+{{% wizardResults %}}
+{{% wizardResult val1="syntax/json" %}}
+``` json
+{
+  "oidc": {
+    "upstreamIDPs": [
       {
-      "live_config_version": 2,
-      "id_providers": [{
-      "name": "okta",
-      "description": "oidc-based authentication with Okta",
-      "oidc":{
-      "issuer": "https://",
-      "client_id": "",
-      "client_secret": "",
-      "redirect_uri": "your redirect URI",
-      ignore_email_verified: true
+        "type": "oidc",
+        "id": "okta",
+        "name": "Okta",
+        "config": {
+          "issuer": "https://trial-1839456.okta.com/",
+          "clientID": "0oa74mh2scJf29qOD697",
+          "clientSecret": "VNwbzOBltNcaotD2CU5iRyTuqOPpwLR-RC16ai7wakta95W00p7X5HYkEgS_5UWH",
+          "redirectURI": "https://<proxy.host.value.com>/dex/callback",
+          "insecureEnableGroups": true,
+          "insecureSkipEmailVerified": true,
+          "insecureSkipIssuerCallbackDomainCheck": false
+        }
       }
-      }]
-      }
-      EOF
-    ```
+    ]
+  }
+}
+```
+{{% /wizardResult %}}
+{{% wizardResult val1="syntax/yaml" %}}
+``` yaml
+oidc:
+  upstreamIDPs:
+  - type: oidc
+    id: okta
+    name: Okta
+    config:
+        issuer: https://trial-1839456.okta.com/
+        clientID: 0oa74mh2scJf29qOD697
+        clientSecret: VNwbzOBltNcaotD2CU5iRyTuqOPpwLR-RC16ai7wakta95W00p7X5HYkEgS_5UWH
+        redirectURI: https://<proxy.host.value.com>/dex/callback 
+        insecureEnableGroups: true
+        insecureSkipEmailVerified: true
+        insecureSkipIssuerCallbackDomainCheck: false
+```
+{{% notice note %}}
+Note that {{% productName %}}'s YAML format is **a simplified version** of Dex's [sample config](https://dexidp.io/docs/connectors/oidc/).
+{{% /notice %}}
+{{% /wizardResult %}}
+{{% /wizardResults %}}
+{{</stack>}}
 
-    You need to replace the following placeholders with relevant values:
+3. Update the following attributes:
+   
+| Field          | Description                                                                                     |
+|----------------|-------------------------------------------------------------------------------------------------|
+| `issuer`       | The Okta App's domain URL, found under **Sign On** > **OpenID Connect ID Token**; must have `https://`. |
+| `clientID`     | The Okta App's client ID, found under **General** > **Client Credentials**.                    |
+| `clientSecret` | The Okta App's client secret, found under **General** > **Client Secrets**.                |
+| `redirectURI`  | A combination of your proxy host value and `/dex/callback`. For example, `https://console.pachdemo.com/dex/callback`. |
 
-    - `issuer` — The domain of your application in Okta. For example,
-    `{yourOktaDomain}/`. Note the trailing slash.
+1. Save your changes and upgrade your cluster:
+   ```s
+   helm upgrade pachyderm pachyderm/pachyderm -f values.yaml
+   ```
 
-    - `client_id` — The {{% productName %}} **Client ID** in Okta. 
+{{%notice tip%}}
+Alternatively, you can [create a secret](/{{%release%}}/manage/secrets) containing your dex connectors (Key: upstream-idps) and reference its name in the field [oidc.upstreamIDPsSecretName](https://github.com/pachyderm/pachyderm/blob/{{% majorMinorVersion %}}/etc/helm/pachyderm/values.yaml#L805).
+{{%/notice%}}
 
-    - `client_secret` - The {{% productName %}} client secret in Okta. 
+### 3. Login
+The users registered with your IdP are now ready to [Log in to {{% productName %}}](/{{%release%}}/get-started/connect-to-existing)
 
-    - `redirect_uri` - This parameter should match what you have added
-    to **redirect URI** in the previous step.
+## Troubleshooting 
 
-1. Log in as the user you have created in the {{% productName %}} application
-or sign in with Google:
+### PachD CrashLoopBackOff
 
-   1. Run:
+If you encounter a `CrashLoopBackOff` error after running the `kubectl get pods` command, it's likely that one of the following needs to be fixed:
+  - your `issuer` value is incorrect (sometimes it needs a trailing slash `/`, it should match exactly what you see in Okta).
+  - you have an unexpected field such as `version` in the config section `oidc.updstreamIDPs entry`. 
 
-      ```s
-      pachctl auth login
-      ```
-
-      You should be prompted to a web-browser. Log in as the user you have
-      previously created in Okta or sign in with Google.
-
-    You should see the following message printed out in your browser:
-
-    ```
-    You are now logged in. Go back to the terminal to use {{% productName %}}!
-    ```
-
-1. In the terminal, check that you are logged in as the Okta user:
-
-      ```s
-      pachctl auth whoami
-      ```
-
-      **Example of System Response:**
-
-      ```s
-      You are "okta:test@pachyderm.com"
-      session expires: 07 Aug 20 14:04 PDT
-      ```
+**Example Error in PachD Pod logs**
+```s
+create connector with ID: "okta": unable to open connector: failed to get provider: oidc: issuer did not match the issuer returned by provider, expected "https://trial-1839456.okta.com/" got "https://trial-1839456.okta.com"
+```

@@ -60,9 +60,7 @@ The following steps add the [OIDC](/{{%release%}}/manage/helm-values/oidc/) sect
  {{% wizardButton option="json" %}}
  {{% wizardButton option="yaml" state="active"%}}
 {{% /wizardRow %}}
-
 {{% wizardResults %}}
-
 {{% wizardResult val1="syntax/json" %}}
 ``` json
 {
@@ -72,7 +70,6 @@ The following steps add the [OIDC](/{{%release%}}/manage/helm-values/oidc/) sect
         "type": "oidc",
         "id": "auth0",
         "name": "Auth0",
-        "version": 1,
         "config": {
           "issuer": "https://<auth0.app.domain.url>/",
           "clientID": "FbTzaVdABC9TbX07pXqxHwofuEOux004",
@@ -86,19 +83,15 @@ The following steps add the [OIDC](/{{%release%}}/manage/helm-values/oidc/) sect
     ]
   }
 }
-
 ```
 {{% /wizardResult %}}
-
 {{% wizardResult val1="syntax/yaml" %}}
-
 ``` yaml
 oidc:
   upstreamIDPs:
   - type: oidc
     id: auth0
     name: Auth0
-    version: 1
     config:
         issuer: https://<auth0.app.domain.url>/
         clientID: FbTzaVdFCB9TbX07pXqxBwofuEOux004
@@ -112,10 +105,7 @@ oidc:
 Note that {{% productName %}}'s YAML format is **a simplified version** of Dex's [sample config](https://dexidp.io/docs/connectors/oidc/).
 {{% /notice %}}
 {{% /wizardResult %}}
-
-
 {{% /wizardResults %}}
-
 {{</stack>}}
 
 3. Update the following attributes:
@@ -141,3 +131,15 @@ Alternatively, you can [create a secret](/{{%release%}}/manage/secrets) containi
 ### 3. Login
 The users registered with your IdP are now ready to [Log in to {{% productName %}}](/{{%release%}}/get-started/connect-to-existing)
 
+## Troubleshooting 
+
+### PachD CrashLoopBackOff
+
+If you encounter a `CrashLoopBackOff` error after running the `kubectl get pods` command, it's likely that one of the following needs to be fixed:
+  - your `issuer` value is incorrect (it must have `https://` and a trailing slash `/`).
+  - you have an unexpected field such as `version` in the config section `oidc.updstreamIDPs entry`. 
+
+**Example Error in PachD Pod logs**
+```s
+create connector with ID: "auth0": unable to open connector: failed to get provider: oidc: issuer did not match the issuer returned by provider, expected "https://<auth0.app.domain.url>/" got "https://<auth0.app.domain.url>"
+```
