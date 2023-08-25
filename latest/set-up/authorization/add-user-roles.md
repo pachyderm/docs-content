@@ -13,19 +13,34 @@ weight: 1
 
 ## Before You Start 
 
-- You must have an active Enterprise key 
+- You must have an active [Enterprise](/{{%release%}}/set-up/enterprise/activate-via-helm) key 
+- You must have [TLS](/{{%release%}}/set-up/tls) enabled on your cluster
 - You must have an [Authentication Provider (IdP)](/{{%release%}}/set-up/connectors) set up
-    - [MockIdP](/{{%release%}}/set-up/connectors/mockidp)
     - [Auth0](/{{%release%}}/set-up/connectors/auth0)
     - [Okta](/{{%release%}}/set-up/connectors/okta)
 - Review the [Access Control (RBAC) Roles & Permissions](/{{%release%}}/set-up/authorization/permissions).
-- Confirm you have the right role(s) to grant a user access to a given resource.
+- Confirm you have the right role(s) to grant a user access to a given resource (e.g., you have the `projectOwner` role on a given project you wish to add other users to)
+
+{{% notice tip %}}
+
+You can check your current roles and permissions on a given project by running the following:
+
+```s
+pachctl auth check project <project-name>
+```
+```
+Roles: [projectOwner]
+Permissions: [REPO_READ REPO_INSPECT_COMMIT REPO_LIST_COMMIT REPO_LIST_BRANCH REPO_LIST_FILE REPO_INSPECT_FILE REPO_ADD_PIPELINE_READER REPO_REMOVE_PIPELINE_READER PIPELINE_LIST_JOB REPO_WRITE REPO_DELETE_COMMIT REPO_CREATE_BRANCH REPO_DELETE_BRANCH REPO_ADD_PIPELINE_WRITER REPO_MODIFY_BINDINGS REPO_DELETE PROJECT_LIST_REPO PROJECT_CREATE_REPO PROJECT_DELETE PROJECT_MODIFY_BINDINGS]
+```
+{{% /notice %}}
 
 ## How to Assign Roles to a User 
 
+### As Root Admin
+
 This guide assumes resources (projects, repositories) have already been created in your cluster. 
 
-{{%notice tip%}}
+{{%notice note%}}
 You can skip steps 2 and 3 if you are using the [MockIdP](/{{%release%}}/set-up/connectors/mockidp) connector and just want to explore/practice, as you are already logged in as the `admin` user. Even though you can assign permissions to new users in MockIdP, you cannot log in as them.
 {{%/notice%}}
 
@@ -38,7 +53,13 @@ pachctl auth use-auth-token
 ```s
 kubectl get secret pachyderm-auth -o jsonpath="{.data.root-token}" | base64 --decode
 ```
-
+4. Verify you are connected as the root user by running the following command:
+```s
+pachctl auth whoami
+```
+```
+You are "pach:root"
+```
 4. Run one of the following commands to assign a role:
 
 {{< stack type="wizard" >}}
@@ -99,11 +120,17 @@ pachctl auth set <resource> <resource-name> [role1,role2 | none ] <prefix:subjec
 ```s
 pachctl auth get project <project-name>
 ```
+```
+user:lawrence.lane@hpe.com: [projectOwner]
+```
 {{% /wizardResult %}}
 
 {{% wizardResult val1="resource-type/repo" %}}
 ```s
 pachctl auth get repo <repo-name>
+```
+```
+user:lawrence.lane@hpe.com: [repoOwner]
 ```
 {{% /wizardResult %}}
 
@@ -112,3 +139,76 @@ pachctl auth get repo <repo-name>
 
 You can also use these steps to update a users permissions.
  
+### As Project Owner
+
+1. Open your terminal.
+2. Log in.
+ ```s
+ pachctl auth login
+ ```
+3. Add a user and assign their role to a project that you own.
+
+{{< stack type="wizard" >}}
+{{% wizardRow id="Resource Type" %}}
+{{% wizardButton option="Project" state="active" %}}
+{{% wizardButton option="Repo" %}}
+{{% wizardButton option="Other" %}}
+{{% wizardButton option="All" %}}
+{{% /wizardRow %}}
+
+{{% wizardResults %}}
+{{% wizardResult val1="resource-type/project" %}}
+```s
+pachctl auth set project <project-name> <role-name> user:<username@email.com>
+```
+{{% /wizardResult %}}
+
+{{% wizardResult val1="resource-type/repo" %}}
+```s
+pachctl auth set repo <repo-name> <role-name> user:<username@email.com>
+```
+{{% /wizardResult %}}
+
+{{% wizardResult val1="resource-type/all" %}}
+```s
+pachctl auth set enterprise clusterAdmin user:<email>
+```
+{{% /wizardResult %}}
+
+{{% wizardResult val1="resource-type/other" %}}
+```s
+pachctl auth set <resource> <resource-name> [role1,role2 | none ] <prefix:subject>
+```
+{{% /wizardResult %}}
+{{% /wizardResults %}}
+{{</stack >}}
+
+4. Confirm access by running the following command:
+
+{{< stack type="wizard" >}}
+{{% wizardRow id="Resource Type" %}}
+{{% wizardButton option="Project" state="active" %}}
+{{% wizardButton option="Repo" %}}
+{{% /wizardRow %}}
+
+{{% wizardResults %}}
+{{% wizardResult val1="resource-type/project" %}}
+```s
+pachctl auth get project <project-name>
+```
+```
+user:lawrence.lane@hpe.com: [projectOwner]
+```
+{{% /wizardResult %}}
+
+{{% wizardResult val1="resource-type/repo" %}}
+```s
+pachctl auth get repo <repo-name>
+```
+```
+user:lawrence.lane@hpe.com: [repoOwner]
+```
+{{% /wizardResult %}}
+
+{{% /wizardResults %}}
+{{</stack >}}

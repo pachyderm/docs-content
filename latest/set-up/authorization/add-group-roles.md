@@ -17,7 +17,7 @@ weight: 2
     - [Auth0](/{{%release%}}/set-up/connectors/auth0)
     - [Okta](/{{%release%}}/set-up/connectors/okta)
 - Review the [Access Control (RBAC) Roles & Permissions](/{{%release%}}/set-up/authorization/permissions).
-- Confirm you have the right role(s) to grant a user access to a given resource.
+- Confirm you have the right role(s) to grant a user access to a given resource (e.g., you have the `projectOwner` role on a given project you wish to add other users to)
 ## How to Assign Roles to a Group 
 
 This guide uses Auth0 and assumes resources (projects, repositories) have already been created in your cluster.
