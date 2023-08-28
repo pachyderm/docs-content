@@ -1,10 +1,10 @@
 ---
 # metadata # 
 title: Manage RBAC via Console
-description: Learn how to grant and modify permissions on given resources for a user.
+description: Learn how to grant and modify roles on given resources for a user.
 date: 
 # taxonomy #
-tags: ["permissions", "management"]
+tags: ["permissions", "management", "roles", "rbac"]
 series:
 seriesPart:
 weight: 01
@@ -21,14 +21,14 @@ weight: 01
 - Review the [Roles & Permissions](/{{%release%}}/set-up/authorization/permissions).
 - Review the [User Types](/{{%release%}}/set-up/authorization/#authorization-rbac-users-types) 
 - Confirm you have the right role(s) to grant a user access to a given resource (e.g., you have the `projectOwner` role on a given project you wish to add other users to)
-
+- [Cluster-level admin roles](/{{%release%}}/set-up/authorization/permissions/#access-control-rbac-roles--permissions-admin-roles) are not currently implementable via Console
 
 
 ## How to Assign Roles to a User 
 
 ### On a Project
 
-Permissions granted at the Project level are inherited by all repositories within that project. If you grant a user `repoReader` on a project, they will have `repoReader` on all repositories within that project and that permission will not be removable on the repo level.
+Roles granted at the Project level are inherited by all repositories within that project. If you grant a user `repoReader` on a project, they will have `repoReader` on all repositories within that project and that role will not be removable on the repo level.
 
 1. Log in to the {{%productName%}} Console.
 2. Scroll to a project you wish to add a user to.
@@ -56,7 +56,7 @@ You can add more roles to a user by selecting the plus icon {{< figure src="/ima
 
 ### On a Repository
 
-Permissions granted at the Repository level are not inherited by other repositories within that project. This is useful if you want to grant a user `repoReader` on a single repository within a project, but not on all repositories within that project.
+Roles granted at the Repository level are not inherited by other repositories within that project. This is useful if you want to grant a user `repoReader` on a single repository within a project, but not on all repositories within that project.
 
 1. Log in to the {{%productName%}} Console.
 2. Select a **View Project** on the project containing the repository you wish to add a user to.
