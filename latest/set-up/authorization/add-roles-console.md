@@ -35,7 +35,7 @@ Roles granted at the Project level are inherited by all repositories within that
 3. Select the ellipsis icon {{< figure src="/images/console/ellipses.svg" class="inline">}} > **Edit Project Roles**
     ![rbac](/images/console/rbac-project.png)
 4. Select a [User Type](/{{%release%}}/set-up/authorization/#authorization-rbac-users-types)  from the dropdown:
-   - **user**: an individual by name or email address
+   - **user**: an individual by name or email address; requires that user's email address be registered or available to your [IdP](/{{%release%}}/set-up/connectors) (e.g., either explicitly listed or allowed via your email domain)
    - **group**: a group of users; requires that your [IdP](/{{%release%}}/set-up/connectors) supports groups tied to an email address
    - **robot**: a service account
    - **allClusterUsers**: all users on the cluster
