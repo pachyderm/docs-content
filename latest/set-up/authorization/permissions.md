@@ -7,6 +7,7 @@ date:
 tags: ["permissions", "management", "roles", "RBAC"]
 series:
 seriesPart:
+weight: 001
 ---
 
 This page describes how {{% productName %}}'s access control system works and how you can use it to manage access in {{% productName %}}. Use RBAC to grant granular access to specific {{% productName %}} resources.

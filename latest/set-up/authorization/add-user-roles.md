@@ -1,13 +1,13 @@
 ---
 # metadata # 
-title: Add Roles to User
+title: Add Roles to User via PachCTL
 description: Learn how to grant and modify permissions on given resources for a user.
 date: 
 # taxonomy #
 tags: ["permissions", "management"]
 series:
 seriesPart:
-weight: 1
+weight: 02
 ---
 
 

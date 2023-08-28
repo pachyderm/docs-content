@@ -1,13 +1,13 @@
 ---
 # metadata # 
-title: Add Roles to Group
+title: Add Roles to Group via PachCTL
 description: Learn how to grant and modify permissions on given resources for a group of users.
 date: 
 # taxonomy #
 tags: ["permissions", "management"]
 series:
 seriesPart:
-weight: 2
+weight: 03
 ---
 
 ## Before You Start 
