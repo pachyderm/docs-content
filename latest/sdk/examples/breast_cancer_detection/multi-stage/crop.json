@@ -1,0 +1,19 @@
+{
+  "pipeline": {
+    "name": "crop"
+  },
+  "description": "Remove background of image and save cropped files.",
+  "input": {
+    "pfs": {
+      "repo": "sample_data",
+      "glob": "/*"
+    }
+  },
+  "transform": {
+    "cmd": [
+      "/bin/bash",
+      "multi-stage/crop.sh"
+    ],
+    "image": "pachyderm/breast_cancer_classifier:1.11.6"
+  }
+}
