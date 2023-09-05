@@ -19,494 +19,222 @@ directory: true
 
 ### Context
 
-{{% productName %}} creates a Kubernetes cluster that you interact with using either the pachctl CLI or through Console, a GUI.
+### How it Works
 
-  - **pachctl** is great for users already experienced with using a CLI.
+{{% productName %}} deploys a Kubernetes cluster to manage and version your data using [projects](/{{%release%}}/learn/glossary/project), [input repositories](/{{%release%}}/learn/glossary/input-repo), [pipelines](/{{%release%}}/learn/glossary/pipeline), [datums](/{{%release%}}/build-dags/datum-operations) and [output repositories](/{{%release%}}/learn/glossary/output-repo). A project can house many repositories and pipelines, and when a pipeline runs a [job](/{{%release%}}/learn/glossary/job/) it chunks your inputs into many datums for processing. The number of datums is determined by the [glob pattern](/{{%release%}}/learn/glossary/glob-pattern/) defined in your [pipeline specification](/{{%release%}}/learn/glossary/pipeline-specification/). 
+
+Once chunked, each datum is processed using your [user code](/{{%release%}}/learn/glossary/user-code) in a [worker pod](/{{%release%}}/learn/glossary/pachyderm-worker/). This user code is also referenced in the pipeline specification as a Docker image. The end result of your data transformation is stored in the pipeline's output repository, which shares the same name as the pipeline. Pipelines can be single-step or multi-step; multi-step pipelines are commonly referred to as [DAGs](/{{%release%}}/learn/glossary/dag), with each part of the DAG being a "step" pipeline.
+
+Don't worry if this sounds confusing! We'll walk you through the process step-by-step.
+### How to Interact with {{% productName %}}
+
+You can interact your {{%productName%}} cluster using the PachCTL CLI or through Console, a GUI.
+
+  - **PachCTL** is great for users already experienced with using a CLI.
   - **Console** is great for beginners and helps with visualizing relationships between projects, repos, and pipelines.
-
-Within the cluster, you can create projects that contain repos and pipelines. Pipelines can be single-stage or multi-stage; multi-stage pipelines are commonly referred to as DAGs.
 
 ---
 
-## Tutorial: Image processing with OpenCV
+## Tutorial: Image & Video Processing with OpenCV
 
-In this tutorial you'll create an  image [edge
-detection](https://en.wikipedia.org/wiki/Edge_detection) pipeline that processes new data as it is added and outputs the results.
+In this tutorial, we'll walk you through how to use {{% productName %}} to process images and videos using [OpenCV](https://opencv.org/). OpenCV is a popular open-source computer vision library that can be used to perform image processing and video analysis.
+
+This DAG has 6 steps with the goal of intaking raw photos and video content, drawing edge-detected traces, and outputting a comparison collage of the original and processed images:
+ 
+ 1. Convert videos to MP4 format
+ 2. Extract frames from videos
+ 3. Trace the outline of each frame and standalone image
+ 4. Create `.gifs` from the traced video frames
+ 5. Re-shuffle the content so it is organized by "original" and "traced" images
+ 6. Build a comparison collage using a static HTML page
+
+![DAG](/images/beginner-tutorial/vid-to-frametrace.svg)
 
 ### 1. Create a Project 
 
-{{< stack type="wizard" >}}
-{{% wizardRow id="create-project"%}}
-{{% wizardButton option="CLI" state="active" %}}
-{{% wizardButton option="Console" %}}
-{{% /wizardRow %}}
-{{% wizardResults%}}
-{{% wizardResult val1="create-project/cli" %}}
-To keep our work organized, we're going to create a project named `openCV` and set it to our currently active context. 
+By default, when you first start up an instance, the `default` project is attached to your active context. Create a new project and set the project to your active PachCTL context to avoid having to specify the project name (e.g., `--project video-to-frame-traces`) in each command. 
 
 ```s
-pachctl create project openCV
-pachctl config update context --project openCV
+pachctl create project video-to-frame-traces
+pachctl config update context --project video-to-frame-traces
+pachctl list projects
 ```
 
-You can always check to confirm which project has been set to your context by running the following commands:
+### 2. Create an Input Repo 
+
+At the top of our DAG, we'll need an input repo that will store our raw videos and images. 
+   
+```s
+pachctl create repo raw_videos_and_images
+pachctl list repos
+```
+
+### 3. Create the Video Converter Pipeline 
+
+We want to make sure that our DAG can handle videos in multiple formats, so first we'll create a pipeline that will:
+- skip images 
+- skip videos already in the correct format (`.mp4`)
+- convert videos to `.mp4` format
+
+The converted videos will be made available to the next pipeline in the DAG via the `video_mp4_converter` repo by declaring in the user code to save the converted images to `/pfs/out/`. This is the standard location you should use to store your output data so that it can be accessed by the next pipeline in the DAG.
+
+1. Open your terminal.
+2. Create a new folder for your project called `video-to-frametrace`.
+3. Copy and paste the following [pipeline spec](/{{%release%}}/build-dags/pipeline-spec/) into the terminal to create the file.
 
 ```s
-# prints current context name (local) 
-pachctl config get active-context 
-
-# prints local's context details
-pachctl config get context local 
-
-# {
-#   "source": "IMPORTED",
-#   "cluster_name": "docker-desktop",
-#   "auth_info": "docker-desktop",
-#   "cluster_deployment_id": "dev",
-#   "project": "openCV"
-# }
+cat <<EOF > video_mp4_converter.yaml
+pipeline:
+  name: video_mp4_converter
+input:
+  pfs:
+    repo: raw_videos_and_images
+    glob: "/*"
+transform:
+  image: lbliii/video_mp4_converter:1.0.14
+  cmd:
+    - python3
+    - /video_mp4_converter.py
+    - --input
+    - /pfs/raw_videos_and_images/
+    - --output
+    - /pfs/out/
+autoscaling: true
+EOF
 ```
-{{% /wizardResult %}}
-{{% wizardResult val1="create-project/console" %}}
+4. Create the pipeline by running the following command:
+```s
+pachctl create pipeline -f video_mp4_converter.yaml 
+```
 
-1. Open a tab in your browser and go to [localhost](http://localhost).
-2. Select **Create Project**.
-3. Provide details for the following values:
-   - Name 
-   - Description
-4. Select **Create**.
+{{% notice info %}}
+Every pipeline, at minimum, needs a `name`, an `input`, and a `transform`. The input is the data that the pipeline will process, and the transform is the user code that will process the data. `transform.image` is the Docker image available in a container registry ([Docker Hub](https://hub.docker.com/)) that will be used to run the user code. `transform.cmd` is the command that will be run inside the Docker container.
+{{%/notice %}}
 
-{{% /wizardResult %}}
-{{% /wizardResults%}}
-{{</stack>}}
+### 4. Create the Image Flattener Pipeline
 
-
-
-### 2. Create a Repo
-
-Repos should be dedicated to a single source of data such as log messages from a particular service, a users table, or training data. 
-
-{{< stack type="wizard" >}}
-{{% wizardRow id="create-repo"%}}
-{{% wizardButton option="CLI" state="active" %}}
-{{% wizardButton option="Console" %}}
-{{% /wizardRow %}}
-{{% wizardResults%}}
-{{% wizardResult val1="create-repo/cli" %}}
+Next, we'll create a pipeline that will flatten the videos into individual `.png` image frames. Like the previous pipeline, the user code outputs the frames to `/pfs/out` so that the next pipeline in the DAG can access them in the `image_flattener` repo. 
 
 ```s
-pachctl create repo images
+cat <<EOF > image_flattener.yaml
+pipeline:
+  name: image_flattener
+input:
+  pfs:
+    repo: video_mp4_converter
+    glob: "/*"
+transform:
+  image: lbliii/image_flattener:1.0.0
+  cmd:
+    - python3
+    - /image_flattener.py
+    - --input
+    - /pfs/video_mp4_converter
+    - --output
+    - /pfs/out/
+autoscaling: true
+EOF
 ```
-
-You can verify that the repository was created by running the following command:
 
 ```s
-pachctl list repo
-
-# NAME   CREATED       SIZE (MASTER) ACCESS LEVEL
-# images 4 seconds ago ≤ 0B          [repoOwner]
+pachctl create pipeline -f image_flattener.yaml
 ```
- 
-{{% /wizardResult %}}
-{{% wizardResult val1="create-repo/console" %}}
 
-1. In Console, select **View Project**.
-2. Select **Create Your First Repo**.
-3. Provide details for the following values:
-   - Name 
-   - Description
-4. Select **Create**.
+### 5. Create the Image Tracing Pipeline: 
 
-{{% /wizardResult %}}
-{{% /wizardResults%}}
-{{</stack>}}
+Up until this point, we've used a simple single input from the Pachyderm file system (`input.pfs`) and a basic [glob pattern](/{{%release%}}/learn/glossary/glob-pattern/) (`/*`) to specify shape of our the input data datums. This particular pattern treats each top-level file and directory as a single datum. However, in this pipeline, we have some special requirements:
 
+- We want to process *only* the raw images from the `raw_videos_and_images` repo
+- We want to process *all* of the flattened video frame images from the `image_flattener` pipeline
 
-### 3. Add Data
-In {{% productName %}}, you write data to an explicit `commit`. Commits are immutable
-snapshots of your data which give {{% productName %}} its version control properties.
-You can add, remove, or update `files` in a given commit.
+To achieve this, we're going to need to use a [union input](/{{%release%}}/build-dags/pipeline-spec/input-union/) (`input.union`) to combine the two inputs into a single input for the pipeline. 
 
-{{< stack type="wizard" >}}
-{{% wizardRow id="add-data"%}}
-{{% wizardButton option="CLI" state="active" %}}
-{{% wizardButton option="Console" %}}
-{{% /wizardRow %}}
-{{% wizardResults%}}
-{{% wizardResult val1="add-data/cli" %}}
-
-
-We're going to use the `pachctl put file` command, along with the `-f` flag, to upload an image.
+- For the `raw_videos_and_images` input, we can use a more powerful glob pattern to ensure that only image files are processed (`/*.{png,jpg,jpeg}`). 
+- For the `image_flattener` input, we can use the same glob pattern as before (`/*`) to ensure that each video's collection of frames is processed together.
 
 ```s
-pachctl put file images@master:liberty.png -f https://raw.githubusercontent.com/pachyderm/docs-content/main/images/opencv/liberty.jpg
+cat <<EOF > image_tracer.yaml
+pipeline:
+  name: image_tracer
+description: A pipeline that performs image edge detection by using the OpenCV library.
+input:
+  union:
+    - pfs:
+        repo: raw_videos_and_images
+        glob: "/*.{png,jpg,jpeg}"
+    - pfs:
+        repo: image_flattener
+        glob: "/*"
+transform:
+  image: lbliii/image_tracer:1.0.8
+  cmd:
+    - python3
+    - /image_tracer.py
+    - --input
+    - /pfs/raw_videos_and_images
+    - /pfs/image_flattener
+    - --output
+    - /pfs/out/
+autoscaling: true
+EOF
 ```
-
-`pachctl put file` automatically starts and finishes a commit for you so you can add files
-more easily. 
-
-{{% notice tip %}}
-If you want to add many files over a period of time, you can do `pachctl start commit` and `pachctl finish commit` yourself.
-{{% /notice %}}
-
-You can confirm the commit using the following command:
 
 ```s
-pachctl list commit images
-
-# REPO          BRANCH COMMIT                           FINISHED       SIZE     ORIGIN DESCRIPTION
-# openCV/images master 37559e89ed0c4a0cb354649524050851 10 seconds ago 57.27KiB USER  
+pachctl create pipeline -f image_tracer.yaml
 ```
 
-You can also view the filename in the commit using the following command:
+### 6. Create the Gif Pipeline
+
+Next, we'll create a pipeline that will create two gifs:
+  1. a gif of the original video's flattened frames (from the `image_flattener` output repo)
+  2. a gif of the video's traced frames (from the `image_tracer` output repo)
+
+- [See User Code](./4_gif_images/movie_gifer.py)
+- [See Pipeline Spec](./4_gif_images/movie_gifer.yaml)
 
 ```s
-pachctl list file images@master
-
-# NAME         TYPE SIZE     
-# /liberty.png file 57.27KiB
-```
- 
-{{% /wizardResult %}}
-{{% wizardResult val1="add-data/console" %}}
-
-1. From your Project's DAG view in console, select your repo. 
-2. Select the upload icon from the slideout menu.
-3. Complete one of the following:
-   - Provide the path of the file on your local machine.
-   - Select **Browse Files** and choose the file from your local machine.
-   - Drag-and-drop the file. 
-4. Select **Done**.
-
-{{% /wizardResult %}}
-{{% /wizardResults%}}
-{{</stack>}}
-
-
-
-#### Bonus: View Image 
-
-You can view the files you've uploaded in the Console or in your Terminal.
-
-#### In Terminal
-
-{{< stack type="wizard" >}}
-{{% wizardRow id="Operating System"%}}
-{{% wizardButton option="MacOS" state="active" %}}
-{{% wizardButton option="Linux" %}}
-{{% /wizardRow %}}
-
-
-{{% wizardResults%}}
-
-{{% wizardResult val1="operating-system/macos" %}}
-```s
-pachctl get file images@master:liberty.png | open -f -a Preview.app
-```
-{{% /wizardResult %}}
-
-{{% wizardResult val1="operating-system/linux" %}}
-```s
-pachctl get file images@master:liberty.png | display
-```
-{{% /wizardResult %}}
-
-{{% /wizardResults%}}
-
-{{</stack>}}
-
-
-
-#### In Console 
-
-In your Console, click on the `images` repo to visualize its commit and inspect its file:
-
-![Console images liberty](/images/getting-started/console-images-liberty.png)
-
-
-### 4. Create a Pipeline
-
-Now that you have some data in your repo, it is time to do something
-with it using a [pipeline]({{%release%}}/learn/glossary/pipeline). 
-
-Pipelines process data and are defined using a JSON [pipeline specification](/{{%release%}}/learn/glossary/pipeline-specification). For this [tutorial](https://github.com/pachyderm/pachyderm/blob/{{%majorMinorVersion%}}/examples/opencv), we've already
-[created the spec for you](https://github.com/pachyderm/pachyderm/blob/{{%majorMinorVersion%}}/examples/opencv/edges.json).
-
-#### Review Pipeline Spec
-
-Take a moment to review the details of the provided pipeline spec so that you'll know how to create one on your own in the future.
-
-```json
-{
-  // The `pipeline` section contains a `name` for identification; this name is also used to create a corresponding output repo.
-  "pipeline": {
-    "name": "edges"
-  },
-  "description": "A pipeline that performs image edge detection by using the OpenCV library.",
-  // The `transform` section allows you to specify the docker `image` you want to use (`pachyderm/opencv:1.0`)and the `cmd` that defines the entry point (`edges.py`). 
-  "transform": {
-    "cmd": [ "python3", "/edges.py" ],
-    "image": "pachyderm/opencv:1.0"
-  },
-  // The input section specifies repos visible to the running pipeline, and how to process the data from the repos. 
-  // Commits to these repos trigger the pipeline to create new processing jobs. In this case, `images` is the repo, and `/*` is the glob pattern.
-  "input": {
-    "pfs": {
-      "repo": "images",
-      // The glob pattern defines how the input data will be transformed into datum if you want to distribute computation. `/*` means that each file can be processed individually.
-      "glob": "/*"
-    }
-  }
-}
+pachctl create pipeline -f 4_gif_images/movie_gifer.yaml
 ```
 
+### 7. Create the Content Shuffler Pipeline
 
-The following extract is the Python [User Code]({{%release%}}/learn/glossary/user-code) run in this pipeline:
+Next, we'll create a pipeline that will re-shuffle the content from the previous pipelines into two folders:
+   - `edges`: contains the traced images and gifs
+   - `originals`: contains the original images and gifs
 
-```python
-import cv2
-import numpy as np
-from matplotlib import pyplot as plt
-import os
+This helps us keep the content organized for easy access and manipulation in the next pipeline.
 
-# make_edges reads an image from /pfs/images and outputs the result of running
-# edge detection on that image to /pfs/out. Note that /pfs/images and
-# /pfs/out are special directories that {{% productName %}} injects into the container.
-def make_edges(image):
-   img = cv2.imread(image)
-   tail = os.path.split(image)[1]
-   edges = cv2.Canny(img,100,200)
-   plt.imsave(os.path.join("/pfs/out", os.path.splitext(tail)[0]+'.png'), edges, cmap = 'gray')
-
-# walk /pfs/images and call make_edges on every file found
-for dirpath, dirs, files in os.walk("/pfs/images"):
-   for file in files:
-       make_edges(os.path.join(dirpath, file))
-```
-
-The code simply walks over all the images in `/pfs/images`, performs edge detection, and writes the result to `/pfs/out`.
-
-- `/pfs/images` and `/pfs/out` are special local directories that
-{{% productName %}} creates within the container automatically. 
-- Input data is stored in `/pfs/<input_repo_name>`.
-
-{{% notice note %}}
-Your code must write out to `/pfs/out` (see the function `make_edges(image)` above). {{% productName %}} gathers data written to `/pfs/out`, versions it, and maps it to the pipeline's output repo of the same name.
-{{% /notice %}}
-
-Now, let's create the pipeline in {{% productName %}}:
+- [See User Code](./5_shuffle_content/content_shuffler.py)
+- [See Pipeline Spec](./5_shuffle_content/content_shuffler.yaml)
 
 ```s
-pachctl create pipeline -f https://raw.githubusercontent.com/pachyderm/pachyderm/{{% majorMinorVersion %}}/examples/opencv/edges.json
+pachctl create pipeline -f 5_shuffle_content/content_shuffler.yaml
 ```
-Again, check the end result in your Console:
-![Console edges pipeline](/images/getting-started/console-edges-pipeline.png)
 
-#### What Happens When You Create a Pipeline
+### 8. Create the Content Collager Pipeline
 
-When you create a pipeline, {{% productName %}} transforms all current and future data added to your input repo using your user code. This process is known as a [job](/{{%release%}}/learn/glossary/job). The initial job downloads the specified Docker image that is used for all future jobs.
+Finally, we'll create a pipeline that will create a static html page that you can download and open to view the original and traced content side-by-side.
 
-1. View the job:
+- [See User Code](./6_collage_content/content_collager.py)
+- [See Pipeline Spec](./6_collage_content/content_collager.yaml)
 
 ```s
-pachctl list job
-
-# ID                               SUBJOBS PROGRESS CREATED       MODIFIED
-# 23378d899d3d45738f55df3809841145 1       ▇▇▇▇▇▇▇▇ 5 seconds ago 5 seconds ago
+pachctl create pipeline -f 6_collage_content/content_collager.yaml
 ```
 
-2. Check the state of your pipeline:
+### 9. Add Videos and Images 
 
+Now that we have our DAG set up, we can add some videos and images to the `raw_videos_and_images` repo to see the pipeline in action.
+
+#### Videos (Coming Soon)
 ```s
-pachctl list pipeline
+pachctl put file raw_videos_and_images@master: -f 
 
-# NAME  VERSION INPUT     CREATED       STATE / LAST JOB  DESCRIPTION
-# edges 1       images:/* 2 minutes ago running / success A pipeline that performs image edge detection by using the OpenCV library.
 ```
 
-3. List your repositories:
-
+### Upload Images
 ```s
-pachctl list repo
+pachctl put file raw_videos_and_images@master:liberty.png -f https://raw.githubusercontent.com/pachyderm/docs-content/main/images/opencv/liberty.jpg
 
-# NAME   CREATED        SIZE (MASTER) ACCESS LEVEL
-# edges  10 minutes ago ≤ 22.22KiB    [repoOwner]  Output repo for pipeline edges.
-# images 3 hours ago    ≤ 57.27KiB    [repoOwner]
+pachctl put file raw_videos_and_images@master:robot.png -f https://raw.githubusercontent.com/pachyderm/docs-content/main/images/opencv/robot.jpg
 ```
-
-#### Reading the Output
-
-We can view the output data from the `edges` repo in the same fashion
-that we viewed the input data.
-
-{{< stack type="wizard" >}}
-{{% wizardRow id="Operating System"%}}
-{{% wizardButton option="MacOS" state="active" %}}
-{{% wizardButton option="Linux" %}}
-{{% /wizardRow %}}
-
-
-{{% wizardResults%}}
-
-{{% wizardResult val1="operating-system/macos" %}}
-```s
-pachctl get file edges@master:liberty.png | open -f -a Preview.app
-```
-{{% /wizardResult %}}
-
-{{% wizardResult val1="operating-system/linux" %}}
-```s
-pachctl get file edges@master:liberty.png | display
-```
-{{% /wizardResult %}}
-
-{{% /wizardResults%}}
-
-{{</stack>}}
-
-![Console edges liberty](/images/getting-started/console-edges-liberty.png)
-
-
-#### Processing More Data
-
-
-1. Create two new commits:
-
-```s
-pachctl put file images@master:AT-AT.png -f https://raw.githubusercontent.com/pachyderm/docs-content/main/images/opencv/robot.jpg
-pachctl put file images@master:kitten.png -f https://raw.githubusercontent.com/pachyderm/docs-content/main/images/opencv/kitten.jpg
-```
-
-2. View the list of jobs that have started:
-
- ```s
- pachctl list job
-
- # ID                               SUBJOBS PROGRESS CREATED        MODIFIED
- # 1c1a9d7d36944eabb4f6f14ebca25bf1 1       ▇▇▇▇▇▇▇▇ 31 seconds ago 31 seconds ago
- # fe5c4f70ac4347fd9c5934f0a9c44651 1       ▇▇▇▇▇▇▇▇ 47 seconds ago 47 seconds ago
- # 23378d899d3d45738f55df3809841145 1       ▇▇▇▇▇▇▇▇ 12 minutes ago 12 minutes ago
- ```
-
-3. View the output data:
-
-{{< stack type="wizard" >}}
-{{% wizardRow id="Operating System"%}}
-{{% wizardButton option="MacOS" state="active" %}}
-{{% wizardButton option="Linux" %}}
-{{% /wizardRow %}}
-
-
-{{% wizardResults%}}
-
-{{% wizardResult val1="operating-system/macos" %}}
-```s
-pachctl get file edges@master:AT-AT.png | open -f -a Preview.app
-pachctl get file edges@master:kitten.png | open -f -a Preview.app
- ```
-{{% /wizardResult %}}
-
-{{% wizardResult val1="operating-system/linux" %}}
-```s
-pachctl get file edges@master:AT-AT.png | display
-pachctl get file edges@master:kitten.png | display
-```
-{{% /wizardResult %}}
-
-{{% /wizardResults%}}
-
-{{</stack>}}
-
-### 5. Create a DAG
-
-Currently, we've only set up a single-stage pipeline. Let's create a multi-stage pipeline (also known as a DAG) by adding a `montage` pipeline that takes our both original and edge-detected images and arranges them into a single montage of images:
-
-![image](/images/getting-started/opencv-liberty-montage.png)
-
-Below is the pipeline spec for this new pipeline:
-
-```json
-{
-  "pipeline": {
-    "name": "montage"
-  },
-  "description": "A pipeline that combines images from the `images` and `edges` repositories into a montage.",
-  "input": {
-    "cross": [ {
-      "pfs": {
-        "glob": "/",
-        "repo": "images"
-      }
-    },
-    {
-      "pfs": {
-        "glob": "/",
-        "repo": "edges"
-      }
-    } ]
-  },
-  "transform": {
-    "cmd": [ "sh" ],
-    "image": "v4tech/imagemagick",
-    "stdin": [ "montage -shadow -background SkyBlue -geometry 300x300+2+2 $(find /pfs -type f | sort) /pfs/out/montage.png" ]
-  }
-}
-```
-
-This `montage` pipeline spec is similar to our `edges` pipeline except
-for the following differences:
-
-- We are using a different Docker image that
-has `imagemagick` installed.
-- We are executing a `sh` command with
-`stdin` instead of a python script in the pipeline's `transform` section.
-- We have multiple input data repositories (`images` and `edges`).
-
-In the `montage` pipeline we are combining our multiple input data
-repositories using a `cross` pattern. This `cross` pattern creates a
-single pairing of our input images with our edge detected images. 
-
-1. Create the `montage` pipeline:
-
-```s
-pachctl create pipeline -f https://raw.githubusercontent.com/pachyderm/pachyderm/{{% majorMinorVersion %}}/examples/opencv/montage.json
-```
-
-2. View the triggered jobs:
-
-```s
-pachctl list job
-
-#  ID                               SUBJOBS PROGRESS CREATED        MODIFIED
-# 01e0c8040e18429daf7f67ce34c3a5d7 1       ▇▇▇▇▇▇▇▇ 11 seconds ago 11 seconds ago
-# 1c1a9d7d36944eabb4f6f14ebca25bf1 1       ▇▇▇▇▇▇▇▇ 12 minutes ago 12 minutes ago
-# fe5c4f70ac4347fd9c5934f0a9c44651 1       ▇▇▇▇▇▇▇▇ 12 minutes ago 12 minutes ago
-# 23378d899d3d45738f55df3809841145 1       ▇▇▇▇▇▇▇▇ 24 minutes ago 24 minutes ago
-```
-
-3. View the generated montage image:
-
-{{< stack type="wizard" >}}
-{{% wizardRow id="Operating System"%}}
-{{% wizardButton option="MacOS" state="active" %}}
-{{% wizardButton option="Linux" %}}
-{{% /wizardRow %}}
-
-
-{{% wizardResults%}}
-
-{{% wizardResult val1="operating-system/macos" %}}
-```s
-  pachctl get file montage@master:montage.png | open -f -a Preview.app
-```
-{{% /wizardResult %}}
-
-{{% wizardResult val1="operating-system/linux" %}}
-```s
-  pachctl get file montage@master:montage.png | display
-```
-{{% /wizardResult %}}
-
-{{% /wizardResults%}}
-
-{{</stack>}}
