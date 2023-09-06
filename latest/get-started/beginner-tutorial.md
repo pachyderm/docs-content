@@ -309,6 +309,8 @@ if __name__ == "__main__":
 {{% /wizardResult%}}
 {{% wizardResult val1="view/output" %}}
 
+{{< figure src="/images/beginner-tutorial/movie-converter-output.gif" class="figure">}}
+
 ```s
 pachctl list files video_mp4_converter@master
 ```
@@ -426,6 +428,8 @@ if __name__ == "__main__":
 ```
 {{%/wizardResult%}}
 {{% wizardResult val1="view/output" %}}
+
+{{< figure src="/images/beginner-tutorial/movie-converter-output.gif" class="figure">}}
 
 ```s
 pachctl list files image_flattener@master
@@ -700,6 +704,8 @@ if __name__ == "__main__":
 ```
 {{%/wizardResult%}}
 {{% wizardResult val1="view/output" %}}
+
+{{< figure src="/images/beginner-tutorial/movie-gifer-output.gif" class="figure">}}
 ```s
 pachctl list files movie_gifer@master
 ```
