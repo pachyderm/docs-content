@@ -269,7 +269,10 @@ if __name__ == "__main__":
 ```
 {{% /wizardResult%}}
 {{% wizardResult val1="view/output" %}}
-Coming Soon
+
+```s
+pachctl list files video_mp4_converter@master
+```
 {{% /wizardResult%}}
 {{% /wizardResults%}}
 {{</stack>}}
@@ -384,7 +387,11 @@ if __name__ == "__main__":
 ```
 {{%/wizardResult%}}
 {{% wizardResult val1="view/output" %}}
-Coming Soon
+
+```s
+pachctl list files image_flattener@master
+```
+
 {{% /wizardResult%}}
 {{%/wizardResults%}}
 {{</stack>}}
@@ -514,6 +521,9 @@ if __name__ == "__main__":
 {{%/wizardResult%}}
 {{% wizardResult val1="view/output" %}}
 {{< figure src="/images/beginner-tutorial/image-tracer-output.gif" class="figure">}}
+```s
+pachctl list files image_tracer@master
+```
 {{% /wizardResult%}}
 {{%/wizardResults%}}
 {{</stack>}}
@@ -651,7 +661,9 @@ if __name__ == "__main__":
 ```
 {{%/wizardResult%}}
 {{% wizardResult val1="view/output" %}}
-Coming Soon
+```s
+pachctl list files movie_gifer@master
+```
 {{% /wizardResult%}}
 {{%/wizardResults%}}
 {{</stack>}}
@@ -760,7 +772,9 @@ if __name__ == "__main__":
 ```
 {{%/wizardResult%}}
 {{% wizardResult val1="view/output" %}}
-Coming Soon
+```s
+pachctl list files content_shuffler@master
+```
 {{% /wizardResult%}}
 {{%/wizardResults%}}
 {{</stack>}}
@@ -929,7 +943,9 @@ if __name__ == "__main__":
 ```
 {{%/wizardResult%}}
 {{% wizardResult val1="view/output" %}}
-Coming Soon
+```s
+pachctl list files content_collager@master
+```
 {{% /wizardResult%}}
 {{%/wizardResults%}}
 {{</stack>}}
