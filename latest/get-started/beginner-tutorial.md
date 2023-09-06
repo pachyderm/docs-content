@@ -20,7 +20,7 @@ directory: true
 
 ### Context
 
-### How {{%productName%}} Works
+#### How {{%productName%}} Works
 
 {{% productName %}} is deployed within a Kubernetes cluster to manage and version your data using [projects](/{{%release%}}/learn/glossary/project), [input repositories](/{{%release%}}/learn/glossary/input-repo), [pipelines](/{{%release%}}/learn/glossary/pipeline), [datums](/{{%release%}}/build-dags/datum-operations) and [output repositories](/{{%release%}}/learn/glossary/output-repo). A project can house many repositories and pipelines, and when a pipeline runs a data transformation [job](/{{%release%}}/learn/glossary/job/) it chunks your inputs into datums for processing. 
 
@@ -29,7 +29,7 @@ The number of datums is determined by the [glob pattern](/{{%release%}}/learn/gl
 The end result of your data transformation should always be saved to `/pfs/out`. The contents of `/pfs/out` are automatically made accessible from the pipeline's output repository by the same name. So all files saved to `/pfs/out` for a pipeline named `foo` are accessible from the `foo` output repository.
 
 Pipelines combine to create [DAGs](/{{%release%}}/learn/glossary/dag), and a DAG can be comprised of just one pipeline. Don't worry if this sounds confusing! We'll walk you through the process step-by-step.
-### How to Interact with {{% productName %}}
+#### How to Interact with {{% productName %}}
 
 You can interact your {{%productName%}} cluster using the PachCTL CLI or through Console, a GUI.
 
@@ -129,9 +129,8 @@ pachctl list repos
 
 ### 3. Upload Content 
 
-You can upload the sample content now or at the end after we've created all of the pipelines.
+To upload content, you need to specify the repo and branch you'd like to upload to (e.g., a `master` or `staging` branch). In Console, it automatically defaults to `repo@master` --- but for PachCTL, you'll need to use the `repo@master:filename.ext` pattern. By default, your pipeline will trigger any time new data is uploaded to the `master` branch unless otherwise specified in the pipeline spec at [`input.pfs.branch`](/{{%release%}}/build-dags/pipeline-spec/input-pfs/) or through a [branch trigger](/{{%release%}}/build-dags/branch-operations/set-branch-triggers/). For this tutorial, we're going to stick with the default `master` branch.
 
-(Video content coming soon)
 
 {{<stack type="wizard">}}
 {{% wizardRow id="tool" %}}
@@ -141,6 +140,8 @@ You can upload the sample content now or at the end after we've created all of t
 
 {{% wizardResults %}}
 {{% wizardResult val1="tool/cli" %}}
+
+(Video content coming soon)
 
 At the top of our DAG, we'll need an input repo that will store our raw videos and images. 
    
@@ -817,6 +818,7 @@ if __name__ == "__main__":
 ```
 {{%/wizardResult%}}
 {{% wizardResult val1="view/output" %}}
+{{< figure src="/images/beginner-tutorial/content-shuffler-output.gif" class="figure">}}
 ```s
 pachctl list files content_shuffler@master
 ```
@@ -994,6 +996,7 @@ if __name__ == "__main__":
 3. Click **Inspect Commit**.
 4. Check the [x] **collage** directory.
 5. Select the **Download** button.
+6. Unzip and open the `index.html` file in your browser to see the collage.
 
 {{< figure src="/images/beginner-tutorial/view-collage.gif" class="figure">}}
 ```s
@@ -1003,7 +1006,24 @@ pachctl list files content_collager@master
 {{%/wizardResults%}}
 {{</stack>}}
 
+---
 ## Explore
 
-(content about inspecting commits and reprocessing, etc)
+We've only just scratched the surface of what you can do with {{%productName%}}. Now that you have a working pipeline, try out some of these commands to explore the data and resources you've created.
 
+### Inspect Resources
+
+You can inspect resources to get key details from within the terminal. This is a fast and easy way to validate resource creation and config.
+
+```s
+pachctl inspect pipeline content_collager
+pachctl inspect repo content_collager
+pachctl inspect files content_collager@master
+```
+
+### List Jobs & Files
+
+```s
+pachctl list jobs --pipeline content_collager
+pachctl list files content_collager@master
+```
