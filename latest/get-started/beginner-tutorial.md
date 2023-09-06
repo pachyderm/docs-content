@@ -1058,3 +1058,5 @@ pachctl debug dump debug_dump.tar.gz
 {{% /wizardResult%}}
 {{% /wizardResults%}}
 {{</stack>}}
+
+For a comprehensive list of operations, check out the [Build Dags](/{{%release%}}/build-dags/) section of the documentation or browse the [Command Library](/{{%release%}}/run-commands).
