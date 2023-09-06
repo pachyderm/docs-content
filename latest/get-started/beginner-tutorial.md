@@ -137,7 +137,7 @@ We want to make sure that our DAG can handle videos in multiple formats, so firs
 The converted videos will be made available to the next pipeline in the DAG via the `video_mp4_converter` repo by declaring in the user code to save all converted images to `/pfs/out/`. This is the standard location for storing output data so that it can be accessed by the next pipeline in the DAG.
 
 1. Open your IDE terminal.
-2. Create a new folder for your project called `video-to-frametrace`.
+2. Create a new folder for your project called `video-to-frame-trace`.
 3. Copy and paste the following [pipeline spec](/{{%release%}}/build-dags/pipeline-spec/) into the terminal to create the file.
 
 ```s
