@@ -1009,21 +1009,30 @@ pachctl list files content_collager@master
 ---
 ## Explore
 
-We've only just scratched the surface of what you can do with {{%productName%}}. Now that you have a working pipeline, try out some of these commands to explore the data and resources you've created.
+Congratulations! You've successfully created a DAG of pipelines that process video files into a collage.  However, we've only just scratched the surface of what you can do with {{%productName%}}. Now that you have a working pipeline, try out some of these commands to explore the data and resources you've created.
+
+
+### List Resources
+
+You can quickly take an account of all the resources you've created by listing them in the terminal.
+
+```s
+pachctl list projects
+pachctl list repos
+pachctl list pipelines
+pachctl list commits
+pachctl list jobs --pipeline content_collager
+pachctl list files content_collager@master
+```
 
 ### Inspect Resources
 
 You can inspect resources to get key details from within the terminal. This is a fast and easy way to validate resource creation and config.
 
 ```s
-pachctl inspect pipeline content_collager
+pachctl inspect project video-to-frame-traces
 pachctl inspect repo content_collager
+pachctl inspect commit content_collager@<commit-id>
+pachctl inspect pipeline content_collager
 pachctl inspect files content_collager@master
-```
-
-### List Jobs & Files
-
-```s
-pachctl list jobs --pipeline content_collager
-pachctl list files content_collager@master
 ```
