@@ -22,11 +22,13 @@ directory: true
 
 ### How {{%productName%}} Works
 
-{{% productName %}} deploys a Kubernetes cluster to manage and version your data using [projects](/{{%release%}}/learn/glossary/project), [input repositories](/{{%release%}}/learn/glossary/input-repo), [pipelines](/{{%release%}}/learn/glossary/pipeline), [datums](/{{%release%}}/build-dags/datum-operations) and [output repositories](/{{%release%}}/learn/glossary/output-repo). A project can house many repositories and pipelines, and when a pipeline runs a data transformation [job](/{{%release%}}/learn/glossary/job/) it chunks your inputs into datums for processing. The number of datums is determined by the [glob pattern](/{{%release%}}/learn/glossary/glob-pattern/) defined in your [pipeline specification](/{{%release%}}/learn/glossary/pipeline-specification/); if the shape of your glob pattern encompasses all inputs, it it will process one datum; if the shape of your glob pattern encompasses each input individually, it will process one datum per file in the input, and so on.  
+{{% productName %}} is deployed within a Kubernetes cluster to manage and version your data using [projects](/{{%release%}}/learn/glossary/project), [input repositories](/{{%release%}}/learn/glossary/input-repo), [pipelines](/{{%release%}}/learn/glossary/pipeline), [datums](/{{%release%}}/build-dags/datum-operations) and [output repositories](/{{%release%}}/learn/glossary/output-repo). A project can house many repositories and pipelines, and when a pipeline runs a data transformation [job](/{{%release%}}/learn/glossary/job/) it chunks your inputs into datums for processing. 
 
-Once chunked, each datum is processed using your [user code](/{{%release%}}/learn/glossary/user-code) in a [worker pod](/{{%release%}}/learn/glossary/pachyderm-worker/). This user code is also referenced in the pipeline specification as a Docker image. The end result of your data transformation is stored in the pipeline's output repository, which shares the same name as the pipeline. Pipelines can be single-step or multi-step; multi-step pipelines are commonly referred to as [DAGs](/{{%release%}}/learn/glossary/dag), with each part of the DAG being a "step" pipeline.
+The number of datums is determined by the [glob pattern](/{{%release%}}/learn/glossary/glob-pattern/) defined in your [pipeline specification](/{{%release%}}/learn/glossary/pipeline-specification/); if the shape of your glob pattern encompasses all inputs, it will process one datum; if the shape of your glob pattern encompasses each input individually, it will process one datum per file in the input, and so on. 
 
-Don't worry if this sounds confusing! We'll walk you through the process step-by-step.
+The end result of your data transformation should always be saved to `/pfs/out`. The contents of `/pfs/out` are automatically made accessible from the pipeline's output repository by the same name. So all files saved to `/pfs/out` for a pipeline named `foo` are accessible from the `foo` output repository.
+
+Pipelines combine to create [DAGs](/{{%release%}}/learn/glossary/dag), and a DAG can be comprised of just one pipeline. Don't worry if this sounds confusing! We'll walk you through the process step-by-step.
 ### How to Interact with {{% productName %}}
 
 You can interact your {{%productName%}} cluster using the PachCTL CLI or through Console, a GUI.
