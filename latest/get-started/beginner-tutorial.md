@@ -51,7 +51,7 @@ This DAG has 6 steps with the goal of intaking raw photos and video content, dra
  5. Re-shuffle the content so it is organized by "original" and "traced" images
  6. Build a comparison collage using a static HTML page
 
-{{< figure src="/images/beginner-tutorial/step-6.svg" class="figure">}}
+{{< figure src="/images/beginner-tutorial/active-pipeline.svg" class="figure">}}
 
 ### 1. Create a Project 
 
