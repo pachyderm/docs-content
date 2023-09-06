@@ -85,6 +85,8 @@ If you are using {{%productName%}} locally, you can view your project in Console
 2. Select **Create Project**.
 3. Input a project `name` and `description`.
 4. Select **Create**.
+5. Click on the ellipses next to the project name and select **Set Active Project**.
+6. Copy the command and input it into your IDE terminal.
 
 {{< figure src="/images/beginner-tutorial/create-project.gif" class="figure">}}
 {{% /wizardResult%}}
@@ -169,6 +171,7 @@ pachctl create pipeline -f video_mp4_converter.yaml
 {{% wizardRow id="view" %}}
 {{% wizardButton option="Diagram" state="active" %}}
 {{% wizardButton option="User Code" %}}
+{{% wizardButton option="Output" %}}
 {{% /wizardRow %}}
 
 {{% wizardResults %}}
@@ -265,6 +268,9 @@ if __name__ == "__main__":
 
 ```
 {{% /wizardResult%}}
+{{% wizardResult val1="view/output" %}}
+Coming Soon
+{{% /wizardResult%}}
 {{% /wizardResults%}}
 {{</stack>}}
 
@@ -306,6 +312,7 @@ pachctl create pipeline -f image_flattener.yaml
 {{% wizardRow id="view" %}}
 {{% wizardButton option="Diagram" state="active" %}}
 {{% wizardButton option="User Code" %}}
+{{% wizardButton option="Output" %}}
 {{% /wizardRow %}}
 
 {{% wizardResults %}}
@@ -376,6 +383,9 @@ if __name__ == "__main__":
     main()
 ```
 {{%/wizardResult%}}
+{{% wizardResult val1="view/output" %}}
+Coming Soon
+{{% /wizardResult%}}
 {{%/wizardResults%}}
 {{</stack>}}
 
@@ -428,6 +438,7 @@ pachctl create pipeline -f image_tracer.yaml
 {{% wizardRow id="view" %}}
 {{% wizardButton option="Diagram" state="active" %}}
 {{% wizardButton option="User Code" %}}
+{{% wizardButton option="Output" %}}
 {{% /wizardRow %}}
 
 {{% wizardResults %}}
@@ -501,6 +512,9 @@ if __name__ == "__main__":
     main()
 ```
 {{%/wizardResult%}}
+{{% wizardResult val1="view/output" %}}
+{{< figure src="/images/beginner-tutorial/image-tracer-output.gif" class="figure">}}
+{{% /wizardResult%}}
 {{%/wizardResults%}}
 {{</stack>}}
 
@@ -549,6 +563,7 @@ pachctl create pipeline -f movie_gifer.yaml
 {{% wizardRow id="view" %}}
 {{% wizardButton option="Diagram" state="active" %}}
 {{% wizardButton option="User Code" %}}
+{{% wizardButton option="Output" %}}
 {{% /wizardRow %}}
 
 {{% wizardResults %}}
@@ -635,6 +650,9 @@ if __name__ == "__main__":
 
 ```
 {{%/wizardResult%}}
+{{% wizardResult val1="view/output" %}}
+Coming Soon
+{{% /wizardResult%}}
 {{%/wizardResults%}}
 {{</stack>}}
 
@@ -682,6 +700,7 @@ pachctl create pipeline -f content_shuffler.yaml
 {{% wizardRow id="view" %}}
 {{% wizardButton option="Diagram" state="active" %}}
 {{% wizardButton option="User Code" %}}
+{{% wizardButton option="Output" %}}
 {{% /wizardRow %}}
 
 {{% wizardResults %}}
@@ -740,6 +759,9 @@ if __name__ == "__main__":
 
 ```
 {{%/wizardResult%}}
+{{% wizardResult val1="view/output" %}}
+Coming Soon
+{{% /wizardResult%}}
 {{%/wizardResults%}}
 {{</stack>}}
 
@@ -779,6 +801,7 @@ pachctl create pipeline -f content_collager.yaml
 {{% wizardRow id="view" %}}
 {{% wizardButton option="Diagram" state="active" %}}
 {{% wizardButton option="User Code" %}}
+{{% wizardButton option="Output" %}}
 {{% /wizardRow %}}
 
 {{% wizardResults %}}
@@ -905,6 +928,9 @@ if __name__ == "__main__":
 
 ```
 {{%/wizardResult%}}
+{{% wizardResult val1="view/output" %}}
+Coming Soon
+{{% /wizardResult%}}
 {{%/wizardResults%}}
 {{</stack>}}
 
