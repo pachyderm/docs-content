@@ -48,7 +48,7 @@ environment variables.
 | `PORT`                 | `650`             | The `pachd` port number. |
 | `HTTP_PORT`             | `652`             | The HTTP port number.   |
 | `PEER_PORT`             | `653`             | The port for pachd-to-pachd communication. |
-| `NAMESPACE`            | `deafult`         | The namespace in which {{% productName %}} is deployed. |
+| `NAMESPACE`            | `default`         | The namespace in which {{% productName %}} is deployed. |
 
 ### PachD Configuration
 
