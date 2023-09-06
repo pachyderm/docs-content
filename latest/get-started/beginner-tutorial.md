@@ -57,6 +57,17 @@ This DAG has 6 steps with the goal of intaking raw photos and video content, dra
 
 By default, when you first start up an instance, the `default` project is attached to your active context. Create a new project and set the project to your active PachCTL context to avoid having to specify the project name (e.g., `--project video-to-frame-traces`) in each command. 
 
+{{<stack type="wizard">}}
+{{% wizardRow id="tool" %}}
+{{% wizardButton option="CLI" state="active" %}}
+{{% wizardButton option="Console" %}}
+{{% /wizardRow %}}
+
+{{% wizardResults %}}
+{{% wizardResult val1="tool/cli" %}}
+
+At the top of our DAG, we'll need an input repo that will store our raw videos and images. 
+   
 ```s
 pachctl create project video-to-frame-traces
 pachctl config update context --project video-to-frame-traces
@@ -67,7 +78,30 @@ pachctl list projects
 If you are using {{%productName%}} locally, you can view your project in Console and follow along at [http://localhost/lineage/video-to-frame-traces](http://localhost/lineage/video-to-frame-traces)
 {{%/notice %}}
 
+{{% /wizardResult%}}
+{{% wizardResult val1="tool/console" %}}
+
+1. Open Console. 
+2. Select **Create Project**.
+3. Input a project `name` and `description`.
+4. Select **Create**.
+
+{{< figure src="/images/beginner-tutorial/create-project.gif" class="figure">}}
+{{% /wizardResult%}}
+{{%/wizardResults%}}
+{{</stack>}}
+
 ### 2. Create an Input Repo 
+
+
+{{<stack type="wizard">}}
+{{% wizardRow id="tool" %}}
+{{% wizardButton option="CLI" state="active" %}}
+{{% wizardButton option="Console" %}}
+{{% /wizardRow %}}
+
+{{% wizardResults %}}
+{{% wizardResult val1="tool/cli" %}}
 
 At the top of our DAG, we'll need an input repo that will store our raw videos and images. 
    
@@ -76,7 +110,20 @@ pachctl create repo raw_videos_and_images
 pachctl list repos
 ```
 
-<!-- ![input-repo](/images/beginner-tutorial/input-repo.svg) -->
+{{% /wizardResult%}}
+{{% wizardResult val1="tool/console" %}}
+
+1. Open Console. 
+2. Scroll to the `video-to-frame-traces` project.
+3. Select **View Project**.
+4. Select **Create Repo**.
+5. Input a repo `name` and `description`.
+6. Select **Create**.
+
+{{< figure src="/images/beginner-tutorial/create-input-repo.gif" class="figure">}}
+{{% /wizardResult%}}
+{{%/wizardResults%}}
+{{</stack>}}
 
 
 
