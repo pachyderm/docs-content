@@ -1007,13 +1007,20 @@ pachctl list files content_collager@master
 {{</stack>}}
 
 ---
-## Explore
+## Exploring Resources, Data, & Logs
 
-Congratulations! You've successfully created a DAG of pipelines that process video files into a collage.  However, we've only just scratched the surface of what you can do with {{%productName%}}. Now that you have a working pipeline, try out some of these commands to explore the data and resources you've created.
+Congratulations! You've successfully created a DAG of pipelines that process video files into a collage.  However, we've only just scratched the surface of what you can do with {{%productName%}}. Now that you have a working pipeline, try out some of these commands to explore all of the details associated with the DAG.
 
 
-### List Resources
+{{<stack type="wizard">}}
+{{% wizardRow id="tips" %}}
+{{% wizardButton option="List" state="active" %}}
+{{% wizardButton option="Inspect" %}}
+{{% wizardButton option="Troubleshoot" %}}
+{{% /wizardRow %}}
 
+{{% wizardResults %}}
+{{% wizardResult val1="tips/list" %}}
 You can quickly take an account of all the resources you've created by listing them in the terminal.
 
 ```s
@@ -1024,9 +1031,9 @@ pachctl list commits
 pachctl list jobs --pipeline content_collager
 pachctl list files content_collager@master
 ```
+{{%/wizardResult%}}
 
-### Inspect Resources
-
+{{% wizardResult val1="tips/inspect"%}}
 You can inspect resources to get key details from within the terminal. This is a fast and easy way to validate resource creation and config.
 
 ```s
@@ -1036,3 +1043,18 @@ pachctl inspect commit content_collager@<commit-id>
 pachctl inspect pipeline content_collager
 pachctl inspect files content_collager@master
 ```
+{{% /wizardResult%}}
+{{% wizardResult val1="tips/troubleshoot"%}}
+
+Let's say you've uploaded corrupted data or realized that your pipeline's glob pattern/user code is flawed and you want to stop job processing and take a look at your logs. There's a number of commands you can run to get to the bottom of the issue.
+
+```s
+pachctl stop pipeline content_collager
+pachctl stop job content_collager@<job-id>
+pachctl logs --pipeline content_collager
+pachctl debug dump debug_dump.tar.gz
+```
+
+{{% /wizardResult%}}
+{{% /wizardResults%}}
+{{</stack>}}
