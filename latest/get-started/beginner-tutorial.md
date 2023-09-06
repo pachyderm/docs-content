@@ -127,9 +127,48 @@ pachctl list repos
 {{%/wizardResults%}}
 {{</stack>}}
 
+### 3. Upload Content 
+
+You can upload the sample content now or at the end after we've created all of the pipelines.
+
+(Video content coming soon)
+
+{{<stack type="wizard">}}
+{{% wizardRow id="tool" %}}
+{{% wizardButton option="CLI" state="active" %}}
+{{% wizardButton option="Console" %}}
+{{% /wizardRow %}}
+
+{{% wizardResults %}}
+{{% wizardResult val1="tool/cli" %}}
+
+At the top of our DAG, we'll need an input repo that will store our raw videos and images. 
+   
+```s
+pachctl put file raw_videos_and_images@master:liberty.png -f https://raw.githubusercontent.com/pachyderm/docs-content/main/images/opencv/liberty.jpg
+
+pachctl put file raw_videos_and_images@master:robot.png -f https://raw.githubusercontent.com/pachyderm/docs-content/main/images/opencv/robot.jpg
+```
+
+{{% /wizardResult%}}
+{{% wizardResult val1="tool/console" %}}
+
+1. Open Console. 
+2. Scroll to the `video-to-frame-traces` project.
+3. Select **View Project**.
+4. Select the `raw_videos_and_images` repo.
+5. Select the **Upload** button.
+6. Upload your image, video, or directory.
+7. Select **Create**.
+
+{{< figure src="/images/beginner-tutorial/upload-content.gif" class="figure">}}
+{{% /wizardResult%}}
+{{%/wizardResults%}}
+{{</stack>}}
 
 
-### 3. Create the Video Converter Pipeline 
+
+### 4. Create the Video Converter Pipeline 
 
 We want to make sure that our DAG can handle videos in multiple formats, so first we'll create a pipeline that will:
 - Skip images 
@@ -282,7 +321,7 @@ pachctl list files video_mp4_converter@master
 Every pipeline, at minimum, needs a `name`, an `input`, and a `transform`. The input is the data that the pipeline will process, and the transform is the user code that will process the data. `transform.image` is the Docker image available in a container registry ([Docker Hub](https://hub.docker.com/)) that will be used to run the user code. `transform.cmd` is the command that will be run inside the Docker container; it is the entrypoint for the user code to be executed against the input data.
 {{%/notice %}}
 
-### 4. Create the Image Flattener Pipeline
+### 5. Create the Image Flattener Pipeline
 
 Next, we'll create a pipeline that will flatten the videos into individual `.png` image frames. Like the previous pipeline, the user code outputs the frames to `/pfs/out` so that the next pipeline in the DAG can access them in the `image_flattener` repo. 
 
@@ -396,7 +435,7 @@ pachctl list files image_flattener@master
 {{%/wizardResults%}}
 {{</stack>}}
 
-### 5. Create the Image Tracing Pipeline: 
+### 6. Create the Image Tracing Pipeline: 
 
 Up until this point, we've used a simple single input from the Pachyderm file system (`input.pfs`) and a basic [glob pattern](/{{%release%}}/learn/glossary/glob-pattern/) (`/*`) to specify shape of our datums. This particular pattern treats each top-level file and directory as a single datum. However, in this pipeline, we have some special requirements:
 
@@ -528,7 +567,7 @@ pachctl list files image_tracer@master
 {{%/wizardResults%}}
 {{</stack>}}
 
-### 6. Create the Gif Pipeline
+### 7. Create the Gif Pipeline
 
 Next, we'll create a pipeline that will create two gifs:
   1. A gif of the original video's flattened frames (from the `image_flattener` output repo)
@@ -668,7 +707,7 @@ pachctl list files movie_gifer@master
 {{%/wizardResults%}}
 {{</stack>}}
 
-### 7. Create the Content Shuffler Pipeline
+### 8. Create the Content Shuffler Pipeline
 
 We have everything we need to make the comparison collage, but before we do that we need to re-shuffle the content so that the original images and gifs are in one directory (`originals`) and the traced images and gifs are in another directory (`edges`). This will help us more easily process the data via our user code for the collage. This is a common step you will encounter while using {{%productName%}} referred to as a *shuffle pipeline*.
 
@@ -779,7 +818,7 @@ pachctl list files content_shuffler@master
 {{%/wizardResults%}}
 {{</stack>}}
 
-### 8. Create the Content Collager Pipeline
+### 9. Create the Content Collager Pipeline
 
 Finally, we'll create a pipeline that produces a static html page for viewing the original and traced content side-by-side.
 
@@ -943,6 +982,14 @@ if __name__ == "__main__":
 ```
 {{%/wizardResult%}}
 {{% wizardResult val1="view/output" %}}
+
+1. Navigate to your project in Console.
+2. Click on the `content_collager` pipeline’s **output** directory.
+3. Click **Inspect Commit**.
+4. Check the [x] **collage** directory.
+5. Select the **Download** button.
+
+{{< figure src="/images/beginner-tutorial/view-collage.gif" class="figure">}}
 ```s
 pachctl list files content_collager@master
 ```
@@ -950,32 +997,7 @@ pachctl list files content_collager@master
 {{%/wizardResults%}}
 {{</stack>}}
 
+## Explore
 
-### 9. Add Videos and Images 
+(content about inspecting commits and reprocessing, etc)
 
-Now that we have our DAG set up, we can add some videos and images to the `raw_videos_and_images` repo to see the pipeline in action.
-
-#### Videos (Coming Soon)
-```s
-pachctl put file raw_videos_and_images@master: -f 
-
-```
-
-### Upload Images
-```s
-pachctl put file raw_videos_and_images@master:liberty.png -f https://raw.githubusercontent.com/pachyderm/docs-content/main/images/opencv/liberty.jpg
-
-pachctl put file raw_videos_and_images@master:robot.png -f https://raw.githubusercontent.com/pachyderm/docs-content/main/images/opencv/robot.jpg
-```
-
-{{< figure src="/images/beginner-tutorial/active-pipeline.svg" class="figure">}}
-
-## 10. Download & View the Collage
-
-1. Navigate to your project in Console.
-2. Click on the `content_collager` pipeline's **output** directory.
-3. Click **Inspect Commit**.
-4. Check the [x] collage directory.
-5. Select the **Download** button.
-
-{{< figure src="/images/beginner-tutorial/view-collage.gif" class="figure">}}
