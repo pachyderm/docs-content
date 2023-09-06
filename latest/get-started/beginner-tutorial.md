@@ -16,12 +16,13 @@ directory: true
 - Install {{% productName %}} either [locally](/{{%release%}}/set-up/local-deploy) our within the [cloud](/{{%release%}}/set-up/cloud-deploy). 
 - Install [{{% productName %}} Shell](/{{%release%}}/manage/pachctl-shell/).
 - Join our [Slack Community](https://www.pachyderm.com/slack/) so you can ask any questions you may have!
+- Try out this [Glob Tool](https://www.digitalocean.com/community/tools/glob) to learn how to use glob patterns to select files and directories.
 
 ### Context
 
-### How it Works
+### How {{%productName%}} Works
 
-{{% productName %}} deploys a Kubernetes cluster to manage and version your data using [projects](/{{%release%}}/learn/glossary/project), [input repositories](/{{%release%}}/learn/glossary/input-repo), [pipelines](/{{%release%}}/learn/glossary/pipeline), [datums](/{{%release%}}/build-dags/datum-operations) and [output repositories](/{{%release%}}/learn/glossary/output-repo). A project can house many repositories and pipelines, and when a pipeline runs a [job](/{{%release%}}/learn/glossary/job/) it chunks your inputs into many datums for processing. The number of datums is determined by the [glob pattern](/{{%release%}}/learn/glossary/glob-pattern/) defined in your [pipeline specification](/{{%release%}}/learn/glossary/pipeline-specification/). 
+{{% productName %}} deploys a Kubernetes cluster to manage and version your data using [projects](/{{%release%}}/learn/glossary/project), [input repositories](/{{%release%}}/learn/glossary/input-repo), [pipelines](/{{%release%}}/learn/glossary/pipeline), [datums](/{{%release%}}/build-dags/datum-operations) and [output repositories](/{{%release%}}/learn/glossary/output-repo). A project can house many repositories and pipelines, and when a pipeline runs a data transformation [job](/{{%release%}}/learn/glossary/job/) it chunks your inputs into datums for processing. The number of datums is determined by the [glob pattern](/{{%release%}}/learn/glossary/glob-pattern/) defined in your [pipeline specification](/{{%release%}}/learn/glossary/pipeline-specification/); if the shape of your glob pattern encompasses all inputs, it it will process one datum; if the shape of your glob pattern encompasses each input individually, it will process one datum per file in the input, and so on.  
 
 Once chunked, each datum is processed using your [user code](/{{%release%}}/learn/glossary/user-code) in a [worker pod](/{{%release%}}/learn/glossary/pachyderm-worker/). This user code is also referenced in the pipeline specification as a Docker image. The end result of your data transformation is stored in the pipeline's output repository, which shares the same name as the pipeline. Pipelines can be single-step or multi-step; multi-step pipelines are commonly referred to as [DAGs](/{{%release%}}/learn/glossary/dag), with each part of the DAG being a "step" pipeline.
 
@@ -69,6 +70,10 @@ pachctl create repo raw_videos_and_images
 pachctl list repos
 ```
 
+<!-- ![input-repo](/images/beginner-tutorial/input-repo.svg) -->
+
+
+
 ### 3. Create the Video Converter Pipeline 
 
 We want to make sure that our DAG can handle videos in multiple formats, so first we'll create a pipeline that will:
@@ -76,9 +81,9 @@ We want to make sure that our DAG can handle videos in multiple formats, so firs
 - skip videos already in the correct format (`.mp4`)
 - convert videos to `.mp4` format
 
-The converted videos will be made available to the next pipeline in the DAG via the `video_mp4_converter` repo by declaring in the user code to save the converted images to `/pfs/out/`. This is the standard location you should use to store your output data so that it can be accessed by the next pipeline in the DAG.
+The converted videos will be made available to the next pipeline in the DAG via the `video_mp4_converter` repo by declaring in the user code to save all converted images to `/pfs/out/`. This is the standard location for storing output data so that it can be accessed by the next pipeline in the DAG.
 
-1. Open your terminal.
+1. Open your IDE terminal.
 2. Create a new folder for your project called `video-to-frametrace`.
 3. Copy and paste the following [pipeline spec](/{{%release%}}/build-dags/pipeline-spec/) into the terminal to create the file.
 
@@ -107,8 +112,10 @@ EOF
 pachctl create pipeline -f video_mp4_converter.yaml 
 ```
 
+{{< figure src="/images/beginner-tutorial/step-1.svg" class="figure">}}
+
 {{% notice info %}}
-Every pipeline, at minimum, needs a `name`, an `input`, and a `transform`. The input is the data that the pipeline will process, and the transform is the user code that will process the data. `transform.image` is the Docker image available in a container registry ([Docker Hub](https://hub.docker.com/)) that will be used to run the user code. `transform.cmd` is the command that will be run inside the Docker container.
+Every pipeline, at minimum, needs a `name`, an `input`, and a `transform`. The input is the data that the pipeline will process, and the transform is the user code that will process the data. `transform.image` is the Docker image available in a container registry ([Docker Hub](https://hub.docker.com/)) that will be used to run the user code. `transform.cmd` is the command that will be run inside the Docker container; it is the entrypoint for the user code to be executed against the input data.
 {{%/notice %}}
 
 ### 4. Create the Image Flattener Pipeline
@@ -140,17 +147,21 @@ EOF
 pachctl create pipeline -f image_flattener.yaml
 ```
 
+{{< figure src="/images/beginner-tutorial/step-2.svg" class="figure">}}
+
 ### 5. Create the Image Tracing Pipeline: 
 
-Up until this point, we've used a simple single input from the Pachyderm file system (`input.pfs`) and a basic [glob pattern](/{{%release%}}/learn/glossary/glob-pattern/) (`/*`) to specify shape of our the input data datums. This particular pattern treats each top-level file and directory as a single datum. However, in this pipeline, we have some special requirements:
+Up until this point, we've used a simple single input from the Pachyderm file system (`input.pfs`) and a basic [glob pattern](/{{%release%}}/learn/glossary/glob-pattern/) (`/*`) to specify shape of our datums. This particular pattern treats each top-level file and directory as a single datum. However, in this pipeline, we have some special requirements:
 
 - We want to process *only* the raw images from the `raw_videos_and_images` repo
 - We want to process *all* of the flattened video frame images from the `image_flattener` pipeline
 
 To achieve this, we're going to need to use a [union input](/{{%release%}}/build-dags/pipeline-spec/input-union/) (`input.union`) to combine the two inputs into a single input for the pipeline. 
 
-- For the `raw_videos_and_images` input, we can use a more powerful glob pattern to ensure that only image files are processed (`/*.{png,jpg,jpeg}`). 
-- For the `image_flattener` input, we can use the same glob pattern as before (`/*`) to ensure that each video's collection of frames is processed together.
+- For the `raw_videos_and_images` input, we can use a more powerful glob pattern to ensure that only image files are processed (`/*.{png,jpg,jpeg}`)
+- For the `image_flattener` input, we can use the same glob pattern as before (`/*`) to ensure that each video's collection of frames is processed together
+
+Notice how we also update the `transform.cmd` to accommodate having two inputs.
 
 ```s
 cat <<EOF > image_tracer.yaml
@@ -183,43 +194,118 @@ EOF
 pachctl create pipeline -f image_tracer.yaml
 ```
 
+{{< figure src="/images/beginner-tutorial/step-3.svg" class="figure">}}
+
 ### 6. Create the Gif Pipeline
 
 Next, we'll create a pipeline that will create two gifs:
-  1. a gif of the original video's flattened frames (from the `image_flattener` output repo)
-  2. a gif of the video's traced frames (from the `image_tracer` output repo)
+  1. A gif of the original video's flattened frames (from the `image_flattener` output repo)
+  2. A gif of the video's traced frames (from the `image_tracer` output repo)
 
-- [See User Code](./4_gif_images/movie_gifer.py)
-- [See Pipeline Spec](./4_gif_images/movie_gifer.yaml)
+To make a gif of both the original video frames and the traced frames, we're going to again need to use a union input so that we can process the `image_flattener` and `image_tracer` output repos.
+
+Notice that the glob pattern has changed; here, we want to treat each directory in an input as a single datum, so we use the glob pattern `/*/`. This is because we've declared in the user code to store the video frames in a directory with the same name as the video file.
 
 ```s
-pachctl create pipeline -f 4_gif_images/movie_gifer.yaml
+cat <<EOF > movie_gifer.yaml
+pipeline:
+  name: movie_gifer
+description: A pipeline that converts frames into a gif using the OpenCV library.
+input:
+  union:
+    - pfs:
+        repo: image_flattener
+        glob: "/*/"
+    - pfs:
+        repo: image_tracer
+        glob: "/*/"
+transform:
+  image: lbliii/movie_gifer:1.0.5
+  cmd:
+    - python3
+    - /movie_gifer.py
+    - --input
+    - /pfs/image_flattener
+    - /pfs/image_tracer
+    - --output
+    - /pfs/out/
+autoscaling: true
+EOF
+```
+
+```s
+pachctl create pipeline -f movie_gifer.yaml
 ```
 
 ### 7. Create the Content Shuffler Pipeline
 
-Next, we'll create a pipeline that will re-shuffle the content from the previous pipelines into two folders:
-   - `edges`: contains the traced images and gifs
-   - `originals`: contains the original images and gifs
-
-This helps us keep the content organized for easy access and manipulation in the next pipeline.
-
-- [See User Code](./5_shuffle_content/content_shuffler.py)
-- [See Pipeline Spec](./5_shuffle_content/content_shuffler.yaml)
+We have everything we need to make the comparison collage, but before we do that we need to re-shuffle the content so that the original images and gifs are in one directory (`originals`) and the traced images and gifs are in another directory (`edges`). This will help us more easily process the data via our user code for the collage. This is a common step you will encounter while using {{%productName%}} referred to as a *shuffle pipeline*.
 
 ```s
-pachctl create pipeline -f 5_shuffle_content/content_shuffler.yaml
+cat <<EOF > content_shuffler.yaml
+pipeline:
+  name: content_shuffler
+  description: A pipeline that collapses our inputs into one datum for the collager.
+input:
+  union:
+    - pfs:
+        repo: movie_gifer
+        glob: "/"
+    - pfs:
+        repo: raw_videos_and_images
+        glob: "/*.{png,jpg,jpeg}"
+    - pfs:
+        repo: image_tracer
+        glob: "/*.{png,jpg,jpeg}"
+
+transform:
+  image: lbliii/content_shuffler:1.0.0
+  cmd:
+    - python3
+    - /content_shuffler.py
+    - --input
+    - /pfs/movie_gifer
+    - /pfs/raw_videos_and_images
+    - /pfs/image_tracer
+    - --output
+    - /pfs/out/
+autoscaling: true
+EOF
+```
+
+```s
+pachctl create pipeline -f content_shuffler.yaml
 ```
 
 ### 8. Create the Content Collager Pipeline
 
-Finally, we'll create a pipeline that will create a static html page that you can download and open to view the original and traced content side-by-side.
-
-- [See User Code](./6_collage_content/content_collager.py)
-- [See Pipeline Spec](./6_collage_content/content_collager.yaml)
+Finally, we'll create a pipeline that produces a static html page for viewing the original and traced content side-by-side.
 
 ```s
-pachctl create pipeline -f 6_collage_content/content_collager.yaml
+cat <<EOF > content_collager.yaml
+pipeline:
+  name: content_collager
+  description: A pipeline that creates a static HTML collage.
+input:
+  pfs:
+    glob: "/"
+    repo: content_shuffler
+
+
+transform:
+  image: lbliii/content_collager:1.0.64
+  cmd:
+    - python3
+    - /content_collager.py
+    - --input
+    - /pfs/content_shuffler
+    - --output
+    - /pfs/out/
+autoscaling: true
+```
+
+```s
+pachctl create pipeline -f content_collager.yaml
 ```
 
 ### 9. Add Videos and Images 
