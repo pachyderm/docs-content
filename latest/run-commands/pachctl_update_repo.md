@@ -12,8 +12,8 @@ Update a repo.
 
 This command enables you to update the description of an existing repo. 
 
- To specify which project to update the repo in, use the `--project` flag 
- To update the description of a repo, use the `--description` flag 
+- To specify which project to update the repo in, use the `--project` flag 
+- To update the description of a repo, use the `--description` flag 
 
 If you are looking to update the pipelines in your repo, see `pachctl update pipeline` instead.
 

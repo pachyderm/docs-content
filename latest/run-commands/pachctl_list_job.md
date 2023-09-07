@@ -14,11 +14,11 @@ This command returns info about a list of jobs. You can pass in the command with
  
 Without an ID, this command returns a global list of top-level job sets which contain their own sub-jobs; With an ID, it returns a list of sub-jobs within the specified job set. 
  
- To return a list of sub-jobs across all job sets, use the `--expand` flag without passing an ID 
- To return only the sub-jobs from the most recent version of a pipeline, use the `--pipeline` flag 
- To return all sub-jobs from all versions of a pipeline, use the `--history` flag 
- To return all sub-jobs whose input commits include data from a particular repo branch/commit, use the `--input` flag 
- To turn only sub-jobs with a particular state, use the `--state` flag; options: CREATED, STARTING, UNRUNNABLE, RUNNING, EGRESS, FINISHING, FAILURE, KILLED, SUCCESS
+- To return a list of sub-jobs across all job sets, use the `--expand` flag without passing an ID 
+- To return only the sub-jobs from the most recent version of a pipeline, use the `--pipeline` flag 
+- To return all sub-jobs from all versions of a pipeline, use the `--history` flag 
+- To return all sub-jobs whose input commits include data from a particular repo branch/commit, use the `--input` flag 
+- To turn only sub-jobs with a particular state, use the `--state` flag; options: CREATED, STARTING, UNRUNNABLE, RUNNING, EGRESS, FINISHING, FAILURE, KILLED, SUCCESS
 
 ```
 pachctl list job [<job-id>] [flags]

@@ -11,8 +11,8 @@ Return the kubernetes events.
 ### Synopsis
 
 This command returns the kubernetes events. 
- To return results starting from a certain amount of time before now, use the `--since` flag 
- To return the raw events, use the `--raw` flag 
+- To return results starting from a certain amount of time before now, use the `--since` flag 
+- To return the raw events, use the `--raw` flag 
 
 
 ```

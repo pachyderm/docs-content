@@ -12,8 +12,8 @@ Return info about a branch.
 
 This command returns info about a branch, such as its `Name`, `Head Commit`, and `Trigger`. 
 
- To inspect a branch from a repo in another project, use the `--project` flag 
- To get additional details about the branch, use the `--raw` flag 
+- To inspect a branch from a repo in another project, use the `--project` flag 
+- To get additional details about the branch, use the `--raw` flag 
 
 
 ```

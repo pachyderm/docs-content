@@ -12,10 +12,10 @@ Return the contents of a file.
 
 This command returns the contents of a file. While using this command, take special note of how you can use ancestry syntax (e.g., appending`^2` or `.-1` to `repo@branch`) to retrieve the contents of a file from a previous commit. 
 
- To specify the project where the repo is located, use the --project flag 
- To specify the output path, use the --output flag 
- To specify the number of bytes to offset the read by, use the --offset-bytes flag 
- To retry the operation if it fails, use the --retry flag 
+- To specify the project where the repo is located, use the --project flag 
+- To specify the output path, use the --output flag 
+- To specify the number of bytes to offset the read by, use the --offset-bytes flag 
+- To retry the operation if it fails, use the --retry flag 
 
 
 ```

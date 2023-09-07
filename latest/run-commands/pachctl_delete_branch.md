@@ -12,8 +12,8 @@ Delete a branch
 
 This command deletes a branch while leaving its commits intact. 
 
- To delete a branch from a repo in another project, use the `--project` flag 
- To delete a branch regardless of errors, use the `--force` flag 
+- To delete a branch from a repo in another project, use the `--project` flag 
+- To delete a branch regardless of errors, use the `--force` flag 
 
 
 ```

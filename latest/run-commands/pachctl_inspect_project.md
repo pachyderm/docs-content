@@ -12,7 +12,7 @@ Inspect a project.
 
 This command inspects a project and returns information like its `Name` and `Created at` time. 
 
- To return additional details, use the `--raw` flag 
+- To return additional details, use the `--raw` flag 
 
 
 ```

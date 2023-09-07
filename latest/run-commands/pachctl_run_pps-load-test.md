@@ -11,9 +11,9 @@ Run a PPS load test.
 ### Synopsis
 
 This command runs a PPS load test for a specified pipeline specification file. 
- To run a load test with a specific seed, use the `--seed` flag 
- To run a load test with a specific parallelism count, use the `--parallelism` flag 
- To run a load test with a specific pod patch, use the `--pod-patch` flag
+- To run a load test with a specific seed, use the `--seed` flag 
+- To run a load test with a specific parallelism count, use the `--parallelism` flag 
+- To run a load test with a specific pod patch, use the `--pod-patch` flag
 
 ```
 pachctl run pps-load-test <spec-file>  [flags]

@@ -12,7 +12,7 @@ Return files that match a glob pattern in a commit.
 
 This command returns files that match a glob pattern in a commit (that is, match a glob pattern in a repo at the state represented by a commit). Glob patterns are documented [here](https://golang.org/pkg/path/filepath/#Match). 
 
- To specify the project where the repo is located, use the `--project flag` 
+- To specify the project where the repo is located, use the `--project flag` 
 
 
 ```

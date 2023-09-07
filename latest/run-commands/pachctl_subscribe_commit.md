@@ -11,10 +11,10 @@ Print commits as they are created (finished).
 ### Synopsis
 
 This command prints commits as they are created in the specified repo and branch. By default, all existing commits on the specified branch are returned first.  A commit is only considered created when it's been finished.
- To only see commits created after a certain commit, use the `--from` flag. 
- To only see new commits created from now on, use the `--new` flag. 
- To see all commit types, use the `--all` flag.
- To only see commits of a specific type, use the `--origin` flag. 
+- To only see commits created after a certain commit, use the `--from` flag. 
+- To only see new commits created from now on, use the `--new` flag. 
+- To see all commit types, use the `--all` flag.
+- To only see commits of a specific type, use the `--origin` flag. 
 
 
 ```

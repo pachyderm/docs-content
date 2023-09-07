@@ -11,11 +11,11 @@ Return a diff of two file trees stored in Pachyderm
 ### Synopsis
 
 This command returns a diff of two file trees stored in Pachyderm. The file trees are specified by two files, one from the new tree and one from the old tree. 
- To specify the project where the repos are located, use the `--project flag` 
- To specify the project where the second older repo is located, use the `--old-project flag` 
- To prevent descending into sub-directories, use the `--shallow flag`
- To use an alternative (non-git) diff command, use the `--diff-command flag` 
- To get only the names of changed files, use the `--name-only flag` 
+- To specify the project where the repos are located, use the `--project flag` 
+- To specify the project where the second older repo is located, use the `--old-project flag` 
+- To prevent descending into sub-directories, use the `--shallow flag`
+- To use an alternative (non-git) diff command, use the `--diff-command flag` 
+- To get only the names of changed files, use the `--name-only flag` 
 
 
 ```

@@ -13,17 +13,17 @@ Put a file into the filesystem.
 This command puts a file into the filesystem.  This command supports a number of ways to insert data into PFS. 
 
 Files, Directories, & URLs: 
- To upload via local filesystem, use the `-f` flag 
- To upload via URL, use the `-f` flag with a URL as the argument 
- To upload via filepaths & urls within a file, use the `i` flag 
- To upload to a specific path in the repo, use the `-f` flag and add the path to the `repo@branch:/path` 
- To upload recursively from a directory, use the `-r` flag 
- To upload tar files and have them automatically untarred, use the `-untar` flag 
+- To upload via local filesystem, use the `-f` flag 
+- To upload via URL, use the `-f` flag with a URL as the argument 
+- To upload via filepaths & urls within a file, use the `i` flag 
+- To upload to a specific path in the repo, use the `-f` flag and add the path to the `repo@branch:/path` 
+- To upload recursively from a directory, use the `-r` flag 
+- To upload tar files and have them automatically untarred, use the `-untar` flag 
 
 Compression, Parallelization, Appends: 
- To compress files before uploading, use the `-c` flag 
- To define the maximum number of files that can be uploaded in parallel, use the `-p` flag 
- To append to an existing file, use the `-a` flag 
+- To compress files before uploading, use the `-c` flag 
+- To define the maximum number of files that can be uploaded in parallel, use the `-p` flag 
+- To append to an existing file, use the `-a` flag 
 
 Other: 
  To enable progress bars, use the `-P` flag 

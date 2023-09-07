@@ -12,8 +12,8 @@ Create a new repo in your active project.
 
 This command creates a repo in the project that is set to your active context (initially the `default` project).
 
- To specify which project to create the repo in, use the `--project` flag 
- To add a description to the project, use the `--description` flag  
+- To specify which project to create the repo in, use the `--project` flag 
+- To add a description to the project, use the `--description` flag  
 
 
 ```

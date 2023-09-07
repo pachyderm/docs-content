@@ -12,8 +12,8 @@ Return all branches on a repo.
 
 This command returns all branches on a repo. 
 
- To list branches from a repo in another project, use the `--project` flag 
- To get additional details about the branches, use the `--raw` flag 
+- To list branches from a repo in another project, use the `--project` flag 
+- To get additional details about the branches, use the `--raw` flag 
 
 
 ```

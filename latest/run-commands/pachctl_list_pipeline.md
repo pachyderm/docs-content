@@ -12,9 +12,9 @@ Return info about all pipelines.
 
 This command returns information about all pipelines. 
  
- To return pipelines with a specific state, use the `--state` flag 
- To return pipelines as they existed at a specific commit, use the `--commit` flag 
- To return a history of pipeline revisions, use the `--history` flag 
+- To return pipelines with a specific state, use the `--state` flag 
+- To return pipelines as they existed at a specific commit, use the `--commit` flag 
+- To return a history of pipeline revisions, use the `--history` flag 
 
 
 ```

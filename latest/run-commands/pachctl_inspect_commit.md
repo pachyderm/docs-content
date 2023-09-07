@@ -12,8 +12,8 @@ Return info about a commit.
 
 This command returns information about the commit, such as the commit location (`branch@commit-id`), originating branch, start/finish times, and size. 
 
- To view the raw details of the commit in JSON format, use the `--raw` flag 
- To specify which project the repo is in, use the `--project` flag 
+- To view the raw details of the commit in JSON format, use the `--raw` flag 
+- To specify which project the repo is in, use the `--project` flag 
 
 
 ```

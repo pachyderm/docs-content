@@ -12,9 +12,9 @@ Start a new commit.
 
 This command starts a new commit with parent-commit as the parent on the given branch; if the branch does not exist, it will be created. 
 
- To specify a parent commit, use the `--parent` flag 
- To add a message to the commit, use the `--message` or `--description` flag 
- To specify which project the repo is in, use the `--project` flag 
+- To specify a parent commit, use the `--parent` flag 
+- To add a message to the commit, use the `--message` or `--description` flag 
+- To specify which project the repo is in, use the `--project` flag 
 
 
 ```

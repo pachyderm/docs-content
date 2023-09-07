@@ -12,7 +12,7 @@ Create a new project.
 
 This command creates a new project. 
 
- To set a description for the project, use the `--description` flag 
+- To set a description for the project, use the `--description` flag 
 
 
 ```

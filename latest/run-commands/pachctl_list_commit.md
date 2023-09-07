@@ -12,11 +12,11 @@ Return a list of commits.
 
 This command returns a list of commits, either across the entire pachyderm cluster or restricted to a single repo. 
 
- To specify which project the repo is in, use the `--project` flag 
- To specify the number of commits to return, use the `--number` flag 
- To list all commits that have come after a certain commit, use the `--from` flag 
- To specify the origin of the commit, use the `--origin` flag; options include `AUTO`, `FSCK`, & `USER`. Requires at least repo name in command 
- To expand the commit to include all of its sub-commits, use the `--expand` flag 
+- To specify which project the repo is in, use the `--project` flag 
+- To specify the number of commits to return, use the `--number` flag 
+- To list all commits that have come after a certain commit, use the `--from` flag 
+- To specify the origin of the commit, use the `--origin` flag; options include `AUTO`, `FSCK`, & `USER`. Requires at least repo name in command 
+- To expand the commit to include all of its sub-commits, use the `--expand` flag 
 
 
 ```

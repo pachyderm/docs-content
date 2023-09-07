@@ -12,11 +12,11 @@ Return a list of repos.
 
 This command returns a list of repos that you have permissions to view. By default, it does not show system repos like pipeline metadata. 
 
- To view all input repos across projects, use `-A` flag 
- To view all repos in a specific project, including system repos, use the `--all` flag 
- To view repos of a specific type, use the `--type` flag; options include `USER`, `META`, & `SPEC` 
- To view repos of a specific type across projects, use the `--type` and `-A` flags 
- To view repos of a specific type in a specific project, use the `--type` and `--project` flags 
+- To view all input repos across projects, use `-A` flag 
+- To view all repos in a specific project, including system repos, use the `--all` flag 
+- To view repos of a specific type, use the `--type` flag; options include `USER`, `META`, & `SPEC` 
+- To view repos of a specific type across projects, use the `--type` and `-A` flags 
+- To view repos of a specific type in a specific project, use the `--type` and `--project` flags 
 
 For information on roles and permissions, see the documentation: https://docs.pachyderm.com/latest/set-up/authorization/permissions/
 

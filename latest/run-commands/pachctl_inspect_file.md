@@ -11,7 +11,7 @@ Return info about a file.
 ### Synopsis
 
 This command returns info about a file.While using this command, take special note of how you can use ancestry syntax (e.g., appending`^2` or `.-1` to `repo@branch`) to inspect the contents of a file from a previous commit. 
- To specify the project where the repo is located, use the --project flag 
+- To specify the project where the repo is located, use the --project flag 
 
 
 ```

@@ -12,8 +12,8 @@ Return the datums in a job.
 
 This command returns the datums in a job. 
  
- To pass in a JSON pipeline spec instead of `pipeline@job`, use the `--file` flag 
-  To specify the project where the parent pipeline lives, use the `--project` flag 
+- To pass in a JSON pipeline spec instead of `pipeline@job`, use the `--file` flag 
+- To specify the project where the parent pipeline lives, use the `--project` flag 
 
 
 ```

@@ -14,10 +14,10 @@ This command creates a new pipeline from a pipeline specification.
  
 You can create a pipeline using a JSON/YAML file or a jsonnet template file -- via either a local filepath or URL. Multiple pipelines can be created from one file.For details on the format, see https://docs.pachyderm.com/latest/reference/pipeline_spec/. 
  
- To create a pipeline from a JSON/YAML file, use the `--file` flag 
- To create a pipeline from a jsonnet template file, use the `--jsonnet` flag; you can optionally pay multiple arguments separately using `--arg` 
- To push your local images to docker registry, use the `--push-images` and `--username` flags 
- To push your local images to custom registry, use the `--push-images`, `--registry`, and `--username` flags 
+- To create a pipeline from a JSON/YAML file, use the `--file` flag 
+- To create a pipeline from a jsonnet template file, use the `--jsonnet` flag; you can optionally pay multiple arguments separately using `--arg` 
+- To push your local images to docker registry, use the `--push-images` and `--username` flags 
+- To push your local images to custom registry, use the `--push-images`, `--registry`, and `--username` flags 
 
 
 ```

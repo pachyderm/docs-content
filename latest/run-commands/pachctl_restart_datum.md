@@ -14,7 +14,7 @@ This command restarts a stuck datum during a currently running job; it does not 
  
 You can configure a job to skip failed datums via the transform.err_cmd setting of your pipeline spec. 
  
- To specify the project where the parent pipeline lives, use the `--project` flag 
+- To specify the project where the parent pipeline lives, use the `--project` flag 
 
 
 ```
