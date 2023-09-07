@@ -1031,6 +1031,7 @@ if __name__ == "__main__":
 ```s
 pachctl list files content_collager@master
 ```
+{{< figure src="/images/beginner-tutorial/html-output.gif" class="figure">}}
 {{% /wizardResult%}}
 {{%/wizardResults%}}
 {{</stack>}}
@@ -1098,5 +1099,5 @@ For a comprehensive list of operations, check out the [Build DAGs](/{{%release%}
 
 ## Bonus Exercise
 
-- How would you update the glob pattern in the video converter pipeline spec (`video_mp4_converter.yaml`) to only process video files in the `raw_videos_and_images` repo? That would reduce the complexity of the user code in `def process_video_files` and make the pipeline more efficient.
+- How would you update the glob pattern in the video converter pipeline spec (`video_mp4_converter.yaml`) to only process video files in the `raw_videos_and_images` repo? That would enable you to reduce the complexity of the user code in `def process_video_files` and make the pipeline more efficient.
   
