@@ -1,6 +1,7 @@
 ---
-date: 2023-08-04T13:05:50-04:00
+date: 2023-09-07T13:28:03-04:00
 title: "pachctl restart"
+description: "Learn about the pachctl_restart command"
 ---
 
 ## pachctl restart
@@ -23,4 +24,9 @@ Cancel and restart an ongoing task.
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl](../pachctl)	 - 
+* [pachctl restart datum](../pachctl_restart_datum)	 - Restart a stuck datum during a currently running job.
 

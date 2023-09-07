@@ -1,6 +1,7 @@
 ---
-date: 2023-08-04T13:05:50-04:00
+date: 2023-09-07T13:28:03-04:00
 title: "pachctl run pfs-load-test"
+description: "Learn about the pachctl_run_pfs-load-test command"
 ---
 
 ## pachctl run pfs-load-test
@@ -105,7 +106,7 @@ validator: {}
 ```
   -b, --branch string     Specify the branch to use for generating the load.
   -h, --help              help for pfs-load-test
-      --project string    Specify the project (by name) where the repo is located. (default "standard-ml-tutorial")
+      --project string    Specify the project (by name) where the repo is located. (default "video-to-frame-traces")
   -s, --seed int          Set the seed to use for generating the load.
       --state-id string   Set the ID of the base state to use for the load.
 ```
@@ -116,4 +117,8 @@ validator: {}
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl run](../pachctl_run)	 - Manually run a Pachyderm resource.
 

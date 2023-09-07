@@ -1,6 +1,7 @@
 ---
-date: 2023-08-04T13:05:50-04:00
+date: 2023-09-07T13:28:03-04:00
 title: "pachctl start pipeline"
+description: "Learn about the pachctl_start_pipeline command"
 ---
 
 ## pachctl start pipeline
@@ -18,8 +19,8 @@ pachctl start pipeline <pipeline> [flags]
 ### Examples
 
 ```
-	- pachctl start pipeline foo 
-	- pachctl start pipeline foo --project bar 
+ pachctl start pipeline foo 
+ pachctl start pipeline foo --project bar 
 
 ```
 
@@ -27,7 +28,7 @@ pachctl start pipeline <pipeline> [flags]
 
 ```
   -h, --help             help for pipeline
-      --project string   Project containing pipeline. (default "standard-ml-tutorial")
+      --project string   Project containing pipeline. (default "video-to-frame-traces")
 ```
 
 ### Options inherited from parent commands
@@ -36,4 +37,8 @@ pachctl start pipeline <pipeline> [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl start](../pachctl_start)	 - Start a Pachyderm resource.
 

@@ -1,6 +1,7 @@
 ---
-date: 2023-08-04T13:05:50-04:00
+date: 2023-09-07T13:28:03-04:00
 title: "pachctl inspect project"
+description: "Learn about the pachctl_inspect_project command"
 ---
 
 ## pachctl inspect project
@@ -11,7 +12,7 @@ Inspect a project.
 
 This command inspects a project and returns information like its `Name` and `Created at` time. 
 
-	- To return additional details, use the `--raw` flag 
+ To return additional details, use the `--raw` flag 
 
 
 ```
@@ -21,9 +22,9 @@ pachctl inspect project <project> [flags]
 ### Examples
 
 ```
-	- pachctl inspect project foo-project 
-	- pachctl inspect project foo-project --raw 
-	- pachctl inspect project foo-project --output=yaml 
+ pachctl inspect project foo-project 
+ pachctl inspect project foo-project --raw 
+ pachctl inspect project foo-project --output=yaml 
 
 ```
 
@@ -41,4 +42,8 @@ pachctl inspect project <project> [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl inspect](../pachctl_inspect)	 - Show detailed information about a Pachyderm resource.
 

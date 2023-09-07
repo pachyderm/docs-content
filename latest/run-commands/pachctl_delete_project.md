@@ -1,6 +1,7 @@
 ---
-date: 2023-08-04T13:05:50-04:00
+date: 2023-09-07T13:28:03-04:00
 title: "pachctl delete project"
+description: "Learn about the pachctl_delete_project command"
 ---
 
 ## pachctl delete project
@@ -18,8 +19,8 @@ pachctl delete project <project> [flags]
 ### Examples
 
 ```
-	- pachctl delete project foo-project 
-	- pachctl delete project foo-project --force 
+ pachctl delete project foo-project 
+ pachctl delete project foo-project --force 
 
 ```
 
@@ -36,4 +37,8 @@ pachctl delete project <project> [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl delete](../pachctl_delete)	 - Delete an existing Pachyderm resource.
 

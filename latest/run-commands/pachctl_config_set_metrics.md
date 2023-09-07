@@ -1,6 +1,7 @@
 ---
-date: 2023-08-04T13:05:50-04:00
+date: 2023-09-07T13:28:03-04:00
 title: "pachctl config set metrics"
+description: "Learn about the pachctl_config_set_metrics command"
 ---
 
 ## pachctl config set metrics
@@ -27,3 +28,8 @@ pachctl config set metrics (true | false) [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl config set](../pachctl_config_set)	 - Commands for setting pachyderm config values
+

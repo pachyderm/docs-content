@@ -1,6 +1,7 @@
 ---
-date: 2023-08-04T13:05:50-04:00
+date: 2023-09-07T13:28:03-04:00
 title: "pachctl delete commit"
+description: "Learn about the pachctl_delete_commit command"
 ---
 
 ## pachctl delete commit
@@ -18,7 +19,7 @@ pachctl delete commit <commit-id> [flags]
 ### Examples
 
 ```
-	- pachctl delete commit 0001a0100b1c10d01111e001fg00h00i
+ pachctl delete commit 0001a0100b1c10d01111e001fg00h00i
 ```
 
 ### Options
@@ -33,4 +34,8 @@ pachctl delete commit <commit-id> [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl delete](../pachctl_delete)	 - Delete an existing Pachyderm resource.
 

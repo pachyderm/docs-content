@@ -1,6 +1,7 @@
 ---
-date: 2023-08-04T13:05:50-04:00
+date: 2023-09-07T13:28:03-04:00
 title: "pachctl shell"
+description: "Learn about the pachctl_shell command"
 ---
 
 ## pachctl shell
@@ -28,4 +29,8 @@ pachctl shell [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl](../pachctl)	 - 
 

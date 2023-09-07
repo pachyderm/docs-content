@@ -1,6 +1,7 @@
 ---
-date: 2023-08-04T13:05:50-04:00
+date: 2023-09-07T13:28:03-04:00
 title: "pachctl auth check repo"
+description: "Learn about the pachctl_auth_check_repo command"
 ---
 
 ## pachctl auth check repo
@@ -19,7 +20,7 @@ pachctl auth check repo <repo> [<user>] [flags]
 
 ```
   -h, --help             help for repo
-      --project string   The project containing the repo. (default "standard-ml-tutorial")
+      --project string   The project containing the repo. (default "video-to-frame-traces")
 ```
 
 ### Options inherited from parent commands
@@ -28,3 +29,8 @@ pachctl auth check repo <repo> [<user>] [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl auth check](../pachctl_auth_check)	 - Check whether a subject has a permission on a resource
+

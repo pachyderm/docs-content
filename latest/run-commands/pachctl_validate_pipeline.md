@@ -1,6 +1,7 @@
 ---
-date: 2023-08-04T13:05:50-04:00
+date: 2023-09-07T13:28:03-04:00
 title: "pachctl validate pipeline"
+description: "Learn about the pachctl_validate_pipeline command"
 ---
 
 ## pachctl validate pipeline
@@ -18,7 +19,7 @@ pachctl validate pipeline [flags]
 ### Examples
 
 ```
-	- pachctl validate pipeline --file spec.json
+ pachctl validate pipeline --file spec.json
 ```
 
 ### Options
@@ -34,4 +35,8 @@ pachctl validate pipeline [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl validate](../pachctl_validate)	 - Validate the specification of a Pachyderm resource.
 

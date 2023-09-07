@@ -1,6 +1,7 @@
 ---
-date: 2023-08-04T13:05:50-04:00
+date: 2023-09-07T13:28:03-04:00
 title: "pachctl inspect secret"
+description: "Learn about the pachctl_inspect_secret command"
 ---
 
 ## pachctl inspect secret
@@ -18,7 +19,7 @@ pachctl inspect secret [flags]
 ### Examples
 
 ```
-	- pachctl inspect secret my-secret 
+ pachctl inspect secret my-secret 
 
 ```
 
@@ -34,4 +35,8 @@ pachctl inspect secret [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl inspect](../pachctl_inspect)	 - Show detailed information about a Pachyderm resource.
 

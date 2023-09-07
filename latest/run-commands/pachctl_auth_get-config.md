@@ -1,6 +1,7 @@
 ---
-date: 2023-08-04T13:05:50-04:00
+date: 2023-09-07T13:28:03-04:00
 title: "pachctl auth get-config"
+description: "Learn about the pachctl_auth_get-config command"
 ---
 
 ## pachctl auth get-config
@@ -29,3 +30,8 @@ pachctl auth get-config [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl auth](../pachctl_auth)	 - Auth commands manage access to data in a Pachyderm cluster
+

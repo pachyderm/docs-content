@@ -1,6 +1,7 @@
 ---
-date: 2023-08-04T13:05:50-04:00
+date: 2023-09-07T13:28:03-04:00
 title: "pachctl auth get-robot-token"
+description: "Learn about the pachctl_auth_get-robot-token command"
 ---
 
 ## pachctl auth get-robot-token
@@ -30,3 +31,8 @@ pachctl auth get-robot-token [username] [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl auth](../pachctl_auth)	 - Auth commands manage access to data in a Pachyderm cluster
+

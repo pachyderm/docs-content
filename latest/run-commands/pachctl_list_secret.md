@@ -1,6 +1,7 @@
 ---
-date: 2023-08-04T13:05:50-04:00
+date: 2023-09-07T13:28:03-04:00
 title: "pachctl list secret"
+description: "Learn about the pachctl_list_secret command"
 ---
 
 ## pachctl list secret
@@ -18,7 +19,7 @@ pachctl list secret [flags]
 ### Examples
 
 ```
-	- pachctl list secret 
+ pachctl list secret 
 
 ```
 
@@ -34,4 +35,8 @@ pachctl list secret [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl list](../pachctl_list)	 - Print a list of Pachyderm resources of a specific type.
 

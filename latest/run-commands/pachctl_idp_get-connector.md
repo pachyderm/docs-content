@@ -1,6 +1,7 @@
 ---
-date: 2023-08-04T13:05:50-04:00
+date: 2023-09-07T13:28:03-04:00
 title: "pachctl idp get-connector"
+description: "Learn about the pachctl_idp_get-connector command"
 ---
 
 ## pachctl idp get-connector
@@ -27,4 +28,8 @@ pachctl idp get-connector <connector id> [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl idp](../pachctl_idp)	 - Commands to manage identity provider integrations
 

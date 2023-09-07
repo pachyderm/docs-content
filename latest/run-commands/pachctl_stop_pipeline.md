@@ -1,6 +1,7 @@
 ---
-date: 2023-08-04T13:05:50-04:00
+date: 2023-09-07T13:28:03-04:00
 title: "pachctl stop pipeline"
+description: "Learn about the pachctl_stop_pipeline command"
 ---
 
 ## pachctl stop pipeline
@@ -18,8 +19,8 @@ pachctl stop pipeline <pipeline> [flags]
 ### Examples
 
 ```
-	- pachctl stop pipeline foo 
-	- pachctl stop pipeline foo --project bar 
+ pachctl stop pipeline foo 
+ pachctl stop pipeline foo --project bar 
 
 ```
 
@@ -27,7 +28,7 @@ pachctl stop pipeline <pipeline> [flags]
 
 ```
   -h, --help             help for pipeline
-      --project string   Project containing pipeline. (default "standard-ml-tutorial")
+      --project string   Project containing pipeline. (default "video-to-frame-traces")
 ```
 
 ### Options inherited from parent commands
@@ -36,4 +37,8 @@ pachctl stop pipeline <pipeline> [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl stop](../pachctl_stop)	 - Cancel an ongoing task.
 

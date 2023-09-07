@@ -1,6 +1,7 @@
 ---
-date: 2023-08-04T13:05:50-04:00
+date: 2023-09-07T13:28:03-04:00
 title: "pachctl auth check project"
+description: "Learn about the pachctl_auth_check_project command"
 ---
 
 ## pachctl auth check project
@@ -27,3 +28,8 @@ pachctl auth check project <project> [user] [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl auth check](../pachctl_auth_check)	 - Check whether a subject has a permission on a resource
+

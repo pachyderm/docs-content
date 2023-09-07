@@ -1,6 +1,7 @@
 ---
-date: 2023-08-04T13:05:50-04:00
+date: 2023-09-07T13:28:03-04:00
 title: "pachctl start commit"
+description: "Learn about the pachctl_start_commit command"
 ---
 
 ## pachctl start commit
@@ -11,9 +12,9 @@ Start a new commit.
 
 This command starts a new commit with parent-commit as the parent on the given branch; if the branch does not exist, it will be created. 
 
-	- To specify a parent commit, use the `--parent` flag 
-	- To add a message to the commit, use the `--message` or `--description` flag 
-	- To specify which project the repo is in, use the `--project` flag 
+ To specify a parent commit, use the `--parent` flag 
+ To add a message to the commit, use the `--message` or `--description` flag 
+ To specify which project the repo is in, use the `--project` flag 
 
 
 ```
@@ -23,11 +24,11 @@ pachctl start commit <repo>@<branch> [flags]
 ### Examples
 
 ```
-	- pachctl start commit foo@master 
-	- pachctl start commit foo@master -p 0001a0100b1c10d01111e001fg00h00i 
-	- pachctl start commit foo@master --message 'my commit message' 
-	- pachctl start commit foo@master --description 'my commit description' 
-	- pachctl start commit foo@master --project bar
+ pachctl start commit foo@master 
+ pachctl start commit foo@master -p 0001a0100b1c10d01111e001fg00h00i 
+ pachctl start commit foo@master --message 'my commit message' 
+ pachctl start commit foo@master --description 'my commit description' 
+ pachctl start commit foo@master --project bar
 ```
 
 ### Options
@@ -37,7 +38,7 @@ pachctl start commit <repo>@<branch> [flags]
   -h, --help                 help for commit
   -m, --message string       Set a description for the commit's contents (synonym for --description).
   -p, --parent string        Set the parent (by id) of the new commit; only needed when branch is not specified using the @ syntax.
-      --project string       Specify the project (by name) where the repo for this commit is located. (default "standard-ml-tutorial")
+      --project string       Specify the project (by name) where the repo for this commit is located. (default "video-to-frame-traces")
 ```
 
 ### Options inherited from parent commands
@@ -46,4 +47,8 @@ pachctl start commit <repo>@<branch> [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl start](../pachctl_start)	 - Start a Pachyderm resource.
 

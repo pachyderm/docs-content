@@ -1,6 +1,7 @@
 ---
-date: 2023-08-04T13:05:50-04:00
+date: 2023-09-07T13:28:03-04:00
 title: "pachctl enterprise"
+description: "Learn about the pachctl_enterprise command"
 ---
 
 ## pachctl enterprise
@@ -23,4 +24,16 @@ Enterprise commands enable Pachyderm Enterprise features
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl](../pachctl)	 - 
+* [pachctl enterprise deactivate](../pachctl_enterprise_deactivate)	 - Deactivate the enterprise service
+* [pachctl enterprise get-state](../pachctl_enterprise_get-state)	 - Check whether the Pachyderm cluster has enterprise features activated
+* [pachctl enterprise heartbeat](../pachctl_enterprise_heartbeat)	 - Sync the enterprise state with the license server immediately.
+* [pachctl enterprise pause](../pachctl_enterprise_pause)	 - Pause the cluster.
+* [pachctl enterprise pause-status](../pachctl_enterprise_pause-status)	 - Get the pause status of the cluster.
+* [pachctl enterprise register](../pachctl_enterprise_register)	 - Register the cluster with an enterprise license server
+* [pachctl enterprise sync-contexts](../pachctl_enterprise_sync-contexts)	 - Pull all available Pachyderm Cluster contexts into your pachctl config
+* [pachctl enterprise unpause](../pachctl_enterprise_unpause)	 - Unpause the cluster.
 

@@ -1,6 +1,7 @@
 ---
-date: 2023-08-04T13:05:50-04:00
+date: 2023-09-07T13:28:03-04:00
 title: "pachctl list project"
+description: "Learn about the pachctl_list_project command"
 ---
 
 ## pachctl list project
@@ -18,8 +19,8 @@ pachctl list project <repo> [flags]
 ### Examples
 
 ```
-	- pachctl list project 
-	- pachctl list project --raw 
+ pachctl list project 
+ pachctl list project --raw 
 
 ```
 
@@ -37,4 +38,8 @@ pachctl list project <repo> [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl list](../pachctl_list)	 - Print a list of Pachyderm resources of a specific type.
 

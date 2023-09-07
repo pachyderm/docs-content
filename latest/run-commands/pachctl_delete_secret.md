@@ -1,6 +1,7 @@
 ---
-date: 2023-08-04T13:05:50-04:00
+date: 2023-09-07T13:28:03-04:00
 title: "pachctl delete secret"
+description: "Learn about the pachctl_delete_secret command"
 ---
 
 ## pachctl delete secret
@@ -18,7 +19,7 @@ pachctl delete secret [flags]
 ### Examples
 
 ```
-	- pachctl delete secret my-secret 
+ pachctl delete secret my-secret 
 
 ```
 
@@ -34,4 +35,8 @@ pachctl delete secret [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl delete](../pachctl_delete)	 - Delete an existing Pachyderm resource.
 

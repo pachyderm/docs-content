@@ -1,6 +1,7 @@
 ---
-date: 2023-08-04T13:05:50-04:00
+date: 2023-09-07T13:28:03-04:00
 title: "pachctl inspect pipeline"
+description: "Learn about the pachctl_inspect_pipeline command"
 ---
 
 ## pachctl inspect pipeline
@@ -18,9 +19,9 @@ pachctl inspect pipeline <pipeline> [flags]
 ### Examples
 
 ```
-	- pachctl inspect pipeline foo 
-	- pachctl inspect pipeline foo --project bar 
-	- pachctl inspect pipeline foo --project bar --raw -o yaml 
+ pachctl inspect pipeline foo 
+ pachctl inspect pipeline foo --project bar 
+ pachctl inspect pipeline foo --project bar --raw -o yaml 
 
 ```
 
@@ -30,7 +31,7 @@ pachctl inspect pipeline <pipeline> [flags]
       --full-timestamps   Return absolute timestamps (as opposed to the default, relative timestamps).
   -h, --help              help for pipeline
   -o, --output string     Output format when --raw is set: "json" or "yaml" (default "json")
-      --project string    Specify the project (by name) containing the inspected pipeline. (default "standard-ml-tutorial")
+      --project string    Specify the project (by name) containing the inspected pipeline. (default "video-to-frame-traces")
       --raw               Disable pretty printing; serialize data structures to an encoding such as json or yaml
 ```
 
@@ -40,4 +41,8 @@ pachctl inspect pipeline <pipeline> [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl inspect](../pachctl_inspect)	 - Show detailed information about a Pachyderm resource.
 

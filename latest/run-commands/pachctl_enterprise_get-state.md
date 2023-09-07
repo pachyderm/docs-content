@@ -1,6 +1,7 @@
 ---
-date: 2023-08-04T13:05:50-04:00
+date: 2023-09-07T13:28:03-04:00
 title: "pachctl enterprise get-state"
+description: "Learn about the pachctl_enterprise_get-state command"
 ---
 
 ## pachctl enterprise get-state
@@ -28,4 +29,8 @@ pachctl enterprise get-state [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl enterprise](../pachctl_enterprise)	 - Enterprise commands enable Pachyderm Enterprise features
 

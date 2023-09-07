@@ -1,6 +1,7 @@
 ---
-date: 2023-08-04T13:05:50-04:00
+date: 2023-09-07T13:28:03-04:00
 title: "pachctl debug binary"
+description: "Learn about the pachctl_debug_binary command"
 ---
 
 ## pachctl debug binary
@@ -30,4 +31,8 @@ pachctl debug binary <file> [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl debug](../pachctl_debug)	 - Debug commands for analyzing a running cluster.
 

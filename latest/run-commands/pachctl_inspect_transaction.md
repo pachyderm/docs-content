@@ -1,6 +1,7 @@
 ---
-date: 2023-08-04T13:05:50-04:00
+date: 2023-09-07T13:28:03-04:00
 title: "pachctl inspect transaction"
+description: "Learn about the pachctl_inspect_transaction command"
 ---
 
 ## pachctl inspect transaction
@@ -30,4 +31,8 @@ pachctl inspect transaction [<transaction>] [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl inspect](../pachctl_inspect)	 - Show detailed information about a Pachyderm resource.
 

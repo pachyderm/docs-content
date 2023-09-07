@@ -1,6 +1,7 @@
 ---
-date: 2023-08-04T13:05:50-04:00
+date: 2023-09-07T13:28:03-04:00
 title: "pachctl stop transaction"
+description: "Learn about the pachctl_stop_transaction command"
 ---
 
 ## pachctl stop transaction
@@ -27,4 +28,8 @@ pachctl stop transaction [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl stop](../pachctl_stop)	 - Cancel an ongoing task.
 

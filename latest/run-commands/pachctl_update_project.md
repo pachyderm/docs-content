@@ -1,6 +1,7 @@
 ---
-date: 2023-08-04T13:05:50-04:00
+date: 2023-09-07T13:28:03-04:00
 title: "pachctl update project"
+description: "Learn about the pachctl_update_project command"
 ---
 
 ## pachctl update project
@@ -18,7 +19,7 @@ pachctl update project <project> [flags]
 ### Examples
 
 ```
-	- pachctl update project foo-project --description 'This is a project for foo.' 
+ pachctl update project foo-project --description 'This is a project for foo.' 
 
 ```
 
@@ -35,4 +36,8 @@ pachctl update project <project> [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl update](../pachctl_update)	 - Change the properties of an existing Pachyderm resource.
 

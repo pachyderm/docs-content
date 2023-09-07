@@ -1,6 +1,7 @@
 ---
-date: 2023-08-04T13:05:50-04:00
+date: 2023-09-07T13:28:03-04:00
 title: "pachctl completion bash"
+description: "Learn about the pachctl_completion_bash command"
 ---
 
 ## pachctl completion bash
@@ -29,3 +30,8 @@ pachctl completion bash [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl completion](../pachctl_completion)	 - Print or install terminal completion code.
+

@@ -1,6 +1,7 @@
 ---
-date: 2023-08-04T13:05:50-04:00
+date: 2023-09-07T13:28:03-04:00
 title: "pachctl loki"
+description: "Learn about the pachctl_loki command"
 ---
 
 ## pachctl loki
@@ -18,8 +19,8 @@ pachctl loki <query> [flags]
 ### Examples
 
 ```
-	- pachctl loki <query> --since 100s 
-	- pachctl loki <query> --since 1h
+ pachctl loki <query> --since 100s 
+ pachctl loki <query> --since 1h
 ```
 
 ### Options
@@ -35,4 +36,8 @@ pachctl loki <query> [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl](../pachctl)	 - 
 

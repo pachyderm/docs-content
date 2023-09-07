@@ -1,6 +1,7 @@
 ---
-date: 2023-08-04T13:05:50-04:00
+date: 2023-09-07T13:28:03-04:00
 title: "pachctl diff file"
+description: "Learn about the pachctl_diff_file command"
 ---
 
 ## pachctl diff file
@@ -10,11 +11,11 @@ Return a diff of two file trees stored in Pachyderm
 ### Synopsis
 
 This command returns a diff of two file trees stored in Pachyderm. The file trees are specified by two files, one from the new tree and one from the old tree. 
-	- To specify the project where the repos are located, use the `--project flag` 
-	- To specify the project where the second older repo is located, use the `--old-project flag` 
-	- To prevent descending into sub-directories, use the `--shallow flag`
-	- To use an alternative (non-git) diff command, use the `--diff-command flag` 
-	- To get only the names of changed files, use the `--name-only flag` 
+ To specify the project where the repos are located, use the `--project flag` 
+ To specify the project where the second older repo is located, use the `--old-project flag` 
+ To prevent descending into sub-directories, use the `--shallow flag`
+ To use an alternative (non-git) diff command, use the `--diff-command flag` 
+ To get only the names of changed files, use the `--name-only flag` 
 
 
 ```
@@ -24,9 +25,9 @@ pachctl diff file <new-repo>@<new-branch-or-commit>:<new-path> [<old-repo>@<old-
 ### Examples
 
 ```
-	- pachctl diff file foo@master:/logs/log.txt 
-	- pachctl diff file foo@0001a0100b1c10d01111e001fg00h00i:log.txt 
-	- pachctl diff file foo@master:path1 bar@master:path2
+ pachctl diff file foo@master:/logs/log.txt 
+ pachctl diff file foo@0001a0100b1c10d01111e001fg00h00i:log.txt 
+ pachctl diff file foo@master:path1 bar@master:path2
 ```
 
 ### Options
@@ -38,7 +39,7 @@ pachctl diff file <new-repo>@<new-branch-or-commit>:<new-path> [<old-repo>@<old-
       --name-only             Specify results should only return the names of changed files.
       --no-pager              Don't pipe output into a pager (i.e. less).
       --old-project string    Specify the project (by name) where the second, older repo is located.
-      --project string        Specify the project (by name) where the first repo is located. (default "standard-ml-tutorial")
+      --project string        Specify the project (by name) where the first repo is located. (default "video-to-frame-traces")
   -s, --shallow               Specify results should not to descend into sub directories.
 ```
 
@@ -48,4 +49,8 @@ pachctl diff file <new-repo>@<new-branch-or-commit>:<new-path> [<old-repo>@<old-
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl diff](../pachctl_diff)	 - Show the differences between two Pachyderm resources.
 

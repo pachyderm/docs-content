@@ -1,6 +1,7 @@
 ---
-date: 2023-08-04T13:05:50-04:00
+date: 2023-09-07T13:28:03-04:00
 title: "pachctl connect"
+description: "Learn about the pachctl_connect command"
 ---
 
 ## pachctl connect
@@ -28,3 +29,8 @@ pachctl connect <address> [flags]
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl](../pachctl)	 - 
+

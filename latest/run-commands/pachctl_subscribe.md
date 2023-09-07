@@ -1,6 +1,7 @@
 ---
-date: 2023-08-04T13:05:50-04:00
+date: 2023-09-07T13:28:03-04:00
 title: "pachctl subscribe"
+description: "Learn about the pachctl_subscribe command"
 ---
 
 ## pachctl subscribe
@@ -23,4 +24,9 @@ Wait for notifications of changes to a Pachyderm resource.
       --no-color   Turn off colors.
   -v, --verbose    Output verbose logs
 ```
+
+### SEE ALSO
+
+* [pachctl](../pachctl)	 - 
+* [pachctl subscribe commit](../pachctl_subscribe_commit)	 - Print commits as they are created (finished).
 
