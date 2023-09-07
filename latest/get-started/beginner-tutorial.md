@@ -148,6 +148,12 @@ pachctl put file raw_videos_and_images@master:robot.png -f https://raw.githubuse
 pachctl put file raw_videos_and_images@master:highway.MOV -f https://storage.googleapis.com/docs-tutorial-resoruces/highway.MOV
 ```
 
+You can view the contents of your repo by running the following command:
+
+```s
+pachctl list files raw_videos_and_images@master
+```
+
 {{% /wizardResult%}}
 {{% wizardResult val1="tool/console" %}}
 
@@ -163,8 +169,6 @@ pachctl put file raw_videos_and_images@master:highway.MOV -f https://storage.goo
 {{% /wizardResult%}}
 {{%/wizardResults%}}
 {{</stack>}}
-
-
 
 ### 4. Create the Video Converter Pipeline 
 
@@ -309,9 +313,29 @@ if __name__ == "__main__":
 
 {{< figure src="/images/beginner-tutorial/movie-converter-output.gif" class="figure">}}
 
+You can view the output commit by running one of following commands:
+```s
+pachctl list commits video_mp4_converter
+pachctl list commits video_mp4_converter@master
+```
+
+```
+PROJECT               REPO                BRANCH COMMIT                           FINISHED       SIZE     ORIGIN DESCRIPTION 
+video-to-frame-traces video_mp4_converter master 30dadf5cfdf447d2b8ed45644653a509 51 minutes ago 14.05MiB AUTO  
+```
+
+You can view the output files by running one of the following commands:
 ```s
 pachctl list files video_mp4_converter@master
+pachctl list files video_mp4_converter@<commit-id>
 ```
+
+```
+NAME              TYPE SIZE     
+/cat-sleeping.mp4 file 7.535MiB 
+/highway.mp4      file 6.517MiB 
+```
+
 {{% /wizardResult%}}
 {{% /wizardResults%}}
 {{</stack>}}
@@ -1074,4 +1098,5 @@ For a comprehensive list of operations, check out the [Build DAGs](/{{%release%}
 
 ## Bonus Exercise
 
-How would you update the glob pattern in the video converter pipeline spec (`video_mp4_converter.yaml`) to only process video files in the `raw_videos_and_images` repo? That would reduce the complexity of the user code in `def process_video_files` and make the pipeline more efficient.
+- How would you update the glob pattern in the video converter pipeline spec (`video_mp4_converter.yaml`) to only process video files in the `raw_videos_and_images` repo? That would reduce the complexity of the user code in `def process_video_files` and make the pipeline more efficient.
+  
