@@ -65,8 +65,6 @@ By default, when you first start up an instance, the `default` project is attach
 
 {{% wizardResults %}}
 {{% wizardResult val1="tool/cli" %}}
-
-At the top of our DAG, we'll need an input repo that will store our raw videos and images. 
    
 ```s
 pachctl create project video-to-frame-traces
@@ -141,14 +139,13 @@ To upload content, you need to specify the repo and branch you'd like to upload 
 {{% wizardResults %}}
 {{% wizardResult val1="tool/cli" %}}
 
-(Video content coming soon)
-
 At the top of our DAG, we'll need an input repo that will store our raw videos and images. 
    
 ```s
 pachctl put file raw_videos_and_images@master:liberty.png -f https://raw.githubusercontent.com/pachyderm/docs-content/main/images/opencv/liberty.jpg
-
+pachctl put file raw_videos_and_images@master:cat-sleeping.MOV -f https://storage.googleapis.com/docs-tutorial-resoruces/cat-sleeping.MOV
 pachctl put file raw_videos_and_images@master:robot.png -f https://raw.githubusercontent.com/pachyderm/docs-content/main/images/opencv/robot.jpg
+pachctl put file raw_videos_and_images@master:highway.MOV -f https://storage.googleapis.com/docs-tutorial-resoruces/highway.MOV
 ```
 
 {{% /wizardResult%}}
@@ -440,7 +437,7 @@ pachctl list files image_flattener@master
 {{%/wizardResults%}}
 {{</stack>}}
 
-### 6. Create the Image Tracing Pipeline: 
+### 6. Create the Image Tracing Pipeline
 
 Up until this point, we've used a simple single input from the Pachyderm file system (`input.pfs`) and a basic [glob pattern](/{{%release%}}/learn/glossary/glob-pattern/) (`/*`) to specify shape of our datums. This particular pattern treats each top-level file and directory as a single datum. However, in this pipeline, we have some special requirements:
 
@@ -571,6 +568,10 @@ pachctl list files image_tracer@master
 {{% /wizardResult%}}
 {{%/wizardResults%}}
 {{</stack>}}
+
+{{% notice info%}}
+Since this pipeline is converting videos to video frames, it may take a few minutes to complete.
+{{% /notice %}}
 
 ### 7. Create the Gif Pipeline
 
@@ -713,6 +714,10 @@ pachctl list files movie_gifer@master
 {{% /wizardResult%}}
 {{%/wizardResults%}}
 {{</stack>}}
+
+{{% notice info%}}
+Since this pipeline is converting video frames to gifs, it may take a few minutes to complete.
+{{% /notice %}}
 
 ### 8. Create the Content Shuffler Pipeline
 
@@ -1055,8 +1060,18 @@ pachctl logs --pipeline content_collager
 pachctl debug dump debug_dump.tar.gz
 ```
 
+Once you've updated your pipeline spec/user code, you'll want to reprocess the data for one of your pipelines. Here's how you can do that:
+
+```s
+pachctl update pipeline -f content_collager.yaml --reprocess
+```
+
 {{% /wizardResult%}}
 {{% /wizardResults%}}
 {{</stack>}}
 
-For a comprehensive list of operations, check out the [Build Dags](/{{%release%}}/build-dags/) section of the documentation or browse the [Command Library](/{{%release%}}/run-commands).
+For a comprehensive list of operations, check out the [Build DAGs](/{{%release%}}/build-dags/) section of the documentation or browse the [Command Library](/{{%release%}}/run-commands).
+
+## Bonus Exercise
+
+How would you update the glob pattern in the video converter pipeline spec (`video_mp4_converter.yaml`) to only process video files in the `raw_videos_and_images` repo? That would reduce the complexity of the user code in `def process_video_files` and make the pipeline more efficient.
