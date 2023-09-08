@@ -45,7 +45,7 @@ The following steps add the [OIDC](/{{%release%}}/manage/helm-values/oidc/) sect
 
 1. Navigate to your `values.yamls` file or obtain your current Helm `values.yaml` overrides:
    ```s
-   helm get values pachyderm/pachyderm --show-only-overrides > values.yaml
+   helm get values pachyderm > values.yaml
    ```
 2. Add the following section:
 

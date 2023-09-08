@@ -51,7 +51,7 @@ Once deployed, {{% productName %}} stores your provided Enterprise license as th
    {{%/notice%}}
 3. Obtain your current user-input helm values:
     ```s
-    helm get values pachyderm/pachyderm --show-only-overrides > values.yaml
+    helm get values pachyderm > values.yaml
     ```
 4. Find the the `pachd.enterpriseLicenseKeySecretName` attribute.
 5. Input your license's secret name found in `meta.name` of `pachyderm-enterprise-key.json` (e.g., `pachyderm-enterprise-key-secret`).

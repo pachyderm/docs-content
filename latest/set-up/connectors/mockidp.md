@@ -22,7 +22,7 @@ The following steps assume that you are deploying locally and wish to have Conso
 
 1. Obtain your current user-input helm values:
     ```s
-    helm get values pachyderm/pachyderm --show-only-overrides > values.yaml
+    helm get values pachyderm  > values.yaml
     ```
 2. Update `proxy.host` from `local` to `127.0.0.1`
 3. Add [Console configuration](/latest/manage/helm-values/console/):
