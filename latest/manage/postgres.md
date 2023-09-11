@@ -6,7 +6,7 @@ weight: 10
 
 PostgreSQL is a powerful relational database management system, but it requires careful configuration to perform optimally, especially when dealing with high workloads and tables with frequent row deletions. In this guide, we'll discuss some best practices and recommended settings to ensure PostgreSQL can efficiently manage your data and prevent unexpected downtime.
 
-## Fine-Tuning Suggestions
+## Fine-Tuning Recommendations
 
 ### 1. Adjust Vacuuming Parameters
 
@@ -24,7 +24,7 @@ When you modify storage parameters for specific tables, PostgreSQL may need more
 
 ### 3. Regularly Monitor Bloat
 
-To prevent issues, it's crucial to monitor table and index bloat in PostgreSQL.  Implement a monitoring system that can use Nagios-compatible plugins, such as `check_postgres.pl`. This tool allows you to regularly check for bloat and take corrective actions when necessary.
+To prevent issues, it's crucial to monitor table and index bloat in PostgreSQL. Implement a monitoring system that can use Nagios-compatible plugins, such as `check_postgres.pl`. This tool allows you to regularly check for bloat and take corrective actions when necessary.
 
 ### 4. Set a Schedule for pg_repack
 
