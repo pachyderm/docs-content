@@ -24,8 +24,8 @@ When you modify storage parameters for specific tables, PostgreSQL may need more
 
 ### 3. Regularly Monitor Bloat
 
-To prevent issues, it's crucial to monitor table and index bloat in PostgreSQL. Implement a monitoring system that can use Nagios-compatible plugins, such as `check_postgres.pl`. This tool allows you to regularly check for bloat and take corrective actions when necessary.
+To prevent issues, it's crucial to monitor table and index bloat in PostgreSQL. Implement a monitoring system that can use Nagios-compatible plugins, such as [`check_postgres.pl`](https://bucardo.org/check_postgres/). This tool allows you to regularly check for bloat and take corrective actions when necessary.
 
 ### 4. Set a Schedule for pg_repack
 
-For large tables and busy systems, consider scheduling the use of `pg_repack` weekly during your lowest traffic periods. `pg_repack` helps you reclaim space by reorganizing tables without causing downtime.
+For large tables and busy systems, consider scheduling the use of [`pg_repack`](https://reorg.github.io/pg_repack/) weekly during your lowest traffic periods. `pg_repack` helps you reclaim space by reorganizing tables without causing downtime.
