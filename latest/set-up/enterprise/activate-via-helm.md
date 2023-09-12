@@ -42,16 +42,30 @@ Once deployed, {{% productName %}} stores your provided Enterprise license as th
    --from-literal=enterprise-license-key='<replace-with-key>' \
    --dry-run=client -o json | jq 'del(.metadata.resourceVersion)' > pachyderm-enterprise-key.json
    ```
-2. Upload the secret to your cluster.
+   Or
+   ```s
+   {
+     "kind": "Secret",
+     "apiVersion": "v1",
+     "metadata": {
+       "name": "pachyderm-enterprise-key",
+       "creationTimestamp": null
+     },
+     "data": {
+       "enterprise-license-key": "<replace-with-key>"
+     }
+   }
+   ```
+1. Upload the secret to your cluster.
    ```s
    pachctl create secret -f pachyderm-enterprise-key.json
    ```
-3. Obtain your current user-input helm values:
+2. Obtain your current user-input helm values:
     ```s
     helm get values pachyderm > values.yaml
     ```
-4. Find the the `pachd.enterpriseLicenseKeySecretName` attribute.
-5. Input your license's secret name found in `meta.name` of `pachyderm-enterprise-key.json` (e.g., `pachyderm-enterprise-key-secret`).
+3. Find the the `pachd.enterpriseLicenseKeySecretName` attribute.
+4. Input your license's secret name found in `meta.name` of `pachyderm-enterprise-key.json` (e.g., `pachyderm-enterprise-key-secret`).
    ```s
    deployTarget: LOCAL
    proxy:
@@ -62,7 +76,7 @@ Once deployed, {{% productName %}} stores your provided Enterprise license as th
    pachd:
      enterpriseLicenseKeySecretName: "pachyderm-enterprise-key"
    ```
-6. Upgrade your cluster by running the following command:
+5. Upgrade your cluster by running the following command:
 ```s
 helm upgrade pachyderm pachyderm/pachyderm -f values.yml
 ```
