@@ -40,15 +40,12 @@ Once deployed, {{% productName %}} stores your provided Enterprise license as th
    ```s
    kubectl create secret generic pachyderm-enterprise-key \
    --from-literal=enterprise-license-key='<replace-with-key>' \
-   --output=json > pachyderm-enterprise-key.json
+   --dry-run=client -o json | jq 'del(.metadata.resourceVersion)' > pachyderm-enterprise-key.json
    ```
 2. Upload the secret to your cluster.
    ```s
    pachctl create secret -f pachyderm-enterprise-key.json
    ```
-   {{%notice note %}}
-   You may have to rename the `metadata.name` in `pachyderm-enterprise-key.json` if pachctl says the secret already exists.
-   {{%/notice%}}
 3. Obtain your current user-input helm values:
     ```s
     helm get values pachyderm > values.yaml
