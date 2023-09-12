@@ -83,3 +83,13 @@ helm upgrade pachyderm pachyderm/pachyderm -f values.yml
 {{% /wizardResult%}}
 {{% /wizardResults %}}
 {{</stack>}}
+
+Enterprise automatically enables authentication. You can log in using the following command:
+```s
+pachctl auth login
+```
+
+- **username**: `admin`
+- **password**: `password`
+
+However, to use Console, you must [set up an IdP](/{{%release%}}/set-up/connectors/).
