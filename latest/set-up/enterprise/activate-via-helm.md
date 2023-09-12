@@ -52,6 +52,16 @@ Once deployed, {{% productName %}} stores your provided Enterprise license as th
     ```
 4. Find the the `pachd.enterpriseLicenseKeySecretName` attribute.
 5. Input your license's secret name found in `meta.name` of `pachyderm-enterprise-key.json` (e.g., `pachyderm-enterprise-key-secret`).
+   ```s
+   deployTarget: LOCAL
+   proxy:
+     enabled: true
+     host: localhost
+     service:
+       type: LoadBalancer
+   pachd:
+     enterpriseLicenseKeySecretName: "pachyderm-enterprise-key"
+   ```
 6. Upgrade your cluster by running the following command:
 ```s
 helm upgrade pachyderm pachyderm/pachyderm -f values.yml
