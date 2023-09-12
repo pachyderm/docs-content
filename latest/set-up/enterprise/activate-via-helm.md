@@ -39,7 +39,7 @@ Once deployed, {{% productName %}} stores your provided Enterprise license as th
 1. [Create a secret](/{{%release%}}/manage/secrets) for your Enterprise license.
    ```s
    kubectl create secret generic pachyderm-enterprise-key \
-   --from-literal=enterprise-license-key='<replace-with-key>'\
+   --from-literal=enterprise-license-key='<replace-with-key>' \
    --output=json > pachyderm-enterprise-key.json
    ```
 2. Upload the secret to your cluster.
