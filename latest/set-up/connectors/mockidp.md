@@ -24,8 +24,7 @@ The following steps assume that you are deploying locally and wish to have Conso
     ```s
     helm get values pachyderm  > values.yaml
     ```
-2. Update `proxy.host` from `local` to `127.0.0.1`
-3. Add [Console configuration](/latest/manage/helm-values/console/):
+2. Add [Console configuration](/latest/manage/helm-values/console/):
    ```yaml
    console:
      disableTelemetry: true
@@ -33,7 +32,7 @@ The following steps assume that you are deploying locally and wish to have Conso
        oauthRedirectURI: http://localhost/oauth/callback/?inline=true
        oauthClientSecret: '123'
    ```
-4. Add [OIDC configuration](/latest/manage/helm-values/oidc/):
+3. Add [OIDC configuration](/latest/manage/helm-values/oidc/):
     ```yaml
     oidc:
      issuerURI: "http://pachd:30658/dex"
@@ -42,43 +41,39 @@ The following steps assume that you are deploying locally and wish to have Conso
     A minimal `values.yaml` file should look like this:
    ```yaml
    deployTarget: LOCAL
+   pachd:
+     enterpriseLicenseKeySecretName: pachyderm-enterprise-key
    proxy:
-    enabled: true
-    host: 127.0.0.1
-    service:
-      type: LoadBalancer
+     enabled: true
+     host: localhost
+     service:
+       type: LoadBalancer
    console:
     disableTelemetry: true
     config:
       oauthRedirectURI: http://localhost/oauth/callback/?inline=true
       oauthClientSecret: '123'
-   pachd:
-    metrics:
-      enabled: false
-    additionalTrustedPeers:
-     - console-local
-    enterpriseLicenseKeySecretName: pachyderm-enterprise-key-secret
    oidc:
     issuerURI: "http://pachd:30658/dex"
     userAccessibleOauthIssuerHost: http://localhost
    ```
 
-5. Upgrade your cluster:
+4. Upgrade your cluster:
     ```s
     helm upgrade pachyderm pachyderm/pachyderm -f values.yaml
     ```
-6. Connect:
+5. Connect:
    ```s
-   pachctl connect grpc://127.0.0.1:80
+   pachctl connect grpc://localhost:80
    ```
-7. Log in via the [browser](http://localhost) at `localhost` or via the CLI:
+6. Log in via the [browser](http://localhost) at `localhost` or via the CLI:
    ```s
    pachctl auth login
    ```
     - user: `admin`
     - password: `password`
   
-8. Verify that you are logged in:
+7. Verify that you are logged in:
    ```s
    pachctl auth whoami
    ```
@@ -87,7 +82,7 @@ The following steps assume that you are deploying locally and wish to have Conso
    You are "user:kilgore@kilgore.trout"
     session expires: 21 Sep 23 18:07 UTC
    ```
-9. List your [projects](/latest/build-dags/project-operations/) to view your permissions/access level:
+8. List your [projects](/latest/build-dags/project-operations/) to view your permissions/access level:
     ```s
     pachctl list projects
     ```
