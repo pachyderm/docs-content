@@ -10,7 +10,7 @@ seriesPart:
 directory: true
 ---
 
-You can upload data to an input repo in {{% productName %}} by using Console or the PachCTL CLI. Console offers an easy-to-use interface for quick drop-in uploads, while the PachCTL CLI provides more advanced options for uploading data by opening commits and transactions. 
+You can upload data to an input repo in {{% productName %}} by using Console or the PachCTL CLI. Console offers an easy-to-use interface for quick drop-in uploads, while the PachCTL CLI provides more advanced options for uploading data by opening [commits](/{{%release%}}/learn/glossary/commit) and [transactions](/{{%release%}}/prepare-data/transactions). 
 
 
 ## Before You Start 
