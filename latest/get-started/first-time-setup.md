@@ -112,7 +112,7 @@ curl -o /tmp/pachctl.deb -L https://github.com/pachyderm/pachyderm/releases/down
  ```
 **ARM**
 ```s
-curl-L https://github.com/pachyderm/pachyderm/releases/download/v{{%latestPatchNumber%}}/pachctl_{{%latestPatchNumber%}}_linux_arm64.tar.gz | sudo sudo tar -xzv --strip-components=1 -C /usr/local/bin
+curl-L https://github.com/pachyderm/pachyderm/releases/download/v{{%latestPatchNumber%}}/pachctl_{{%latestPatchNumber%}}_linux_arm64.tar.gz | sudo  tar -xzv --strip-components=1 -C /usr/local/bin
 ```
  {{%/wizardResult%}}
  {{%/wizardResults%}}
