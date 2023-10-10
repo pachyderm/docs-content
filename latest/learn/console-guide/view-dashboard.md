@@ -16,7 +16,7 @@ You can quickly tab between projects to get a high-level view of the status of i
 
 1. Open Console. 
 2. Select the project you want to view. 
-3. View the **Project Preview** column to get an update on the last 8 jobs that ran in the project. 
+3. View the **Project Preview** column to get an update on the last 10 jobs that ran in the project. 
 4. Select a Job to view a breakdown of its subjobs, which includes details like:
    - **ID**: Subjob ID
    - **Pipeline**: The pipeline name and version number 
