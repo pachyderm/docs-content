@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Superb AI
-description: Learn how to use the Superb AI connector to ingest data.
+description: Learn how to use the Superb AI integration to ingest data.
 date: 
 # taxonomy #
 tags: ["integrations", "superb-ai"]

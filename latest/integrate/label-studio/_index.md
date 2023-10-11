@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Label Studio
-description: Learn how to use the Label Studio connector to ingest data.
+description: Learn how to use the Label Studio integration to ingest data.
 date: 
 # taxonomy #
 tags: ["integrations", "label", "studio", "label-studio"]

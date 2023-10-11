@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Weights and Biases
-description: Learn how to use the Weights and Biases connector to track your data science experiments.
+description: Learn how to use the Weights and Biases integration to track your data science experiments.
 date: 
 # taxonomy #
 tags: ["integrations", "weights-and-biases"]

@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Google BigQuery
-description: Learn how to use the Google BigQuery connector to ingest data.
+description: Learn how to use the Google BigQuery integration to ingest data.
 date: 
 # taxonomy #
 tags: ["integrations", "bigquery", "google"]
