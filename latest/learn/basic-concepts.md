@@ -47,3 +47,9 @@ A job in {{% productName %}} is the execution of a pipeline with a new commit. T
 A datum in {{% productName %}} is a unit of computation for a job. It is used to distribute the processing workloads and to define how data can be split for parallel processing.
 
 [Learn more about Datums](/{{%release%}}/learn/glossary/datum)
+
+### Projects 
+
+A project in {{% productName %}} is a collection of pipelines and their associated data repositories. It is used to organize pipelines and repositories into logical groups. Projects are also used to manage access control for pipelines and repositories. 
+
+[Learn more about Projects](/{{%release%}}/learn/glossary/project)
