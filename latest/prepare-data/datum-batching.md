@@ -79,7 +79,7 @@ flowchart LR
 
    ```py
    import os
-   from python_pachyderm import batch_all_datums
+   from pachyderm_sdk import batch_all_datums
 
    @batch_all_datums
    def main():
@@ -144,3 +144,4 @@ def find_files(pattern):
 
 env_file = find_files(".env")
 ```
+
