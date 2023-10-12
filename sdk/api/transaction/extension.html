@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
 <title>pachyderm_sdk.api.transaction.extension API documentation</title>
-<meta name="description" content="" />
+<meta name="description" content="Handwritten classes/methods that augment the existing Transaction API." />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -22,11 +22,13 @@
 <h1 class="title">Module <code>pachyderm_sdk.api.transaction.extension</code></h1>
 </header>
 <section id="section-intro">
+<p>Handwritten classes/methods that augment the existing Transaction API.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">from contextlib import contextmanager
+<pre><code class="python">&#34;&#34;&#34;Handwritten classes/methods that augment the existing Transaction API.&#34;&#34;&#34;
+from contextlib import contextmanager
 from typing import Callable, ContextManager
 
 import grpc
@@ -39,7 +41,6 @@ from . import (
 
 
 class ApiStub(_GeneratedApiStub):
-
     def __init__(
         self,
         channel: grpc.Channel,
@@ -52,15 +53,16 @@ class ApiStub(_GeneratedApiStub):
         super().__init__(channel=channel)
 
     def start_transaction(self) -&gt; &#34;Transaction&#34;:
-        # TODO: Should we do this?
+        &#34;&#34;&#34;Starts a transaction and sets the transaction ID within the client.
+        This will make all subsequent resource operations performed by the client
+        occur within the returned transaction, until the transaction is finished.
+        &#34;&#34;&#34;
         response = super().start_transaction()
         self._set_transaction_id(response.id)
         return response
 
-    def finish_transaction(
-        self, *, transaction: &#34;Transaction&#34; = None
-    ) -&gt; &#34;TransactionInfo&#34;:
-        # TODO: Should we do this?
+    def finish_transaction(self, *, transaction: &#34;Transaction&#34; = None) -&gt; &#34;TransactionInfo&#34;:
+        &#34;&#34;&#34;Finishes a transaction and removes the transaction ID within the client.&#34;&#34;&#34;
         response = super().finish_transaction(transaction=transaction)
         self._set_transaction_id(&#34;&#34;)
         return response
@@ -150,7 +152,6 @@ class ApiStub(_GeneratedApiStub):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class ApiStub(_GeneratedApiStub):
-
     def __init__(
         self,
         channel: grpc.Channel,
@@ -163,15 +164,16 @@ class ApiStub(_GeneratedApiStub):
         super().__init__(channel=channel)
 
     def start_transaction(self) -&gt; &#34;Transaction&#34;:
-        # TODO: Should we do this?
+        &#34;&#34;&#34;Starts a transaction and sets the transaction ID within the client.
+        This will make all subsequent resource operations performed by the client
+        occur within the returned transaction, until the transaction is finished.
+        &#34;&#34;&#34;
         response = super().start_transaction()
         self._set_transaction_id(response.id)
         return response
 
-    def finish_transaction(
-        self, *, transaction: &#34;Transaction&#34; = None
-    ) -&gt; &#34;TransactionInfo&#34;:
-        # TODO: Should we do this?
+    def finish_transaction(self, *, transaction: &#34;Transaction&#34; = None) -&gt; &#34;TransactionInfo&#34;:
+        &#34;&#34;&#34;Finishes a transaction and removes the transaction ID within the client.&#34;&#34;&#34;
         response = super().finish_transaction(transaction=transaction)
         self._set_transaction_id(&#34;&#34;)
         return response
@@ -250,13 +252,18 @@ class ApiStub(_GeneratedApiStub):
 <span>def <span class="ident">start_transaction</span></span>(<span>self) ‑> <a title="pachyderm_sdk.api.transaction.Transaction" href="index.html#pachyderm_sdk.api.transaction.Transaction">Transaction</a></span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Starts a transaction and sets the transaction ID within the client.
+This will make all subsequent resource operations performed by the client
+occur within the returned transaction, until the transaction is finished.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def start_transaction(self) -&gt; &#34;Transaction&#34;:
-    # TODO: Should we do this?
+    &#34;&#34;&#34;Starts a transaction and sets the transaction ID within the client.
+    This will make all subsequent resource operations performed by the client
+    occur within the returned transaction, until the transaction is finished.
+    &#34;&#34;&#34;
     response = super().start_transaction()
     self._set_transaction_id(response.id)
     return response</code></pre>
@@ -266,15 +273,13 @@ class ApiStub(_GeneratedApiStub):
 <span>def <span class="ident">finish_transaction</span></span>(<span>self, *, transaction: Transaction = None) ‑> <a title="pachyderm_sdk.api.transaction.TransactionInfo" href="index.html#pachyderm_sdk.api.transaction.TransactionInfo">TransactionInfo</a></span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Finishes a transaction and removes the transaction ID within the client.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def finish_transaction(
-    self, *, transaction: &#34;Transaction&#34; = None
-) -&gt; &#34;TransactionInfo&#34;:
-    # TODO: Should we do this?
+<pre><code class="python">def finish_transaction(self, *, transaction: &#34;Transaction&#34; = None) -&gt; &#34;TransactionInfo&#34;:
+    &#34;&#34;&#34;Finishes a transaction and removes the transaction ID within the client.&#34;&#34;&#34;
     response = super().finish_transaction(transaction=transaction)
     self._set_transaction_id(&#34;&#34;)
     return response</code></pre>

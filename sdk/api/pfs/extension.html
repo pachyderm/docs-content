@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
 <title>pachyderm_sdk.api.pfs.extension API documentation</title>
-<meta name="description" content="" />
+<meta name="description" content="Handwritten classes/methods that augment the existing PFS API." />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -22,20 +22,24 @@
 <h1 class="title">Module <code>pachyderm_sdk.api.pfs.extension</code></h1>
 </header>
 <section id="section-intro">
+<p>Handwritten classes/methods that augment the existing PFS API.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">import io
+<pre><code class="python">&#34;&#34;&#34;Handwritten classes/methods that augment the existing PFS API.&#34;&#34;&#34;
+import io
 import os
 from contextlib import contextmanager
 from dataclasses import fields
+from functools import wraps
 from pathlib import Path
-from typing import ContextManager, Iterable, List, Union, TYPE_CHECKING
+from typing import Callable, ContextManager, Iterable, List, Union, TYPE_CHECKING
 
 from betterproto.lib.google.protobuf import Empty
 import grpc
 
+from ...errors import InvalidTransactionOperation
 from . import ApiStub as _GeneratedApiStub
 from . import (
     Branch,
@@ -59,8 +63,61 @@ if TYPE_CHECKING:
 
 BUFFER_SIZE = 19 * 1024 * 1024  # 19MB
 
+__all__ = (&#34;ApiStub&#34;, &#34;ClosedCommit&#34;, &#34;OpenCommit&#34;)
 
-class OpenCommit(Commit):
+
+def transaction_incompatible(pfs_method: Callable) -&gt; Callable:
+    &#34;&#34;&#34;Decorator for marking methods of the PFS API which are
+    not allowed to occur during a transaction.&#34;&#34;&#34;
+
+    @wraps(pfs_method)
+    def wrapper(stub: &#34;ApiStub&#34;, *args, **kwargs):
+        if stub.within_transaction:
+            raise InvalidTransactionOperation()
+        return pfs_method(stub, *args, **kwargs)
+
+    return wrapper
+
+
+class ClosedCommit(Commit):
+    &#34;&#34;&#34;A ClosedCommit is an extension of the pfs.Commit message with some
+    helpful methods. Cannot write to a closed commit.
+    &#34;&#34;&#34;
+
+    def __init__(self, commit: &#34;Commit&#34;, stub: &#34;ApiStub&#34;):
+        &#34;&#34;&#34;Internal Use: Do not create this object yourself.
+
+        Parameters
+        ----------
+        commit : pfs.Commit
+            The commit.
+        stub : pfs.ApiStub
+            The API class to route requests though.
+        &#34;&#34;&#34;
+        self._commit = commit
+        self._stub = stub
+
+        # This is required to maintain serialization capabilities while being
+        #   future compatible with any new fields to the pfs.Commit message.
+        super().__init__(
+            **{field.name: getattr(commit, field.name) for field in fields(commit)}
+        )
+
+    def wait(self) -&gt; &#34;CommitInfo&#34;:
+        &#34;&#34;&#34;Waits until the commit is finished being created.
+
+        See OpenCommit docstring for an example.
+        &#34;&#34;&#34;
+        return self._stub.wait_commit(self)
+
+    def wait_all(self) -&gt; List[&#34;CommitInfo&#34;]:
+        &#34;&#34;&#34;Similar to Commit.wait but streams back the pfs.CommitInfo
+        from all the downstream jobs that were initiated by this commit.
+        &#34;&#34;&#34;
+        return self._stub.wait_commit_set(CommitSet(id=self._commit.id))
+
+
+class OpenCommit(ClosedCommit):
     &#34;&#34;&#34;An OpenCommit is an extension of the pfs.Commit message with some
     helpful methods that provide a more intuitive UX when writing to a commit.
 
@@ -87,40 +144,37 @@ class OpenCommit(Commit):
         &#34;&#34;&#34;
         self._commit = commit
         self._stub = stub
-        self._open = True
+        super().__init__(commit, stub)
 
-        # This is required to maintain serialization capabilities while being
-        #   future compatible with any new fields to the pfs.Commit message.
-        super().__init__(**{
-            field.name: getattr(commit, field.name)
-            for field in fields(commit)
-        })
+    def _close(self):
+        &#34;&#34;&#34;Transform an OpenCommit into a ClosedCommit.&#34;&#34;&#34;
+        self.__class__ = ClosedCommit
 
-    def wait(self) -&gt; &#34;CommitInfo&#34;:
-        &#34;&#34;&#34;Waits until the commit is finished being created.
+    def put_files(self, *, source: Union[Path, str], path: str) -&gt; None:
+        &#34;&#34;&#34;Recursively insert the contents of source into the open commit under path,
+        matching the directory structure of source.
 
-        This method is intended to be called on a closed commit, but provided
-        with this class to be used following the commit context.
-        (See example in class docstring)
+        This is roughly equivalent to ``pachctl put file -r``
+
+        Parameters
+        ----------
+        source : Union[Path, str]
+            The directory to recursively insert content from.
+        path : str
+            The destination path in PFS.
+
+        Examples
+        --------
+        &gt;&gt;&gt; from pachyderm_sdk import Client
+        &gt;&gt;&gt; from pachyderm_sdk.api import pfs
+        &gt;&gt;&gt; client: Client
+        &gt;&gt;&gt; branch = pfs.Branch.from_uri(&#34;images@master&#34;)
+        &gt;&gt;&gt; with client.pfs.commit(branch=branch) as commit:
+        &gt;&gt;&gt;     commit.put_files(source=&#34;path/to/local/files&#34;, path=&#34;/&#34;)
         &#34;&#34;&#34;
-        return self._stub.wait_commit(self)
+        self._stub.put_files(commit=self._commit, source=source, path=path)
 
-    def wait_set(self) -&gt; List[&#34;CommitInfo&#34;]:  # TODO: Better name?
-        &#34;&#34;&#34;Similar to Commit.wait but streams back the pfs.CommitInfo
-        from all the downstream jobs that were initiated by this commit.
-
-        This method is intended to be called on a closed commit, but provided
-        with this class to be used following the commit context.
-        (See example in class docstring)
-        &#34;&#34;&#34;
-        return self._stub.wait_commit_set(CommitSet(id=self._commit.id))
-
-    def put_file_from_bytes(
-        self,
-        path: str,
-        data: bytes,
-        append: bool = False
-    ) -&gt; &#34;File&#34;:
+    def put_file_from_bytes(self, path: str, data: bytes, append: bool = False) -&gt; &#34;File&#34;:
         &#34;&#34;&#34;Uploads a PFS file from a bytestring.
 
         Parameters
@@ -137,6 +191,11 @@ class OpenCommit(Commit):
         ------
         ValueError: If the commit is closed.
 
+        Returns
+        -------
+        A pfs.File object that that points to the uploaded file.
+        NOTE: The commit must be closed before you can read this file.
+
         Examples
         --------
         &gt;&gt;&gt; from pachyderm_sdk import Client
@@ -145,11 +204,7 @@ class OpenCommit(Commit):
         &gt;&gt;&gt; with client.pfs.commit(branch=pfs.Branch.from_uri(&#34;images@master&#34;)) as commit:
         &gt;&gt;&gt;     commit.put_file_from_bytes(path=&#34;/file.txt&#34;, data=b&#34;SOME BYTES&#34;)
         &#34;&#34;&#34;
-        if not self._open:
-            raise ValueError(&#34;Cannot write to a closed commit&#34;)
-        self._stub.put_file_from_bytes(
-            commit=self, path=path, data=data, append=append
-        )
+        self._stub.put_file_from_bytes(commit=self, path=path, data=data, append=append)
         return File(commit=self._commit, path=path)
 
     def put_file_from_url(
@@ -175,6 +230,11 @@ class OpenCommit(Commit):
         ------
         ValueError: If the commit is closed.
 
+        Returns
+        -------
+        A pfs.File object that that points to the uploaded file.
+        NOTE: The commit must be closed before you can read this file.
+
         Examples
         --------
         &gt;&gt;&gt; from pachyderm_sdk import Client
@@ -185,19 +245,11 @@ class OpenCommit(Commit):
         &gt;&gt;&gt;         path=&#34;/index.html&#34;, url=&#34;https://www.pachyderm.com/index.html&#34;
         &gt;&gt;&gt;     )
         &#34;&#34;&#34;
-        if not self._open:
-            raise ValueError(&#34;Cannot write to a closed commit&#34;)
-        self._stub.put_file_from_url(
-            commit=self, path=path, url=url, recursive=recursive
-        )
+        self._stub.put_file_from_url(commit=self, path=path, url=url, recursive=recursive)
         return File(commit=self._commit, path=path)
 
     def put_file_from_file(
-        self,
-        *,
-        path: str,
-        file: &#34;SupportsRead[bytes]&#34;,
-        append: bool = False
+        self, *, path: str, file: &#34;SupportsRead[bytes]&#34;, append: bool = False
     ) -&gt; &#34;File&#34;:
         &#34;&#34;&#34;Uploads a PFS file from an open file object.
 
@@ -215,6 +267,11 @@ class OpenCommit(Commit):
         ------
         ValueError: If the commit is closed.
 
+        Returns
+        -------
+        A pfs.File object that that points to the uploaded file.
+        NOTE: The commit must be closed before you can read this file.
+
         Examples
         --------
         &gt;&gt;&gt; from pachyderm_sdk import Client
@@ -224,20 +281,10 @@ class OpenCommit(Commit):
         &gt;&gt;&gt;     with open(&#34;local_file.dat&#34;, &#34;rb&#34;) as source:
         &gt;&gt;&gt;         commit.put_file_from_file(path=&#34;/index.html&#34;, file=source)
         &#34;&#34;&#34;
-        if not self._open:
-            raise ValueError(&#34;Cannot write to a closed commit&#34;)
-        self._stub.put_file_from_file(
-            commit=self, path=path, file=file, append=append
-        )
+        self._stub.put_file_from_file(commit=self, path=path, file=file, append=append)
         return File(commit=self._commit, path=path)
 
-    def copy_file(
-        self,
-        *,
-        src: &#34;File&#34;,
-        dst: str,
-        append: bool = True
-    ) -&gt; &#34;File&#34;:
+    def copy_file(self, *, src: &#34;File&#34;, dst: str, append: bool = False) -&gt; &#34;File&#34;:
         &#34;&#34;&#34;Copies a file within PFS
 
         Parameters
@@ -254,6 +301,11 @@ class OpenCommit(Commit):
         ------
         ValueError: If the commit is closed.
 
+        Returns
+        -------
+        A pfs.File object that that points to the new file.
+        NOTE: The commit must be closed before you can read this file.
+
         Examples
         --------
         &gt;&gt;&gt; from pachyderm_sdk import Client
@@ -263,12 +315,10 @@ class OpenCommit(Commit):
         &gt;&gt;&gt; with client.pfs.commit(branch=pfs.Branch.from_uri(&#34;images@master&#34;)) as commit:
         &gt;&gt;&gt;     commit.copy_file(src=source, dst=&#34;/copy.dat&#34;)
         &#34;&#34;&#34;
-        if not self._open:
-            raise ValueError(&#34;Cannot modify a closed commit&#34;)
         self._stub.copy_file(commit=self, src=src, dst=dst, append=append)
         return File(commit=self._commit, path=dst)
 
-    def delete_file(self, *, path: str) -&gt; &#34;File&#34;:  # TODO: Should we return anything?
+    def delete_file(self, *, path: str) -&gt; &#34;File&#34;:
         &#34;&#34;&#34;Copies a file within PFS
 
         Parameters
@@ -280,6 +330,10 @@ class OpenCommit(Commit):
         ------
         ValueError: If the commit is closed.
 
+        Returns
+        -------
+        A pfs.File object that that points to the deleted file.
+
         Examples
         --------
         &gt;&gt;&gt; from pachyderm_sdk import Client
@@ -288,8 +342,6 @@ class OpenCommit(Commit):
         &gt;&gt;&gt; with client.pfs.commit(branch=pfs.Branch.from_uri(&#34;images@master&#34;)) as commit:
         &gt;&gt;&gt;     commit.delete_file(path=&#34;/file.dat&#34;)
         &#34;&#34;&#34;
-        if not self._open:
-            raise ValueError(&#34;Cannot modify a closed commit&#34;)
         self._stub.delete_file(commit=self, path=path)
         return File(commit=self._commit, path=path)
 
@@ -297,21 +349,42 @@ class OpenCommit(Commit):
 class ApiStub(_GeneratedApiStub):
     &#34;&#34;&#34;An extension to the API stub generated from the PFS protobufs.&#34;&#34;&#34;
 
+    def __init__(
+        self,
+        channel: grpc.Channel,
+        *,
+        get_transaction_id: Callable[[], str],
+    ):
+        self._get_transaction_id = get_transaction_id
+        super().__init__(channel=channel)
+
+    @property
+    def within_transaction(self) -&gt; bool:
+        &#34;&#34;&#34;For internal use.
+
+        Whether the client is currently within a transaction.
+        &#34;&#34;&#34;
+        return bool(self._get_transaction_id())
+
     @contextmanager
     def commit(
         self, *, parent: &#34;Commit&#34; = None, description: str = &#34;&#34;, branch: &#34;Branch&#34; = None
     ) -&gt; ContextManager[&#34;OpenCommit&#34;]:
         &#34;&#34;&#34;A context manager for running operations within a commit.
 
+        When inside this context, the returned object is an OpenCommit which accepts
+          write-operations. Upon exiting the context, the commit is closed and the
+          OpenCommit becomes a ClosedCommit and no longer allowing write-operations.
+
         Parameters
         ----------
-        parent : pfs.Commit
+        parent : pfs.Commit, optional
             The parent commit of the new commit. parent may be empty in which case
             the commit that Branch points to will be used as the parent.
             If the branch does not exist, the commit will have no parent.
         description : str, optional
             A description of the commit.
-        branch : pfs.Branch
+        branch : pfs.Branch, optional
             The branch where the commit is created.
 
         Yields
@@ -329,10 +402,11 @@ class ApiStub(_GeneratedApiStub):
         &gt;&gt;&gt;     c.put_file_from_bytes(c, &#34;/new_file.txt&#34;, b&#34;DATA&#34;)
         &#34;&#34;&#34;
         commit = self.start_commit(parent=parent, description=description, branch=branch)
+        commit_obj = OpenCommit(commit=commit, stub=self)
         try:
-            yield OpenCommit(commit=commit, stub=self)
+            yield commit_obj
         finally:
-            commit._open = False
+            commit_obj._close()
             self.finish_commit(commit=commit)
 
     def wait_commit(self, commit: &#34;Commit&#34;) -&gt; &#34;CommitInfo&#34;:
@@ -345,13 +419,16 @@ class ApiStub(_GeneratedApiStub):
         &#34;&#34;&#34;
         return list(self.inspect_commit_set(commit_set=commit_set, wait=True))
 
-    def put_files(
-        self, *, commit: &#34;Commit&#34;, source: Union[Path, str], path: str
-    ) -&gt; None:
+    @transaction_incompatible
+    def put_files(self, *, commit: &#34;Commit&#34;, source: Union[Path, str], path: str) -&gt; None:
         &#34;&#34;&#34;Recursively insert the contents of source into the open commit under path,
         matching the directory structure of source.
 
         This is roughly equivalent to ``pachctl put file -r``
+
+        Note: This method opens multiple gRPC streams and this appears to break in
+          some REPL environment (such as those based in IDEs). If you encounter this
+          problem, please try a different REPL environment or run as a script.
 
         Parameters
         ----------
@@ -382,13 +459,9 @@ class ApiStub(_GeneratedApiStub):
                 with open(src, &#34;rb&#34;) as file:
                     self.put_file_from_file(commit=commit, path=dst, file=file)
 
+    @transaction_incompatible
     def put_file_from_bytes(
-        self,
-        *,
-        commit: &#34;Commit&#34;,
-        path: str,
-        data: bytes,
-        append: bool = False
+        self, *, commit: &#34;Commit&#34;, path: str, data: bytes, append: bool = False
     ) -&gt; Empty:
         &#34;&#34;&#34;Uploads a PFS file from a bytestring.
 
@@ -418,6 +491,7 @@ class ApiStub(_GeneratedApiStub):
             commit=commit, path=path, file=io.BytesIO(data), append=append
         )
 
+    @transaction_incompatible
     def put_file_from_url(
         self,
         *,
@@ -455,20 +529,20 @@ class ApiStub(_GeneratedApiStub):
             ModifyFileRequest(delete_file=DeleteFile(path=path)),
             ModifyFileRequest(
                 add_file=AddFile(
-                    path=path,
-                    url=AddFileUrlSource(url=url, recursive=recursive)
+                    path=path, url=AddFileUrlSource(url=url, recursive=recursive)
                 )
-            )
+            ),
         ]
         return self.modify_file(iter(operations))
 
+    @transaction_incompatible
     def put_file_from_file(
         self,
         *,
         commit: &#34;Commit&#34;,
         path: str,
         file: &#34;SupportsRead[bytes]&#34;,
-        append: bool = False
+        append: bool = False,
     ) -&gt; Empty:
         &#34;&#34;&#34;Uploads a PFS file from an open file object.
 
@@ -495,26 +569,34 @@ class ApiStub(_GeneratedApiStub):
         &gt;&gt;&gt;             commit=c, path=&#34;/index.html&#34;, file=source
         &gt;&gt;&gt;         )
         &#34;&#34;&#34;
-        # TODO: Can we verify that the file is outputting bytes?
+        check = file.read(BUFFER_SIZE)
+        if len(check) &gt; 0:
+            if not isinstance(check, bytes):
+                raise TypeError(&#34;File must output bytes&#34;)
+
+        def file_iterator():
+            if not check:
+                return
+            yield check
+            while True:
+                data = file.read(BUFFER_SIZE)
+                if len(data) == 0:
+                    return
+                yield data
+
         def operations() -&gt; Iterable[ModifyFileRequest]:
             yield ModifyFileRequest(set_commit=commit)
             if not append:
                 yield ModifyFileRequest(delete_file=DeleteFile(path=path))
             yield ModifyFileRequest(add_file=AddFile(path=path, raw=b&#34;&#34;))
-            while True:
-                data = file.read(BUFFER_SIZE)
-                if len(data) == 0:
-                    return
+            for data in file_iterator():
                 yield ModifyFileRequest(add_file=AddFile(path=path, raw=data))
+
         return self.modify_file(operations())
 
+    @transaction_incompatible
     def copy_file(
-        self,
-        *,
-        commit: &#34;Commit&#34;,
-        src: &#34;File&#34;,
-        dst: str,
-        append: bool = True
+        self, *, commit: &#34;Commit&#34;, src: &#34;File&#34;, dst: str, append: bool = False
     ) -&gt; Empty:
         &#34;&#34;&#34;Copies a file within PFS
 
@@ -541,12 +623,11 @@ class ApiStub(_GeneratedApiStub):
         &#34;&#34;&#34;
         operations = [
             ModifyFileRequest(set_commit=commit),
-            ModifyFileRequest(
-                copy_file=CopyFile(dst=dst, src=src, append=append)
-            )
+            ModifyFileRequest(copy_file=CopyFile(dst=dst, src=src, append=append)),
         ]
         return self.modify_file(iter(operations))
 
+    @transaction_incompatible
     def delete_file(self, *, commit: &#34;Commit&#34;, path: str) -&gt; Empty:
         &#34;&#34;&#34;Copies a file within PFS
 
@@ -691,7 +772,7 @@ class ApiStub(_GeneratedApiStub):
                 return False
             raise err
 
-    def pfs_file(self, file: &#34;File&#34;) -&gt; &#34;PFSFile&#34;:  # TODO: Naming?
+    def pfs_file(self, file: &#34;File&#34;) -&gt; &#34;PFSFile&#34;:
         &#34;&#34;&#34;Wraps the response stream of a client.pfs.get_file() call with a
         PFSFile object. This wrapper class allows you to interact with the
         file stream as a normal file object.
@@ -714,7 +795,7 @@ class ApiStub(_GeneratedApiStub):
         stream = self.get_file(file=file)
         return PFSFile(stream)
 
-    def pfs_tar_file(self, file: &#34;File&#34;) -&gt; &#34;PFSTarFile&#34;:  # TODO: Naming?
+    def pfs_tar_file(self, file: &#34;File&#34;) -&gt; &#34;PFSTarFile&#34;:
         &#34;&#34;&#34;Wraps the response stream of a client.pfs.get_tar_file() call with a
         PFSTarFile object. This wrapper class allows you to interact with the
         file stream as a standard tarfile.TarFile object.
@@ -737,657 +818,9 @@ class ApiStub(_GeneratedApiStub):
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="pachyderm_sdk.api.pfs.extension.OpenCommit"><code class="flex name class">
-<span>class <span class="ident">OpenCommit</span></span>
-<span>(</span><span>commit: Commit, stub: <a title="pachyderm_sdk.api.pfs.extension.ApiStub" href="#pachyderm_sdk.api.pfs.extension.ApiStub">ApiStub</a>)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>An OpenCommit is an extension of the pfs.Commit message with some
-helpful methods that provide a more intuitive UX when writing to a commit.</p>
-<h2 id="examples">Examples</h2>
-<pre><code class="language-python-repl">&gt;&gt;&gt; from pachyderm_sdk import Client
-&gt;&gt;&gt; from pachyderm_sdk.api import pfs
-&gt;&gt;&gt; client: Client
-&gt;&gt;&gt; with client.pfs.commit(branch=pfs.Branch.from_uri(&quot;data@master&quot;)) as commit:
-&gt;&gt;&gt;     commit.put_file_from_bytes(&quot;/greeting.txt&quot;, b&quot;Hello!&quot;)
-&gt;&gt;&gt;     commit.delete_file(&quot;/rude/insult.txt&quot;)
-&gt;&gt;&gt; commit.wait()
-</code></pre>
-<p>Internal Use: Do not create this object yourself.</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>commit</code></strong> :&ensp;<code>pfs.Commit</code></dt>
-<dd>The "open" commit to write to.</dd>
-<dt><strong><code>stub</code></strong> :&ensp;<code>pfs.ApiStub</code></dt>
-<dd>The API class to route requests though.</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">class OpenCommit(Commit):
-    &#34;&#34;&#34;An OpenCommit is an extension of the pfs.Commit message with some
-    helpful methods that provide a more intuitive UX when writing to a commit.
-
-    Examples
-    --------
-    &gt;&gt;&gt; from pachyderm_sdk import Client
-    &gt;&gt;&gt; from pachyderm_sdk.api import pfs
-    &gt;&gt;&gt; client: Client
-    &gt;&gt;&gt; with client.pfs.commit(branch=pfs.Branch.from_uri(&#34;data@master&#34;)) as commit:
-    &gt;&gt;&gt;     commit.put_file_from_bytes(&#34;/greeting.txt&#34;, b&#34;Hello!&#34;)
-    &gt;&gt;&gt;     commit.delete_file(&#34;/rude/insult.txt&#34;)
-    &gt;&gt;&gt; commit.wait()
-    &#34;&#34;&#34;
-
-    def __init__(self, commit: &#34;Commit&#34;, stub: &#34;ApiStub&#34;):
-        &#34;&#34;&#34;Internal Use: Do not create this object yourself.
-
-        Parameters
-        ----------
-        commit : pfs.Commit
-            The &#34;open&#34; commit to write to.
-        stub : pfs.ApiStub
-            The API class to route requests though.
-        &#34;&#34;&#34;
-        self._commit = commit
-        self._stub = stub
-        self._open = True
-
-        # This is required to maintain serialization capabilities while being
-        #   future compatible with any new fields to the pfs.Commit message.
-        super().__init__(**{
-            field.name: getattr(commit, field.name)
-            for field in fields(commit)
-        })
-
-    def wait(self) -&gt; &#34;CommitInfo&#34;:
-        &#34;&#34;&#34;Waits until the commit is finished being created.
-
-        This method is intended to be called on a closed commit, but provided
-        with this class to be used following the commit context.
-        (See example in class docstring)
-        &#34;&#34;&#34;
-        return self._stub.wait_commit(self)
-
-    def wait_set(self) -&gt; List[&#34;CommitInfo&#34;]:  # TODO: Better name?
-        &#34;&#34;&#34;Similar to Commit.wait but streams back the pfs.CommitInfo
-        from all the downstream jobs that were initiated by this commit.
-
-        This method is intended to be called on a closed commit, but provided
-        with this class to be used following the commit context.
-        (See example in class docstring)
-        &#34;&#34;&#34;
-        return self._stub.wait_commit_set(CommitSet(id=self._commit.id))
-
-    def put_file_from_bytes(
-        self,
-        path: str,
-        data: bytes,
-        append: bool = False
-    ) -&gt; &#34;File&#34;:
-        &#34;&#34;&#34;Uploads a PFS file from a bytestring.
-
-        Parameters
-        ----------
-        path : str
-            The path in the repo the data will be written to.
-        data : bytes
-            The file contents as bytes.
-        append : bool, optional
-            If true, appends the data to the file specified at `path`, if
-            they already exist. Otherwise, overwrites them.
-
-        Raises
-        ------
-        ValueError: If the commit is closed.
-
-        Examples
-        --------
-        &gt;&gt;&gt; from pachyderm_sdk import Client
-        &gt;&gt;&gt; from pachyderm_sdk.api import pfs
-        &gt;&gt;&gt; client: Client
-        &gt;&gt;&gt; with client.pfs.commit(branch=pfs.Branch.from_uri(&#34;images@master&#34;)) as commit:
-        &gt;&gt;&gt;     commit.put_file_from_bytes(path=&#34;/file.txt&#34;, data=b&#34;SOME BYTES&#34;)
-        &#34;&#34;&#34;
-        if not self._open:
-            raise ValueError(&#34;Cannot write to a closed commit&#34;)
-        self._stub.put_file_from_bytes(
-            commit=self, path=path, data=data, append=append
-        )
-        return File(commit=self._commit, path=path)
-
-    def put_file_from_url(
-        self,
-        *,
-        path: str,
-        url: str,
-        recursive: bool = False,
-    ) -&gt; &#34;File&#34;:
-        &#34;&#34;&#34;Uploads a PFS file from an url.
-
-        Parameters
-        ----------
-        path : str
-            The path in the repo the data will be written to.
-        url : str
-            The URL of the file to put.
-        recursive : bool
-            If true, allows for recursive scraping on some types URLs, for
-            example on s3:// URLs
-
-        Raises
-        ------
-        ValueError: If the commit is closed.
-
-        Examples
-        --------
-        &gt;&gt;&gt; from pachyderm_sdk import Client
-        &gt;&gt;&gt; from pachyderm_sdk.api import pfs
-        &gt;&gt;&gt; client: Client
-        &gt;&gt;&gt; with client.pfs.commit(branch=pfs.Branch.from_uri(&#34;images@master&#34;)) as commit:
-        &gt;&gt;&gt;     commit.put_file_from_url(
-        &gt;&gt;&gt;         path=&#34;/index.html&#34;, url=&#34;https://www.pachyderm.com/index.html&#34;
-        &gt;&gt;&gt;     )
-        &#34;&#34;&#34;
-        if not self._open:
-            raise ValueError(&#34;Cannot write to a closed commit&#34;)
-        self._stub.put_file_from_url(
-            commit=self, path=path, url=url, recursive=recursive
-        )
-        return File(commit=self._commit, path=path)
-
-    def put_file_from_file(
-        self,
-        *,
-        path: str,
-        file: &#34;SupportsRead[bytes]&#34;,
-        append: bool = False
-    ) -&gt; &#34;File&#34;:
-        &#34;&#34;&#34;Uploads a PFS file from an open file object.
-
-        Parameters
-        ----------
-        path : str
-            The path in the repo the data will be written to.
-        file : SupportsRead[bytes]
-            An open file object to read the data from.
-        append : bool, optional
-            If true, appends the data to the file specified at `path`, if
-            they already exist. Otherwise, overwrites them.
-
-        Raises
-        ------
-        ValueError: If the commit is closed.
-
-        Examples
-        --------
-        &gt;&gt;&gt; from pachyderm_sdk import Client
-        &gt;&gt;&gt; from pachyderm_sdk.api import pfs
-        &gt;&gt;&gt; client: Client
-        &gt;&gt;&gt; with client.pfs.commit(branch=pfs.Branch.from_uri(&#34;images@master&#34;)) as commit:
-        &gt;&gt;&gt;     with open(&#34;local_file.dat&#34;, &#34;rb&#34;) as source:
-        &gt;&gt;&gt;         commit.put_file_from_file(path=&#34;/index.html&#34;, file=source)
-        &#34;&#34;&#34;
-        if not self._open:
-            raise ValueError(&#34;Cannot write to a closed commit&#34;)
-        self._stub.put_file_from_file(
-            commit=self, path=path, file=file, append=append
-        )
-        return File(commit=self._commit, path=path)
-
-    def copy_file(
-        self,
-        *,
-        src: &#34;File&#34;,
-        dst: str,
-        append: bool = True
-    ) -&gt; &#34;File&#34;:
-        &#34;&#34;&#34;Copies a file within PFS
-
-        Parameters
-        ----------
-        src : pfs.File
-            This file to be copied.
-        dst : str
-            The destination of the file, as a string path.
-        append : bool
-            If true, appends the contents of src to dst if it exists.
-            Otherwise, overwrites the file.
-
-        Raises
-        ------
-        ValueError: If the commit is closed.
-
-        Examples
-        --------
-        &gt;&gt;&gt; from pachyderm_sdk import Client
-        &gt;&gt;&gt; from pachyderm_sdk.api import pfs
-        &gt;&gt;&gt; client: Client
-        &gt;&gt;&gt; source = pfs.File.from_uri(&#34;images@master:/file.dat&#34;)
-        &gt;&gt;&gt; with client.pfs.commit(branch=pfs.Branch.from_uri(&#34;images@master&#34;)) as commit:
-        &gt;&gt;&gt;     commit.copy_file(src=source, dst=&#34;/copy.dat&#34;)
-        &#34;&#34;&#34;
-        if not self._open:
-            raise ValueError(&#34;Cannot modify a closed commit&#34;)
-        self._stub.copy_file(commit=self, src=src, dst=dst, append=append)
-        return File(commit=self._commit, path=dst)
-
-    def delete_file(self, *, path: str) -&gt; &#34;File&#34;:  # TODO: Should we return anything?
-        &#34;&#34;&#34;Copies a file within PFS
-
-        Parameters
-        ----------
-        path : str
-            The path of the file to be deleted.
-
-        Raises
-        ------
-        ValueError: If the commit is closed.
-
-        Examples
-        --------
-        &gt;&gt;&gt; from pachyderm_sdk import Client
-        &gt;&gt;&gt; from pachyderm_sdk.api import pfs
-        &gt;&gt;&gt; client: Client
-        &gt;&gt;&gt; with client.pfs.commit(branch=pfs.Branch.from_uri(&#34;images@master&#34;)) as commit:
-        &gt;&gt;&gt;     commit.delete_file(path=&#34;/file.dat&#34;)
-        &#34;&#34;&#34;
-        if not self._open:
-            raise ValueError(&#34;Cannot modify a closed commit&#34;)
-        self._stub.delete_file(commit=self, path=path)
-        return File(commit=self._commit, path=path)</code></pre>
-</details>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li><a title="pachyderm_sdk.api.pfs.Commit" href="index.html#pachyderm_sdk.api.pfs.Commit">Commit</a></li>
-<li>betterproto.Message</li>
-<li>abc.ABC</li>
-</ul>
-<h3>Methods</h3>
-<dl>
-<dt id="pachyderm_sdk.api.pfs.extension.OpenCommit.wait"><code class="name flex">
-<span>def <span class="ident">wait</span></span>(<span>self) ‑> <a title="pachyderm_sdk.api.pfs.CommitInfo" href="index.html#pachyderm_sdk.api.pfs.CommitInfo">CommitInfo</a></span>
-</code></dt>
-<dd>
-<div class="desc"><p>Waits until the commit is finished being created.</p>
-<p>This method is intended to be called on a closed commit, but provided
-with this class to be used following the commit context.
-(See example in class docstring)</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def wait(self) -&gt; &#34;CommitInfo&#34;:
-    &#34;&#34;&#34;Waits until the commit is finished being created.
-
-    This method is intended to be called on a closed commit, but provided
-    with this class to be used following the commit context.
-    (See example in class docstring)
-    &#34;&#34;&#34;
-    return self._stub.wait_commit(self)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.extension.OpenCommit.wait_set"><code class="name flex">
-<span>def <span class="ident">wait_set</span></span>(<span>self) ‑> List[<a title="pachyderm_sdk.api.pfs.CommitInfo" href="index.html#pachyderm_sdk.api.pfs.CommitInfo">CommitInfo</a>]</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Similar to Commit.wait but streams back the pfs.CommitInfo
-from all the downstream jobs that were initiated by this commit.</p>
-<p>This method is intended to be called on a closed commit, but provided
-with this class to be used following the commit context.
-(See example in class docstring)</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def wait_set(self) -&gt; List[&#34;CommitInfo&#34;]:  # TODO: Better name?
-    &#34;&#34;&#34;Similar to Commit.wait but streams back the pfs.CommitInfo
-    from all the downstream jobs that were initiated by this commit.
-
-    This method is intended to be called on a closed commit, but provided
-    with this class to be used following the commit context.
-    (See example in class docstring)
-    &#34;&#34;&#34;
-    return self._stub.wait_commit_set(CommitSet(id=self._commit.id))</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.extension.OpenCommit.put_file_from_bytes"><code class="name flex">
-<span>def <span class="ident">put_file_from_bytes</span></span>(<span>self, path: str, data: bytes, append: bool = False) ‑> <a title="pachyderm_sdk.api.pfs.File" href="index.html#pachyderm_sdk.api.pfs.File">File</a></span>
-</code></dt>
-<dd>
-<div class="desc"><p>Uploads a PFS file from a bytestring.</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>path</code></strong> :&ensp;<code>str</code></dt>
-<dd>The path in the repo the data will be written to.</dd>
-<dt><strong><code>data</code></strong> :&ensp;<code>bytes</code></dt>
-<dd>The file contents as bytes.</dd>
-<dt><strong><code>append</code></strong> :&ensp;<code>bool</code>, optional</dt>
-<dd>If true, appends the data to the file specified at <code>path</code>, if
-they already exist. Otherwise, overwrites them.</dd>
-</dl>
-<h2 id="raises">Raises</h2>
-<p>ValueError: If the commit is closed.</p>
-<h2 id="examples">Examples</h2>
-<pre><code class="language-python-repl">&gt;&gt;&gt; from pachyderm_sdk import Client
-&gt;&gt;&gt; from pachyderm_sdk.api import pfs
-&gt;&gt;&gt; client: Client
-&gt;&gt;&gt; with client.pfs.commit(branch=pfs.Branch.from_uri(&quot;images@master&quot;)) as commit:
-&gt;&gt;&gt;     commit.put_file_from_bytes(path=&quot;/file.txt&quot;, data=b&quot;SOME BYTES&quot;)
-</code></pre></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def put_file_from_bytes(
-    self,
-    path: str,
-    data: bytes,
-    append: bool = False
-) -&gt; &#34;File&#34;:
-    &#34;&#34;&#34;Uploads a PFS file from a bytestring.
-
-    Parameters
-    ----------
-    path : str
-        The path in the repo the data will be written to.
-    data : bytes
-        The file contents as bytes.
-    append : bool, optional
-        If true, appends the data to the file specified at `path`, if
-        they already exist. Otherwise, overwrites them.
-
-    Raises
-    ------
-    ValueError: If the commit is closed.
-
-    Examples
-    --------
-    &gt;&gt;&gt; from pachyderm_sdk import Client
-    &gt;&gt;&gt; from pachyderm_sdk.api import pfs
-    &gt;&gt;&gt; client: Client
-    &gt;&gt;&gt; with client.pfs.commit(branch=pfs.Branch.from_uri(&#34;images@master&#34;)) as commit:
-    &gt;&gt;&gt;     commit.put_file_from_bytes(path=&#34;/file.txt&#34;, data=b&#34;SOME BYTES&#34;)
-    &#34;&#34;&#34;
-    if not self._open:
-        raise ValueError(&#34;Cannot write to a closed commit&#34;)
-    self._stub.put_file_from_bytes(
-        commit=self, path=path, data=data, append=append
-    )
-    return File(commit=self._commit, path=path)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.extension.OpenCommit.put_file_from_url"><code class="name flex">
-<span>def <span class="ident">put_file_from_url</span></span>(<span>self, *, path: str, url: str, recursive: bool = False) ‑> <a title="pachyderm_sdk.api.pfs.File" href="index.html#pachyderm_sdk.api.pfs.File">File</a></span>
-</code></dt>
-<dd>
-<div class="desc"><p>Uploads a PFS file from an url.</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>path</code></strong> :&ensp;<code>str</code></dt>
-<dd>The path in the repo the data will be written to.</dd>
-<dt><strong><code>url</code></strong> :&ensp;<code>str</code></dt>
-<dd>The URL of the file to put.</dd>
-<dt><strong><code>recursive</code></strong> :&ensp;<code>bool</code></dt>
-<dd>If true, allows for recursive scraping on some types URLs, for
-example on s3:// URLs</dd>
-</dl>
-<h2 id="raises">Raises</h2>
-<p>ValueError: If the commit is closed.</p>
-<h2 id="examples">Examples</h2>
-<pre><code class="language-python-repl">&gt;&gt;&gt; from pachyderm_sdk import Client
-&gt;&gt;&gt; from pachyderm_sdk.api import pfs
-&gt;&gt;&gt; client: Client
-&gt;&gt;&gt; with client.pfs.commit(branch=pfs.Branch.from_uri(&quot;images@master&quot;)) as commit:
-&gt;&gt;&gt;     commit.put_file_from_url(
-&gt;&gt;&gt;         path=&quot;/index.html&quot;, url=&quot;https://www.pachyderm.com/index.html&quot;
-&gt;&gt;&gt;     )
-</code></pre></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def put_file_from_url(
-    self,
-    *,
-    path: str,
-    url: str,
-    recursive: bool = False,
-) -&gt; &#34;File&#34;:
-    &#34;&#34;&#34;Uploads a PFS file from an url.
-
-    Parameters
-    ----------
-    path : str
-        The path in the repo the data will be written to.
-    url : str
-        The URL of the file to put.
-    recursive : bool
-        If true, allows for recursive scraping on some types URLs, for
-        example on s3:// URLs
-
-    Raises
-    ------
-    ValueError: If the commit is closed.
-
-    Examples
-    --------
-    &gt;&gt;&gt; from pachyderm_sdk import Client
-    &gt;&gt;&gt; from pachyderm_sdk.api import pfs
-    &gt;&gt;&gt; client: Client
-    &gt;&gt;&gt; with client.pfs.commit(branch=pfs.Branch.from_uri(&#34;images@master&#34;)) as commit:
-    &gt;&gt;&gt;     commit.put_file_from_url(
-    &gt;&gt;&gt;         path=&#34;/index.html&#34;, url=&#34;https://www.pachyderm.com/index.html&#34;
-    &gt;&gt;&gt;     )
-    &#34;&#34;&#34;
-    if not self._open:
-        raise ValueError(&#34;Cannot write to a closed commit&#34;)
-    self._stub.put_file_from_url(
-        commit=self, path=path, url=url, recursive=recursive
-    )
-    return File(commit=self._commit, path=path)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.extension.OpenCommit.put_file_from_file"><code class="name flex">
-<span>def <span class="ident">put_file_from_file</span></span>(<span>self, *, path: str, file: SupportsRead[bytes], append: bool = False) ‑> File</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Uploads a PFS file from an open file object.</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>path</code></strong> :&ensp;<code>str</code></dt>
-<dd>The path in the repo the data will be written to.</dd>
-<dt><strong><code>file</code></strong> :&ensp;<code>SupportsRead[bytes]</code></dt>
-<dd>An open file object to read the data from.</dd>
-<dt><strong><code>append</code></strong> :&ensp;<code>bool</code>, optional</dt>
-<dd>If true, appends the data to the file specified at <code>path</code>, if
-they already exist. Otherwise, overwrites them.</dd>
-</dl>
-<h2 id="raises">Raises</h2>
-<p>ValueError: If the commit is closed.</p>
-<h2 id="examples">Examples</h2>
-<pre><code class="language-python-repl">&gt;&gt;&gt; from pachyderm_sdk import Client
-&gt;&gt;&gt; from pachyderm_sdk.api import pfs
-&gt;&gt;&gt; client: Client
-&gt;&gt;&gt; with client.pfs.commit(branch=pfs.Branch.from_uri(&quot;images@master&quot;)) as commit:
-&gt;&gt;&gt;     with open(&quot;local_file.dat&quot;, &quot;rb&quot;) as source:
-&gt;&gt;&gt;         commit.put_file_from_file(path=&quot;/index.html&quot;, file=source)
-</code></pre></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def put_file_from_file(
-    self,
-    *,
-    path: str,
-    file: &#34;SupportsRead[bytes]&#34;,
-    append: bool = False
-) -&gt; &#34;File&#34;:
-    &#34;&#34;&#34;Uploads a PFS file from an open file object.
-
-    Parameters
-    ----------
-    path : str
-        The path in the repo the data will be written to.
-    file : SupportsRead[bytes]
-        An open file object to read the data from.
-    append : bool, optional
-        If true, appends the data to the file specified at `path`, if
-        they already exist. Otherwise, overwrites them.
-
-    Raises
-    ------
-    ValueError: If the commit is closed.
-
-    Examples
-    --------
-    &gt;&gt;&gt; from pachyderm_sdk import Client
-    &gt;&gt;&gt; from pachyderm_sdk.api import pfs
-    &gt;&gt;&gt; client: Client
-    &gt;&gt;&gt; with client.pfs.commit(branch=pfs.Branch.from_uri(&#34;images@master&#34;)) as commit:
-    &gt;&gt;&gt;     with open(&#34;local_file.dat&#34;, &#34;rb&#34;) as source:
-    &gt;&gt;&gt;         commit.put_file_from_file(path=&#34;/index.html&#34;, file=source)
-    &#34;&#34;&#34;
-    if not self._open:
-        raise ValueError(&#34;Cannot write to a closed commit&#34;)
-    self._stub.put_file_from_file(
-        commit=self, path=path, file=file, append=append
-    )
-    return File(commit=self._commit, path=path)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.extension.OpenCommit.copy_file"><code class="name flex">
-<span>def <span class="ident">copy_file</span></span>(<span>self, *, src: File, dst: str, append: bool = True) ‑> <a title="pachyderm_sdk.api.pfs.File" href="index.html#pachyderm_sdk.api.pfs.File">File</a></span>
-</code></dt>
-<dd>
-<div class="desc"><p>Copies a file within PFS</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>src</code></strong> :&ensp;<code>pfs.File</code></dt>
-<dd>This file to be copied.</dd>
-<dt><strong><code>dst</code></strong> :&ensp;<code>str</code></dt>
-<dd>The destination of the file, as a string path.</dd>
-<dt><strong><code>append</code></strong> :&ensp;<code>bool</code></dt>
-<dd>If true, appends the contents of src to dst if it exists.
-Otherwise, overwrites the file.</dd>
-</dl>
-<h2 id="raises">Raises</h2>
-<p>ValueError: If the commit is closed.</p>
-<h2 id="examples">Examples</h2>
-<pre><code class="language-python-repl">&gt;&gt;&gt; from pachyderm_sdk import Client
-&gt;&gt;&gt; from pachyderm_sdk.api import pfs
-&gt;&gt;&gt; client: Client
-&gt;&gt;&gt; source = pfs.File.from_uri(&quot;images@master:/file.dat&quot;)
-&gt;&gt;&gt; with client.pfs.commit(branch=pfs.Branch.from_uri(&quot;images@master&quot;)) as commit:
-&gt;&gt;&gt;     commit.copy_file(src=source, dst=&quot;/copy.dat&quot;)
-</code></pre></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def copy_file(
-    self,
-    *,
-    src: &#34;File&#34;,
-    dst: str,
-    append: bool = True
-) -&gt; &#34;File&#34;:
-    &#34;&#34;&#34;Copies a file within PFS
-
-    Parameters
-    ----------
-    src : pfs.File
-        This file to be copied.
-    dst : str
-        The destination of the file, as a string path.
-    append : bool
-        If true, appends the contents of src to dst if it exists.
-        Otherwise, overwrites the file.
-
-    Raises
-    ------
-    ValueError: If the commit is closed.
-
-    Examples
-    --------
-    &gt;&gt;&gt; from pachyderm_sdk import Client
-    &gt;&gt;&gt; from pachyderm_sdk.api import pfs
-    &gt;&gt;&gt; client: Client
-    &gt;&gt;&gt; source = pfs.File.from_uri(&#34;images@master:/file.dat&#34;)
-    &gt;&gt;&gt; with client.pfs.commit(branch=pfs.Branch.from_uri(&#34;images@master&#34;)) as commit:
-    &gt;&gt;&gt;     commit.copy_file(src=source, dst=&#34;/copy.dat&#34;)
-    &#34;&#34;&#34;
-    if not self._open:
-        raise ValueError(&#34;Cannot modify a closed commit&#34;)
-    self._stub.copy_file(commit=self, src=src, dst=dst, append=append)
-    return File(commit=self._commit, path=dst)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.extension.OpenCommit.delete_file"><code class="name flex">
-<span>def <span class="ident">delete_file</span></span>(<span>self, *, path: str) ‑> <a title="pachyderm_sdk.api.pfs.File" href="index.html#pachyderm_sdk.api.pfs.File">File</a></span>
-</code></dt>
-<dd>
-<div class="desc"><p>Copies a file within PFS</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>path</code></strong> :&ensp;<code>str</code></dt>
-<dd>The path of the file to be deleted.</dd>
-</dl>
-<h2 id="raises">Raises</h2>
-<p>ValueError: If the commit is closed.</p>
-<h2 id="examples">Examples</h2>
-<pre><code class="language-python-repl">&gt;&gt;&gt; from pachyderm_sdk import Client
-&gt;&gt;&gt; from pachyderm_sdk.api import pfs
-&gt;&gt;&gt; client: Client
-&gt;&gt;&gt; with client.pfs.commit(branch=pfs.Branch.from_uri(&quot;images@master&quot;)) as commit:
-&gt;&gt;&gt;     commit.delete_file(path=&quot;/file.dat&quot;)
-</code></pre></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def delete_file(self, *, path: str) -&gt; &#34;File&#34;:  # TODO: Should we return anything?
-    &#34;&#34;&#34;Copies a file within PFS
-
-    Parameters
-    ----------
-    path : str
-        The path of the file to be deleted.
-
-    Raises
-    ------
-    ValueError: If the commit is closed.
-
-    Examples
-    --------
-    &gt;&gt;&gt; from pachyderm_sdk import Client
-    &gt;&gt;&gt; from pachyderm_sdk.api import pfs
-    &gt;&gt;&gt; client: Client
-    &gt;&gt;&gt; with client.pfs.commit(branch=pfs.Branch.from_uri(&#34;images@master&#34;)) as commit:
-    &gt;&gt;&gt;     commit.delete_file(path=&#34;/file.dat&#34;)
-    &#34;&#34;&#34;
-    if not self._open:
-        raise ValueError(&#34;Cannot modify a closed commit&#34;)
-    self._stub.delete_file(commit=self, path=path)
-    return File(commit=self._commit, path=path)</code></pre>
-</details>
-</dd>
-</dl>
-<h3>Inherited members</h3>
-<ul class="hlist">
-<li><code><b><a title="pachyderm_sdk.api.pfs.Commit" href="index.html#pachyderm_sdk.api.pfs.Commit">Commit</a></b></code>:
-<ul class="hlist">
-<li><code><a title="pachyderm_sdk.api.pfs.Commit.branch" href="index.html#pachyderm_sdk.api.pfs.Commit.branch">branch</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.Commit.from_uri" href="index.html#pachyderm_sdk.api.pfs.Commit.from_uri">from_uri</a></code></li>
-</ul>
-</li>
-</ul>
-</dd>
 <dt id="pachyderm_sdk.api.pfs.extension.ApiStub"><code class="flex name class">
 <span>class <span class="ident">ApiStub</span></span>
-<span>(</span><span>channel: grpc.Channel)</span>
+<span>(</span><span>channel: grpc.Channel, *, get_transaction_id: Callable[[], str])</span>
 </code></dt>
 <dd>
 <div class="desc"><p>An extension to the API stub generated from the PFS protobufs.</p></div>
@@ -1398,21 +831,42 @@ Otherwise, overwrites the file.</dd>
 <pre><code class="python">class ApiStub(_GeneratedApiStub):
     &#34;&#34;&#34;An extension to the API stub generated from the PFS protobufs.&#34;&#34;&#34;
 
+    def __init__(
+        self,
+        channel: grpc.Channel,
+        *,
+        get_transaction_id: Callable[[], str],
+    ):
+        self._get_transaction_id = get_transaction_id
+        super().__init__(channel=channel)
+
+    @property
+    def within_transaction(self) -&gt; bool:
+        &#34;&#34;&#34;For internal use.
+
+        Whether the client is currently within a transaction.
+        &#34;&#34;&#34;
+        return bool(self._get_transaction_id())
+
     @contextmanager
     def commit(
         self, *, parent: &#34;Commit&#34; = None, description: str = &#34;&#34;, branch: &#34;Branch&#34; = None
     ) -&gt; ContextManager[&#34;OpenCommit&#34;]:
         &#34;&#34;&#34;A context manager for running operations within a commit.
 
+        When inside this context, the returned object is an OpenCommit which accepts
+          write-operations. Upon exiting the context, the commit is closed and the
+          OpenCommit becomes a ClosedCommit and no longer allowing write-operations.
+
         Parameters
         ----------
-        parent : pfs.Commit
+        parent : pfs.Commit, optional
             The parent commit of the new commit. parent may be empty in which case
             the commit that Branch points to will be used as the parent.
             If the branch does not exist, the commit will have no parent.
         description : str, optional
             A description of the commit.
-        branch : pfs.Branch
+        branch : pfs.Branch, optional
             The branch where the commit is created.
 
         Yields
@@ -1430,10 +884,11 @@ Otherwise, overwrites the file.</dd>
         &gt;&gt;&gt;     c.put_file_from_bytes(c, &#34;/new_file.txt&#34;, b&#34;DATA&#34;)
         &#34;&#34;&#34;
         commit = self.start_commit(parent=parent, description=description, branch=branch)
+        commit_obj = OpenCommit(commit=commit, stub=self)
         try:
-            yield OpenCommit(commit=commit, stub=self)
+            yield commit_obj
         finally:
-            commit._open = False
+            commit_obj._close()
             self.finish_commit(commit=commit)
 
     def wait_commit(self, commit: &#34;Commit&#34;) -&gt; &#34;CommitInfo&#34;:
@@ -1446,13 +901,16 @@ Otherwise, overwrites the file.</dd>
         &#34;&#34;&#34;
         return list(self.inspect_commit_set(commit_set=commit_set, wait=True))
 
-    def put_files(
-        self, *, commit: &#34;Commit&#34;, source: Union[Path, str], path: str
-    ) -&gt; None:
+    @transaction_incompatible
+    def put_files(self, *, commit: &#34;Commit&#34;, source: Union[Path, str], path: str) -&gt; None:
         &#34;&#34;&#34;Recursively insert the contents of source into the open commit under path,
         matching the directory structure of source.
 
         This is roughly equivalent to ``pachctl put file -r``
+
+        Note: This method opens multiple gRPC streams and this appears to break in
+          some REPL environment (such as those based in IDEs). If you encounter this
+          problem, please try a different REPL environment or run as a script.
 
         Parameters
         ----------
@@ -1483,13 +941,9 @@ Otherwise, overwrites the file.</dd>
                 with open(src, &#34;rb&#34;) as file:
                     self.put_file_from_file(commit=commit, path=dst, file=file)
 
+    @transaction_incompatible
     def put_file_from_bytes(
-        self,
-        *,
-        commit: &#34;Commit&#34;,
-        path: str,
-        data: bytes,
-        append: bool = False
+        self, *, commit: &#34;Commit&#34;, path: str, data: bytes, append: bool = False
     ) -&gt; Empty:
         &#34;&#34;&#34;Uploads a PFS file from a bytestring.
 
@@ -1519,6 +973,7 @@ Otherwise, overwrites the file.</dd>
             commit=commit, path=path, file=io.BytesIO(data), append=append
         )
 
+    @transaction_incompatible
     def put_file_from_url(
         self,
         *,
@@ -1556,20 +1011,20 @@ Otherwise, overwrites the file.</dd>
             ModifyFileRequest(delete_file=DeleteFile(path=path)),
             ModifyFileRequest(
                 add_file=AddFile(
-                    path=path,
-                    url=AddFileUrlSource(url=url, recursive=recursive)
+                    path=path, url=AddFileUrlSource(url=url, recursive=recursive)
                 )
-            )
+            ),
         ]
         return self.modify_file(iter(operations))
 
+    @transaction_incompatible
     def put_file_from_file(
         self,
         *,
         commit: &#34;Commit&#34;,
         path: str,
         file: &#34;SupportsRead[bytes]&#34;,
-        append: bool = False
+        append: bool = False,
     ) -&gt; Empty:
         &#34;&#34;&#34;Uploads a PFS file from an open file object.
 
@@ -1596,26 +1051,34 @@ Otherwise, overwrites the file.</dd>
         &gt;&gt;&gt;             commit=c, path=&#34;/index.html&#34;, file=source
         &gt;&gt;&gt;         )
         &#34;&#34;&#34;
-        # TODO: Can we verify that the file is outputting bytes?
+        check = file.read(BUFFER_SIZE)
+        if len(check) &gt; 0:
+            if not isinstance(check, bytes):
+                raise TypeError(&#34;File must output bytes&#34;)
+
+        def file_iterator():
+            if not check:
+                return
+            yield check
+            while True:
+                data = file.read(BUFFER_SIZE)
+                if len(data) == 0:
+                    return
+                yield data
+
         def operations() -&gt; Iterable[ModifyFileRequest]:
             yield ModifyFileRequest(set_commit=commit)
             if not append:
                 yield ModifyFileRequest(delete_file=DeleteFile(path=path))
             yield ModifyFileRequest(add_file=AddFile(path=path, raw=b&#34;&#34;))
-            while True:
-                data = file.read(BUFFER_SIZE)
-                if len(data) == 0:
-                    return
+            for data in file_iterator():
                 yield ModifyFileRequest(add_file=AddFile(path=path, raw=data))
+
         return self.modify_file(operations())
 
+    @transaction_incompatible
     def copy_file(
-        self,
-        *,
-        commit: &#34;Commit&#34;,
-        src: &#34;File&#34;,
-        dst: str,
-        append: bool = True
+        self, *, commit: &#34;Commit&#34;, src: &#34;File&#34;, dst: str, append: bool = False
     ) -&gt; Empty:
         &#34;&#34;&#34;Copies a file within PFS
 
@@ -1642,12 +1105,11 @@ Otherwise, overwrites the file.</dd>
         &#34;&#34;&#34;
         operations = [
             ModifyFileRequest(set_commit=commit),
-            ModifyFileRequest(
-                copy_file=CopyFile(dst=dst, src=src, append=append)
-            )
+            ModifyFileRequest(copy_file=CopyFile(dst=dst, src=src, append=append)),
         ]
         return self.modify_file(iter(operations))
 
+    @transaction_incompatible
     def delete_file(self, *, commit: &#34;Commit&#34;, path: str) -&gt; Empty:
         &#34;&#34;&#34;Copies a file within PFS
 
@@ -1792,7 +1254,7 @@ Otherwise, overwrites the file.</dd>
                 return False
             raise err
 
-    def pfs_file(self, file: &#34;File&#34;) -&gt; &#34;PFSFile&#34;:  # TODO: Naming?
+    def pfs_file(self, file: &#34;File&#34;) -&gt; &#34;PFSFile&#34;:
         &#34;&#34;&#34;Wraps the response stream of a client.pfs.get_file() call with a
         PFSFile object. This wrapper class allows you to interact with the
         file stream as a normal file object.
@@ -1815,7 +1277,7 @@ Otherwise, overwrites the file.</dd>
         stream = self.get_file(file=file)
         return PFSFile(stream)
 
-    def pfs_tar_file(self, file: &#34;File&#34;) -&gt; &#34;PFSTarFile&#34;:  # TODO: Naming?
+    def pfs_tar_file(self, file: &#34;File&#34;) -&gt; &#34;PFSTarFile&#34;:
         &#34;&#34;&#34;Wraps the response stream of a client.pfs.get_tar_file() call with a
         PFSTarFile object. This wrapper class allows you to interact with the
         file stream as a standard tarfile.TarFile object.
@@ -1832,6 +1294,26 @@ Otherwise, overwrites the file.</dd>
 <ul class="hlist">
 <li><a title="pachyderm_sdk.api.pfs.ApiStub" href="index.html#pachyderm_sdk.api.pfs.ApiStub">ApiStub</a></li>
 </ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.pfs.extension.ApiStub.within_transaction"><code class="name">var <span class="ident">within_transaction</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>For internal use.</p>
+<p>Whether the client is currently within a transaction.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def within_transaction(self) -&gt; bool:
+    &#34;&#34;&#34;For internal use.
+
+    Whether the client is currently within a transaction.
+    &#34;&#34;&#34;
+    return bool(self._get_transaction_id())</code></pre>
+</details>
+</dd>
+</dl>
 <h3>Methods</h3>
 <dl>
 <dt id="pachyderm_sdk.api.pfs.extension.ApiStub.commit"><code class="name flex">
@@ -1839,15 +1321,18 @@ Otherwise, overwrites the file.</dd>
 </code></dt>
 <dd>
 <div class="desc"><p>A context manager for running operations within a commit.</p>
+<p>When inside this context, the returned object is an OpenCommit which accepts
+write-operations. Upon exiting the context, the commit is closed and the
+OpenCommit becomes a ClosedCommit and no longer allowing write-operations.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
-<dt><strong><code>parent</code></strong> :&ensp;<code>pfs.Commit</code></dt>
+<dt><strong><code>parent</code></strong> :&ensp;<code>pfs.Commit</code>, optional</dt>
 <dd>The parent commit of the new commit. parent may be empty in which case
 the commit that Branch points to will be used as the parent.
 If the branch does not exist, the commit will have no parent.</dd>
 <dt><strong><code>description</code></strong> :&ensp;<code>str</code>, optional</dt>
 <dd>A description of the commit.</dd>
-<dt><strong><code>branch</code></strong> :&ensp;<code>pfs.Branch</code></dt>
+<dt><strong><code>branch</code></strong> :&ensp;<code>pfs.Branch</code>, optional</dt>
 <dd>The branch where the commit is created.</dd>
 </dl>
 <h2 id="yields">Yields</h2>
@@ -1873,15 +1358,19 @@ def commit(
 ) -&gt; ContextManager[&#34;OpenCommit&#34;]:
     &#34;&#34;&#34;A context manager for running operations within a commit.
 
+    When inside this context, the returned object is an OpenCommit which accepts
+      write-operations. Upon exiting the context, the commit is closed and the
+      OpenCommit becomes a ClosedCommit and no longer allowing write-operations.
+
     Parameters
     ----------
-    parent : pfs.Commit
+    parent : pfs.Commit, optional
         The parent commit of the new commit. parent may be empty in which case
         the commit that Branch points to will be used as the parent.
         If the branch does not exist, the commit will have no parent.
     description : str, optional
         A description of the commit.
-    branch : pfs.Branch
+    branch : pfs.Branch, optional
         The branch where the commit is created.
 
     Yields
@@ -1899,10 +1388,11 @@ def commit(
     &gt;&gt;&gt;     c.put_file_from_bytes(c, &#34;/new_file.txt&#34;, b&#34;DATA&#34;)
     &#34;&#34;&#34;
     commit = self.start_commit(parent=parent, description=description, branch=branch)
+    commit_obj = OpenCommit(commit=commit, stub=self)
     try:
-        yield OpenCommit(commit=commit, stub=self)
+        yield commit_obj
     finally:
-        commit._open = False
+        commit_obj._close()
         self.finish_commit(commit=commit)</code></pre>
 </details>
 </dd>
@@ -1944,6 +1434,9 @@ from all the downstream jobs that were initiated by this commit.</p></div>
 <div class="desc"><p>Recursively insert the contents of source into the open commit under path,
 matching the directory structure of source.</p>
 <p>This is roughly equivalent to <code>pachctl put file -r</code></p>
+<p>Note: This method opens multiple gRPC streams and this appears to break in
+some REPL environment (such as those based in IDEs). If you encounter this
+problem, please try a different REPL environment or run as a script.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>commit</code></strong> :&ensp;<code>pfs.Commit</code></dt>
@@ -1964,13 +1457,16 @@ matching the directory structure of source.</p>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def put_files(
-    self, *, commit: &#34;Commit&#34;, source: Union[Path, str], path: str
-) -&gt; None:
+<pre><code class="python">@transaction_incompatible
+def put_files(self, *, commit: &#34;Commit&#34;, source: Union[Path, str], path: str) -&gt; None:
     &#34;&#34;&#34;Recursively insert the contents of source into the open commit under path,
     matching the directory structure of source.
 
     This is roughly equivalent to ``pachctl put file -r``
+
+    Note: This method opens multiple gRPC streams and this appears to break in
+      some REPL environment (such as those based in IDEs). If you encounter this
+      problem, please try a different REPL environment or run as a script.
 
     Parameters
     ----------
@@ -2032,13 +1528,9 @@ they already exist. Otherwise, overwrites them.</dd>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def put_file_from_bytes(
-    self,
-    *,
-    commit: &#34;Commit&#34;,
-    path: str,
-    data: bytes,
-    append: bool = False
+<pre><code class="python">@transaction_incompatible
+def put_file_from_bytes(
+    self, *, commit: &#34;Commit&#34;, path: str, data: bytes, append: bool = False
 ) -&gt; Empty:
     &#34;&#34;&#34;Uploads a PFS file from a bytestring.
 
@@ -2099,7 +1591,8 @@ example on s3:// URLs</dd>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def put_file_from_url(
+<pre><code class="python">@transaction_incompatible
+def put_file_from_url(
     self,
     *,
     commit: &#34;Commit&#34;,
@@ -2136,10 +1629,9 @@ example on s3:// URLs</dd>
         ModifyFileRequest(delete_file=DeleteFile(path=path)),
         ModifyFileRequest(
             add_file=AddFile(
-                path=path,
-                url=AddFileUrlSource(url=url, recursive=recursive)
+                path=path, url=AddFileUrlSource(url=url, recursive=recursive)
             )
-        )
+        ),
     ]
     return self.modify_file(iter(operations))</code></pre>
 </details>
@@ -2175,13 +1667,14 @@ they already exist. Otherwise, overwrites them.</dd>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def put_file_from_file(
+<pre><code class="python">@transaction_incompatible
+def put_file_from_file(
     self,
     *,
     commit: &#34;Commit&#34;,
     path: str,
     file: &#34;SupportsRead[bytes]&#34;,
-    append: bool = False
+    append: bool = False,
 ) -&gt; Empty:
     &#34;&#34;&#34;Uploads a PFS file from an open file object.
 
@@ -2208,22 +1701,34 @@ they already exist. Otherwise, overwrites them.</dd>
     &gt;&gt;&gt;             commit=c, path=&#34;/index.html&#34;, file=source
     &gt;&gt;&gt;         )
     &#34;&#34;&#34;
-    # TODO: Can we verify that the file is outputting bytes?
+    check = file.read(BUFFER_SIZE)
+    if len(check) &gt; 0:
+        if not isinstance(check, bytes):
+            raise TypeError(&#34;File must output bytes&#34;)
+
+    def file_iterator():
+        if not check:
+            return
+        yield check
+        while True:
+            data = file.read(BUFFER_SIZE)
+            if len(data) == 0:
+                return
+            yield data
+
     def operations() -&gt; Iterable[ModifyFileRequest]:
         yield ModifyFileRequest(set_commit=commit)
         if not append:
             yield ModifyFileRequest(delete_file=DeleteFile(path=path))
         yield ModifyFileRequest(add_file=AddFile(path=path, raw=b&#34;&#34;))
-        while True:
-            data = file.read(BUFFER_SIZE)
-            if len(data) == 0:
-                return
+        for data in file_iterator():
             yield ModifyFileRequest(add_file=AddFile(path=path, raw=data))
+
     return self.modify_file(operations())</code></pre>
 </details>
 </dd>
 <dt id="pachyderm_sdk.api.pfs.extension.ApiStub.copy_file"><code class="name flex">
-<span>def <span class="ident">copy_file</span></span>(<span>self, *, commit: Commit, src: File, dst: str, append: bool = True) ‑> betterproto.lib.google.protobuf.Empty</span>
+<span>def <span class="ident">copy_file</span></span>(<span>self, *, commit: Commit, src: File, dst: str, append: bool = False) ‑> betterproto.lib.google.protobuf.Empty</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Copies a file within PFS</p>
@@ -2251,13 +1756,9 @@ Otherwise, overwrites the file.</dd>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def copy_file(
-    self,
-    *,
-    commit: &#34;Commit&#34;,
-    src: &#34;File&#34;,
-    dst: str,
-    append: bool = True
+<pre><code class="python">@transaction_incompatible
+def copy_file(
+    self, *, commit: &#34;Commit&#34;, src: &#34;File&#34;, dst: str, append: bool = False
 ) -&gt; Empty:
     &#34;&#34;&#34;Copies a file within PFS
 
@@ -2284,9 +1785,7 @@ Otherwise, overwrites the file.</dd>
     &#34;&#34;&#34;
     operations = [
         ModifyFileRequest(set_commit=commit),
-        ModifyFileRequest(
-            copy_file=CopyFile(dst=dst, src=src, append=append)
-        )
+        ModifyFileRequest(copy_file=CopyFile(dst=dst, src=src, append=append)),
     ]
     return self.modify_file(iter(operations))</code></pre>
 </details>
@@ -2314,7 +1813,8 @@ Otherwise, overwrites the file.</dd>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def delete_file(self, *, commit: &#34;Commit&#34;, path: str) -&gt; Empty:
+<pre><code class="python">@transaction_incompatible
+def delete_file(self, *, commit: &#34;Commit&#34;, path: str) -&gt; Empty:
     &#34;&#34;&#34;Copies a file within PFS
 
     Parameters
@@ -2587,7 +2087,7 @@ file stream as a normal file object.</p>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def pfs_file(self, file: &#34;File&#34;) -&gt; &#34;PFSFile&#34;:  # TODO: Naming?
+<pre><code class="python">def pfs_file(self, file: &#34;File&#34;) -&gt; &#34;PFSFile&#34;:
     &#34;&#34;&#34;Wraps the response stream of a client.pfs.get_file() call with a
     PFSFile object. This wrapper class allows you to interact with the
     file stream as a normal file object.
@@ -2627,7 +2127,7 @@ file stream as a standard tarfile.TarFile object.</p>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def pfs_tar_file(self, file: &#34;File&#34;) -&gt; &#34;PFSTarFile&#34;:  # TODO: Naming?
+<pre><code class="python">def pfs_tar_file(self, file: &#34;File&#34;) -&gt; &#34;PFSTarFile&#34;:
     &#34;&#34;&#34;Wraps the response stream of a client.pfs.get_tar_file() call with a
     PFSTarFile object. This wrapper class allows you to interact with the
     file stream as a standard tarfile.TarFile object.
@@ -2642,6 +2142,780 @@ file stream as a standard tarfile.TarFile object.</p>
 </details>
 </dd>
 </dl>
+</dd>
+<dt id="pachyderm_sdk.api.pfs.extension.ClosedCommit"><code class="flex name class">
+<span>class <span class="ident">ClosedCommit</span></span>
+<span>(</span><span>commit: Commit, stub: <a title="pachyderm_sdk.api.pfs.extension.ApiStub" href="#pachyderm_sdk.api.pfs.extension.ApiStub">ApiStub</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>A ClosedCommit is an extension of the pfs.Commit message with some
+helpful methods. Cannot write to a closed commit.</p>
+<p>Internal Use: Do not create this object yourself.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>commit</code></strong> :&ensp;<code>pfs.Commit</code></dt>
+<dd>The commit.</dd>
+<dt><strong><code>stub</code></strong> :&ensp;<code>pfs.ApiStub</code></dt>
+<dd>The API class to route requests though.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ClosedCommit(Commit):
+    &#34;&#34;&#34;A ClosedCommit is an extension of the pfs.Commit message with some
+    helpful methods. Cannot write to a closed commit.
+    &#34;&#34;&#34;
+
+    def __init__(self, commit: &#34;Commit&#34;, stub: &#34;ApiStub&#34;):
+        &#34;&#34;&#34;Internal Use: Do not create this object yourself.
+
+        Parameters
+        ----------
+        commit : pfs.Commit
+            The commit.
+        stub : pfs.ApiStub
+            The API class to route requests though.
+        &#34;&#34;&#34;
+        self._commit = commit
+        self._stub = stub
+
+        # This is required to maintain serialization capabilities while being
+        #   future compatible with any new fields to the pfs.Commit message.
+        super().__init__(
+            **{field.name: getattr(commit, field.name) for field in fields(commit)}
+        )
+
+    def wait(self) -&gt; &#34;CommitInfo&#34;:
+        &#34;&#34;&#34;Waits until the commit is finished being created.
+
+        See OpenCommit docstring for an example.
+        &#34;&#34;&#34;
+        return self._stub.wait_commit(self)
+
+    def wait_all(self) -&gt; List[&#34;CommitInfo&#34;]:
+        &#34;&#34;&#34;Similar to Commit.wait but streams back the pfs.CommitInfo
+        from all the downstream jobs that were initiated by this commit.
+        &#34;&#34;&#34;
+        return self._stub.wait_commit_set(CommitSet(id=self._commit.id))</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pachyderm_sdk.api.pfs.Commit" href="index.html#pachyderm_sdk.api.pfs.Commit">Commit</a></li>
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="pachyderm_sdk.api.pfs.extension.OpenCommit" href="#pachyderm_sdk.api.pfs.extension.OpenCommit">OpenCommit</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="pachyderm_sdk.api.pfs.extension.ClosedCommit.wait"><code class="name flex">
+<span>def <span class="ident">wait</span></span>(<span>self) ‑> <a title="pachyderm_sdk.api.pfs.CommitInfo" href="index.html#pachyderm_sdk.api.pfs.CommitInfo">CommitInfo</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Waits until the commit is finished being created.</p>
+<p>See OpenCommit docstring for an example.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def wait(self) -&gt; &#34;CommitInfo&#34;:
+    &#34;&#34;&#34;Waits until the commit is finished being created.
+
+    See OpenCommit docstring for an example.
+    &#34;&#34;&#34;
+    return self._stub.wait_commit(self)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.pfs.extension.ClosedCommit.wait_all"><code class="name flex">
+<span>def <span class="ident">wait_all</span></span>(<span>self) ‑> List[<a title="pachyderm_sdk.api.pfs.CommitInfo" href="index.html#pachyderm_sdk.api.pfs.CommitInfo">CommitInfo</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Similar to Commit.wait but streams back the pfs.CommitInfo
+from all the downstream jobs that were initiated by this commit.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def wait_all(self) -&gt; List[&#34;CommitInfo&#34;]:
+    &#34;&#34;&#34;Similar to Commit.wait but streams back the pfs.CommitInfo
+    from all the downstream jobs that were initiated by this commit.
+    &#34;&#34;&#34;
+    return self._stub.wait_commit_set(CommitSet(id=self._commit.id))</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="pachyderm_sdk.api.pfs.Commit" href="index.html#pachyderm_sdk.api.pfs.Commit">Commit</a></b></code>:
+<ul class="hlist">
+<li><code><a title="pachyderm_sdk.api.pfs.Commit.as_uri" href="index.html#pachyderm_sdk.api.pfs.Commit.as_uri">as_uri</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pfs.Commit.branch" href="index.html#pachyderm_sdk.api.pfs.Commit.branch">branch</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pfs.Commit.from_uri" href="index.html#pachyderm_sdk.api.pfs.Commit.from_uri">from_uri</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="pachyderm_sdk.api.pfs.extension.OpenCommit"><code class="flex name class">
+<span>class <span class="ident">OpenCommit</span></span>
+<span>(</span><span>commit: Commit, stub: <a title="pachyderm_sdk.api.pfs.extension.ApiStub" href="#pachyderm_sdk.api.pfs.extension.ApiStub">ApiStub</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>An OpenCommit is an extension of the pfs.Commit message with some
+helpful methods that provide a more intuitive UX when writing to a commit.</p>
+<h2 id="examples">Examples</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; from pachyderm_sdk import Client
+&gt;&gt;&gt; from pachyderm_sdk.api import pfs
+&gt;&gt;&gt; client: Client
+&gt;&gt;&gt; with client.pfs.commit(branch=pfs.Branch.from_uri(&quot;data@master&quot;)) as commit:
+&gt;&gt;&gt;     commit.put_file_from_bytes(&quot;/greeting.txt&quot;, b&quot;Hello!&quot;)
+&gt;&gt;&gt;     commit.delete_file(&quot;/rude/insult.txt&quot;)
+&gt;&gt;&gt; commit.wait()
+</code></pre>
+<p>Internal Use: Do not create this object yourself.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>commit</code></strong> :&ensp;<code>pfs.Commit</code></dt>
+<dd>The "open" commit to write to.</dd>
+<dt><strong><code>stub</code></strong> :&ensp;<code>pfs.ApiStub</code></dt>
+<dd>The API class to route requests though.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class OpenCommit(ClosedCommit):
+    &#34;&#34;&#34;An OpenCommit is an extension of the pfs.Commit message with some
+    helpful methods that provide a more intuitive UX when writing to a commit.
+
+    Examples
+    --------
+    &gt;&gt;&gt; from pachyderm_sdk import Client
+    &gt;&gt;&gt; from pachyderm_sdk.api import pfs
+    &gt;&gt;&gt; client: Client
+    &gt;&gt;&gt; with client.pfs.commit(branch=pfs.Branch.from_uri(&#34;data@master&#34;)) as commit:
+    &gt;&gt;&gt;     commit.put_file_from_bytes(&#34;/greeting.txt&#34;, b&#34;Hello!&#34;)
+    &gt;&gt;&gt;     commit.delete_file(&#34;/rude/insult.txt&#34;)
+    &gt;&gt;&gt; commit.wait()
+    &#34;&#34;&#34;
+
+    def __init__(self, commit: &#34;Commit&#34;, stub: &#34;ApiStub&#34;):
+        &#34;&#34;&#34;Internal Use: Do not create this object yourself.
+
+        Parameters
+        ----------
+        commit : pfs.Commit
+            The &#34;open&#34; commit to write to.
+        stub : pfs.ApiStub
+            The API class to route requests though.
+        &#34;&#34;&#34;
+        self._commit = commit
+        self._stub = stub
+        super().__init__(commit, stub)
+
+    def _close(self):
+        &#34;&#34;&#34;Transform an OpenCommit into a ClosedCommit.&#34;&#34;&#34;
+        self.__class__ = ClosedCommit
+
+    def put_files(self, *, source: Union[Path, str], path: str) -&gt; None:
+        &#34;&#34;&#34;Recursively insert the contents of source into the open commit under path,
+        matching the directory structure of source.
+
+        This is roughly equivalent to ``pachctl put file -r``
+
+        Parameters
+        ----------
+        source : Union[Path, str]
+            The directory to recursively insert content from.
+        path : str
+            The destination path in PFS.
+
+        Examples
+        --------
+        &gt;&gt;&gt; from pachyderm_sdk import Client
+        &gt;&gt;&gt; from pachyderm_sdk.api import pfs
+        &gt;&gt;&gt; client: Client
+        &gt;&gt;&gt; branch = pfs.Branch.from_uri(&#34;images@master&#34;)
+        &gt;&gt;&gt; with client.pfs.commit(branch=branch) as commit:
+        &gt;&gt;&gt;     commit.put_files(source=&#34;path/to/local/files&#34;, path=&#34;/&#34;)
+        &#34;&#34;&#34;
+        self._stub.put_files(commit=self._commit, source=source, path=path)
+
+    def put_file_from_bytes(self, path: str, data: bytes, append: bool = False) -&gt; &#34;File&#34;:
+        &#34;&#34;&#34;Uploads a PFS file from a bytestring.
+
+        Parameters
+        ----------
+        path : str
+            The path in the repo the data will be written to.
+        data : bytes
+            The file contents as bytes.
+        append : bool, optional
+            If true, appends the data to the file specified at `path`, if
+            they already exist. Otherwise, overwrites them.
+
+        Raises
+        ------
+        ValueError: If the commit is closed.
+
+        Returns
+        -------
+        A pfs.File object that that points to the uploaded file.
+        NOTE: The commit must be closed before you can read this file.
+
+        Examples
+        --------
+        &gt;&gt;&gt; from pachyderm_sdk import Client
+        &gt;&gt;&gt; from pachyderm_sdk.api import pfs
+        &gt;&gt;&gt; client: Client
+        &gt;&gt;&gt; with client.pfs.commit(branch=pfs.Branch.from_uri(&#34;images@master&#34;)) as commit:
+        &gt;&gt;&gt;     commit.put_file_from_bytes(path=&#34;/file.txt&#34;, data=b&#34;SOME BYTES&#34;)
+        &#34;&#34;&#34;
+        self._stub.put_file_from_bytes(commit=self, path=path, data=data, append=append)
+        return File(commit=self._commit, path=path)
+
+    def put_file_from_url(
+        self,
+        *,
+        path: str,
+        url: str,
+        recursive: bool = False,
+    ) -&gt; &#34;File&#34;:
+        &#34;&#34;&#34;Uploads a PFS file from an url.
+
+        Parameters
+        ----------
+        path : str
+            The path in the repo the data will be written to.
+        url : str
+            The URL of the file to put.
+        recursive : bool
+            If true, allows for recursive scraping on some types URLs, for
+            example on s3:// URLs
+
+        Raises
+        ------
+        ValueError: If the commit is closed.
+
+        Returns
+        -------
+        A pfs.File object that that points to the uploaded file.
+        NOTE: The commit must be closed before you can read this file.
+
+        Examples
+        --------
+        &gt;&gt;&gt; from pachyderm_sdk import Client
+        &gt;&gt;&gt; from pachyderm_sdk.api import pfs
+        &gt;&gt;&gt; client: Client
+        &gt;&gt;&gt; with client.pfs.commit(branch=pfs.Branch.from_uri(&#34;images@master&#34;)) as commit:
+        &gt;&gt;&gt;     commit.put_file_from_url(
+        &gt;&gt;&gt;         path=&#34;/index.html&#34;, url=&#34;https://www.pachyderm.com/index.html&#34;
+        &gt;&gt;&gt;     )
+        &#34;&#34;&#34;
+        self._stub.put_file_from_url(commit=self, path=path, url=url, recursive=recursive)
+        return File(commit=self._commit, path=path)
+
+    def put_file_from_file(
+        self, *, path: str, file: &#34;SupportsRead[bytes]&#34;, append: bool = False
+    ) -&gt; &#34;File&#34;:
+        &#34;&#34;&#34;Uploads a PFS file from an open file object.
+
+        Parameters
+        ----------
+        path : str
+            The path in the repo the data will be written to.
+        file : SupportsRead[bytes]
+            An open file object to read the data from.
+        append : bool, optional
+            If true, appends the data to the file specified at `path`, if
+            they already exist. Otherwise, overwrites them.
+
+        Raises
+        ------
+        ValueError: If the commit is closed.
+
+        Returns
+        -------
+        A pfs.File object that that points to the uploaded file.
+        NOTE: The commit must be closed before you can read this file.
+
+        Examples
+        --------
+        &gt;&gt;&gt; from pachyderm_sdk import Client
+        &gt;&gt;&gt; from pachyderm_sdk.api import pfs
+        &gt;&gt;&gt; client: Client
+        &gt;&gt;&gt; with client.pfs.commit(branch=pfs.Branch.from_uri(&#34;images@master&#34;)) as commit:
+        &gt;&gt;&gt;     with open(&#34;local_file.dat&#34;, &#34;rb&#34;) as source:
+        &gt;&gt;&gt;         commit.put_file_from_file(path=&#34;/index.html&#34;, file=source)
+        &#34;&#34;&#34;
+        self._stub.put_file_from_file(commit=self, path=path, file=file, append=append)
+        return File(commit=self._commit, path=path)
+
+    def copy_file(self, *, src: &#34;File&#34;, dst: str, append: bool = False) -&gt; &#34;File&#34;:
+        &#34;&#34;&#34;Copies a file within PFS
+
+        Parameters
+        ----------
+        src : pfs.File
+            This file to be copied.
+        dst : str
+            The destination of the file, as a string path.
+        append : bool
+            If true, appends the contents of src to dst if it exists.
+            Otherwise, overwrites the file.
+
+        Raises
+        ------
+        ValueError: If the commit is closed.
+
+        Returns
+        -------
+        A pfs.File object that that points to the new file.
+        NOTE: The commit must be closed before you can read this file.
+
+        Examples
+        --------
+        &gt;&gt;&gt; from pachyderm_sdk import Client
+        &gt;&gt;&gt; from pachyderm_sdk.api import pfs
+        &gt;&gt;&gt; client: Client
+        &gt;&gt;&gt; source = pfs.File.from_uri(&#34;images@master:/file.dat&#34;)
+        &gt;&gt;&gt; with client.pfs.commit(branch=pfs.Branch.from_uri(&#34;images@master&#34;)) as commit:
+        &gt;&gt;&gt;     commit.copy_file(src=source, dst=&#34;/copy.dat&#34;)
+        &#34;&#34;&#34;
+        self._stub.copy_file(commit=self, src=src, dst=dst, append=append)
+        return File(commit=self._commit, path=dst)
+
+    def delete_file(self, *, path: str) -&gt; &#34;File&#34;:
+        &#34;&#34;&#34;Copies a file within PFS
+
+        Parameters
+        ----------
+        path : str
+            The path of the file to be deleted.
+
+        Raises
+        ------
+        ValueError: If the commit is closed.
+
+        Returns
+        -------
+        A pfs.File object that that points to the deleted file.
+
+        Examples
+        --------
+        &gt;&gt;&gt; from pachyderm_sdk import Client
+        &gt;&gt;&gt; from pachyderm_sdk.api import pfs
+        &gt;&gt;&gt; client: Client
+        &gt;&gt;&gt; with client.pfs.commit(branch=pfs.Branch.from_uri(&#34;images@master&#34;)) as commit:
+        &gt;&gt;&gt;     commit.delete_file(path=&#34;/file.dat&#34;)
+        &#34;&#34;&#34;
+        self._stub.delete_file(commit=self, path=path)
+        return File(commit=self._commit, path=path)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pachyderm_sdk.api.pfs.extension.ClosedCommit" href="#pachyderm_sdk.api.pfs.extension.ClosedCommit">ClosedCommit</a></li>
+<li><a title="pachyderm_sdk.api.pfs.Commit" href="index.html#pachyderm_sdk.api.pfs.Commit">Commit</a></li>
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="pachyderm_sdk.api.pfs.extension.OpenCommit.put_files"><code class="name flex">
+<span>def <span class="ident">put_files</span></span>(<span>self, *, source: Union[pathlib.Path, str], path: str) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Recursively insert the contents of source into the open commit under path,
+matching the directory structure of source.</p>
+<p>This is roughly equivalent to <code>pachctl put file -r</code></p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>source</code></strong> :&ensp;<code>Union[Path, str]</code></dt>
+<dd>The directory to recursively insert content from.</dd>
+<dt><strong><code>path</code></strong> :&ensp;<code>str</code></dt>
+<dd>The destination path in PFS.</dd>
+</dl>
+<h2 id="examples">Examples</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; from pachyderm_sdk import Client
+&gt;&gt;&gt; from pachyderm_sdk.api import pfs
+&gt;&gt;&gt; client: Client
+&gt;&gt;&gt; branch = pfs.Branch.from_uri(&quot;images@master&quot;)
+&gt;&gt;&gt; with client.pfs.commit(branch=branch) as commit:
+&gt;&gt;&gt;     commit.put_files(source=&quot;path/to/local/files&quot;, path=&quot;/&quot;)
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def put_files(self, *, source: Union[Path, str], path: str) -&gt; None:
+    &#34;&#34;&#34;Recursively insert the contents of source into the open commit under path,
+    matching the directory structure of source.
+
+    This is roughly equivalent to ``pachctl put file -r``
+
+    Parameters
+    ----------
+    source : Union[Path, str]
+        The directory to recursively insert content from.
+    path : str
+        The destination path in PFS.
+
+    Examples
+    --------
+    &gt;&gt;&gt; from pachyderm_sdk import Client
+    &gt;&gt;&gt; from pachyderm_sdk.api import pfs
+    &gt;&gt;&gt; client: Client
+    &gt;&gt;&gt; branch = pfs.Branch.from_uri(&#34;images@master&#34;)
+    &gt;&gt;&gt; with client.pfs.commit(branch=branch) as commit:
+    &gt;&gt;&gt;     commit.put_files(source=&#34;path/to/local/files&#34;, path=&#34;/&#34;)
+    &#34;&#34;&#34;
+    self._stub.put_files(commit=self._commit, source=source, path=path)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.pfs.extension.OpenCommit.put_file_from_bytes"><code class="name flex">
+<span>def <span class="ident">put_file_from_bytes</span></span>(<span>self, path: str, data: bytes, append: bool = False) ‑> <a title="pachyderm_sdk.api.pfs.File" href="index.html#pachyderm_sdk.api.pfs.File">File</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Uploads a PFS file from a bytestring.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>path</code></strong> :&ensp;<code>str</code></dt>
+<dd>The path in the repo the data will be written to.</dd>
+<dt><strong><code>data</code></strong> :&ensp;<code>bytes</code></dt>
+<dd>The file contents as bytes.</dd>
+<dt><strong><code>append</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>If true, appends the data to the file specified at <code>path</code>, if
+they already exist. Otherwise, overwrites them.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<p>ValueError: If the commit is closed.</p>
+<h2 id="returns">Returns</h2>
+<p>A pfs.File object that that points to the uploaded file.
+NOTE: The commit must be closed before you can read this file.</p>
+<h2 id="examples">Examples</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; from pachyderm_sdk import Client
+&gt;&gt;&gt; from pachyderm_sdk.api import pfs
+&gt;&gt;&gt; client: Client
+&gt;&gt;&gt; with client.pfs.commit(branch=pfs.Branch.from_uri(&quot;images@master&quot;)) as commit:
+&gt;&gt;&gt;     commit.put_file_from_bytes(path=&quot;/file.txt&quot;, data=b&quot;SOME BYTES&quot;)
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def put_file_from_bytes(self, path: str, data: bytes, append: bool = False) -&gt; &#34;File&#34;:
+    &#34;&#34;&#34;Uploads a PFS file from a bytestring.
+
+    Parameters
+    ----------
+    path : str
+        The path in the repo the data will be written to.
+    data : bytes
+        The file contents as bytes.
+    append : bool, optional
+        If true, appends the data to the file specified at `path`, if
+        they already exist. Otherwise, overwrites them.
+
+    Raises
+    ------
+    ValueError: If the commit is closed.
+
+    Returns
+    -------
+    A pfs.File object that that points to the uploaded file.
+    NOTE: The commit must be closed before you can read this file.
+
+    Examples
+    --------
+    &gt;&gt;&gt; from pachyderm_sdk import Client
+    &gt;&gt;&gt; from pachyderm_sdk.api import pfs
+    &gt;&gt;&gt; client: Client
+    &gt;&gt;&gt; with client.pfs.commit(branch=pfs.Branch.from_uri(&#34;images@master&#34;)) as commit:
+    &gt;&gt;&gt;     commit.put_file_from_bytes(path=&#34;/file.txt&#34;, data=b&#34;SOME BYTES&#34;)
+    &#34;&#34;&#34;
+    self._stub.put_file_from_bytes(commit=self, path=path, data=data, append=append)
+    return File(commit=self._commit, path=path)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.pfs.extension.OpenCommit.put_file_from_url"><code class="name flex">
+<span>def <span class="ident">put_file_from_url</span></span>(<span>self, *, path: str, url: str, recursive: bool = False) ‑> <a title="pachyderm_sdk.api.pfs.File" href="index.html#pachyderm_sdk.api.pfs.File">File</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Uploads a PFS file from an url.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>path</code></strong> :&ensp;<code>str</code></dt>
+<dd>The path in the repo the data will be written to.</dd>
+<dt><strong><code>url</code></strong> :&ensp;<code>str</code></dt>
+<dd>The URL of the file to put.</dd>
+<dt><strong><code>recursive</code></strong> :&ensp;<code>bool</code></dt>
+<dd>If true, allows for recursive scraping on some types URLs, for
+example on s3:// URLs</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<p>ValueError: If the commit is closed.</p>
+<h2 id="returns">Returns</h2>
+<p>A pfs.File object that that points to the uploaded file.
+NOTE: The commit must be closed before you can read this file.</p>
+<h2 id="examples">Examples</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; from pachyderm_sdk import Client
+&gt;&gt;&gt; from pachyderm_sdk.api import pfs
+&gt;&gt;&gt; client: Client
+&gt;&gt;&gt; with client.pfs.commit(branch=pfs.Branch.from_uri(&quot;images@master&quot;)) as commit:
+&gt;&gt;&gt;     commit.put_file_from_url(
+&gt;&gt;&gt;         path=&quot;/index.html&quot;, url=&quot;https://www.pachyderm.com/index.html&quot;
+&gt;&gt;&gt;     )
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def put_file_from_url(
+    self,
+    *,
+    path: str,
+    url: str,
+    recursive: bool = False,
+) -&gt; &#34;File&#34;:
+    &#34;&#34;&#34;Uploads a PFS file from an url.
+
+    Parameters
+    ----------
+    path : str
+        The path in the repo the data will be written to.
+    url : str
+        The URL of the file to put.
+    recursive : bool
+        If true, allows for recursive scraping on some types URLs, for
+        example on s3:// URLs
+
+    Raises
+    ------
+    ValueError: If the commit is closed.
+
+    Returns
+    -------
+    A pfs.File object that that points to the uploaded file.
+    NOTE: The commit must be closed before you can read this file.
+
+    Examples
+    --------
+    &gt;&gt;&gt; from pachyderm_sdk import Client
+    &gt;&gt;&gt; from pachyderm_sdk.api import pfs
+    &gt;&gt;&gt; client: Client
+    &gt;&gt;&gt; with client.pfs.commit(branch=pfs.Branch.from_uri(&#34;images@master&#34;)) as commit:
+    &gt;&gt;&gt;     commit.put_file_from_url(
+    &gt;&gt;&gt;         path=&#34;/index.html&#34;, url=&#34;https://www.pachyderm.com/index.html&#34;
+    &gt;&gt;&gt;     )
+    &#34;&#34;&#34;
+    self._stub.put_file_from_url(commit=self, path=path, url=url, recursive=recursive)
+    return File(commit=self._commit, path=path)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.pfs.extension.OpenCommit.put_file_from_file"><code class="name flex">
+<span>def <span class="ident">put_file_from_file</span></span>(<span>self, *, path: str, file: SupportsRead[bytes], append: bool = False) ‑> File</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Uploads a PFS file from an open file object.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>path</code></strong> :&ensp;<code>str</code></dt>
+<dd>The path in the repo the data will be written to.</dd>
+<dt><strong><code>file</code></strong> :&ensp;<code>SupportsRead[bytes]</code></dt>
+<dd>An open file object to read the data from.</dd>
+<dt><strong><code>append</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>If true, appends the data to the file specified at <code>path</code>, if
+they already exist. Otherwise, overwrites them.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<p>ValueError: If the commit is closed.</p>
+<h2 id="returns">Returns</h2>
+<p>A pfs.File object that that points to the uploaded file.
+NOTE: The commit must be closed before you can read this file.</p>
+<h2 id="examples">Examples</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; from pachyderm_sdk import Client
+&gt;&gt;&gt; from pachyderm_sdk.api import pfs
+&gt;&gt;&gt; client: Client
+&gt;&gt;&gt; with client.pfs.commit(branch=pfs.Branch.from_uri(&quot;images@master&quot;)) as commit:
+&gt;&gt;&gt;     with open(&quot;local_file.dat&quot;, &quot;rb&quot;) as source:
+&gt;&gt;&gt;         commit.put_file_from_file(path=&quot;/index.html&quot;, file=source)
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def put_file_from_file(
+    self, *, path: str, file: &#34;SupportsRead[bytes]&#34;, append: bool = False
+) -&gt; &#34;File&#34;:
+    &#34;&#34;&#34;Uploads a PFS file from an open file object.
+
+    Parameters
+    ----------
+    path : str
+        The path in the repo the data will be written to.
+    file : SupportsRead[bytes]
+        An open file object to read the data from.
+    append : bool, optional
+        If true, appends the data to the file specified at `path`, if
+        they already exist. Otherwise, overwrites them.
+
+    Raises
+    ------
+    ValueError: If the commit is closed.
+
+    Returns
+    -------
+    A pfs.File object that that points to the uploaded file.
+    NOTE: The commit must be closed before you can read this file.
+
+    Examples
+    --------
+    &gt;&gt;&gt; from pachyderm_sdk import Client
+    &gt;&gt;&gt; from pachyderm_sdk.api import pfs
+    &gt;&gt;&gt; client: Client
+    &gt;&gt;&gt; with client.pfs.commit(branch=pfs.Branch.from_uri(&#34;images@master&#34;)) as commit:
+    &gt;&gt;&gt;     with open(&#34;local_file.dat&#34;, &#34;rb&#34;) as source:
+    &gt;&gt;&gt;         commit.put_file_from_file(path=&#34;/index.html&#34;, file=source)
+    &#34;&#34;&#34;
+    self._stub.put_file_from_file(commit=self, path=path, file=file, append=append)
+    return File(commit=self._commit, path=path)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.pfs.extension.OpenCommit.copy_file"><code class="name flex">
+<span>def <span class="ident">copy_file</span></span>(<span>self, *, src: File, dst: str, append: bool = False) ‑> <a title="pachyderm_sdk.api.pfs.File" href="index.html#pachyderm_sdk.api.pfs.File">File</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Copies a file within PFS</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>src</code></strong> :&ensp;<code>pfs.File</code></dt>
+<dd>This file to be copied.</dd>
+<dt><strong><code>dst</code></strong> :&ensp;<code>str</code></dt>
+<dd>The destination of the file, as a string path.</dd>
+<dt><strong><code>append</code></strong> :&ensp;<code>bool</code></dt>
+<dd>If true, appends the contents of src to dst if it exists.
+Otherwise, overwrites the file.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<p>ValueError: If the commit is closed.</p>
+<h2 id="returns">Returns</h2>
+<p>A pfs.File object that that points to the new file.
+NOTE: The commit must be closed before you can read this file.</p>
+<h2 id="examples">Examples</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; from pachyderm_sdk import Client
+&gt;&gt;&gt; from pachyderm_sdk.api import pfs
+&gt;&gt;&gt; client: Client
+&gt;&gt;&gt; source = pfs.File.from_uri(&quot;images@master:/file.dat&quot;)
+&gt;&gt;&gt; with client.pfs.commit(branch=pfs.Branch.from_uri(&quot;images@master&quot;)) as commit:
+&gt;&gt;&gt;     commit.copy_file(src=source, dst=&quot;/copy.dat&quot;)
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def copy_file(self, *, src: &#34;File&#34;, dst: str, append: bool = False) -&gt; &#34;File&#34;:
+    &#34;&#34;&#34;Copies a file within PFS
+
+    Parameters
+    ----------
+    src : pfs.File
+        This file to be copied.
+    dst : str
+        The destination of the file, as a string path.
+    append : bool
+        If true, appends the contents of src to dst if it exists.
+        Otherwise, overwrites the file.
+
+    Raises
+    ------
+    ValueError: If the commit is closed.
+
+    Returns
+    -------
+    A pfs.File object that that points to the new file.
+    NOTE: The commit must be closed before you can read this file.
+
+    Examples
+    --------
+    &gt;&gt;&gt; from pachyderm_sdk import Client
+    &gt;&gt;&gt; from pachyderm_sdk.api import pfs
+    &gt;&gt;&gt; client: Client
+    &gt;&gt;&gt; source = pfs.File.from_uri(&#34;images@master:/file.dat&#34;)
+    &gt;&gt;&gt; with client.pfs.commit(branch=pfs.Branch.from_uri(&#34;images@master&#34;)) as commit:
+    &gt;&gt;&gt;     commit.copy_file(src=source, dst=&#34;/copy.dat&#34;)
+    &#34;&#34;&#34;
+    self._stub.copy_file(commit=self, src=src, dst=dst, append=append)
+    return File(commit=self._commit, path=dst)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.pfs.extension.OpenCommit.delete_file"><code class="name flex">
+<span>def <span class="ident">delete_file</span></span>(<span>self, *, path: str) ‑> <a title="pachyderm_sdk.api.pfs.File" href="index.html#pachyderm_sdk.api.pfs.File">File</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Copies a file within PFS</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>path</code></strong> :&ensp;<code>str</code></dt>
+<dd>The path of the file to be deleted.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<p>ValueError: If the commit is closed.</p>
+<h2 id="returns">Returns</h2>
+<p>A pfs.File object that that points to the deleted file.</p>
+<h2 id="examples">Examples</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; from pachyderm_sdk import Client
+&gt;&gt;&gt; from pachyderm_sdk.api import pfs
+&gt;&gt;&gt; client: Client
+&gt;&gt;&gt; with client.pfs.commit(branch=pfs.Branch.from_uri(&quot;images@master&quot;)) as commit:
+&gt;&gt;&gt;     commit.delete_file(path=&quot;/file.dat&quot;)
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def delete_file(self, *, path: str) -&gt; &#34;File&#34;:
+    &#34;&#34;&#34;Copies a file within PFS
+
+    Parameters
+    ----------
+    path : str
+        The path of the file to be deleted.
+
+    Raises
+    ------
+    ValueError: If the commit is closed.
+
+    Returns
+    -------
+    A pfs.File object that that points to the deleted file.
+
+    Examples
+    --------
+    &gt;&gt;&gt; from pachyderm_sdk import Client
+    &gt;&gt;&gt; from pachyderm_sdk.api import pfs
+    &gt;&gt;&gt; client: Client
+    &gt;&gt;&gt; with client.pfs.commit(branch=pfs.Branch.from_uri(&#34;images@master&#34;)) as commit:
+    &gt;&gt;&gt;     commit.delete_file(path=&#34;/file.dat&#34;)
+    &#34;&#34;&#34;
+    self._stub.delete_file(commit=self, path=path)
+    return File(commit=self._commit, path=path)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="pachyderm_sdk.api.pfs.extension.ClosedCommit" href="#pachyderm_sdk.api.pfs.extension.ClosedCommit">ClosedCommit</a></b></code>:
+<ul class="hlist">
+<li><code><a title="pachyderm_sdk.api.pfs.extension.ClosedCommit.as_uri" href="index.html#pachyderm_sdk.api.pfs.Commit.as_uri">as_uri</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pfs.extension.ClosedCommit.branch" href="index.html#pachyderm_sdk.api.pfs.Commit.branch">branch</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pfs.extension.ClosedCommit.from_uri" href="index.html#pachyderm_sdk.api.pfs.Commit.from_uri">from_uri</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pfs.extension.ClosedCommit.wait" href="#pachyderm_sdk.api.pfs.extension.ClosedCommit.wait">wait</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pfs.extension.ClosedCommit.wait_all" href="#pachyderm_sdk.api.pfs.extension.ClosedCommit.wait_all">wait_all</a></code></li>
+</ul>
+</li>
+</ul>
 </dd>
 </dl>
 </section>
@@ -2664,18 +2938,6 @@ file stream as a standard tarfile.TarFile object.</p>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="pachyderm_sdk.api.pfs.extension.OpenCommit" href="#pachyderm_sdk.api.pfs.extension.OpenCommit">OpenCommit</a></code></h4>
-<ul class="two-column">
-<li><code><a title="pachyderm_sdk.api.pfs.extension.OpenCommit.wait" href="#pachyderm_sdk.api.pfs.extension.OpenCommit.wait">wait</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.extension.OpenCommit.wait_set" href="#pachyderm_sdk.api.pfs.extension.OpenCommit.wait_set">wait_set</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.extension.OpenCommit.put_file_from_bytes" href="#pachyderm_sdk.api.pfs.extension.OpenCommit.put_file_from_bytes">put_file_from_bytes</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.extension.OpenCommit.put_file_from_url" href="#pachyderm_sdk.api.pfs.extension.OpenCommit.put_file_from_url">put_file_from_url</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.extension.OpenCommit.put_file_from_file" href="#pachyderm_sdk.api.pfs.extension.OpenCommit.put_file_from_file">put_file_from_file</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.extension.OpenCommit.copy_file" href="#pachyderm_sdk.api.pfs.extension.OpenCommit.copy_file">copy_file</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.extension.OpenCommit.delete_file" href="#pachyderm_sdk.api.pfs.extension.OpenCommit.delete_file">delete_file</a></code></li>
-</ul>
-</li>
-<li>
 <h4><code><a title="pachyderm_sdk.api.pfs.extension.ApiStub" href="#pachyderm_sdk.api.pfs.extension.ApiStub">ApiStub</a></code></h4>
 <ul class="two-column">
 <li><code><a title="pachyderm_sdk.api.pfs.extension.ApiStub.commit" href="#pachyderm_sdk.api.pfs.extension.ApiStub.commit">commit</a></code></li>
@@ -2694,6 +2956,25 @@ file stream as a standard tarfile.TarFile object.</p>
 <li><code><a title="pachyderm_sdk.api.pfs.extension.ApiStub.path_exists" href="#pachyderm_sdk.api.pfs.extension.ApiStub.path_exists">path_exists</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pfs.extension.ApiStub.pfs_file" href="#pachyderm_sdk.api.pfs.extension.ApiStub.pfs_file">pfs_file</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pfs.extension.ApiStub.pfs_tar_file" href="#pachyderm_sdk.api.pfs.extension.ApiStub.pfs_tar_file">pfs_tar_file</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pfs.extension.ApiStub.within_transaction" href="#pachyderm_sdk.api.pfs.extension.ApiStub.within_transaction">within_transaction</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.pfs.extension.ClosedCommit" href="#pachyderm_sdk.api.pfs.extension.ClosedCommit">ClosedCommit</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.pfs.extension.ClosedCommit.wait" href="#pachyderm_sdk.api.pfs.extension.ClosedCommit.wait">wait</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pfs.extension.ClosedCommit.wait_all" href="#pachyderm_sdk.api.pfs.extension.ClosedCommit.wait_all">wait_all</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.pfs.extension.OpenCommit" href="#pachyderm_sdk.api.pfs.extension.OpenCommit">OpenCommit</a></code></h4>
+<ul class="two-column">
+<li><code><a title="pachyderm_sdk.api.pfs.extension.OpenCommit.put_files" href="#pachyderm_sdk.api.pfs.extension.OpenCommit.put_files">put_files</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pfs.extension.OpenCommit.put_file_from_bytes" href="#pachyderm_sdk.api.pfs.extension.OpenCommit.put_file_from_bytes">put_file_from_bytes</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pfs.extension.OpenCommit.put_file_from_url" href="#pachyderm_sdk.api.pfs.extension.OpenCommit.put_file_from_url">put_file_from_url</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pfs.extension.OpenCommit.put_file_from_file" href="#pachyderm_sdk.api.pfs.extension.OpenCommit.put_file_from_file">put_file_from_file</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pfs.extension.OpenCommit.copy_file" href="#pachyderm_sdk.api.pfs.extension.OpenCommit.copy_file">copy_file</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pfs.extension.OpenCommit.delete_file" href="#pachyderm_sdk.api.pfs.extension.OpenCommit.delete_file">delete_file</a></code></li>
 </ul>
 </li>
 </ul>

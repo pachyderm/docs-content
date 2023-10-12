@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
 <title>pachyderm_sdk.config API documentation</title>
-<meta name="description" content="" />
+<meta name="description" content="Functionality for parsing Pachyderm config files." />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -22,11 +22,13 @@
 <h1 class="title">Module <code>pachyderm_sdk.config</code></h1>
 </header>
 <section id="section-intro">
+<p>Functionality for parsing Pachyderm config files.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">import json
+<pre><code class="python">&#34;&#34;&#34;Functionality for parsing Pachyderm config files.&#34;&#34;&#34;
+import json
 import os
 from base64 import b64decode
 from dataclasses import dataclass
@@ -35,17 +37,28 @@ from typing import Dict, Optional, Union
 
 from .errors import ConfigError
 
+
 class ConfigFile:
+    &#34;&#34;&#34;A parsed Pachyderm config file.&#34;&#34;&#34;
+
     def __init__(self, config_file: Union[Path, str]):
+        &#34;&#34;&#34;
+        Parameters
+        ----------
+        config_file : str
+            The path to the config file.
+        &#34;&#34;&#34;
         config_file = Path(os.path.expanduser(config_file)).resolve()
         self._config_file_data = json.loads(config_file.read_bytes())
 
     @property
     def user_id(self) -&gt; str:
+        &#34;&#34;&#34;The user ID of the config file.&#34;&#34;&#34;
         return self._config_file_data[&#34;user_id&#34;]
 
     @property
     def active_context(self) -&gt; &#34;Context&#34;:
+        &#34;&#34;&#34;The currently-active context.&#34;&#34;&#34;
         active_context_name = self._config_file_data[&#34;v2&#34;][&#34;active_context&#34;]
         contexts = self._config_file_data[&#34;v2&#34;][&#34;contexts&#34;]
         if active_context_name not in contexts:
@@ -54,6 +67,7 @@ class ConfigFile:
 
     @property
     def active_enterprise_context(self) -&gt; &#34;Context&#34;:
+        &#34;&#34;&#34;The currently-active context that is enterprise-enabled.&#34;&#34;&#34;
         context_name = self._config_file_data[&#34;v2&#34;].get(&#34;active_enterprise_context&#34;)
         if context_name is None:
             raise ConfigError(&#34;active enterprise context is not specified&#34;)
@@ -61,9 +75,13 @@ class ConfigFile:
         if context_name not in contexts:
             raise ConfigError(f&#34;active enterprise context not found: {context_name}&#34;)
         return Context(**contexts[context_name])
-    
+
+
 @dataclass
 class Context:
+    &#34;&#34;&#34;A context contains all the information needed to connect to a pachyderm
+    instance. Not all fields need to be present for the context to be valid.&#34;&#34;&#34;
+
     source: Optional[int] = None
     &#34;&#34;&#34;An integer that specifies where the config came from. 
     This parameter is for internal use only and should not be modified.&#34;&#34;&#34;
@@ -106,11 +124,11 @@ class Context:
 
     @property
     def active_pachd_address(self) -&gt; str:
-        &#34;&#34;&#34;This pachd factors in port-forwarding. &#34;&#34;&#34;
+        &#34;&#34;&#34;This pachd address factors in port-forwarding.&#34;&#34;&#34;
         if self.pachd_address is None:
             port = 30650
             if self.port_forwarders:
-                port = self.port_forwarders.get(&#39;pachd&#39;, 30650)
+                port = self.port_forwarders.get(&#34;pachd&#34;, 30650)
             return f&#34;grpc://localhost:{port}&#34;
         return self.pachd_address
 
@@ -135,22 +153,37 @@ class Context:
 <span>(</span><span>config_file: Union[pathlib.Path, str])</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>A parsed Pachyderm config file.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>config_file</code></strong> :&ensp;<code>str</code></dt>
+<dd>The path to the config file.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class ConfigFile:
+    &#34;&#34;&#34;A parsed Pachyderm config file.&#34;&#34;&#34;
+
     def __init__(self, config_file: Union[Path, str]):
+        &#34;&#34;&#34;
+        Parameters
+        ----------
+        config_file : str
+            The path to the config file.
+        &#34;&#34;&#34;
         config_file = Path(os.path.expanduser(config_file)).resolve()
         self._config_file_data = json.loads(config_file.read_bytes())
 
     @property
     def user_id(self) -&gt; str:
+        &#34;&#34;&#34;The user ID of the config file.&#34;&#34;&#34;
         return self._config_file_data[&#34;user_id&#34;]
 
     @property
     def active_context(self) -&gt; &#34;Context&#34;:
+        &#34;&#34;&#34;The currently-active context.&#34;&#34;&#34;
         active_context_name = self._config_file_data[&#34;v2&#34;][&#34;active_context&#34;]
         contexts = self._config_file_data[&#34;v2&#34;][&#34;contexts&#34;]
         if active_context_name not in contexts:
@@ -159,6 +192,7 @@ class Context:
 
     @property
     def active_enterprise_context(self) -&gt; &#34;Context&#34;:
+        &#34;&#34;&#34;The currently-active context that is enterprise-enabled.&#34;&#34;&#34;
         context_name = self._config_file_data[&#34;v2&#34;].get(&#34;active_enterprise_context&#34;)
         if context_name is None:
             raise ConfigError(&#34;active enterprise context is not specified&#34;)
@@ -171,25 +205,27 @@ class Context:
 <dl>
 <dt id="pachyderm_sdk.config.ConfigFile.user_id"><code class="name">var <span class="ident">user_id</span> : str</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The user ID of the config file.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def user_id(self) -&gt; str:
+    &#34;&#34;&#34;The user ID of the config file.&#34;&#34;&#34;
     return self._config_file_data[&#34;user_id&#34;]</code></pre>
 </details>
 </dd>
 <dt id="pachyderm_sdk.config.ConfigFile.active_context"><code class="name">var <span class="ident">active_context</span> : <a title="pachyderm_sdk.config.Context" href="#pachyderm_sdk.config.Context">Context</a></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The currently-active context.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def active_context(self) -&gt; &#34;Context&#34;:
+    &#34;&#34;&#34;The currently-active context.&#34;&#34;&#34;
     active_context_name = self._config_file_data[&#34;v2&#34;][&#34;active_context&#34;]
     contexts = self._config_file_data[&#34;v2&#34;][&#34;contexts&#34;]
     if active_context_name not in contexts:
@@ -199,13 +235,14 @@ def active_context(self) -&gt; &#34;Context&#34;:
 </dd>
 <dt id="pachyderm_sdk.config.ConfigFile.active_enterprise_context"><code class="name">var <span class="ident">active_enterprise_context</span> : <a title="pachyderm_sdk.config.Context" href="#pachyderm_sdk.config.Context">Context</a></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The currently-active context that is enterprise-enabled.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def active_enterprise_context(self) -&gt; &#34;Context&#34;:
+    &#34;&#34;&#34;The currently-active context that is enterprise-enabled.&#34;&#34;&#34;
     context_name = self._config_file_data[&#34;v2&#34;].get(&#34;active_enterprise_context&#34;)
     if context_name is None:
         raise ConfigError(&#34;active enterprise context is not specified&#34;)
@@ -222,13 +259,17 @@ def active_enterprise_context(self) -&gt; &#34;Context&#34;:
 <span>(</span><span>source: Optional[int] = None, pachd_address: Optional[str] = None, server_cas: Optional[str] = None, session_token: Optional[str] = None, active_transaction: Optional[str] = None, cluster_name: Optional[str] = None, auth_info: Optional[str] = None, namespace: Optional[str] = None, cluster_deployment_id: Optional[str] = None, project: Optional[str] = None, enterprise_server: bool = False, port_forwarders: Dict[str, int] = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Context(source: Optional[int] = None, pachd_address: Optional[str] = None, server_cas: Optional[str] = None, session_token: Optional[str] = None, active_transaction: Optional[str] = None, cluster_name: Optional[str] = None, auth_info: Optional[str] = None, namespace: Optional[str] = None, cluster_deployment_id: Optional[str] = None, project: Optional[str] = None, enterprise_server: bool = False, port_forwarders: Dict[str, int] = None)</p></div>
+<div class="desc"><p>A context contains all the information needed to connect to a pachyderm
+instance. Not all fields need to be present for the context to be valid.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@dataclass
 class Context:
+    &#34;&#34;&#34;A context contains all the information needed to connect to a pachyderm
+    instance. Not all fields need to be present for the context to be valid.&#34;&#34;&#34;
+
     source: Optional[int] = None
     &#34;&#34;&#34;An integer that specifies where the config came from. 
     This parameter is for internal use only and should not be modified.&#34;&#34;&#34;
@@ -271,11 +312,11 @@ class Context:
 
     @property
     def active_pachd_address(self) -&gt; str:
-        &#34;&#34;&#34;This pachd factors in port-forwarding. &#34;&#34;&#34;
+        &#34;&#34;&#34;This pachd address factors in port-forwarding.&#34;&#34;&#34;
         if self.pachd_address is None:
             port = 30650
             if self.port_forwarders:
-                port = self.port_forwarders.get(&#39;pachd&#39;, 30650)
+                port = self.port_forwarders.get(&#34;pachd&#34;, 30650)
             return f&#34;grpc://localhost:{port}&#34;
         return self.pachd_address
 
@@ -345,18 +386,18 @@ operations run on the expected cluster.</p></div>
 <dl>
 <dt id="pachyderm_sdk.config.Context.active_pachd_address"><code class="name">var <span class="ident">active_pachd_address</span> : str</code></dt>
 <dd>
-<div class="desc"><p>This pachd factors in port-forwarding.</p></div>
+<div class="desc"><p>This pachd address factors in port-forwarding.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def active_pachd_address(self) -&gt; str:
-    &#34;&#34;&#34;This pachd factors in port-forwarding. &#34;&#34;&#34;
+    &#34;&#34;&#34;This pachd address factors in port-forwarding.&#34;&#34;&#34;
     if self.pachd_address is None:
         port = 30650
         if self.port_forwarders:
-            port = self.port_forwarders.get(&#39;pachd&#39;, 30650)
+            port = self.port_forwarders.get(&#34;pachd&#34;, 30650)
         return f&#34;grpc://localhost:{port}&#34;
     return self.pachd_address</code></pre>
 </details>

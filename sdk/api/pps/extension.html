@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
 <title>pachyderm_sdk.api.pps.extension API documentation</title>
-<meta name="description" content="" />
+<meta name="description" content="Handwritten classes/methods that augment the existing PPS API." />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -22,11 +22,13 @@
 <h1 class="title">Module <code>pachyderm_sdk.api.pps.extension</code></h1>
 </header>
 <section id="section-intro">
+<p>Handwritten classes/methods that augment the existing PPS API.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">import base64
+<pre><code class="python">&#34;&#34;&#34;Handwritten classes/methods that augment the existing PPS API.&#34;&#34;&#34;
+import base64
 import json
 from typing import Dict
 
@@ -42,7 +44,6 @@ from . import (
 
 
 class ApiStub(_GeneratedApiStub):
-
     def inspect_pipeline(
         self,
         *,
@@ -82,9 +83,7 @@ class ApiStub(_GeneratedApiStub):
         &#34;&#34;&#34;
         if history:
             response = self.list_pipeline(
-                pipeline=pipeline,
-                history=history,
-                details=details
+                pipeline=pipeline, history=history, details=details
             )
             try:
                 return next(response)
@@ -143,7 +142,7 @@ class ApiStub(_GeneratedApiStub):
         name: str,
         data: Dict,
         labels: Dict[str, str] = None,
-        annotations: Dict[str, str] = None
+        annotations: Dict[str, str] = None,
     ) -&gt; Empty:
         &#34;&#34;&#34;Creates a new secret.
 
@@ -201,7 +200,6 @@ class ApiStub(_GeneratedApiStub):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class ApiStub(_GeneratedApiStub):
-
     def inspect_pipeline(
         self,
         *,
@@ -241,9 +239,7 @@ class ApiStub(_GeneratedApiStub):
         &#34;&#34;&#34;
         if history:
             response = self.list_pipeline(
-                pipeline=pipeline,
-                history=history,
-                details=details
+                pipeline=pipeline, history=history, details=details
             )
             try:
                 return next(response)
@@ -302,7 +298,7 @@ class ApiStub(_GeneratedApiStub):
         name: str,
         data: Dict,
         labels: Dict[str, str] = None,
-        annotations: Dict[str, str] = None
+        annotations: Dict[str, str] = None,
     ) -&gt; Empty:
         &#34;&#34;&#34;Creates a new secret.
 
@@ -424,9 +420,7 @@ Semantics are:</p>
     &#34;&#34;&#34;
     if history:
         response = self.list_pipeline(
-            pipeline=pipeline,
-            history=history,
-            details=details
+            pipeline=pipeline, history=history, details=details
         )
         try:
             return next(response)
@@ -546,7 +540,7 @@ alphanumeric characters <code>-</code>, <code>_</code> or <code>.</code>.</dd>
     name: str,
     data: Dict,
     labels: Dict[str, str] = None,
-    annotations: Dict[str, str] = None
+    annotations: Dict[str, str] = None,
 ) -&gt; Empty:
     &#34;&#34;&#34;Creates a new secret.
 

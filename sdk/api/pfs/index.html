@@ -201,10 +201,10 @@ class Trigger(betterproto.Message):
     happens, otherwise any conditions being satisfied will trigger it.
     &#34;&#34;&#34;
 
-    cron_spec: str = betterproto.string_field(3)
+    rate_limit_spec: str = betterproto.string_field(3)
     &#34;&#34;&#34;
-    Triggers if the cron spec has been satisfied since the last trigger and
-    there&#39;s been a new commit.
+    Triggers if the rate limit spec (cron expression) has been satisfied since
+    the last trigger.
     &#34;&#34;&#34;
 
     size: str = betterproto.string_field(4)
@@ -216,6 +216,14 @@ class Trigger(betterproto.Message):
     &#34;&#34;&#34;
     Triggers if there&#39;s been `commits` new commits added since the last
     trigger.
+    &#34;&#34;&#34;
+
+    cron_spec: str = betterproto.string_field(6)
+    &#34;&#34;&#34;
+    Creates a background process which fires the trigger on the schedule
+    provided by the cron spec. This condition is mutually exclusive with
+    respect to the others, so setting this will result with the trigger only
+    firing based on the cron schedule.
     &#34;&#34;&#34;
 
 
@@ -348,6 +356,17 @@ class DeleteReposRequest(betterproto.Message):
     If all is set, then all repos in all projects will be deleted if the caller
     has permission.
     &#34;&#34;&#34;
+
+
+@dataclass(eq=False, repr=False)
+class DeleteRepoResponse(betterproto.Message):
+    &#34;&#34;&#34;
+    DeleteRepoResponse returns the repos that were deleted by a DeleteRepo
+    call.
+    &#34;&#34;&#34;
+
+    deleted: bool = betterproto.bool_field(1)
+    &#34;&#34;&#34;The repos that were deleted, perhaps none.&#34;&#34;&#34;
 
 
 @dataclass(eq=False, repr=False)
@@ -731,24 +750,6 @@ class ActivateAuthResponse(betterproto.Message):
 
 
 @dataclass(eq=False, repr=False)
-class RunLoadTestRequest(betterproto.Message):
-    spec: str = betterproto.string_field(1)
-    branch: &#34;Branch&#34; = betterproto.message_field(2)
-    seed: int = betterproto.int64_field(3)
-    state_id: str = betterproto.string_field(4)
-
-
-@dataclass(eq=False, repr=False)
-class RunLoadTestResponse(betterproto.Message):
-    spec: str = betterproto.string_field(1)
-    branch: &#34;Branch&#34; = betterproto.message_field(2)
-    seed: int = betterproto.int64_field(3)
-    error: str = betterproto.string_field(4)
-    duration: timedelta = betterproto.message_field(5)
-    state_id: str = betterproto.string_field(6)
-
-
-@dataclass(eq=False, repr=False)
 class ObjectStorageEgress(betterproto.Message):
     url: str = betterproto.string_field(1)
 
@@ -821,7 +822,7 @@ class ApiStub:
         self.__rpc_delete_repo = channel.unary_unary(
             &#34;/pfs_v2.API/DeleteRepo&#34;,
             request_serializer=DeleteRepoRequest.SerializeToString,
-            response_deserializer=betterproto_lib_google_protobuf.Empty.FromString,
+            response_deserializer=DeleteRepoResponse.FromString,
         )
         self.__rpc_delete_repos = channel.unary_unary(
             &#34;/pfs_v2.API/DeleteRepos&#34;,
@@ -1008,16 +1009,6 @@ class ApiStub:
             request_serializer=ClearCacheRequest.SerializeToString,
             response_deserializer=betterproto_lib_google_protobuf.Empty.FromString,
         )
-        self.__rpc_run_load_test = channel.unary_unary(
-            &#34;/pfs_v2.API/RunLoadTest&#34;,
-            request_serializer=RunLoadTestRequest.SerializeToString,
-            response_deserializer=RunLoadTestResponse.FromString,
-        )
-        self.__rpc_run_load_test_default = channel.unary_unary(
-            &#34;/pfs_v2.API/RunLoadTestDefault&#34;,
-            request_serializer=betterproto_lib_google_protobuf.Empty.SerializeToString,
-            response_deserializer=RunLoadTestResponse.FromString,
-        )
         self.__rpc_list_task = channel.unary_stream(
             &#34;/pfs_v2.API/ListTask&#34;,
             request_serializer=_taskapi__.ListTaskRequest.SerializeToString,
@@ -1082,7 +1073,7 @@ class ApiStub:
 
     def delete_repo(
         self, *, repo: &#34;Repo&#34; = None, force: bool = False
-    ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+    ) -&gt; &#34;DeleteRepoResponse&#34;:
         request = DeleteRepoRequest()
         if repo is not None:
             request.repo = repo
@@ -1560,28 +1551,6 @@ class ApiStub:
 
         return self.__rpc_clear_cache(request)
 
-    def run_load_test(
-        self,
-        *,
-        spec: str = &#34;&#34;,
-        branch: &#34;Branch&#34; = None,
-        seed: int = 0,
-        state_id: str = &#34;&#34;
-    ) -&gt; &#34;RunLoadTestResponse&#34;:
-        request = RunLoadTestRequest()
-        request.spec = spec
-        if branch is not None:
-            request.branch = branch
-        request.seed = seed
-        request.state_id = state_id
-
-        return self.__rpc_run_load_test(request)
-
-    def run_load_test_default(self) -&gt; &#34;RunLoadTestResponse&#34;:
-        request = betterproto_lib_google_protobuf.Empty()
-
-        return self.__rpc_run_load_test_default(request)
-
     def list_task(self, *, group: &#34;Group&#34; = None) -&gt; Iterator[&#34;_taskapi__.TaskInfo&#34;]:
         request = _taskapi__.ListTaskRequest()
         if group is not None:
@@ -1671,7 +1640,7 @@ class ApiBase:
 
     def delete_repo(
         self, repo: &#34;Repo&#34;, force: bool, context: &#34;grpc.ServicerContext&#34;
-    ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+    ) -&gt; &#34;DeleteRepoResponse&#34;:
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details(&#34;Method not implemented!&#34;)
         raise NotImplementedError(&#34;Method not implemented!&#34;)
@@ -2019,25 +1988,6 @@ class ApiBase:
         context.set_details(&#34;Method not implemented!&#34;)
         raise NotImplementedError(&#34;Method not implemented!&#34;)
 
-    def run_load_test(
-        self,
-        spec: str,
-        branch: &#34;Branch&#34;,
-        seed: int,
-        state_id: str,
-        context: &#34;grpc.ServicerContext&#34;,
-    ) -&gt; &#34;RunLoadTestResponse&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def run_load_test_default(
-        self, context: &#34;grpc.ServicerContext&#34;
-    ) -&gt; &#34;RunLoadTestResponse&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
     def list_task(
         self, group: &#34;Group&#34;, context: &#34;grpc.ServicerContext&#34;
     ) -&gt; Iterator[&#34;_taskapi__.TaskInfo&#34;]:
@@ -2296,16 +2246,6 @@ class ApiBase:
                 request_deserializer=ClearCacheRequest.FromString,
                 response_serializer=ClearCacheRequest.SerializeToString,
             ),
-            &#34;RunLoadTest&#34;: grpc.unary_unary_rpc_method_handler(
-                self.run_load_test,
-                request_deserializer=RunLoadTestRequest.FromString,
-                response_serializer=RunLoadTestRequest.SerializeToString,
-            ),
-            &#34;RunLoadTestDefault&#34;: grpc.unary_unary_rpc_method_handler(
-                self.run_load_test_default,
-                request_deserializer=betterproto_lib_google_protobuf.Empty.FromString,
-                response_serializer=betterproto_lib_google_protobuf.Empty.SerializeToString,
-            ),
             &#34;ListTask&#34;: grpc.unary_stream_rpc_method_handler(
                 self.list_task,
                 request_deserializer=_taskapi__.ListTaskRequest.FromString,
@@ -2344,7 +2284,7 @@ class ApiBase:
 <dl>
 <dt><code class="name"><a title="pachyderm_sdk.api.pfs.extension" href="extension.html">pachyderm_sdk.api.pfs.extension</a></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Handwritten classes/methods that augment the existing PFS API.</p></div>
 </dd>
 <dt><code class="name"><a title="pachyderm_sdk.api.pfs.file" href="file.html">pachyderm_sdk.api.pfs.file</a></code></dt>
 <dd>
@@ -2361,7 +2301,7 @@ class ApiBase:
 <dl>
 <dt id="pachyderm_sdk.api.pfs.OriginKind"><code class="flex name class">
 <span>class <span class="ident">OriginKind</span></span>
-<span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
+<span>(</span><span>*args, **kwds)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>These are the different places where a commit may be originated from</p></div>
@@ -2382,6 +2322,7 @@ class ApiBase:
 <li>betterproto.Enum</li>
 <li>enum.IntEnum</li>
 <li>builtins.int</li>
+<li>enum.ReprEnum</li>
 <li>enum.Enum</li>
 </ul>
 <h3>Class variables</h3>
@@ -2406,10 +2347,11 @@ class ApiBase:
 </dd>
 <dt id="pachyderm_sdk.api.pfs.FileType"><code class="flex name class">
 <span>class <span class="ident">FileType</span></span>
-<span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
+<span>(</span><span>*args, **kwds)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>An enumeration.</p></div>
+<div class="desc"><p>The base class for protobuf enumerations, all generated enumerations will inherit
+from this. Bases :class:<code>enum.IntEnum</code>.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2424,6 +2366,7 @@ class ApiBase:
 <li>betterproto.Enum</li>
 <li>enum.IntEnum</li>
 <li>builtins.int</li>
+<li>enum.ReprEnum</li>
 <li>enum.Enum</li>
 </ul>
 <h3>Class variables</h3>
@@ -2444,7 +2387,7 @@ class ApiBase:
 </dd>
 <dt id="pachyderm_sdk.api.pfs.CommitState"><code class="flex name class">
 <span>class <span class="ident">CommitState</span></span>
-<span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
+<span>(</span><span>*args, **kwds)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>CommitState describes the states a commit can be in. The states are
@@ -2472,6 +2415,7 @@ STARTED.</p></div>
 <li>betterproto.Enum</li>
 <li>enum.IntEnum</li>
 <li>builtins.int</li>
+<li>enum.ReprEnum</li>
 <li>enum.Enum</li>
 </ul>
 <h3>Class variables</h3>
@@ -2500,10 +2444,11 @@ STARTED.</p></div>
 </dd>
 <dt id="pachyderm_sdk.api.pfs.Delimiter"><code class="flex name class">
 <span>class <span class="ident">Delimiter</span></span>
-<span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
+<span>(</span><span>*args, **kwds)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>An enumeration.</p></div>
+<div class="desc"><p>The base class for protobuf enumerations, all generated enumerations will inherit
+from this. Bases :class:<code>enum.IntEnum</code>.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2520,6 +2465,7 @@ STARTED.</p></div>
 <li>betterproto.Enum</li>
 <li>enum.IntEnum</li>
 <li>builtins.int</li>
+<li>enum.ReprEnum</li>
 <li>enum.Enum</li>
 </ul>
 <h3>Class variables</h3>
@@ -2548,10 +2494,11 @@ STARTED.</p></div>
 </dd>
 <dt id="pachyderm_sdk.api.pfs.SqlDatabaseEgressFileFormatType"><code class="flex name class">
 <span>class <span class="ident">SqlDatabaseEgressFileFormatType</span></span>
-<span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
+<span>(</span><span>*args, **kwds)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>An enumeration.</p></div>
+<div class="desc"><p>The base class for protobuf enumerations, all generated enumerations will inherit
+from this. Bases :class:<code>enum.IntEnum</code>.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2567,6 +2514,7 @@ STARTED.</p></div>
 <li>betterproto.Enum</li>
 <li>enum.IntEnum</li>
 <li>builtins.int</li>
+<li>enum.ReprEnum</li>
 <li>enum.Enum</li>
 </ul>
 <h3>Class variables</h3>
@@ -2656,12 +2604,19 @@ class Repo(betterproto.Message):
 <span>def <span class="ident">as_uri</span></span>(<span>self: <a title="pachyderm_sdk.api.pfs.Repo" href="#pachyderm_sdk.api.pfs.Repo">Repo</a>) ‑> str</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Returns the URI for the Repo object in the following format:
+project/repo</p>
+<p>If no project is specified it defaults to "default"</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def _Repo_as_uri(self: &#34;Repo&#34;) -&gt; str:
+    &#34;&#34;&#34;Returns the URI for the Repo object in the following format:
+      project/repo
+
+    If no project is specified it defaults to &#34;default&#34;
+    &#34;&#34;&#34;
     project = &#34;default&#34;
     if self.project and self.project.name:
         project = self.project.name
@@ -2744,12 +2699,19 @@ class Branch(betterproto.Message):
 <span>def <span class="ident">as_uri</span></span>(<span>self: <a title="pachyderm_sdk.api.pfs.Branch" href="#pachyderm_sdk.api.pfs.Branch">Branch</a>) ‑> str</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Returns the URI for the Branch object in the following format:
+project/repo@branch</p>
+<p>If no project is specified it defaults to "default"</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def _Branch_as_uri(self: &#34;Branch&#34;) -&gt; str:
+    &#34;&#34;&#34;Returns the URI for the Branch object in the following format:
+      project/repo@branch
+
+    If no project is specified it defaults to &#34;default&#34;
+    &#34;&#34;&#34;
     return f&#34;{self.repo.as_uri()}@{self.name}&#34;</code></pre>
 </details>
 </dd>
@@ -2840,12 +2802,23 @@ project which defaults to "default".</p></div>
 <span>def <span class="ident">as_uri</span></span>(<span>self: <a title="pachyderm_sdk.api.pfs.File" href="#pachyderm_sdk.api.pfs.File">File</a>) ‑> str</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Returns the URI for the File object in one of the following formats:
+project/repo@branch:/path
+project/repo@branch=commit:/path
+project/repo@commit:/path</p>
+<p>If no project is specified it defaults to "default"</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def _File_as_uri(self: &#34;File&#34;) -&gt; str:
+    &#34;&#34;&#34;Returns the URI for the File object in one of the following formats:
+        project/repo@branch:/path
+        project/repo@branch=commit:/path
+        project/repo@commit:/path
+
+    If no project is specified it defaults to &#34;default&#34;
+    &#34;&#34;&#34;
     return f&#34;{self.commit.as_uri()}:{self.path}&#34;</code></pre>
 </details>
 </dd>
@@ -3058,7 +3031,7 @@ class BranchInfo(betterproto.Message):
 </dd>
 <dt id="pachyderm_sdk.api.pfs.Trigger"><code class="flex name class">
 <span>class <span class="ident">Trigger</span></span>
-<span>(</span><span>branch: str = None, all: bool = None, cron_spec: str = None, size: str = None, commits: int = None)</span>
+<span>(</span><span>branch: str = None, all: bool = None, rate_limit_spec: str = None, size: str = None, commits: int = None, cron_spec: str = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Trigger defines the conditions under which a head is moved, and to which
@@ -3083,10 +3056,10 @@ class Trigger(betterproto.Message):
     happens, otherwise any conditions being satisfied will trigger it.
     &#34;&#34;&#34;
 
-    cron_spec: str = betterproto.string_field(3)
+    rate_limit_spec: str = betterproto.string_field(3)
     &#34;&#34;&#34;
-    Triggers if the cron spec has been satisfied since the last trigger and
-    there&#39;s been a new commit.
+    Triggers if the rate limit spec (cron expression) has been satisfied since
+    the last trigger.
     &#34;&#34;&#34;
 
     size: str = betterproto.string_field(4)
@@ -3098,6 +3071,14 @@ class Trigger(betterproto.Message):
     &#34;&#34;&#34;
     Triggers if there&#39;s been `commits` new commits added since the last
     trigger.
+    &#34;&#34;&#34;
+
+    cron_spec: str = betterproto.string_field(6)
+    &#34;&#34;&#34;
+    Creates a background process which fires the trigger on the schedule
+    provided by the cron spec. This condition is mutually exclusive with
+    respect to the others, so setting this will result with the trigger only
+    firing based on the cron schedule.
     &#34;&#34;&#34;</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -3116,10 +3097,10 @@ class Trigger(betterproto.Message):
 <div class="desc"><p>All indicates that all conditions must be satisfied before the trigger
 happens, otherwise any conditions being satisfied will trigger it.</p></div>
 </dd>
-<dt id="pachyderm_sdk.api.pfs.Trigger.cron_spec"><code class="name">var <span class="ident">cron_spec</span> : str</code></dt>
+<dt id="pachyderm_sdk.api.pfs.Trigger.rate_limit_spec"><code class="name">var <span class="ident">rate_limit_spec</span> : str</code></dt>
 <dd>
-<div class="desc"><p>Triggers if the cron spec has been satisfied since the last trigger and
-there's been a new commit.</p></div>
+<div class="desc"><p>Triggers if the rate limit spec (cron expression) has been satisfied since
+the last trigger.</p></div>
 </dd>
 <dt id="pachyderm_sdk.api.pfs.Trigger.size"><code class="name">var <span class="ident">size</span> : str</code></dt>
 <dd>
@@ -3129,6 +3110,13 @@ there's been a new commit.</p></div>
 <dd>
 <div class="desc"><p>Triggers if there's been <code>commits</code> new commits added since the last
 trigger.</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.pfs.Trigger.cron_spec"><code class="name">var <span class="ident">cron_spec</span> : str</code></dt>
+<dd>
+<div class="desc"><p>Creates a background process which fires the trigger on the schedule
+provided by the cron spec. This condition is mutually exclusive with
+respect to the others, so setting this will result with the trigger only
+firing based on the cron schedule.</p></div>
 </dd>
 </dl>
 </dd>
@@ -3191,7 +3179,7 @@ class Commit(betterproto.Message):
 </ul>
 <h3>Subclasses</h3>
 <ul class="hlist">
-<li><a title="pachyderm_sdk.api.pfs.extension.OpenCommit" href="extension.html#pachyderm_sdk.api.pfs.extension.OpenCommit">OpenCommit</a></li>
+<li><a title="pachyderm_sdk.api.pfs.extension.ClosedCommit" href="extension.html#pachyderm_sdk.api.pfs.extension.ClosedCommit">ClosedCommit</a></li>
 </ul>
 <h3>Class variables</h3>
 <dl>
@@ -3242,38 +3230,49 @@ project which defaults to "default".</p></div>
     All unspecified components will default to None, except for an unspecified
       project which defaults to &#34;default&#34;.
     &#34;&#34;&#34;
-    # TODO: Can we do more error checking here?
     if &#34;@&#34; not in uri:
         raise ValueError(
             &#34;Could not parse branch/commit. URI must have the form: &#34;
             &#34;[project/]&lt;repo&gt;@(branch|branch=commit|commit)&#34;
         )
     project_repo, branch_or_commit = uri.split(&#34;@&#34;, 1)
+    repo = Repo.from_uri(project_repo)
     if &#34;=&#34; in branch_or_commit:
         branch, commit = branch_or_commit.split(&#34;=&#34;, 1)
     elif uuid_re.match(branch_or_commit) or not branch_re.match(branch_or_commit):
         branch, commit = None, branch_or_commit
     else:
         branch, commit = branch_or_commit, None
+    # TODO: Commits are no longer pinned to branches.
+    #       When officially deprecated, the `branch` field will be removed.
     return Commit(
-            branch=Branch(
-                name=branch,
-                repo=Repo.from_uri(project_repo)
-            ),
-            id=commit
-        )</code></pre>
+        branch=Branch(name=branch, repo=repo),
+        id=commit,
+        repo=repo,
+    )</code></pre>
 </details>
 </dd>
 <dt id="pachyderm_sdk.api.pfs.Commit.as_uri"><code class="name flex">
 <span>def <span class="ident">as_uri</span></span>(<span>self: <a title="pachyderm_sdk.api.pfs.Commit" href="#pachyderm_sdk.api.pfs.Commit">Commit</a>) ‑> str</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Returns the URI for the Commit object in one of the following formats:
+project/repo@branch
+project/repo@branch=commit
+project/repo@commit</p>
+<p>If no project is specified it defaults to "default"</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def _Commit_as_uri(self: &#34;Commit&#34;) -&gt; str:
+    &#34;&#34;&#34;Returns the URI for the Commit object in one of the following formats:
+        project/repo@branch
+        project/repo@branch=commit
+        project/repo@commit
+
+    If no project is specified it defaults to &#34;default&#34;
+    &#34;&#34;&#34;
     project_repo = self.branch.repo.as_uri()
     if self.branch.name and self.id:
         return f&#34;{project_repo}@{self.branch.name}={self.id}&#34;
@@ -3769,6 +3768,40 @@ class DeleteReposRequest(betterproto.Message):
 <dd>
 <div class="desc"><p>If all is set, then all repos in all projects will be deleted if the caller
 has permission.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.pfs.DeleteRepoResponse"><code class="flex name class">
+<span>class <span class="ident">DeleteRepoResponse</span></span>
+<span>(</span><span>deleted: bool = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>DeleteRepoResponse returns the repos that were deleted by a DeleteRepo
+call.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class DeleteRepoResponse(betterproto.Message):
+    &#34;&#34;&#34;
+    DeleteRepoResponse returns the repos that were deleted by a DeleteRepo
+    call.
+    &#34;&#34;&#34;
+
+    deleted: bool = betterproto.bool_field(1)
+    &#34;&#34;&#34;The repos that were deleted, perhaps none.&#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.pfs.DeleteRepoResponse.deleted"><code class="name">var <span class="ident">deleted</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>The repos that were deleted, perhaps none.</p></div>
 </dd>
 </dl>
 </dd>
@@ -5546,100 +5579,6 @@ class ActivateAuthResponse(betterproto.Message):
 <li>abc.ABC</li>
 </ul>
 </dd>
-<dt id="pachyderm_sdk.api.pfs.RunLoadTestRequest"><code class="flex name class">
-<span>class <span class="ident">RunLoadTestRequest</span></span>
-<span>(</span><span>spec: str = None, branch: <a title="pachyderm_sdk.api.pfs.Branch" href="#pachyderm_sdk.api.pfs.Branch">Branch</a> = None, seed: int = None, state_id: str = None)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>RunLoadTestRequest(spec: str = None, branch: 'Branch' = None, seed: int = None, state_id: str = None)</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@dataclass(eq=False, repr=False)
-class RunLoadTestRequest(betterproto.Message):
-    spec: str = betterproto.string_field(1)
-    branch: &#34;Branch&#34; = betterproto.message_field(2)
-    seed: int = betterproto.int64_field(3)
-    state_id: str = betterproto.string_field(4)</code></pre>
-</details>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li>betterproto.Message</li>
-<li>abc.ABC</li>
-</ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="pachyderm_sdk.api.pfs.RunLoadTestRequest.spec"><code class="name">var <span class="ident">spec</span> : str</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.RunLoadTestRequest.branch"><code class="name">var <span class="ident">branch</span> : <a title="pachyderm_sdk.api.pfs.Branch" href="#pachyderm_sdk.api.pfs.Branch">Branch</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.RunLoadTestRequest.seed"><code class="name">var <span class="ident">seed</span> : int</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.RunLoadTestRequest.state_id"><code class="name">var <span class="ident">state_id</span> : str</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.RunLoadTestResponse"><code class="flex name class">
-<span>class <span class="ident">RunLoadTestResponse</span></span>
-<span>(</span><span>spec: str = None, branch: <a title="pachyderm_sdk.api.pfs.Branch" href="#pachyderm_sdk.api.pfs.Branch">Branch</a> = None, seed: int = None, error: str = None, duration: datetime.timedelta = None, state_id: str = None)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>RunLoadTestResponse(spec: str = None, branch: 'Branch' = None, seed: int = None, error: str = None, duration: datetime.timedelta = None, state_id: str = None)</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@dataclass(eq=False, repr=False)
-class RunLoadTestResponse(betterproto.Message):
-    spec: str = betterproto.string_field(1)
-    branch: &#34;Branch&#34; = betterproto.message_field(2)
-    seed: int = betterproto.int64_field(3)
-    error: str = betterproto.string_field(4)
-    duration: timedelta = betterproto.message_field(5)
-    state_id: str = betterproto.string_field(6)</code></pre>
-</details>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li>betterproto.Message</li>
-<li>abc.ABC</li>
-</ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="pachyderm_sdk.api.pfs.RunLoadTestResponse.spec"><code class="name">var <span class="ident">spec</span> : str</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.RunLoadTestResponse.branch"><code class="name">var <span class="ident">branch</span> : <a title="pachyderm_sdk.api.pfs.Branch" href="#pachyderm_sdk.api.pfs.Branch">Branch</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.RunLoadTestResponse.seed"><code class="name">var <span class="ident">seed</span> : int</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.RunLoadTestResponse.error"><code class="name">var <span class="ident">error</span> : str</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.RunLoadTestResponse.duration"><code class="name">var <span class="ident">duration</span> : datetime.timedelta</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.RunLoadTestResponse.state_id"><code class="name">var <span class="ident">state_id</span> : str</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
-</dd>
 <dt id="pachyderm_sdk.api.pfs.ObjectStorageEgress"><code class="flex name class">
 <span>class <span class="ident">ObjectStorageEgress</span></span>
 <span>(</span><span>url: str = None)</span>
@@ -5927,7 +5866,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
         self.__rpc_delete_repo = channel.unary_unary(
             &#34;/pfs_v2.API/DeleteRepo&#34;,
             request_serializer=DeleteRepoRequest.SerializeToString,
-            response_deserializer=betterproto_lib_google_protobuf.Empty.FromString,
+            response_deserializer=DeleteRepoResponse.FromString,
         )
         self.__rpc_delete_repos = channel.unary_unary(
             &#34;/pfs_v2.API/DeleteRepos&#34;,
@@ -6114,16 +6053,6 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
             request_serializer=ClearCacheRequest.SerializeToString,
             response_deserializer=betterproto_lib_google_protobuf.Empty.FromString,
         )
-        self.__rpc_run_load_test = channel.unary_unary(
-            &#34;/pfs_v2.API/RunLoadTest&#34;,
-            request_serializer=RunLoadTestRequest.SerializeToString,
-            response_deserializer=RunLoadTestResponse.FromString,
-        )
-        self.__rpc_run_load_test_default = channel.unary_unary(
-            &#34;/pfs_v2.API/RunLoadTestDefault&#34;,
-            request_serializer=betterproto_lib_google_protobuf.Empty.SerializeToString,
-            response_deserializer=RunLoadTestResponse.FromString,
-        )
         self.__rpc_list_task = channel.unary_stream(
             &#34;/pfs_v2.API/ListTask&#34;,
             request_serializer=_taskapi__.ListTaskRequest.SerializeToString,
@@ -6188,7 +6117,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 
     def delete_repo(
         self, *, repo: &#34;Repo&#34; = None, force: bool = False
-    ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+    ) -&gt; &#34;DeleteRepoResponse&#34;:
         request = DeleteRepoRequest()
         if repo is not None:
             request.repo = repo
@@ -6666,28 +6595,6 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 
         return self.__rpc_clear_cache(request)
 
-    def run_load_test(
-        self,
-        *,
-        spec: str = &#34;&#34;,
-        branch: &#34;Branch&#34; = None,
-        seed: int = 0,
-        state_id: str = &#34;&#34;
-    ) -&gt; &#34;RunLoadTestResponse&#34;:
-        request = RunLoadTestRequest()
-        request.spec = spec
-        if branch is not None:
-            request.branch = branch
-        request.seed = seed
-        request.state_id = state_id
-
-        return self.__rpc_run_load_test(request)
-
-    def run_load_test_default(self) -&gt; &#34;RunLoadTestResponse&#34;:
-        request = betterproto_lib_google_protobuf.Empty()
-
-        return self.__rpc_run_load_test_default(request)
-
     def list_task(self, *, group: &#34;Group&#34; = None) -&gt; Iterator[&#34;_taskapi__.TaskInfo&#34;]:
         request = _taskapi__.ListTaskRequest()
         if group is not None:
@@ -6815,7 +6722,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 </details>
 </dd>
 <dt id="pachyderm_sdk.api.pfs.ApiStub.delete_repo"><code class="name flex">
-<span>def <span class="ident">delete_repo</span></span>(<span>self, *, repo: <a title="pachyderm_sdk.api.pfs.Repo" href="#pachyderm_sdk.api.pfs.Repo">Repo</a> = None, force: bool = False) ‑> betterproto.lib.google.protobuf.Empty</span>
+<span>def <span class="ident">delete_repo</span></span>(<span>self, *, repo: <a title="pachyderm_sdk.api.pfs.Repo" href="#pachyderm_sdk.api.pfs.Repo">Repo</a> = None, force: bool = False) ‑> <a title="pachyderm_sdk.api.pfs.DeleteRepoResponse" href="#pachyderm_sdk.api.pfs.DeleteRepoResponse">DeleteRepoResponse</a></span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -6825,7 +6732,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 </summary>
 <pre><code class="python">def delete_repo(
     self, *, repo: &#34;Repo&#34; = None, force: bool = False
-) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+) -&gt; &#34;DeleteRepoResponse&#34;:
     request = DeleteRepoRequest()
     if repo is not None:
         request.repo = repo
@@ -7674,48 +7581,6 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
     return self.__rpc_clear_cache(request)</code></pre>
 </details>
 </dd>
-<dt id="pachyderm_sdk.api.pfs.ApiStub.run_load_test"><code class="name flex">
-<span>def <span class="ident">run_load_test</span></span>(<span>self, *, spec: str = '', branch: <a title="pachyderm_sdk.api.pfs.Branch" href="#pachyderm_sdk.api.pfs.Branch">Branch</a> = None, seed: int = 0, state_id: str = '') ‑> <a title="pachyderm_sdk.api.pfs.RunLoadTestResponse" href="#pachyderm_sdk.api.pfs.RunLoadTestResponse">RunLoadTestResponse</a></span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def run_load_test(
-    self,
-    *,
-    spec: str = &#34;&#34;,
-    branch: &#34;Branch&#34; = None,
-    seed: int = 0,
-    state_id: str = &#34;&#34;
-) -&gt; &#34;RunLoadTestResponse&#34;:
-    request = RunLoadTestRequest()
-    request.spec = spec
-    if branch is not None:
-        request.branch = branch
-    request.seed = seed
-    request.state_id = state_id
-
-    return self.__rpc_run_load_test(request)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.ApiStub.run_load_test_default"><code class="name flex">
-<span>def <span class="ident">run_load_test_default</span></span>(<span>self) ‑> <a title="pachyderm_sdk.api.pfs.RunLoadTestResponse" href="#pachyderm_sdk.api.pfs.RunLoadTestResponse">RunLoadTestResponse</a></span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def run_load_test_default(self) -&gt; &#34;RunLoadTestResponse&#34;:
-    request = betterproto_lib_google_protobuf.Empty()
-
-    return self.__rpc_run_load_test_default(request)</code></pre>
-</details>
-</dd>
 <dt id="pachyderm_sdk.api.pfs.ApiStub.list_task"><code class="name flex">
 <span>def <span class="ident">list_task</span></span>(<span>self, *, group: Group = None) ‑> Iterator[_taskapi__.TaskInfo]</span>
 </code></dt>
@@ -7875,7 +7740,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 
     def delete_repo(
         self, repo: &#34;Repo&#34;, force: bool, context: &#34;grpc.ServicerContext&#34;
-    ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+    ) -&gt; &#34;DeleteRepoResponse&#34;:
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details(&#34;Method not implemented!&#34;)
         raise NotImplementedError(&#34;Method not implemented!&#34;)
@@ -8223,25 +8088,6 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
         context.set_details(&#34;Method not implemented!&#34;)
         raise NotImplementedError(&#34;Method not implemented!&#34;)
 
-    def run_load_test(
-        self,
-        spec: str,
-        branch: &#34;Branch&#34;,
-        seed: int,
-        state_id: str,
-        context: &#34;grpc.ServicerContext&#34;,
-    ) -&gt; &#34;RunLoadTestResponse&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def run_load_test_default(
-        self, context: &#34;grpc.ServicerContext&#34;
-    ) -&gt; &#34;RunLoadTestResponse&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
     def list_task(
         self, group: &#34;Group&#34;, context: &#34;grpc.ServicerContext&#34;
     ) -&gt; Iterator[&#34;_taskapi__.TaskInfo&#34;]:
@@ -8500,16 +8346,6 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
                 request_deserializer=ClearCacheRequest.FromString,
                 response_serializer=ClearCacheRequest.SerializeToString,
             ),
-            &#34;RunLoadTest&#34;: grpc.unary_unary_rpc_method_handler(
-                self.run_load_test,
-                request_deserializer=RunLoadTestRequest.FromString,
-                response_serializer=RunLoadTestRequest.SerializeToString,
-            ),
-            &#34;RunLoadTestDefault&#34;: grpc.unary_unary_rpc_method_handler(
-                self.run_load_test_default,
-                request_deserializer=betterproto_lib_google_protobuf.Empty.FromString,
-                response_serializer=betterproto_lib_google_protobuf.Empty.SerializeToString,
-            ),
             &#34;ListTask&#34;: grpc.unary_stream_rpc_method_handler(
                 self.list_task,
                 request_deserializer=_taskapi__.ListTaskRequest.FromString,
@@ -8601,7 +8437,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 </details>
 </dd>
 <dt id="pachyderm_sdk.api.pfs.ApiBase.delete_repo"><code class="name flex">
-<span>def <span class="ident">delete_repo</span></span>(<span>self, repo: <a title="pachyderm_sdk.api.pfs.Repo" href="#pachyderm_sdk.api.pfs.Repo">Repo</a>, force: bool, context: grpc.ServicerContext) ‑> betterproto.lib.google.protobuf.Empty</span>
+<span>def <span class="ident">delete_repo</span></span>(<span>self, repo: <a title="pachyderm_sdk.api.pfs.Repo" href="#pachyderm_sdk.api.pfs.Repo">Repo</a>, force: bool, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.pfs.DeleteRepoResponse" href="#pachyderm_sdk.api.pfs.DeleteRepoResponse">DeleteRepoResponse</a></span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -8611,7 +8447,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 </summary>
 <pre><code class="python">def delete_repo(
     self, repo: &#34;Repo&#34;, force: bool, context: &#34;grpc.ServicerContext&#34;
-) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+) -&gt; &#34;DeleteRepoResponse&#34;:
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details(&#34;Method not implemented!&#34;)
     raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
@@ -9330,45 +9166,6 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
     raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
 </details>
 </dd>
-<dt id="pachyderm_sdk.api.pfs.ApiBase.run_load_test"><code class="name flex">
-<span>def <span class="ident">run_load_test</span></span>(<span>self, spec: str, branch: <a title="pachyderm_sdk.api.pfs.Branch" href="#pachyderm_sdk.api.pfs.Branch">Branch</a>, seed: int, state_id: str, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.pfs.RunLoadTestResponse" href="#pachyderm_sdk.api.pfs.RunLoadTestResponse">RunLoadTestResponse</a></span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def run_load_test(
-    self,
-    spec: str,
-    branch: &#34;Branch&#34;,
-    seed: int,
-    state_id: str,
-    context: &#34;grpc.ServicerContext&#34;,
-) -&gt; &#34;RunLoadTestResponse&#34;:
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details(&#34;Method not implemented!&#34;)
-    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.ApiBase.run_load_test_default"><code class="name flex">
-<span>def <span class="ident">run_load_test_default</span></span>(<span>self, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.pfs.RunLoadTestResponse" href="#pachyderm_sdk.api.pfs.RunLoadTestResponse">RunLoadTestResponse</a></span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def run_load_test_default(
-    self, context: &#34;grpc.ServicerContext&#34;
-) -&gt; &#34;RunLoadTestResponse&#34;:
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details(&#34;Method not implemented!&#34;)
-    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
-</details>
-</dd>
 <dt id="pachyderm_sdk.api.pfs.ApiBase.list_task"><code class="name flex">
 <span>def <span class="ident">list_task</span></span>(<span>self, group: Group, context: grpc.ServicerContext) ‑> Iterator[_taskapi__.TaskInfo]</span>
 </code></dt>
@@ -9618,12 +9415,13 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 </li>
 <li>
 <h4><code><a title="pachyderm_sdk.api.pfs.Trigger" href="#pachyderm_sdk.api.pfs.Trigger">Trigger</a></code></h4>
-<ul class="">
+<ul class="two-column">
 <li><code><a title="pachyderm_sdk.api.pfs.Trigger.branch" href="#pachyderm_sdk.api.pfs.Trigger.branch">branch</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pfs.Trigger.all" href="#pachyderm_sdk.api.pfs.Trigger.all">all</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.Trigger.cron_spec" href="#pachyderm_sdk.api.pfs.Trigger.cron_spec">cron_spec</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pfs.Trigger.rate_limit_spec" href="#pachyderm_sdk.api.pfs.Trigger.rate_limit_spec">rate_limit_spec</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pfs.Trigger.size" href="#pachyderm_sdk.api.pfs.Trigger.size">size</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pfs.Trigger.commits" href="#pachyderm_sdk.api.pfs.Trigger.commits">commits</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pfs.Trigger.cron_spec" href="#pachyderm_sdk.api.pfs.Trigger.cron_spec">cron_spec</a></code></li>
 </ul>
 </li>
 <li>
@@ -9739,6 +9537,12 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 <li><code><a title="pachyderm_sdk.api.pfs.DeleteReposRequest.projects" href="#pachyderm_sdk.api.pfs.DeleteReposRequest.projects">projects</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pfs.DeleteReposRequest.force" href="#pachyderm_sdk.api.pfs.DeleteReposRequest.force">force</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pfs.DeleteReposRequest.all" href="#pachyderm_sdk.api.pfs.DeleteReposRequest.all">all</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.pfs.DeleteRepoResponse" href="#pachyderm_sdk.api.pfs.DeleteRepoResponse">DeleteRepoResponse</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.pfs.DeleteRepoResponse.deleted" href="#pachyderm_sdk.api.pfs.DeleteRepoResponse.deleted">deleted</a></code></li>
 </ul>
 </li>
 <li>
@@ -10110,26 +9914,6 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 <h4><code><a title="pachyderm_sdk.api.pfs.ActivateAuthResponse" href="#pachyderm_sdk.api.pfs.ActivateAuthResponse">ActivateAuthResponse</a></code></h4>
 </li>
 <li>
-<h4><code><a title="pachyderm_sdk.api.pfs.RunLoadTestRequest" href="#pachyderm_sdk.api.pfs.RunLoadTestRequest">RunLoadTestRequest</a></code></h4>
-<ul class="">
-<li><code><a title="pachyderm_sdk.api.pfs.RunLoadTestRequest.spec" href="#pachyderm_sdk.api.pfs.RunLoadTestRequest.spec">spec</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.RunLoadTestRequest.branch" href="#pachyderm_sdk.api.pfs.RunLoadTestRequest.branch">branch</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.RunLoadTestRequest.seed" href="#pachyderm_sdk.api.pfs.RunLoadTestRequest.seed">seed</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.RunLoadTestRequest.state_id" href="#pachyderm_sdk.api.pfs.RunLoadTestRequest.state_id">state_id</a></code></li>
-</ul>
-</li>
-<li>
-<h4><code><a title="pachyderm_sdk.api.pfs.RunLoadTestResponse" href="#pachyderm_sdk.api.pfs.RunLoadTestResponse">RunLoadTestResponse</a></code></h4>
-<ul class="two-column">
-<li><code><a title="pachyderm_sdk.api.pfs.RunLoadTestResponse.spec" href="#pachyderm_sdk.api.pfs.RunLoadTestResponse.spec">spec</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.RunLoadTestResponse.branch" href="#pachyderm_sdk.api.pfs.RunLoadTestResponse.branch">branch</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.RunLoadTestResponse.seed" href="#pachyderm_sdk.api.pfs.RunLoadTestResponse.seed">seed</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.RunLoadTestResponse.error" href="#pachyderm_sdk.api.pfs.RunLoadTestResponse.error">error</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.RunLoadTestResponse.duration" href="#pachyderm_sdk.api.pfs.RunLoadTestResponse.duration">duration</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.RunLoadTestResponse.state_id" href="#pachyderm_sdk.api.pfs.RunLoadTestResponse.state_id">state_id</a></code></li>
-</ul>
-</li>
-<li>
 <h4><code><a title="pachyderm_sdk.api.pfs.ObjectStorageEgress" href="#pachyderm_sdk.api.pfs.ObjectStorageEgress">ObjectStorageEgress</a></code></h4>
 <ul class="">
 <li><code><a title="pachyderm_sdk.api.pfs.ObjectStorageEgress.url" href="#pachyderm_sdk.api.pfs.ObjectStorageEgress.url">url</a></code></li>
@@ -10186,7 +9970,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 </li>
 <li>
 <h4><code><a title="pachyderm_sdk.api.pfs.ApiStub" href="#pachyderm_sdk.api.pfs.ApiStub">ApiStub</a></code></h4>
-<ul class="">
+<ul class="two-column">
 <li><code><a title="pachyderm_sdk.api.pfs.ApiStub.create_repo" href="#pachyderm_sdk.api.pfs.ApiStub.create_repo">create_repo</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pfs.ApiStub.inspect_repo" href="#pachyderm_sdk.api.pfs.ApiStub.inspect_repo">inspect_repo</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pfs.ApiStub.list_repo" href="#pachyderm_sdk.api.pfs.ApiStub.list_repo">list_repo</a></code></li>
@@ -10228,8 +10012,6 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 <li><code><a title="pachyderm_sdk.api.pfs.ApiStub.put_cache" href="#pachyderm_sdk.api.pfs.ApiStub.put_cache">put_cache</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pfs.ApiStub.get_cache" href="#pachyderm_sdk.api.pfs.ApiStub.get_cache">get_cache</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pfs.ApiStub.clear_cache" href="#pachyderm_sdk.api.pfs.ApiStub.clear_cache">clear_cache</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.ApiStub.run_load_test" href="#pachyderm_sdk.api.pfs.ApiStub.run_load_test">run_load_test</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.ApiStub.run_load_test_default" href="#pachyderm_sdk.api.pfs.ApiStub.run_load_test_default">run_load_test_default</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pfs.ApiStub.list_task" href="#pachyderm_sdk.api.pfs.ApiStub.list_task">list_task</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pfs.ApiStub.egress" href="#pachyderm_sdk.api.pfs.ApiStub.egress">egress</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pfs.ApiStub.create_project" href="#pachyderm_sdk.api.pfs.ApiStub.create_project">create_project</a></code></li>
@@ -10240,7 +10022,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 </li>
 <li>
 <h4><code><a title="pachyderm_sdk.api.pfs.ApiBase" href="#pachyderm_sdk.api.pfs.ApiBase">ApiBase</a></code></h4>
-<ul class="">
+<ul class="two-column">
 <li><code><a title="pachyderm_sdk.api.pfs.ApiBase.create_repo" href="#pachyderm_sdk.api.pfs.ApiBase.create_repo">create_repo</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pfs.ApiBase.inspect_repo" href="#pachyderm_sdk.api.pfs.ApiBase.inspect_repo">inspect_repo</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pfs.ApiBase.list_repo" href="#pachyderm_sdk.api.pfs.ApiBase.list_repo">list_repo</a></code></li>
@@ -10282,8 +10064,6 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 <li><code><a title="pachyderm_sdk.api.pfs.ApiBase.put_cache" href="#pachyderm_sdk.api.pfs.ApiBase.put_cache">put_cache</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pfs.ApiBase.get_cache" href="#pachyderm_sdk.api.pfs.ApiBase.get_cache">get_cache</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pfs.ApiBase.clear_cache" href="#pachyderm_sdk.api.pfs.ApiBase.clear_cache">clear_cache</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.ApiBase.run_load_test" href="#pachyderm_sdk.api.pfs.ApiBase.run_load_test">run_load_test</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.ApiBase.run_load_test_default" href="#pachyderm_sdk.api.pfs.ApiBase.run_load_test_default">run_load_test_default</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pfs.ApiBase.list_task" href="#pachyderm_sdk.api.pfs.ApiBase.list_task">list_task</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pfs.ApiBase.egress" href="#pachyderm_sdk.api.pfs.ApiBase.egress">egress</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pfs.ApiBase.create_project" href="#pachyderm_sdk.api.pfs.ApiBase.create_project">create_project</a></code></li>

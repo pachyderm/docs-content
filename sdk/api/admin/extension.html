@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
 <title>pachyderm_sdk.api.admin.extension API documentation</title>
-<meta name="description" content="" />
+<meta name="description" content="Handwritten classes/methods that augment the existing Admin API." />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -22,11 +22,13 @@
 <h1 class="title">Module <code>pachyderm_sdk.api.admin.extension</code></h1>
 </header>
 <section id="section-intro">
+<p>Handwritten classes/methods that augment the existing Admin API.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">import pachyderm_sdk
+<pre><code class="python">&#34;&#34;&#34;Handwritten classes/methods that augment the existing Admin API.&#34;&#34;&#34;
+import pachyderm_sdk
 
 from . import ApiStub as _GeneratedApiStub
 from ..version import Version
@@ -34,9 +36,9 @@ from . import ClusterInfo
 
 
 class ApiStub(_GeneratedApiStub):
-
     # noinspection PyMethodOverriding
     def inspect_cluster(self) -&gt; &#34;ClusterInfo&#34;:
+        &#34;&#34;&#34;Inspect the cluster and check version mismatch.&#34;&#34;&#34;
         try:
             version = _extract_version(pachyderm_sdk.__version__)
         except ValueError:
@@ -78,9 +80,9 @@ def _extract_version(version: str) -&gt; Version:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class ApiStub(_GeneratedApiStub):
-
     # noinspection PyMethodOverriding
     def inspect_cluster(self) -&gt; &#34;ClusterInfo&#34;:
+        &#34;&#34;&#34;Inspect the cluster and check version mismatch.&#34;&#34;&#34;
         try:
             version = _extract_version(pachyderm_sdk.__version__)
         except ValueError:
@@ -97,12 +99,13 @@ def _extract_version(version: str) -&gt; Version:
 <span>def <span class="ident">inspect_cluster</span></span>(<span>self) ‑> <a title="pachyderm_sdk.api.admin.ClusterInfo" href="index.html#pachyderm_sdk.api.admin.ClusterInfo">ClusterInfo</a></span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Inspect the cluster and check version mismatch.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def inspect_cluster(self) -&gt; &#34;ClusterInfo&#34;:
+    &#34;&#34;&#34;Inspect the cluster and check version mismatch.&#34;&#34;&#34;
     try:
         version = _extract_version(pachyderm_sdk.__version__)
     except ValueError:

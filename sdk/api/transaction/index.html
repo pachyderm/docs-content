@@ -70,8 +70,10 @@ class TransactionRequest(betterproto.Message):
     create_branch: &#34;_pfs__.CreateBranchRequest&#34; = betterproto.message_field(6)
     delete_branch: &#34;_pfs__.DeleteBranchRequest&#34; = betterproto.message_field(7)
     update_job_state: &#34;_pps__.UpdateJobStateRequest&#34; = betterproto.message_field(8)
-    create_pipeline: &#34;_pps__.CreatePipelineRequest&#34; = betterproto.message_field(9)
     stop_job: &#34;_pps__.StopJobRequest&#34; = betterproto.message_field(10)
+    create_pipeline_v2: &#34;_pps__.CreatePipelineTransaction&#34; = betterproto.message_field(
+        11
+    )
 
 
 @dataclass(eq=False, repr=False)
@@ -319,7 +321,7 @@ class ApiBase:
 <dl>
 <dt><code class="name"><a title="pachyderm_sdk.api.transaction.extension" href="extension.html">pachyderm_sdk.api.transaction.extension</a></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Handwritten classes/methods that augment the existing Transaction API.</p></div>
 </dd>
 </dl>
 </section>
@@ -351,10 +353,10 @@ class DeleteAllRequest(betterproto.Message):
 </dd>
 <dt id="pachyderm_sdk.api.transaction.TransactionRequest"><code class="flex name class">
 <span>class <span class="ident">TransactionRequest</span></span>
-<span>(</span><span>create_repo: _pfs__.CreateRepoRequest = None, delete_repo: _pfs__.DeleteRepoRequest = None, start_commit: _pfs__.StartCommitRequest = None, finish_commit: _pfs__.FinishCommitRequest = None, squash_commit_set: _pfs__.SquashCommitSetRequest = None, create_branch: _pfs__.CreateBranchRequest = None, delete_branch: _pfs__.DeleteBranchRequest = None, update_job_state: _pps__.UpdateJobStateRequest = None, create_pipeline: _pps__.CreatePipelineRequest = None, stop_job: _pps__.StopJobRequest = None)</span>
+<span>(</span><span>create_repo: _pfs__.CreateRepoRequest = None, delete_repo: _pfs__.DeleteRepoRequest = None, start_commit: _pfs__.StartCommitRequest = None, finish_commit: _pfs__.FinishCommitRequest = None, squash_commit_set: _pfs__.SquashCommitSetRequest = None, create_branch: _pfs__.CreateBranchRequest = None, delete_branch: _pfs__.DeleteBranchRequest = None, update_job_state: _pps__.UpdateJobStateRequest = None, stop_job: _pps__.StopJobRequest = None, create_pipeline_v2: _pps__.CreatePipelineTransaction = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>TransactionRequest(create_repo: '_pfs__.CreateRepoRequest' = None, delete_repo: '_pfs__.DeleteRepoRequest' = None, start_commit: '_pfs__.StartCommitRequest' = None, finish_commit: '_pfs__.FinishCommitRequest' = None, squash_commit_set: '_pfs__.SquashCommitSetRequest' = None, create_branch: '_pfs__.CreateBranchRequest' = None, delete_branch: '_pfs__.DeleteBranchRequest' = None, update_job_state: '_pps__.UpdateJobStateRequest' = None, create_pipeline: '_pps__.CreatePipelineRequest' = None, stop_job: '_pps__.StopJobRequest' = None)</p></div>
+<div class="desc"><p>TransactionRequest(create_repo: '_pfs__.CreateRepoRequest' = None, delete_repo: '_pfs__.DeleteRepoRequest' = None, start_commit: '_pfs__.StartCommitRequest' = None, finish_commit: '_pfs__.FinishCommitRequest' = None, squash_commit_set: '_pfs__.SquashCommitSetRequest' = None, create_branch: '_pfs__.CreateBranchRequest' = None, delete_branch: '_pfs__.DeleteBranchRequest' = None, update_job_state: '_pps__.UpdateJobStateRequest' = None, stop_job: '_pps__.StopJobRequest' = None, create_pipeline_v2: '_pps__.CreatePipelineTransaction' = None)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -371,8 +373,10 @@ class TransactionRequest(betterproto.Message):
     create_branch: &#34;_pfs__.CreateBranchRequest&#34; = betterproto.message_field(6)
     delete_branch: &#34;_pfs__.DeleteBranchRequest&#34; = betterproto.message_field(7)
     update_job_state: &#34;_pps__.UpdateJobStateRequest&#34; = betterproto.message_field(8)
-    create_pipeline: &#34;_pps__.CreatePipelineRequest&#34; = betterproto.message_field(9)
-    stop_job: &#34;_pps__.StopJobRequest&#34; = betterproto.message_field(10)</code></pre>
+    stop_job: &#34;_pps__.StopJobRequest&#34; = betterproto.message_field(10)
+    create_pipeline_v2: &#34;_pps__.CreatePipelineTransaction&#34; = betterproto.message_field(
+        11
+    )</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -413,11 +417,11 @@ class TransactionRequest(betterproto.Message):
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="pachyderm_sdk.api.transaction.TransactionRequest.create_pipeline"><code class="name">var <span class="ident">create_pipeline</span> : <a title="pachyderm_sdk.api.pps.CreatePipelineRequest" href="../pps/index.html#pachyderm_sdk.api.pps.CreatePipelineRequest">CreatePipelineRequest</a></code></dt>
+<dt id="pachyderm_sdk.api.transaction.TransactionRequest.stop_job"><code class="name">var <span class="ident">stop_job</span> : <a title="pachyderm_sdk.api.pps.StopJobRequest" href="../pps/index.html#pachyderm_sdk.api.pps.StopJobRequest">StopJobRequest</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="pachyderm_sdk.api.transaction.TransactionRequest.stop_job"><code class="name">var <span class="ident">stop_job</span> : <a title="pachyderm_sdk.api.pps.StopJobRequest" href="../pps/index.html#pachyderm_sdk.api.pps.StopJobRequest">StopJobRequest</a></code></dt>
+<dt id="pachyderm_sdk.api.transaction.TransactionRequest.create_pipeline_v2"><code class="name">var <span class="ident">create_pipeline_v2</span> : <a title="pachyderm_sdk.api.pps.CreatePipelineTransaction" href="../pps/index.html#pachyderm_sdk.api.pps.CreatePipelineTransaction">CreatePipelineTransaction</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -1191,8 +1195,8 @@ class FinishTransactionRequest(betterproto.Message):
 <li><code><a title="pachyderm_sdk.api.transaction.TransactionRequest.create_branch" href="#pachyderm_sdk.api.transaction.TransactionRequest.create_branch">create_branch</a></code></li>
 <li><code><a title="pachyderm_sdk.api.transaction.TransactionRequest.delete_branch" href="#pachyderm_sdk.api.transaction.TransactionRequest.delete_branch">delete_branch</a></code></li>
 <li><code><a title="pachyderm_sdk.api.transaction.TransactionRequest.update_job_state" href="#pachyderm_sdk.api.transaction.TransactionRequest.update_job_state">update_job_state</a></code></li>
-<li><code><a title="pachyderm_sdk.api.transaction.TransactionRequest.create_pipeline" href="#pachyderm_sdk.api.transaction.TransactionRequest.create_pipeline">create_pipeline</a></code></li>
 <li><code><a title="pachyderm_sdk.api.transaction.TransactionRequest.stop_job" href="#pachyderm_sdk.api.transaction.TransactionRequest.stop_job">stop_job</a></code></li>
+<li><code><a title="pachyderm_sdk.api.transaction.TransactionRequest.create_pipeline_v2" href="#pachyderm_sdk.api.transaction.TransactionRequest.create_pipeline_v2">create_pipeline_v2</a></code></li>
 </ul>
 </li>
 <li>

@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>pachyderm_sdk.constants API documentation</title>
-<meta name="description" content="" />
+<title>pachyderm_sdk.datum_batching API documentation</title>
+<meta name="description" content="A high-level decorator for pipeline code that uses the datum-batching feature." />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -19,41 +19,62 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>pachyderm_sdk.constants</code></h1>
+<h1 class="title">Module <code>pachyderm_sdk.datum_batching</code></h1>
 </header>
 <section id="section-intro">
+<p>A high-level decorator for pipeline code that uses the datum-batching feature.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">from pathlib import Path
+<pre><code class="python">&#34;&#34;&#34;A high-level decorator for pipeline code that uses the datum-batching feature.&#34;&#34;&#34;
+from functools import wraps
+from typing import Callable
 
-from . import __version__
+from . import Client
 
-DEFAULT_HOST = &#34;localhost&#34;
-DEFAULT_PORT = 30650
+PIPELINE_FUNC = Callable[..., None]
 
-AUTH_TOKEN_ENV = &#34;PACH_PYTHON_AUTH_TOKEN&#34;
-OIDC_TOKEN_ENV = &#34;PACH_PYTHON_OIDC_TOKEN&#34;
-ENTERPRISE_CODE_ENV = &#34;PACH_PYTHON_ENTERPRISE_CODE&#34;
-PACH_CONFIG_ENV = &#34;PACH_CONFIG&#34;
-PACHD_SERVICE_HOST_ENV = &#34;PACHD_PEER_SERVICE_HOST&#34;
-PACHD_SERVICE_PORT_ENV = &#34;PACHD_PEER_SERVICE_PORT&#34;
-WORKER_PORT_ENV = &#34;PPS_WORKER_GRPC_PORT&#34;
 
-# `~` used below to make docs look better.
-CONFIG_PATH_LOCAL = Path(&#34;~&#34;).joinpath(&#34;.pachyderm&#34;, &#34;config.json&#34;)
-CONFIG_PATH_SPOUT = Path(&#34;/&#34;).joinpath(&#34;pachctl&#34;, &#34;config.json&#34;)
-DOTENV_PATH_WORKER = Path(&#34;/pfs/.env&#34;)
+def batch_all_datums(user_code: PIPELINE_FUNC) -&gt; PIPELINE_FUNC:
+    &#34;&#34;&#34;A decorator that will repeatedly call the wrapped function until
+    all datums have been processed. Before calling the wrapped function,
+    this decorator will call the NextDatum endpoint within the worker
+    and set any environment variables specified by the worker.
 
-MAX_RECEIVE_MESSAGE_SIZE = 20 * 1024**2  # 20MB
-PRIMARY_USER_AGENT = &#34;pachyderm-sdk&#34;
-SECONDARY_USER_AGENT = f&#34;v{__version__}&#34; if __version__ else &#34;unspecified&#34;
-GRPC_CHANNEL_OPTIONS = [
-    (&#34;grpc.max_receive_message_length&#34;, MAX_RECEIVE_MESSAGE_SIZE),
-    (&#34;grpc.primary_user_agent&#34;, PRIMARY_USER_AGENT),
-    (&#34;grpc.secondary_user_agent&#34;, SECONDARY_USER_AGENT),
-]</code></pre>
+    Any exceptions raised during the execution of the wrapped function
+    will be reported back to the worker. See the pachyderm documentation
+    for more information on how the datum batching feature works.
+
+    Note: This can only be used within a Pachyderm worker.
+
+    Examples
+    --------
+    &gt;&gt;&gt; from pachyderm_sdk import batch_all_datums
+    &gt;&gt;&gt;
+    &gt;&gt;&gt; @batch_all_datums
+    &gt;&gt;&gt; def pipeline():
+    &gt;&gt;&gt;     # process datums
+    &gt;&gt;&gt;     pass
+    &gt;&gt;&gt;
+    &gt;&gt;&gt; if __name__ == &#39;__main__&#39;:
+    &gt;&gt;&gt;   # Perform an expensive computation here before
+    &gt;&gt;&gt;   #   entering your datum processing function
+    &gt;&gt;&gt;   #   i.e. initializing a model.
+    &gt;&gt;&gt;   pipeline()
+
+    Check the following link for a more substatial example:
+        github.com/pachyderm/examples/tree/master/object-detection
+    &#34;&#34;&#34;
+
+    @wraps(user_code)
+    def wrapper(*args, **kwargs) -&gt; None:
+        worker = Client().worker
+        while True:
+            with worker.batch_datum():
+                user_code(*args, **kwargs)
+
+    return wrapper</code></pre>
 </details>
 </section>
 <section>
@@ -61,6 +82,82 @@ GRPC_CHANNEL_OPTIONS = [
 <section>
 </section>
 <section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="pachyderm_sdk.datum_batching.batch_all_datums"><code class="name flex">
+<span>def <span class="ident">batch_all_datums</span></span>(<span>user_code: Callable[..., None]) ‑> Callable[..., None]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>A decorator that will repeatedly call the wrapped function until
+all datums have been processed. Before calling the wrapped function,
+this decorator will call the NextDatum endpoint within the worker
+and set any environment variables specified by the worker.</p>
+<p>Any exceptions raised during the execution of the wrapped function
+will be reported back to the worker. See the pachyderm documentation
+for more information on how the datum batching feature works.</p>
+<p>Note: This can only be used within a Pachyderm worker.</p>
+<h2 id="examples">Examples</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; from pachyderm_sdk import batch_all_datums
+&gt;&gt;&gt;
+&gt;&gt;&gt; @batch_all_datums
+&gt;&gt;&gt; def pipeline():
+&gt;&gt;&gt;     # process datums
+&gt;&gt;&gt;     pass
+&gt;&gt;&gt;
+&gt;&gt;&gt; if __name__ == '__main__':
+&gt;&gt;&gt;   # Perform an expensive computation here before
+&gt;&gt;&gt;   #   entering your datum processing function
+&gt;&gt;&gt;   #   i.e. initializing a model.
+&gt;&gt;&gt;   pipeline()
+</code></pre>
+<p>Check the following link for a more substatial example:
+github.com/pachyderm/examples/tree/master/object-detection</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def batch_all_datums(user_code: PIPELINE_FUNC) -&gt; PIPELINE_FUNC:
+    &#34;&#34;&#34;A decorator that will repeatedly call the wrapped function until
+    all datums have been processed. Before calling the wrapped function,
+    this decorator will call the NextDatum endpoint within the worker
+    and set any environment variables specified by the worker.
+
+    Any exceptions raised during the execution of the wrapped function
+    will be reported back to the worker. See the pachyderm documentation
+    for more information on how the datum batching feature works.
+
+    Note: This can only be used within a Pachyderm worker.
+
+    Examples
+    --------
+    &gt;&gt;&gt; from pachyderm_sdk import batch_all_datums
+    &gt;&gt;&gt;
+    &gt;&gt;&gt; @batch_all_datums
+    &gt;&gt;&gt; def pipeline():
+    &gt;&gt;&gt;     # process datums
+    &gt;&gt;&gt;     pass
+    &gt;&gt;&gt;
+    &gt;&gt;&gt; if __name__ == &#39;__main__&#39;:
+    &gt;&gt;&gt;   # Perform an expensive computation here before
+    &gt;&gt;&gt;   #   entering your datum processing function
+    &gt;&gt;&gt;   #   i.e. initializing a model.
+    &gt;&gt;&gt;   pipeline()
+
+    Check the following link for a more substatial example:
+        github.com/pachyderm/examples/tree/master/object-detection
+    &#34;&#34;&#34;
+
+    @wraps(user_code)
+    def wrapper(*args, **kwargs) -&gt; None:
+        worker = Client().worker
+        while True:
+            with worker.batch_datum():
+                user_code(*args, **kwargs)
+
+    return wrapper</code></pre>
+</details>
+</dd>
+</dl>
 </section>
 <section>
 </section>
@@ -78,6 +175,11 @@ GRPC_CHANNEL_OPTIONS = [
 <li><h3>Super-module</h3>
 <ul>
 <li><code><a title="pachyderm_sdk" href="index.html">pachyderm_sdk</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="pachyderm_sdk.datum_batching.batch_all_datums" href="#pachyderm_sdk.datum_batching.batch_all_datums">batch_all_datums</a></code></li>
 </ul>
 </li>
 </ul>

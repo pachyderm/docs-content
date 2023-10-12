@@ -42,7 +42,10 @@ import betterproto
 import betterproto.lib.google.protobuf as betterproto_lib_google_protobuf
 import grpc
 
-from .. import version as _version__
+from .. import (
+    pfs as _pfs__,
+    version as _version__,
+)
 
 
 if TYPE_CHECKING:
@@ -53,15 +56,56 @@ if TYPE_CHECKING:
 class ClusterInfo(betterproto.Message):
     id: str = betterproto.string_field(1)
     deployment_id: str = betterproto.string_field(2)
-    version_warnings_ok: bool = betterproto.bool_field(3)
-    version_warnings: List[str] = betterproto.string_field(4)
+    warnings_ok: bool = betterproto.bool_field(3)
+    &#34;&#34;&#34;True if the server is capable of generating warnings.&#34;&#34;&#34;
+
+    warnings: List[str] = betterproto.string_field(4)
+    &#34;&#34;&#34;Warnings about the client configuration.&#34;&#34;&#34;
+
     proxy_host: str = betterproto.string_field(5)
+    &#34;&#34;&#34;The configured public URL of Pachyderm.&#34;&#34;&#34;
+
     proxy_tls: bool = betterproto.bool_field(6)
+    &#34;&#34;&#34;True if Pachyderm is served over TLS (HTTPS).&#34;&#34;&#34;
+
+    paused: bool = betterproto.bool_field(7)
+    &#34;&#34;&#34;True if this pachd is in &#34;paused&#34; mode.&#34;&#34;&#34;
+
+    web_resources: &#34;WebResource&#34; = betterproto.message_field(8)
+    &#34;&#34;&#34;Any HTTP links that the client might want to be aware of.&#34;&#34;&#34;
 
 
 @dataclass(eq=False, repr=False)
 class InspectClusterRequest(betterproto.Message):
     client_version: &#34;_version__.Version&#34; = betterproto.message_field(1)
+    &#34;&#34;&#34;
+    The version of the client that&#39;s connecting; used by the server to warn
+    about too-old (or too-new!) clients.
+    &#34;&#34;&#34;
+
+    current_project: &#34;_pfs__.Project&#34; = betterproto.message_field(2)
+    &#34;&#34;&#34;
+    If CurrentProject is set, then InspectCluster will return an error if the
+    project does not exist.
+    &#34;&#34;&#34;
+
+
+@dataclass(eq=False, repr=False)
+class WebResource(betterproto.Message):
+    &#34;&#34;&#34;WebResource contains URL prefixes of common HTTP functions.&#34;&#34;&#34;
+
+    archive_download_base_url: str = betterproto.string_field(1)
+    &#34;&#34;&#34;
+    The base URL of the archive server; append a filename to this.  Empty if
+    the archive server is not exposed.
+    &#34;&#34;&#34;
+
+    create_pipeline_request_json_schema_url: str = betterproto.string_field(2)
+    &#34;&#34;&#34;
+    Where to find the CreatePipelineRequest JSON schema; if this server is not
+    accessible via a URL, then a link to Github is provided based on the baked-
+    in version of the server.
+    &#34;&#34;&#34;
 
 
 class ApiStub:
@@ -73,18 +117,26 @@ class ApiStub:
         )
 
     def inspect_cluster(
-        self, *, client_version: &#34;_version__.Version&#34; = None
+        self,
+        *,
+        client_version: &#34;_version__.Version&#34; = None,
+        current_project: &#34;_pfs__.Project&#34; = None
     ) -&gt; &#34;ClusterInfo&#34;:
         request = InspectClusterRequest()
         if client_version is not None:
             request.client_version = client_version
+        if current_project is not None:
+            request.current_project = current_project
 
         return self.__rpc_inspect_cluster(request)
 
 
 class ApiBase:
     def inspect_cluster(
-        self, client_version: &#34;_version__.Version&#34;, context: &#34;grpc.ServicerContext&#34;
+        self,
+        client_version: &#34;_version__.Version&#34;,
+        current_project: &#34;_pfs__.Project&#34;,
+        context: &#34;grpc.ServicerContext&#34;,
     ) -&gt; &#34;ClusterInfo&#34;:
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details(&#34;Method not implemented!&#34;)
@@ -108,7 +160,7 @@ class ApiBase:
 <dl>
 <dt><code class="name"><a title="pachyderm_sdk.api.admin.extension" href="extension.html">pachyderm_sdk.api.admin.extension</a></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Handwritten classes/methods that augment the existing Admin API.</p></div>
 </dd>
 </dl>
 </section>
@@ -121,10 +173,10 @@ class ApiBase:
 <dl>
 <dt id="pachyderm_sdk.api.admin.ClusterInfo"><code class="flex name class">
 <span>class <span class="ident">ClusterInfo</span></span>
-<span>(</span><span>id: str = None, deployment_id: str = None, version_warnings_ok: bool = None, version_warnings: List[str] = None, proxy_host: str = None, proxy_tls: bool = None)</span>
+<span>(</span><span>id: str = None, deployment_id: str = None, warnings_ok: bool = None, warnings: List[str] = None, proxy_host: str = None, proxy_tls: bool = None, paused: bool = None, web_resources: <a title="pachyderm_sdk.api.admin.WebResource" href="#pachyderm_sdk.api.admin.WebResource">WebResource</a> = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>ClusterInfo(id: str = None, deployment_id: str = None, version_warnings_ok: bool = None, version_warnings: List[str] = None, proxy_host: str = None, proxy_tls: bool = None)</p></div>
+<div class="desc"><p>ClusterInfo(id: str = None, deployment_id: str = None, warnings_ok: bool = None, warnings: List[str] = None, proxy_host: str = None, proxy_tls: bool = None, paused: bool = None, web_resources: 'WebResource' = None)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -133,10 +185,23 @@ class ApiBase:
 class ClusterInfo(betterproto.Message):
     id: str = betterproto.string_field(1)
     deployment_id: str = betterproto.string_field(2)
-    version_warnings_ok: bool = betterproto.bool_field(3)
-    version_warnings: List[str] = betterproto.string_field(4)
+    warnings_ok: bool = betterproto.bool_field(3)
+    &#34;&#34;&#34;True if the server is capable of generating warnings.&#34;&#34;&#34;
+
+    warnings: List[str] = betterproto.string_field(4)
+    &#34;&#34;&#34;Warnings about the client configuration.&#34;&#34;&#34;
+
     proxy_host: str = betterproto.string_field(5)
-    proxy_tls: bool = betterproto.bool_field(6)</code></pre>
+    &#34;&#34;&#34;The configured public URL of Pachyderm.&#34;&#34;&#34;
+
+    proxy_tls: bool = betterproto.bool_field(6)
+    &#34;&#34;&#34;True if Pachyderm is served over TLS (HTTPS).&#34;&#34;&#34;
+
+    paused: bool = betterproto.bool_field(7)
+    &#34;&#34;&#34;True if this pachd is in &#34;paused&#34; mode.&#34;&#34;&#34;
+
+    web_resources: &#34;WebResource&#34; = betterproto.message_field(8)
+    &#34;&#34;&#34;Any HTTP links that the client might want to be aware of.&#34;&#34;&#34;</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -153,37 +218,55 @@ class ClusterInfo(betterproto.Message):
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="pachyderm_sdk.api.admin.ClusterInfo.version_warnings_ok"><code class="name">var <span class="ident">version_warnings_ok</span> : bool</code></dt>
+<dt id="pachyderm_sdk.api.admin.ClusterInfo.warnings_ok"><code class="name">var <span class="ident">warnings_ok</span> : bool</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>True if the server is capable of generating warnings.</p></div>
 </dd>
-<dt id="pachyderm_sdk.api.admin.ClusterInfo.version_warnings"><code class="name">var <span class="ident">version_warnings</span> : List[str]</code></dt>
+<dt id="pachyderm_sdk.api.admin.ClusterInfo.warnings"><code class="name">var <span class="ident">warnings</span> : List[str]</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Warnings about the client configuration.</p></div>
 </dd>
 <dt id="pachyderm_sdk.api.admin.ClusterInfo.proxy_host"><code class="name">var <span class="ident">proxy_host</span> : str</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The configured public URL of Pachyderm.</p></div>
 </dd>
 <dt id="pachyderm_sdk.api.admin.ClusterInfo.proxy_tls"><code class="name">var <span class="ident">proxy_tls</span> : bool</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>True if Pachyderm is served over TLS (HTTPS).</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.admin.ClusterInfo.paused"><code class="name">var <span class="ident">paused</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>True if this pachd is in "paused" mode.</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.admin.ClusterInfo.web_resources"><code class="name">var <span class="ident">web_resources</span> : <a title="pachyderm_sdk.api.admin.WebResource" href="#pachyderm_sdk.api.admin.WebResource">WebResource</a></code></dt>
+<dd>
+<div class="desc"><p>Any HTTP links that the client might want to be aware of.</p></div>
 </dd>
 </dl>
 </dd>
 <dt id="pachyderm_sdk.api.admin.InspectClusterRequest"><code class="flex name class">
 <span>class <span class="ident">InspectClusterRequest</span></span>
-<span>(</span><span>client_version: _version__.Version = None)</span>
+<span>(</span><span>client_version: _version__.Version = None, current_project: _pfs__.Project = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>InspectClusterRequest(client_version: '_version__.Version' = None)</p></div>
+<div class="desc"><p>InspectClusterRequest(client_version: '_version__.Version' = None, current_project: '_pfs__.Project' = None)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@dataclass(eq=False, repr=False)
 class InspectClusterRequest(betterproto.Message):
-    client_version: &#34;_version__.Version&#34; = betterproto.message_field(1)</code></pre>
+    client_version: &#34;_version__.Version&#34; = betterproto.message_field(1)
+    &#34;&#34;&#34;
+    The version of the client that&#39;s connecting; used by the server to warn
+    about too-old (or too-new!) clients.
+    &#34;&#34;&#34;
+
+    current_project: &#34;_pfs__.Project&#34; = betterproto.message_field(2)
+    &#34;&#34;&#34;
+    If CurrentProject is set, then InspectCluster will return an error if the
+    project does not exist.
+    &#34;&#34;&#34;</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -194,7 +277,61 @@ class InspectClusterRequest(betterproto.Message):
 <dl>
 <dt id="pachyderm_sdk.api.admin.InspectClusterRequest.client_version"><code class="name">var <span class="ident">client_version</span> : <a title="pachyderm_sdk.api.version.Version" href="../version/index.html#pachyderm_sdk.api.version.Version">Version</a></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The version of the client that's connecting; used by the server to warn
+about too-old (or too-new!) clients.</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.admin.InspectClusterRequest.current_project"><code class="name">var <span class="ident">current_project</span> : <a title="pachyderm_sdk.api.pfs.Project" href="../pfs/index.html#pachyderm_sdk.api.pfs.Project">Project</a></code></dt>
+<dd>
+<div class="desc"><p>If CurrentProject is set, then InspectCluster will return an error if the
+project does not exist.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.admin.WebResource"><code class="flex name class">
+<span>class <span class="ident">WebResource</span></span>
+<span>(</span><span>archive_download_base_url: str = None, create_pipeline_request_json_schema_url: str = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>WebResource contains URL prefixes of common HTTP functions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class WebResource(betterproto.Message):
+    &#34;&#34;&#34;WebResource contains URL prefixes of common HTTP functions.&#34;&#34;&#34;
+
+    archive_download_base_url: str = betterproto.string_field(1)
+    &#34;&#34;&#34;
+    The base URL of the archive server; append a filename to this.  Empty if
+    the archive server is not exposed.
+    &#34;&#34;&#34;
+
+    create_pipeline_request_json_schema_url: str = betterproto.string_field(2)
+    &#34;&#34;&#34;
+    Where to find the CreatePipelineRequest JSON schema; if this server is not
+    accessible via a URL, then a link to Github is provided based on the baked-
+    in version of the server.
+    &#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.admin.WebResource.archive_download_base_url"><code class="name">var <span class="ident">archive_download_base_url</span> : str</code></dt>
+<dd>
+<div class="desc"><p>The base URL of the archive server; append a filename to this.
+Empty if
+the archive server is not exposed.</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.admin.WebResource.create_pipeline_request_json_schema_url"><code class="name">var <span class="ident">create_pipeline_request_json_schema_url</span> : str</code></dt>
+<dd>
+<div class="desc"><p>Where to find the CreatePipelineRequest JSON schema; if this server is not
+accessible via a URL, then a link to Github is provided based on the baked-
+in version of the server.</p></div>
 </dd>
 </dl>
 </dd>
@@ -217,11 +354,16 @@ class InspectClusterRequest(betterproto.Message):
         )
 
     def inspect_cluster(
-        self, *, client_version: &#34;_version__.Version&#34; = None
+        self,
+        *,
+        client_version: &#34;_version__.Version&#34; = None,
+        current_project: &#34;_pfs__.Project&#34; = None
     ) -&gt; &#34;ClusterInfo&#34;:
         request = InspectClusterRequest()
         if client_version is not None:
             request.client_version = client_version
+        if current_project is not None:
+            request.current_project = current_project
 
         return self.__rpc_inspect_cluster(request)</code></pre>
 </details>
@@ -232,7 +374,7 @@ class InspectClusterRequest(betterproto.Message):
 <h3>Methods</h3>
 <dl>
 <dt id="pachyderm_sdk.api.admin.ApiStub.inspect_cluster"><code class="name flex">
-<span>def <span class="ident">inspect_cluster</span></span>(<span>self, *, client_version: _version__.Version = None) ‑> <a title="pachyderm_sdk.api.admin.ClusterInfo" href="#pachyderm_sdk.api.admin.ClusterInfo">ClusterInfo</a></span>
+<span>def <span class="ident">inspect_cluster</span></span>(<span>self, *, client_version: _version__.Version = None, current_project: _pfs__.Project = None) ‑> <a title="pachyderm_sdk.api.admin.ClusterInfo" href="#pachyderm_sdk.api.admin.ClusterInfo">ClusterInfo</a></span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -241,11 +383,16 @@ class InspectClusterRequest(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def inspect_cluster(
-    self, *, client_version: &#34;_version__.Version&#34; = None
+    self,
+    *,
+    client_version: &#34;_version__.Version&#34; = None,
+    current_project: &#34;_pfs__.Project&#34; = None
 ) -&gt; &#34;ClusterInfo&#34;:
     request = InspectClusterRequest()
     if client_version is not None:
         request.client_version = client_version
+    if current_project is not None:
+        request.current_project = current_project
 
     return self.__rpc_inspect_cluster(request)</code></pre>
 </details>
@@ -263,7 +410,10 @@ class InspectClusterRequest(betterproto.Message):
 </summary>
 <pre><code class="python">class ApiBase:
     def inspect_cluster(
-        self, client_version: &#34;_version__.Version&#34;, context: &#34;grpc.ServicerContext&#34;
+        self,
+        client_version: &#34;_version__.Version&#34;,
+        current_project: &#34;_pfs__.Project&#34;,
+        context: &#34;grpc.ServicerContext&#34;,
     ) -&gt; &#34;ClusterInfo&#34;:
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details(&#34;Method not implemented!&#34;)
@@ -284,7 +434,7 @@ class InspectClusterRequest(betterproto.Message):
 <h3>Methods</h3>
 <dl>
 <dt id="pachyderm_sdk.api.admin.ApiBase.inspect_cluster"><code class="name flex">
-<span>def <span class="ident">inspect_cluster</span></span>(<span>self, client_version: _version__.Version, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.admin.ClusterInfo" href="#pachyderm_sdk.api.admin.ClusterInfo">ClusterInfo</a></span>
+<span>def <span class="ident">inspect_cluster</span></span>(<span>self, client_version: _version__.Version, current_project: _pfs__.Project, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.admin.ClusterInfo" href="#pachyderm_sdk.api.admin.ClusterInfo">ClusterInfo</a></span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -293,7 +443,10 @@ class InspectClusterRequest(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def inspect_cluster(
-    self, client_version: &#34;_version__.Version&#34;, context: &#34;grpc.ServicerContext&#34;
+    self,
+    client_version: &#34;_version__.Version&#34;,
+    current_project: &#34;_pfs__.Project&#34;,
+    context: &#34;grpc.ServicerContext&#34;,
 ) -&gt; &#34;ClusterInfo&#34;:
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details(&#34;Method not implemented!&#34;)
@@ -332,16 +485,26 @@ class InspectClusterRequest(betterproto.Message):
 <ul class="two-column">
 <li><code><a title="pachyderm_sdk.api.admin.ClusterInfo.id" href="#pachyderm_sdk.api.admin.ClusterInfo.id">id</a></code></li>
 <li><code><a title="pachyderm_sdk.api.admin.ClusterInfo.deployment_id" href="#pachyderm_sdk.api.admin.ClusterInfo.deployment_id">deployment_id</a></code></li>
-<li><code><a title="pachyderm_sdk.api.admin.ClusterInfo.version_warnings_ok" href="#pachyderm_sdk.api.admin.ClusterInfo.version_warnings_ok">version_warnings_ok</a></code></li>
-<li><code><a title="pachyderm_sdk.api.admin.ClusterInfo.version_warnings" href="#pachyderm_sdk.api.admin.ClusterInfo.version_warnings">version_warnings</a></code></li>
+<li><code><a title="pachyderm_sdk.api.admin.ClusterInfo.warnings_ok" href="#pachyderm_sdk.api.admin.ClusterInfo.warnings_ok">warnings_ok</a></code></li>
+<li><code><a title="pachyderm_sdk.api.admin.ClusterInfo.warnings" href="#pachyderm_sdk.api.admin.ClusterInfo.warnings">warnings</a></code></li>
 <li><code><a title="pachyderm_sdk.api.admin.ClusterInfo.proxy_host" href="#pachyderm_sdk.api.admin.ClusterInfo.proxy_host">proxy_host</a></code></li>
 <li><code><a title="pachyderm_sdk.api.admin.ClusterInfo.proxy_tls" href="#pachyderm_sdk.api.admin.ClusterInfo.proxy_tls">proxy_tls</a></code></li>
+<li><code><a title="pachyderm_sdk.api.admin.ClusterInfo.paused" href="#pachyderm_sdk.api.admin.ClusterInfo.paused">paused</a></code></li>
+<li><code><a title="pachyderm_sdk.api.admin.ClusterInfo.web_resources" href="#pachyderm_sdk.api.admin.ClusterInfo.web_resources">web_resources</a></code></li>
 </ul>
 </li>
 <li>
 <h4><code><a title="pachyderm_sdk.api.admin.InspectClusterRequest" href="#pachyderm_sdk.api.admin.InspectClusterRequest">InspectClusterRequest</a></code></h4>
 <ul class="">
 <li><code><a title="pachyderm_sdk.api.admin.InspectClusterRequest.client_version" href="#pachyderm_sdk.api.admin.InspectClusterRequest.client_version">client_version</a></code></li>
+<li><code><a title="pachyderm_sdk.api.admin.InspectClusterRequest.current_project" href="#pachyderm_sdk.api.admin.InspectClusterRequest.current_project">current_project</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.admin.WebResource" href="#pachyderm_sdk.api.admin.WebResource">WebResource</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.admin.WebResource.archive_download_base_url" href="#pachyderm_sdk.api.admin.WebResource.archive_download_base_url">archive_download_base_url</a></code></li>
+<li><code><a title="pachyderm_sdk.api.admin.WebResource.create_pipeline_request_json_schema_url" href="#pachyderm_sdk.api.admin.WebResource.create_pipeline_request_json_schema_url">create_pipeline_request_json_schema_url</a></code></li>
 </ul>
 </li>
 <li>

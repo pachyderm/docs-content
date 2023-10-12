@@ -221,6 +221,11 @@ class Egress(betterproto.Message):
 
 
 @dataclass(eq=False, repr=False)
+class Determined(betterproto.Message):
+    workspaces: List[str] = betterproto.string_field(1)
+
+
+@dataclass(eq=False, repr=False)
 class Job(betterproto.Message):
     pipeline: &#34;Pipeline&#34; = betterproto.message_field(1)
     id: str = betterproto.string_field(2)
@@ -474,6 +479,7 @@ class JobInfo(betterproto.Message):
     started: datetime = betterproto.message_field(14)
     finished: datetime = betterproto.message_field(15)
     details: &#34;JobInfoDetails&#34; = betterproto.message_field(16)
+    auth_token: str = betterproto.string_field(17)
 
 
 @dataclass(eq=False, repr=False)
@@ -576,6 +582,8 @@ class PipelineInfo(betterproto.Message):
     type: &#34;PipelineInfoPipelineType&#34; = betterproto.enum_field(10)
     auth_token: str = betterproto.string_field(11)
     details: &#34;PipelineInfoDetails&#34; = betterproto.message_field(12)
+    user_spec_json: str = betterproto.string_field(13)
+    effective_spec_json: str = betterproto.string_field(14)
 
 
 @dataclass(eq=False, repr=False)
@@ -619,6 +627,7 @@ class PipelineInfoDetails(betterproto.Message):
     autoscaling: bool = betterproto.bool_field(33)
     tolerations: List[&#34;Toleration&#34;] = betterproto.message_field(34)
     sidecar_resource_requests: &#34;ResourceSpec&#34; = betterproto.message_field(35)
+    determined: &#34;Determined&#34; = betterproto.message_field(36)
 
 
 @dataclass(eq=False, repr=False)
@@ -655,6 +664,9 @@ class ListJobSetRequest(betterproto.Message):
 
     reverse: bool = betterproto.bool_field(5)
     &#34;&#34;&#34;if true, return results in reverse order&#34;&#34;&#34;
+
+    jq_filter: str = betterproto.string_field(6)
+    &#34;&#34;&#34;A jq program string for additional result filtering&#34;&#34;&#34;
 
 
 @dataclass(eq=False, repr=False)
@@ -898,6 +910,13 @@ class SchedulingSpec(betterproto.Message):
 
 
 @dataclass(eq=False, repr=False)
+class RerunPipelineRequest(betterproto.Message):
+    pipeline: &#34;Pipeline&#34; = betterproto.message_field(1)
+    reprocess: bool = betterproto.bool_field(15)
+    &#34;&#34;&#34;Reprocess forces the pipeline to reprocess all datums.&#34;&#34;&#34;
+
+
+@dataclass(eq=False, repr=False)
 class CreatePipelineRequest(betterproto.Message):
     pipeline: &#34;Pipeline&#34; = betterproto.message_field(1)
     tf_job: &#34;TfJob&#34; = betterproto.message_field(2)
@@ -948,6 +967,21 @@ class CreatePipelineRequest(betterproto.Message):
     autoscaling: bool = betterproto.bool_field(30)
     tolerations: List[&#34;Toleration&#34;] = betterproto.message_field(34)
     sidecar_resource_requests: &#34;ResourceSpec&#34; = betterproto.message_field(35)
+    dry_run: bool = betterproto.bool_field(37)
+    determined: &#34;Determined&#34; = betterproto.message_field(38)
+
+
+@dataclass(eq=False, repr=False)
+class CreatePipelineV2Request(betterproto.Message):
+    create_pipeline_request_json: str = betterproto.string_field(1)
+    dry_run: bool = betterproto.bool_field(2)
+    update: bool = betterproto.bool_field(3)
+    reprocess: bool = betterproto.bool_field(4)
+
+
+@dataclass(eq=False, repr=False)
+class CreatePipelineV2Response(betterproto.Message):
+    effective_create_pipeline_request_json: str = betterproto.string_field(1)
 
 
 @dataclass(eq=False, repr=False)
@@ -1005,6 +1039,8 @@ class DeletePipelineRequest(betterproto.Message):
     all: bool = betterproto.bool_field(2)
     force: bool = betterproto.bool_field(3)
     keep_repo: bool = betterproto.bool_field(4)
+    must_exist: bool = betterproto.bool_field(5)
+    &#34;&#34;&#34;If true, an error will be returned if the pipeline doesn&#39;t exist.&#34;&#34;&#34;
 
     def __post_init__(self) -&gt; None:
         super().__post_init__()
@@ -1043,6 +1079,8 @@ class StartPipelineRequest(betterproto.Message):
 @dataclass(eq=False, repr=False)
 class StopPipelineRequest(betterproto.Message):
     pipeline: &#34;Pipeline&#34; = betterproto.message_field(1)
+    must_exist: bool = betterproto.bool_field(2)
+    &#34;&#34;&#34;If true, an error will be returned if the pipeline doesn&#39;t exist.&#34;&#34;&#34;
 
 
 @dataclass(eq=False, repr=False)
@@ -1140,6 +1178,53 @@ class LokiLogMessage(betterproto.Message):
     message: str = betterproto.string_field(1)
 
 
+@dataclass(eq=False, repr=False)
+class ClusterDefaults(betterproto.Message):
+    create_pipeline_request: &#34;CreatePipelineRequest&#34; = betterproto.message_field(3)
+    &#34;&#34;&#34;
+    CreatePipelineRequest contains the default JSON CreatePipelineRequest into
+    which pipeline specs are merged to form the effective spec used to create a
+    pipeline.
+    &#34;&#34;&#34;
+
+
+@dataclass(eq=False, repr=False)
+class GetClusterDefaultsRequest(betterproto.Message):
+    pass
+
+
+@dataclass(eq=False, repr=False)
+class GetClusterDefaultsResponse(betterproto.Message):
+    cluster_defaults_json: str = betterproto.string_field(2)
+    &#34;&#34;&#34;
+    A JSON-encoded ClusterDefaults message, this is the verbatim input passed
+    to SetClusterDefaults.
+    &#34;&#34;&#34;
+
+
+@dataclass(eq=False, repr=False)
+class SetClusterDefaultsRequest(betterproto.Message):
+    regenerate: bool = betterproto.bool_field(2)
+    reprocess: bool = betterproto.bool_field(3)
+    dry_run: bool = betterproto.bool_field(4)
+    cluster_defaults_json: str = betterproto.string_field(5)
+    &#34;&#34;&#34;
+    A JSON-encoded ClusterDefaults message, this will be stored verbatim.
+    &#34;&#34;&#34;
+
+
+@dataclass(eq=False, repr=False)
+class SetClusterDefaultsResponse(betterproto.Message):
+    affected_pipelines: List[&#34;Pipeline&#34;] = betterproto.message_field(2)
+
+
+@dataclass(eq=False, repr=False)
+class CreatePipelineTransaction(betterproto.Message):
+    create_pipeline_request: &#34;CreatePipelineRequest&#34; = betterproto.message_field(1)
+    user_json: str = betterproto.string_field(2)
+    effective_json: str = betterproto.string_field(3)
+
+
 class ApiStub:
     def __init__(self, channel: &#34;grpc.Channel&#34;):
         self.__rpc_inspect_job = channel.unary_unary(
@@ -1192,10 +1277,20 @@ class ApiStub:
             request_serializer=RestartDatumRequest.SerializeToString,
             response_deserializer=betterproto_lib_google_protobuf.Empty.FromString,
         )
+        self.__rpc_rerun_pipeline = channel.unary_unary(
+            &#34;/pps_v2.API/RerunPipeline&#34;,
+            request_serializer=RerunPipelineRequest.SerializeToString,
+            response_deserializer=betterproto_lib_google_protobuf.Empty.FromString,
+        )
         self.__rpc_create_pipeline = channel.unary_unary(
             &#34;/pps_v2.API/CreatePipeline&#34;,
             request_serializer=CreatePipelineRequest.SerializeToString,
             response_deserializer=betterproto_lib_google_protobuf.Empty.FromString,
+        )
+        self.__rpc_create_pipeline_v2 = channel.unary_unary(
+            &#34;/pps_v2.API/CreatePipelineV2&#34;,
+            request_serializer=CreatePipelineV2Request.SerializeToString,
+            response_deserializer=CreatePipelineV2Response.FromString,
         )
         self.__rpc_inspect_pipeline = channel.unary_unary(
             &#34;/pps_v2.API/InspectPipeline&#34;,
@@ -1307,6 +1402,16 @@ class ApiStub:
             request_serializer=LokiRequest.SerializeToString,
             response_deserializer=LokiLogMessage.FromString,
         )
+        self.__rpc_get_cluster_defaults = channel.unary_unary(
+            &#34;/pps_v2.API/GetClusterDefaults&#34;,
+            request_serializer=GetClusterDefaultsRequest.SerializeToString,
+            response_deserializer=GetClusterDefaultsResponse.FromString,
+        )
+        self.__rpc_set_cluster_defaults = channel.unary_unary(
+            &#34;/pps_v2.API/SetClusterDefaults&#34;,
+            request_serializer=SetClusterDefaultsRequest.SerializeToString,
+            response_deserializer=SetClusterDefaultsResponse.FromString,
+        )
 
     def inspect_job(
         self, *, job: &#34;Job&#34; = None, wait: bool = False, details: bool = False
@@ -1372,7 +1477,8 @@ class ApiStub:
         projects: Optional[List[&#34;_pfs__.Project&#34;]] = None,
         pagination_marker: datetime = None,
         number: int = 0,
-        reverse: bool = False
+        reverse: bool = False,
+        jq_filter: str = &#34;&#34;
     ) -&gt; Iterator[&#34;JobSetInfo&#34;]:
         projects = projects or []
 
@@ -1384,6 +1490,7 @@ class ApiStub:
             request.pagination_marker = pagination_marker
         request.number = number
         request.reverse = reverse
+        request.jq_filter = jq_filter
 
         for response in self.__rpc_list_job_set(request):
             yield response
@@ -1461,6 +1568,16 @@ class ApiStub:
 
         return self.__rpc_restart_datum(request)
 
+    def rerun_pipeline(
+        self, *, pipeline: &#34;Pipeline&#34; = None, reprocess: bool = False
+    ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+        request = RerunPipelineRequest()
+        if pipeline is not None:
+            request.pipeline = pipeline
+        request.reprocess = reprocess
+
+        return self.__rpc_rerun_pipeline(request)
+
     def create_pipeline(
         self,
         *,
@@ -1493,7 +1610,9 @@ class ApiStub:
         reprocess_spec: str = &#34;&#34;,
         autoscaling: bool = False,
         tolerations: Optional[List[&#34;Toleration&#34;]] = None,
-        sidecar_resource_requests: &#34;ResourceSpec&#34; = None
+        sidecar_resource_requests: &#34;ResourceSpec&#34; = None,
+        dry_run: bool = False,
+        determined: &#34;Determined&#34; = None
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
         tolerations = tolerations or []
 
@@ -1547,8 +1666,27 @@ class ApiStub:
             request.tolerations = tolerations
         if sidecar_resource_requests is not None:
             request.sidecar_resource_requests = sidecar_resource_requests
+        request.dry_run = dry_run
+        if determined is not None:
+            request.determined = determined
 
         return self.__rpc_create_pipeline(request)
+
+    def create_pipeline_v2(
+        self,
+        *,
+        create_pipeline_request_json: str = &#34;&#34;,
+        dry_run: bool = False,
+        update: bool = False,
+        reprocess: bool = False
+    ) -&gt; &#34;CreatePipelineV2Response&#34;:
+        request = CreatePipelineV2Request()
+        request.create_pipeline_request_json = create_pipeline_request_json
+        request.dry_run = dry_run
+        request.update = update
+        request.reprocess = reprocess
+
+        return self.__rpc_create_pipeline_v2(request)
 
     def inspect_pipeline(
         self, *, pipeline: &#34;Pipeline&#34; = None, details: bool = False
@@ -1592,7 +1730,8 @@ class ApiStub:
         pipeline: &#34;Pipeline&#34; = None,
         all: bool = False,
         force: bool = False,
-        keep_repo: bool = False
+        keep_repo: bool = False,
+        must_exist: bool = False
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
         request = DeletePipelineRequest()
         if pipeline is not None:
@@ -1600,6 +1739,7 @@ class ApiStub:
         request.all = all
         request.force = force
         request.keep_repo = keep_repo
+        request.must_exist = must_exist
 
         return self.__rpc_delete_pipeline(request)
 
@@ -1632,11 +1772,12 @@ class ApiStub:
         return self.__rpc_start_pipeline(request)
 
     def stop_pipeline(
-        self, *, pipeline: &#34;Pipeline&#34; = None
+        self, *, pipeline: &#34;Pipeline&#34; = None, must_exist: bool = False
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
         request = StopPipelineRequest()
         if pipeline is not None:
             request.pipeline = pipeline
+        request.must_exist = must_exist
 
         return self.__rpc_stop_pipeline(request)
 
@@ -1833,6 +1974,27 @@ class ApiStub:
         for response in self.__rpc_query_loki(request):
             yield response
 
+    def get_cluster_defaults(self) -&gt; &#34;GetClusterDefaultsResponse&#34;:
+        request = GetClusterDefaultsRequest()
+
+        return self.__rpc_get_cluster_defaults(request)
+
+    def set_cluster_defaults(
+        self,
+        *,
+        regenerate: bool = False,
+        reprocess: bool = False,
+        dry_run: bool = False,
+        cluster_defaults_json: str = &#34;&#34;
+    ) -&gt; &#34;SetClusterDefaultsResponse&#34;:
+        request = SetClusterDefaultsRequest()
+        request.regenerate = regenerate
+        request.reprocess = reprocess
+        request.dry_run = dry_run
+        request.cluster_defaults_json = cluster_defaults_json
+
+        return self.__rpc_set_cluster_defaults(request)
+
 
 class ApiBase:
     def inspect_job(
@@ -1877,6 +2039,7 @@ class ApiBase:
         pagination_marker: datetime,
         number: int,
         reverse: bool,
+        jq_filter: str,
         context: &#34;grpc.ServicerContext&#34;,
     ) -&gt; Iterator[&#34;JobSetInfo&#34;]:
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -1935,6 +2098,13 @@ class ApiBase:
         context.set_details(&#34;Method not implemented!&#34;)
         raise NotImplementedError(&#34;Method not implemented!&#34;)
 
+    def rerun_pipeline(
+        self, pipeline: &#34;Pipeline&#34;, reprocess: bool, context: &#34;grpc.ServicerContext&#34;
+    ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
     def create_pipeline(
         self,
         pipeline: &#34;Pipeline&#34;,
@@ -1967,8 +2137,22 @@ class ApiBase:
         autoscaling: bool,
         tolerations: Optional[List[&#34;Toleration&#34;]],
         sidecar_resource_requests: &#34;ResourceSpec&#34;,
+        dry_run: bool,
+        determined: &#34;Determined&#34;,
         context: &#34;grpc.ServicerContext&#34;,
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def create_pipeline_v2(
+        self,
+        create_pipeline_request_json: str,
+        dry_run: bool,
+        update: bool,
+        reprocess: bool,
+        context: &#34;grpc.ServicerContext&#34;,
+    ) -&gt; &#34;CreatePipelineV2Response&#34;:
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details(&#34;Method not implemented!&#34;)
         raise NotImplementedError(&#34;Method not implemented!&#34;)
@@ -2000,6 +2184,7 @@ class ApiBase:
         all: bool,
         force: bool,
         keep_repo: bool,
+        must_exist: bool,
         context: &#34;grpc.ServicerContext&#34;,
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -2026,7 +2211,7 @@ class ApiBase:
         raise NotImplementedError(&#34;Method not implemented!&#34;)
 
     def stop_pipeline(
-        self, pipeline: &#34;Pipeline&#34;, context: &#34;grpc.ServicerContext&#34;
+        self, pipeline: &#34;Pipeline&#34;, must_exist: bool, context: &#34;grpc.ServicerContext&#34;
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details(&#34;Method not implemented!&#34;)
@@ -2172,6 +2357,25 @@ class ApiBase:
         context.set_details(&#34;Method not implemented!&#34;)
         raise NotImplementedError(&#34;Method not implemented!&#34;)
 
+    def get_cluster_defaults(
+        self, context: &#34;grpc.ServicerContext&#34;
+    ) -&gt; &#34;GetClusterDefaultsResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def set_cluster_defaults(
+        self,
+        regenerate: bool,
+        reprocess: bool,
+        dry_run: bool,
+        cluster_defaults_json: str,
+        context: &#34;grpc.ServicerContext&#34;,
+    ) -&gt; &#34;SetClusterDefaultsResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
     __proto_path__ = &#34;pps_v2.API&#34;
 
     @property
@@ -2227,10 +2431,20 @@ class ApiBase:
                 request_deserializer=RestartDatumRequest.FromString,
                 response_serializer=RestartDatumRequest.SerializeToString,
             ),
+            &#34;RerunPipeline&#34;: grpc.unary_unary_rpc_method_handler(
+                self.rerun_pipeline,
+                request_deserializer=RerunPipelineRequest.FromString,
+                response_serializer=RerunPipelineRequest.SerializeToString,
+            ),
             &#34;CreatePipeline&#34;: grpc.unary_unary_rpc_method_handler(
                 self.create_pipeline,
                 request_deserializer=CreatePipelineRequest.FromString,
                 response_serializer=CreatePipelineRequest.SerializeToString,
+            ),
+            &#34;CreatePipelineV2&#34;: grpc.unary_unary_rpc_method_handler(
+                self.create_pipeline_v2,
+                request_deserializer=CreatePipelineV2Request.FromString,
+                response_serializer=CreatePipelineV2Request.SerializeToString,
             ),
             &#34;InspectPipeline&#34;: grpc.unary_unary_rpc_method_handler(
                 self.inspect_pipeline,
@@ -2342,6 +2556,16 @@ class ApiBase:
                 request_deserializer=LokiRequest.FromString,
                 response_serializer=LokiRequest.SerializeToString,
             ),
+            &#34;GetClusterDefaults&#34;: grpc.unary_unary_rpc_method_handler(
+                self.get_cluster_defaults,
+                request_deserializer=GetClusterDefaultsRequest.FromString,
+                response_serializer=GetClusterDefaultsRequest.SerializeToString,
+            ),
+            &#34;SetClusterDefaults&#34;: grpc.unary_unary_rpc_method_handler(
+                self.set_cluster_defaults,
+                request_deserializer=SetClusterDefaultsRequest.FromString,
+                response_serializer=SetClusterDefaultsRequest.SerializeToString,
+            ),
         }</code></pre>
 </details>
 </section>
@@ -2350,7 +2574,7 @@ class ApiBase:
 <dl>
 <dt><code class="name"><a title="pachyderm_sdk.api.pps.extension" href="extension.html">pachyderm_sdk.api.pps.extension</a></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Handwritten classes/methods that augment the existing PPS API.</p></div>
 </dd>
 </dl>
 </section>
@@ -2363,10 +2587,11 @@ class ApiBase:
 <dl>
 <dt id="pachyderm_sdk.api.pps.JobState"><code class="flex name class">
 <span>class <span class="ident">JobState</span></span>
-<span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
+<span>(</span><span>*args, **kwds)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>An enumeration.</p></div>
+<div class="desc"><p>The base class for protobuf enumerations, all generated enumerations will inherit
+from this. Bases :class:<code>enum.IntEnum</code>.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2388,6 +2613,7 @@ class ApiBase:
 <li>betterproto.Enum</li>
 <li>enum.IntEnum</li>
 <li>builtins.int</li>
+<li>enum.ReprEnum</li>
 <li>enum.Enum</li>
 </ul>
 <h3>Class variables</h3>
@@ -2436,10 +2662,11 @@ class ApiBase:
 </dd>
 <dt id="pachyderm_sdk.api.pps.DatumState"><code class="flex name class">
 <span>class <span class="ident">DatumState</span></span>
-<span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
+<span>(</span><span>*args, **kwds)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>An enumeration.</p></div>
+<div class="desc"><p>The base class for protobuf enumerations, all generated enumerations will inherit
+from this. Bases :class:<code>enum.IntEnum</code>.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2457,6 +2684,7 @@ class ApiBase:
 <li>betterproto.Enum</li>
 <li>enum.IntEnum</li>
 <li>builtins.int</li>
+<li>enum.ReprEnum</li>
 <li>enum.Enum</li>
 </ul>
 <h3>Class variables</h3>
@@ -2489,10 +2717,11 @@ class ApiBase:
 </dd>
 <dt id="pachyderm_sdk.api.pps.WorkerState"><code class="flex name class">
 <span>class <span class="ident">WorkerState</span></span>
-<span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
+<span>(</span><span>*args, **kwds)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>An enumeration.</p></div>
+<div class="desc"><p>The base class for protobuf enumerations, all generated enumerations will inherit
+from this. Bases :class:<code>enum.IntEnum</code>.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2508,6 +2737,7 @@ class ApiBase:
 <li>betterproto.Enum</li>
 <li>enum.IntEnum</li>
 <li>builtins.int</li>
+<li>enum.ReprEnum</li>
 <li>enum.Enum</li>
 </ul>
 <h3>Class variables</h3>
@@ -2532,10 +2762,11 @@ class ApiBase:
 </dd>
 <dt id="pachyderm_sdk.api.pps.PipelineState"><code class="flex name class">
 <span>class <span class="ident">PipelineState</span></span>
-<span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
+<span>(</span><span>*args, **kwds)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>An enumeration.</p></div>
+<div class="desc"><p>The base class for protobuf enumerations, all generated enumerations will inherit
+from this. Bases :class:<code>enum.IntEnum</code>.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2590,6 +2821,7 @@ class ApiBase:
 <li>betterproto.Enum</li>
 <li>enum.IntEnum</li>
 <li>builtins.int</li>
+<li>enum.ReprEnum</li>
 <li>enum.Enum</li>
 </ul>
 <h3>Class variables</h3>
@@ -2638,7 +2870,7 @@ problem is only being experienced by some workers.</p></div>
 </dd>
 <dt id="pachyderm_sdk.api.pps.TolerationOperator"><code class="flex name class">
 <span>class <span class="ident">TolerationOperator</span></span>
-<span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
+<span>(</span><span>*args, **kwds)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>TolerationOperator relates a Toleration's key to its value.</p></div>
@@ -2658,6 +2890,7 @@ problem is only being experienced by some workers.</p></div>
 <li>betterproto.Enum</li>
 <li>enum.IntEnum</li>
 <li>builtins.int</li>
+<li>enum.ReprEnum</li>
 <li>enum.Enum</li>
 </ul>
 <h3>Class variables</h3>
@@ -2678,7 +2911,7 @@ problem is only being experienced by some workers.</p></div>
 </dd>
 <dt id="pachyderm_sdk.api.pps.TaintEffect"><code class="flex name class">
 <span>class <span class="ident">TaintEffect</span></span>
-<span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
+<span>(</span><span>*args, **kwds)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>TaintEffect is an effect that can be matched by a toleration.</p></div>
@@ -2699,6 +2932,7 @@ problem is only being experienced by some workers.</p></div>
 <li>betterproto.Enum</li>
 <li>enum.IntEnum</li>
 <li>builtins.int</li>
+<li>enum.ReprEnum</li>
 <li>enum.Enum</li>
 </ul>
 <h3>Class variables</h3>
@@ -2723,7 +2957,7 @@ problem is only being experienced by some workers.</p></div>
 </dd>
 <dt id="pachyderm_sdk.api.pps.PipelineInfoPipelineType"><code class="flex name class">
 <span>class <span class="ident">PipelineInfoPipelineType</span></span>
-<span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
+<span>(</span><span>*args, **kwds)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>The pipeline type is stored here so that we can internally know the type of
@@ -2748,6 +2982,7 @@ the pipeline without loading the spec from PFS.</p></div>
 <li>betterproto.Enum</li>
 <li>enum.IntEnum</li>
 <li>builtins.int</li>
+<li>enum.ReprEnum</li>
 <li>enum.Enum</li>
 </ul>
 <h3>Class variables</h3>
@@ -2990,6 +3225,33 @@ class Egress(betterproto.Message):
 <div class="desc"></div>
 </dd>
 <dt id="pachyderm_sdk.api.pps.Egress.sql_database"><code class="name">var <span class="ident">sql_database</span> : <a title="pachyderm_sdk.api.pfs.SqlDatabaseEgress" href="../pfs/index.html#pachyderm_sdk.api.pfs.SqlDatabaseEgress">SqlDatabaseEgress</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.pps.Determined"><code class="flex name class">
+<span>class <span class="ident">Determined</span></span>
+<span>(</span><span>workspaces: List[str] = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Determined(workspaces: List[str] = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class Determined(betterproto.Message):
+    workspaces: List[str] = betterproto.string_field(1)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.pps.Determined.workspaces"><code class="name">var <span class="ident">workspaces</span> : List[str]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -3911,7 +4173,7 @@ class JobSetInfo(betterproto.Message):
 </dd>
 <dt id="pachyderm_sdk.api.pps.JobInfo"><code class="flex name class">
 <span>class <span class="ident">JobInfo</span></span>
-<span>(</span><span>job: <a title="pachyderm_sdk.api.pps.Job" href="#pachyderm_sdk.api.pps.Job">Job</a> = None, pipeline_version: int = None, output_commit: _pfs__.Commit = None, restart: int = None, data_processed: int = None, data_skipped: int = None, data_total: int = None, data_failed: int = None, data_recovered: int = None, stats: <a title="pachyderm_sdk.api.pps.ProcessStats" href="#pachyderm_sdk.api.pps.ProcessStats">ProcessStats</a> = None, state: <a title="pachyderm_sdk.api.pps.JobState" href="#pachyderm_sdk.api.pps.JobState">JobState</a> = None, reason: str = None, created: datetime.datetime = None, started: datetime.datetime = None, finished: datetime.datetime = None, details: <a title="pachyderm_sdk.api.pps.JobInfoDetails" href="#pachyderm_sdk.api.pps.JobInfoDetails">JobInfoDetails</a> = None)</span>
+<span>(</span><span>job: <a title="pachyderm_sdk.api.pps.Job" href="#pachyderm_sdk.api.pps.Job">Job</a> = None, pipeline_version: int = None, output_commit: _pfs__.Commit = None, restart: int = None, data_processed: int = None, data_skipped: int = None, data_total: int = None, data_failed: int = None, data_recovered: int = None, stats: <a title="pachyderm_sdk.api.pps.ProcessStats" href="#pachyderm_sdk.api.pps.ProcessStats">ProcessStats</a> = None, state: <a title="pachyderm_sdk.api.pps.JobState" href="#pachyderm_sdk.api.pps.JobState">JobState</a> = None, reason: str = None, created: datetime.datetime = None, started: datetime.datetime = None, finished: datetime.datetime = None, details: <a title="pachyderm_sdk.api.pps.JobInfoDetails" href="#pachyderm_sdk.api.pps.JobInfoDetails">JobInfoDetails</a> = None, auth_token: str = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>JobInfo is the data stored in the database regarding a given job.
@@ -3953,7 +4215,8 @@ class JobInfo(betterproto.Message):
     created: datetime = betterproto.message_field(13)
     started: datetime = betterproto.message_field(14)
     finished: datetime = betterproto.message_field(15)
-    details: &#34;JobInfoDetails&#34; = betterproto.message_field(16)</code></pre>
+    details: &#34;JobInfoDetails&#34; = betterproto.message_field(16)
+    auth_token: str = betterproto.string_field(17)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -4023,6 +4286,10 @@ class JobInfo(betterproto.Message):
 <div class="desc"></div>
 </dd>
 <dt id="pachyderm_sdk.api.pps.JobInfo.details"><code class="name">var <span class="ident">details</span> : <a title="pachyderm_sdk.api.pps.JobInfoDetails" href="#pachyderm_sdk.api.pps.JobInfoDetails">JobInfoDetails</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.pps.JobInfo.auth_token"><code class="name">var <span class="ident">auth_token</span> : str</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -4288,7 +4555,7 @@ If not set, tolerate the taint forever.</p></div>
 </dd>
 <dt id="pachyderm_sdk.api.pps.PipelineInfo"><code class="flex name class">
 <span>class <span class="ident">PipelineInfo</span></span>
-<span>(</span><span>pipeline: <a title="pachyderm_sdk.api.pps.Pipeline" href="#pachyderm_sdk.api.pps.Pipeline">Pipeline</a> = None, version: int = None, spec_commit: _pfs__.Commit = None, stopped: bool = None, state: <a title="pachyderm_sdk.api.pps.PipelineState" href="#pachyderm_sdk.api.pps.PipelineState">PipelineState</a> = None, reason: str = None, last_job_state: <a title="pachyderm_sdk.api.pps.JobState" href="#pachyderm_sdk.api.pps.JobState">JobState</a> = None, parallelism: int = None, type: <a title="pachyderm_sdk.api.pps.PipelineInfoPipelineType" href="#pachyderm_sdk.api.pps.PipelineInfoPipelineType">PipelineInfoPipelineType</a> = None, auth_token: str = None, details: <a title="pachyderm_sdk.api.pps.PipelineInfoDetails" href="#pachyderm_sdk.api.pps.PipelineInfoDetails">PipelineInfoDetails</a> = None)</span>
+<span>(</span><span>pipeline: <a title="pachyderm_sdk.api.pps.Pipeline" href="#pachyderm_sdk.api.pps.Pipeline">Pipeline</a> = None, version: int = None, spec_commit: _pfs__.Commit = None, stopped: bool = None, state: <a title="pachyderm_sdk.api.pps.PipelineState" href="#pachyderm_sdk.api.pps.PipelineState">PipelineState</a> = None, reason: str = None, last_job_state: <a title="pachyderm_sdk.api.pps.JobState" href="#pachyderm_sdk.api.pps.JobState">JobState</a> = None, parallelism: int = None, type: <a title="pachyderm_sdk.api.pps.PipelineInfoPipelineType" href="#pachyderm_sdk.api.pps.PipelineInfoPipelineType">PipelineInfoPipelineType</a> = None, auth_token: str = None, details: <a title="pachyderm_sdk.api.pps.PipelineInfoDetails" href="#pachyderm_sdk.api.pps.PipelineInfoDetails">PipelineInfoDetails</a> = None, user_spec_json: str = None, effective_spec_json: str = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>PipelineInfo is proto for each pipeline that Pachd stores in the database.
@@ -4333,7 +4600,9 @@ class PipelineInfo(betterproto.Message):
 
     type: &#34;PipelineInfoPipelineType&#34; = betterproto.enum_field(10)
     auth_token: str = betterproto.string_field(11)
-    details: &#34;PipelineInfoDetails&#34; = betterproto.message_field(12)</code></pre>
+    details: &#34;PipelineInfoDetails&#34; = betterproto.message_field(12)
+    user_spec_json: str = betterproto.string_field(13)
+    effective_spec_json: str = betterproto.string_field(14)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -4387,14 +4656,22 @@ run.</p></div>
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="pachyderm_sdk.api.pps.PipelineInfo.user_spec_json"><code class="name">var <span class="ident">user_spec_json</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.pps.PipelineInfo.effective_spec_json"><code class="name">var <span class="ident">effective_spec_json</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 </dl>
 </dd>
 <dt id="pachyderm_sdk.api.pps.PipelineInfoDetails"><code class="flex name class">
 <span>class <span class="ident">PipelineInfoDetails</span></span>
-<span>(</span><span>transform: <a title="pachyderm_sdk.api.pps.Transform" href="#pachyderm_sdk.api.pps.Transform">Transform</a> = None, tf_job: <a title="pachyderm_sdk.api.pps.TfJob" href="#pachyderm_sdk.api.pps.TfJob">TfJob</a> = None, parallelism_spec: <a title="pachyderm_sdk.api.pps.ParallelismSpec" href="#pachyderm_sdk.api.pps.ParallelismSpec">ParallelismSpec</a> = None, egress: <a title="pachyderm_sdk.api.pps.Egress" href="#pachyderm_sdk.api.pps.Egress">Egress</a> = None, created_at: datetime.datetime = None, recent_error: str = None, workers_requested: int = None, workers_available: int = None, output_branch: str = None, resource_requests: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a> = None, resource_limits: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a> = None, sidecar_resource_limits: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a> = None, input: <a title="pachyderm_sdk.api.pps.Input" href="#pachyderm_sdk.api.pps.Input">Input</a> = None, description: str = None, salt: str = None, reason: str = None, service: <a title="pachyderm_sdk.api.pps.Service" href="#pachyderm_sdk.api.pps.Service">Service</a> = None, spout: <a title="pachyderm_sdk.api.pps.Spout" href="#pachyderm_sdk.api.pps.Spout">Spout</a> = None, datum_set_spec: <a title="pachyderm_sdk.api.pps.DatumSetSpec" href="#pachyderm_sdk.api.pps.DatumSetSpec">DatumSetSpec</a> = None, datum_timeout: datetime.timedelta = None, job_timeout: datetime.timedelta = None, datum_tries: int = None, scheduling_spec: <a title="pachyderm_sdk.api.pps.SchedulingSpec" href="#pachyderm_sdk.api.pps.SchedulingSpec">SchedulingSpec</a> = None, pod_spec: str = None, pod_patch: str = None, s3_out: bool = None, metadata: <a title="pachyderm_sdk.api.pps.Metadata" href="#pachyderm_sdk.api.pps.Metadata">Metadata</a> = None, reprocess_spec: str = None, unclaimed_tasks: int = None, worker_rc: str = None, autoscaling: bool = None, tolerations: List[ForwardRef('<a title="pachyderm_sdk.api.pps.Toleration" href="#pachyderm_sdk.api.pps.Toleration">Toleration</a>')] = None, sidecar_resource_requests: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a> = None)</span>
+<span>(</span><span>transform: <a title="pachyderm_sdk.api.pps.Transform" href="#pachyderm_sdk.api.pps.Transform">Transform</a> = None, tf_job: <a title="pachyderm_sdk.api.pps.TfJob" href="#pachyderm_sdk.api.pps.TfJob">TfJob</a> = None, parallelism_spec: <a title="pachyderm_sdk.api.pps.ParallelismSpec" href="#pachyderm_sdk.api.pps.ParallelismSpec">ParallelismSpec</a> = None, egress: <a title="pachyderm_sdk.api.pps.Egress" href="#pachyderm_sdk.api.pps.Egress">Egress</a> = None, created_at: datetime.datetime = None, recent_error: str = None, workers_requested: int = None, workers_available: int = None, output_branch: str = None, resource_requests: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a> = None, resource_limits: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a> = None, sidecar_resource_limits: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a> = None, input: <a title="pachyderm_sdk.api.pps.Input" href="#pachyderm_sdk.api.pps.Input">Input</a> = None, description: str = None, salt: str = None, reason: str = None, service: <a title="pachyderm_sdk.api.pps.Service" href="#pachyderm_sdk.api.pps.Service">Service</a> = None, spout: <a title="pachyderm_sdk.api.pps.Spout" href="#pachyderm_sdk.api.pps.Spout">Spout</a> = None, datum_set_spec: <a title="pachyderm_sdk.api.pps.DatumSetSpec" href="#pachyderm_sdk.api.pps.DatumSetSpec">DatumSetSpec</a> = None, datum_timeout: datetime.timedelta = None, job_timeout: datetime.timedelta = None, datum_tries: int = None, scheduling_spec: <a title="pachyderm_sdk.api.pps.SchedulingSpec" href="#pachyderm_sdk.api.pps.SchedulingSpec">SchedulingSpec</a> = None, pod_spec: str = None, pod_patch: str = None, s3_out: bool = None, metadata: <a title="pachyderm_sdk.api.pps.Metadata" href="#pachyderm_sdk.api.pps.Metadata">Metadata</a> = None, reprocess_spec: str = None, unclaimed_tasks: int = None, worker_rc: str = None, autoscaling: bool = None, tolerations: List[ForwardRef('<a title="pachyderm_sdk.api.pps.Toleration" href="#pachyderm_sdk.api.pps.Toleration">Toleration</a>')] = None, sidecar_resource_requests: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a> = None, determined: <a title="pachyderm_sdk.api.pps.Determined" href="#pachyderm_sdk.api.pps.Determined">Determined</a> = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>PipelineInfoDetails(transform: 'Transform' = None, tf_job: 'TfJob' = None, parallelism_spec: 'ParallelismSpec' = None, egress: 'Egress' = None, created_at: datetime.datetime = None, recent_error: str = None, workers_requested: int = None, workers_available: int = None, output_branch: str = None, resource_requests: 'ResourceSpec' = None, resource_limits: 'ResourceSpec' = None, sidecar_resource_limits: 'ResourceSpec' = None, input: 'Input' = None, description: str = None, salt: str = None, reason: str = None, service: 'Service' = None, spout: 'Spout' = None, datum_set_spec: 'DatumSetSpec' = None, datum_timeout: datetime.timedelta = None, job_timeout: datetime.timedelta = None, datum_tries: int = None, scheduling_spec: 'SchedulingSpec' = None, pod_spec: str = None, pod_patch: str = None, s3_out: bool = None, metadata: 'Metadata' = None, reprocess_spec: str = None, unclaimed_tasks: int = None, worker_rc: str = None, autoscaling: bool = None, tolerations: List[ForwardRef('Toleration')] = None, sidecar_resource_requests: 'ResourceSpec' = None)</p></div>
+<div class="desc"><p>PipelineInfoDetails(transform: 'Transform' = None, tf_job: 'TfJob' = None, parallelism_spec: 'ParallelismSpec' = None, egress: 'Egress' = None, created_at: datetime.datetime = None, recent_error: str = None, workers_requested: int = None, workers_available: int = None, output_branch: str = None, resource_requests: 'ResourceSpec' = None, resource_limits: 'ResourceSpec' = None, sidecar_resource_limits: 'ResourceSpec' = None, input: 'Input' = None, description: str = None, salt: str = None, reason: str = None, service: 'Service' = None, spout: 'Spout' = None, datum_set_spec: 'DatumSetSpec' = None, datum_timeout: datetime.timedelta = None, job_timeout: datetime.timedelta = None, datum_tries: int = None, scheduling_spec: 'SchedulingSpec' = None, pod_spec: str = None, pod_patch: str = None, s3_out: bool = None, metadata: 'Metadata' = None, reprocess_spec: str = None, unclaimed_tasks: int = None, worker_rc: str = None, autoscaling: bool = None, tolerations: List[ForwardRef('Toleration')] = None, sidecar_resource_requests: 'ResourceSpec' = None, determined: 'Determined' = None)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4439,7 +4716,8 @@ class PipelineInfoDetails(betterproto.Message):
     worker_rc: str = betterproto.string_field(32)
     autoscaling: bool = betterproto.bool_field(33)
     tolerations: List[&#34;Toleration&#34;] = betterproto.message_field(34)
-    sidecar_resource_requests: &#34;ResourceSpec&#34; = betterproto.message_field(35)</code></pre>
+    sidecar_resource_requests: &#34;ResourceSpec&#34; = betterproto.message_field(35)
+    determined: &#34;Determined&#34; = betterproto.message_field(36)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -4582,6 +4860,10 @@ Exactly one of 'tf_job' and 'transform' should be set</p></div>
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="pachyderm_sdk.api.pps.PipelineInfoDetails.determined"><code class="name">var <span class="ident">determined</span> : <a title="pachyderm_sdk.api.pps.Determined" href="#pachyderm_sdk.api.pps.Determined">Determined</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 </dl>
 </dd>
 <dt id="pachyderm_sdk.api.pps.PipelineInfos"><code class="flex name class">
@@ -4677,10 +4959,10 @@ class InspectJobSetRequest(betterproto.Message):
 </dd>
 <dt id="pachyderm_sdk.api.pps.ListJobSetRequest"><code class="flex name class">
 <span>class <span class="ident">ListJobSetRequest</span></span>
-<span>(</span><span>details: bool = None, projects: List[ForwardRef('_pfs__.Project')] = None, pagination_marker: datetime.datetime = None, number: int = None, reverse: bool = None)</span>
+<span>(</span><span>details: bool = None, projects: List[ForwardRef('_pfs__.Project')] = None, pagination_marker: datetime.datetime = None, number: int = None, reverse: bool = None, jq_filter: str = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>ListJobSetRequest(details: bool = None, projects: List[ForwardRef('_pfs__.Project')] = None, pagination_marker: datetime.datetime = None, number: int = None, reverse: bool = None)</p></div>
+<div class="desc"><p>ListJobSetRequest(details: bool = None, projects: List[ForwardRef('_pfs__.Project')] = None, pagination_marker: datetime.datetime = None, number: int = None, reverse: bool = None, jq_filter: str = None)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4701,7 +4983,10 @@ class ListJobSetRequest(betterproto.Message):
     &#34;&#34;&#34;number of results to return&#34;&#34;&#34;
 
     reverse: bool = betterproto.bool_field(5)
-    &#34;&#34;&#34;if true, return results in reverse order&#34;&#34;&#34;</code></pre>
+    &#34;&#34;&#34;if true, return results in reverse order&#34;&#34;&#34;
+
+    jq_filter: str = betterproto.string_field(6)
+    &#34;&#34;&#34;A jq program string for additional result filtering&#34;&#34;&#34;</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -4730,6 +5015,10 @@ flag</p></div>
 <dt id="pachyderm_sdk.api.pps.ListJobSetRequest.reverse"><code class="name">var <span class="ident">reverse</span> : bool</code></dt>
 <dd>
 <div class="desc"><p>if true, return results in reverse order</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.pps.ListJobSetRequest.jq_filter"><code class="name">var <span class="ident">jq_filter</span> : str</code></dt>
+<dd>
+<div class="desc"><p>A jq program string for additional result filtering</p></div>
 </dd>
 </dl>
 </dd>
@@ -5499,12 +5788,45 @@ class SchedulingSpec(betterproto.Message):
 </dd>
 </dl>
 </dd>
-<dt id="pachyderm_sdk.api.pps.CreatePipelineRequest"><code class="flex name class">
-<span>class <span class="ident">CreatePipelineRequest</span></span>
-<span>(</span><span>pipeline: <a title="pachyderm_sdk.api.pps.Pipeline" href="#pachyderm_sdk.api.pps.Pipeline">Pipeline</a> = None, tf_job: <a title="pachyderm_sdk.api.pps.TfJob" href="#pachyderm_sdk.api.pps.TfJob">TfJob</a> = None, transform: <a title="pachyderm_sdk.api.pps.Transform" href="#pachyderm_sdk.api.pps.Transform">Transform</a> = None, parallelism_spec: <a title="pachyderm_sdk.api.pps.ParallelismSpec" href="#pachyderm_sdk.api.pps.ParallelismSpec">ParallelismSpec</a> = None, egress: <a title="pachyderm_sdk.api.pps.Egress" href="#pachyderm_sdk.api.pps.Egress">Egress</a> = None, update: bool = None, output_branch: str = None, s3_out: bool = None, resource_requests: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a> = None, resource_limits: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a> = None, sidecar_resource_limits: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a> = None, input: <a title="pachyderm_sdk.api.pps.Input" href="#pachyderm_sdk.api.pps.Input">Input</a> = None, description: str = None, reprocess: bool = None, service: <a title="pachyderm_sdk.api.pps.Service" href="#pachyderm_sdk.api.pps.Service">Service</a> = None, spout: <a title="pachyderm_sdk.api.pps.Spout" href="#pachyderm_sdk.api.pps.Spout">Spout</a> = None, datum_set_spec: <a title="pachyderm_sdk.api.pps.DatumSetSpec" href="#pachyderm_sdk.api.pps.DatumSetSpec">DatumSetSpec</a> = None, datum_timeout: datetime.timedelta = None, job_timeout: datetime.timedelta = None, salt: str = None, datum_tries: int = None, scheduling_spec: <a title="pachyderm_sdk.api.pps.SchedulingSpec" href="#pachyderm_sdk.api.pps.SchedulingSpec">SchedulingSpec</a> = None, pod_spec: str = None, pod_patch: str = None, spec_commit: _pfs__.Commit = None, metadata: <a title="pachyderm_sdk.api.pps.Metadata" href="#pachyderm_sdk.api.pps.Metadata">Metadata</a> = None, reprocess_spec: str = None, autoscaling: bool = None, tolerations: List[ForwardRef('<a title="pachyderm_sdk.api.pps.Toleration" href="#pachyderm_sdk.api.pps.Toleration">Toleration</a>')] = None, sidecar_resource_requests: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a> = None)</span>
+<dt id="pachyderm_sdk.api.pps.RerunPipelineRequest"><code class="flex name class">
+<span>class <span class="ident">RerunPipelineRequest</span></span>
+<span>(</span><span>pipeline: <a title="pachyderm_sdk.api.pps.Pipeline" href="#pachyderm_sdk.api.pps.Pipeline">Pipeline</a> = None, reprocess: bool = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>CreatePipelineRequest(pipeline: 'Pipeline' = None, tf_job: 'TfJob' = None, transform: 'Transform' = None, parallelism_spec: 'ParallelismSpec' = None, egress: 'Egress' = None, update: bool = None, output_branch: str = None, s3_out: bool = None, resource_requests: 'ResourceSpec' = None, resource_limits: 'ResourceSpec' = None, sidecar_resource_limits: 'ResourceSpec' = None, input: 'Input' = None, description: str = None, reprocess: bool = None, service: 'Service' = None, spout: 'Spout' = None, datum_set_spec: 'DatumSetSpec' = None, datum_timeout: datetime.timedelta = None, job_timeout: datetime.timedelta = None, salt: str = None, datum_tries: int = None, scheduling_spec: 'SchedulingSpec' = None, pod_spec: str = None, pod_patch: str = None, spec_commit: '_pfs__.Commit' = None, metadata: 'Metadata' = None, reprocess_spec: str = None, autoscaling: bool = None, tolerations: List[ForwardRef('Toleration')] = None, sidecar_resource_requests: 'ResourceSpec' = None)</p></div>
+<div class="desc"><p>RerunPipelineRequest(pipeline: 'Pipeline' = None, reprocess: bool = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class RerunPipelineRequest(betterproto.Message):
+    pipeline: &#34;Pipeline&#34; = betterproto.message_field(1)
+    reprocess: bool = betterproto.bool_field(15)
+    &#34;&#34;&#34;Reprocess forces the pipeline to reprocess all datums.&#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.pps.RerunPipelineRequest.pipeline"><code class="name">var <span class="ident">pipeline</span> : <a title="pachyderm_sdk.api.pps.Pipeline" href="#pachyderm_sdk.api.pps.Pipeline">Pipeline</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.pps.RerunPipelineRequest.reprocess"><code class="name">var <span class="ident">reprocess</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>Reprocess forces the pipeline to reprocess all datums.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.pps.CreatePipelineRequest"><code class="flex name class">
+<span>class <span class="ident">CreatePipelineRequest</span></span>
+<span>(</span><span>pipeline: <a title="pachyderm_sdk.api.pps.Pipeline" href="#pachyderm_sdk.api.pps.Pipeline">Pipeline</a> = None, tf_job: <a title="pachyderm_sdk.api.pps.TfJob" href="#pachyderm_sdk.api.pps.TfJob">TfJob</a> = None, transform: <a title="pachyderm_sdk.api.pps.Transform" href="#pachyderm_sdk.api.pps.Transform">Transform</a> = None, parallelism_spec: <a title="pachyderm_sdk.api.pps.ParallelismSpec" href="#pachyderm_sdk.api.pps.ParallelismSpec">ParallelismSpec</a> = None, egress: <a title="pachyderm_sdk.api.pps.Egress" href="#pachyderm_sdk.api.pps.Egress">Egress</a> = None, update: bool = None, output_branch: str = None, s3_out: bool = None, resource_requests: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a> = None, resource_limits: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a> = None, sidecar_resource_limits: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a> = None, input: <a title="pachyderm_sdk.api.pps.Input" href="#pachyderm_sdk.api.pps.Input">Input</a> = None, description: str = None, reprocess: bool = None, service: <a title="pachyderm_sdk.api.pps.Service" href="#pachyderm_sdk.api.pps.Service">Service</a> = None, spout: <a title="pachyderm_sdk.api.pps.Spout" href="#pachyderm_sdk.api.pps.Spout">Spout</a> = None, datum_set_spec: <a title="pachyderm_sdk.api.pps.DatumSetSpec" href="#pachyderm_sdk.api.pps.DatumSetSpec">DatumSetSpec</a> = None, datum_timeout: datetime.timedelta = None, job_timeout: datetime.timedelta = None, salt: str = None, datum_tries: int = None, scheduling_spec: <a title="pachyderm_sdk.api.pps.SchedulingSpec" href="#pachyderm_sdk.api.pps.SchedulingSpec">SchedulingSpec</a> = None, pod_spec: str = None, pod_patch: str = None, spec_commit: _pfs__.Commit = None, metadata: <a title="pachyderm_sdk.api.pps.Metadata" href="#pachyderm_sdk.api.pps.Metadata">Metadata</a> = None, reprocess_spec: str = None, autoscaling: bool = None, tolerations: List[ForwardRef('<a title="pachyderm_sdk.api.pps.Toleration" href="#pachyderm_sdk.api.pps.Toleration">Toleration</a>')] = None, sidecar_resource_requests: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a> = None, dry_run: bool = None, determined: <a title="pachyderm_sdk.api.pps.Determined" href="#pachyderm_sdk.api.pps.Determined">Determined</a> = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>CreatePipelineRequest(pipeline: 'Pipeline' = None, tf_job: 'TfJob' = None, transform: 'Transform' = None, parallelism_spec: 'ParallelismSpec' = None, egress: 'Egress' = None, update: bool = None, output_branch: str = None, s3_out: bool = None, resource_requests: 'ResourceSpec' = None, resource_limits: 'ResourceSpec' = None, sidecar_resource_limits: 'ResourceSpec' = None, input: 'Input' = None, description: str = None, reprocess: bool = None, service: 'Service' = None, spout: 'Spout' = None, datum_set_spec: 'DatumSetSpec' = None, datum_timeout: datetime.timedelta = None, job_timeout: datetime.timedelta = None, salt: str = None, datum_tries: int = None, scheduling_spec: 'SchedulingSpec' = None, pod_spec: str = None, pod_patch: str = None, spec_commit: '_pfs__.Commit' = None, metadata: 'Metadata' = None, reprocess_spec: str = None, autoscaling: bool = None, tolerations: List[ForwardRef('Toleration')] = None, sidecar_resource_requests: 'ResourceSpec' = None, dry_run: bool = None, determined: 'Determined' = None)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -5559,7 +5881,9 @@ class CreatePipelineRequest(betterproto.Message):
     reprocess_spec: str = betterproto.string_field(29)
     autoscaling: bool = betterproto.bool_field(30)
     tolerations: List[&#34;Toleration&#34;] = betterproto.message_field(34)
-    sidecar_resource_requests: &#34;ResourceSpec&#34; = betterproto.message_field(35)</code></pre>
+    sidecar_resource_requests: &#34;ResourceSpec&#34; = betterproto.message_field(35)
+    dry_run: bool = betterproto.bool_field(37)
+    determined: &#34;Determined&#34; = betterproto.message_field(38)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -5695,6 +6019,83 @@ if Update is true</p></div>
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="pachyderm_sdk.api.pps.CreatePipelineRequest.dry_run"><code class="name">var <span class="ident">dry_run</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.pps.CreatePipelineRequest.determined"><code class="name">var <span class="ident">determined</span> : <a title="pachyderm_sdk.api.pps.Determined" href="#pachyderm_sdk.api.pps.Determined">Determined</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.pps.CreatePipelineV2Request"><code class="flex name class">
+<span>class <span class="ident">CreatePipelineV2Request</span></span>
+<span>(</span><span>create_pipeline_request_json: str = None, dry_run: bool = None, update: bool = None, reprocess: bool = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>CreatePipelineV2Request(create_pipeline_request_json: str = None, dry_run: bool = None, update: bool = None, reprocess: bool = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class CreatePipelineV2Request(betterproto.Message):
+    create_pipeline_request_json: str = betterproto.string_field(1)
+    dry_run: bool = betterproto.bool_field(2)
+    update: bool = betterproto.bool_field(3)
+    reprocess: bool = betterproto.bool_field(4)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.pps.CreatePipelineV2Request.create_pipeline_request_json"><code class="name">var <span class="ident">create_pipeline_request_json</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.pps.CreatePipelineV2Request.dry_run"><code class="name">var <span class="ident">dry_run</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.pps.CreatePipelineV2Request.update"><code class="name">var <span class="ident">update</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.pps.CreatePipelineV2Request.reprocess"><code class="name">var <span class="ident">reprocess</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.pps.CreatePipelineV2Response"><code class="flex name class">
+<span>class <span class="ident">CreatePipelineV2Response</span></span>
+<span>(</span><span>effective_create_pipeline_request_json: str = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>CreatePipelineV2Response(effective_create_pipeline_request_json: str = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class CreatePipelineV2Response(betterproto.Message):
+    effective_create_pipeline_request_json: str = betterproto.string_field(1)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.pps.CreatePipelineV2Response.effective_create_pipeline_request_json"><code class="name">var <span class="ident">effective_create_pipeline_request_json</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 </dl>
 </dd>
 <dt id="pachyderm_sdk.api.pps.InspectPipelineRequest"><code class="flex name class">
@@ -5817,7 +6218,7 @@ loading the pipeline spec from PFS.</p></div>
 </dd>
 <dt id="pachyderm_sdk.api.pps.DeletePipelineRequest"><code class="flex name class">
 <span>class <span class="ident">DeletePipelineRequest</span></span>
-<span>(</span><span>pipeline: <a title="pachyderm_sdk.api.pps.Pipeline" href="#pachyderm_sdk.api.pps.Pipeline">Pipeline</a> = None, all: bool = None, force: bool = None, keep_repo: bool = None)</span>
+<span>(</span><span>pipeline: <a title="pachyderm_sdk.api.pps.Pipeline" href="#pachyderm_sdk.api.pps.Pipeline">Pipeline</a> = None, all: bool = None, force: bool = None, keep_repo: bool = None, must_exist: bool = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Delete a pipeline.
@@ -5838,6 +6239,8 @@ class DeletePipelineRequest(betterproto.Message):
     all: bool = betterproto.bool_field(2)
     force: bool = betterproto.bool_field(3)
     keep_repo: bool = betterproto.bool_field(4)
+    must_exist: bool = betterproto.bool_field(5)
+    &#34;&#34;&#34;If true, an error will be returned if the pipeline doesn&#39;t exist.&#34;&#34;&#34;
 
     def __post_init__(self) -&gt; None:
         super().__post_init__()
@@ -5866,6 +6269,10 @@ class DeletePipelineRequest(betterproto.Message):
 <dt id="pachyderm_sdk.api.pps.DeletePipelineRequest.keep_repo"><code class="name">var <span class="ident">keep_repo</span> : bool</code></dt>
 <dd>
 <div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.pps.DeletePipelineRequest.must_exist"><code class="name">var <span class="ident">must_exist</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>If true, an error will be returned if the pipeline doesn't exist.</p></div>
 </dd>
 </dl>
 </dd>
@@ -5978,17 +6385,19 @@ class StartPipelineRequest(betterproto.Message):
 </dd>
 <dt id="pachyderm_sdk.api.pps.StopPipelineRequest"><code class="flex name class">
 <span>class <span class="ident">StopPipelineRequest</span></span>
-<span>(</span><span>pipeline: <a title="pachyderm_sdk.api.pps.Pipeline" href="#pachyderm_sdk.api.pps.Pipeline">Pipeline</a> = None)</span>
+<span>(</span><span>pipeline: <a title="pachyderm_sdk.api.pps.Pipeline" href="#pachyderm_sdk.api.pps.Pipeline">Pipeline</a> = None, must_exist: bool = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>StopPipelineRequest(pipeline: 'Pipeline' = None)</p></div>
+<div class="desc"><p>StopPipelineRequest(pipeline: 'Pipeline' = None, must_exist: bool = None)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@dataclass(eq=False, repr=False)
 class StopPipelineRequest(betterproto.Message):
-    pipeline: &#34;Pipeline&#34; = betterproto.message_field(1)</code></pre>
+    pipeline: &#34;Pipeline&#34; = betterproto.message_field(1)
+    must_exist: bool = betterproto.bool_field(2)
+    &#34;&#34;&#34;If true, an error will be returned if the pipeline doesn&#39;t exist.&#34;&#34;&#34;</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -6000,6 +6409,10 @@ class StopPipelineRequest(betterproto.Message):
 <dt id="pachyderm_sdk.api.pps.StopPipelineRequest.pipeline"><code class="name">var <span class="ident">pipeline</span> : <a title="pachyderm_sdk.api.pps.Pipeline" href="#pachyderm_sdk.api.pps.Pipeline">Pipeline</a></code></dt>
 <dd>
 <div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.pps.StopPipelineRequest.must_exist"><code class="name">var <span class="ident">must_exist</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>If true, an error will be returned if the pipeline doesn't exist.</p></div>
 </dd>
 </dl>
 </dd>
@@ -6486,6 +6899,200 @@ class LokiLogMessage(betterproto.Message):
 </dd>
 </dl>
 </dd>
+<dt id="pachyderm_sdk.api.pps.ClusterDefaults"><code class="flex name class">
+<span>class <span class="ident">ClusterDefaults</span></span>
+<span>(</span><span>create_pipeline_request: <a title="pachyderm_sdk.api.pps.CreatePipelineRequest" href="#pachyderm_sdk.api.pps.CreatePipelineRequest">CreatePipelineRequest</a> = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>ClusterDefaults(create_pipeline_request: 'CreatePipelineRequest' = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class ClusterDefaults(betterproto.Message):
+    create_pipeline_request: &#34;CreatePipelineRequest&#34; = betterproto.message_field(3)
+    &#34;&#34;&#34;
+    CreatePipelineRequest contains the default JSON CreatePipelineRequest into
+    which pipeline specs are merged to form the effective spec used to create a
+    pipeline.
+    &#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.pps.ClusterDefaults.create_pipeline_request"><code class="name">var <span class="ident">create_pipeline_request</span> : <a title="pachyderm_sdk.api.pps.CreatePipelineRequest" href="#pachyderm_sdk.api.pps.CreatePipelineRequest">CreatePipelineRequest</a></code></dt>
+<dd>
+<div class="desc"><p>CreatePipelineRequest contains the default JSON CreatePipelineRequest into
+which pipeline specs are merged to form the effective spec used to create a
+pipeline.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.pps.GetClusterDefaultsRequest"><code class="flex name class">
+<span>class <span class="ident">GetClusterDefaultsRequest</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>GetClusterDefaultsRequest()</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class GetClusterDefaultsRequest(betterproto.Message):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+</dd>
+<dt id="pachyderm_sdk.api.pps.GetClusterDefaultsResponse"><code class="flex name class">
+<span>class <span class="ident">GetClusterDefaultsResponse</span></span>
+<span>(</span><span>cluster_defaults_json: str = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>GetClusterDefaultsResponse(cluster_defaults_json: str = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class GetClusterDefaultsResponse(betterproto.Message):
+    cluster_defaults_json: str = betterproto.string_field(2)
+    &#34;&#34;&#34;
+    A JSON-encoded ClusterDefaults message, this is the verbatim input passed
+    to SetClusterDefaults.
+    &#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.pps.GetClusterDefaultsResponse.cluster_defaults_json"><code class="name">var <span class="ident">cluster_defaults_json</span> : str</code></dt>
+<dd>
+<div class="desc"><p>A JSON-encoded ClusterDefaults message, this is the verbatim input passed
+to SetClusterDefaults.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.pps.SetClusterDefaultsRequest"><code class="flex name class">
+<span>class <span class="ident">SetClusterDefaultsRequest</span></span>
+<span>(</span><span>regenerate: bool = None, reprocess: bool = None, dry_run: bool = None, cluster_defaults_json: str = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>SetClusterDefaultsRequest(regenerate: bool = None, reprocess: bool = None, dry_run: bool = None, cluster_defaults_json: str = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class SetClusterDefaultsRequest(betterproto.Message):
+    regenerate: bool = betterproto.bool_field(2)
+    reprocess: bool = betterproto.bool_field(3)
+    dry_run: bool = betterproto.bool_field(4)
+    cluster_defaults_json: str = betterproto.string_field(5)
+    &#34;&#34;&#34;
+    A JSON-encoded ClusterDefaults message, this will be stored verbatim.
+    &#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.pps.SetClusterDefaultsRequest.regenerate"><code class="name">var <span class="ident">regenerate</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.pps.SetClusterDefaultsRequest.reprocess"><code class="name">var <span class="ident">reprocess</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.pps.SetClusterDefaultsRequest.dry_run"><code class="name">var <span class="ident">dry_run</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.pps.SetClusterDefaultsRequest.cluster_defaults_json"><code class="name">var <span class="ident">cluster_defaults_json</span> : str</code></dt>
+<dd>
+<div class="desc"><p>A JSON-encoded ClusterDefaults message, this will be stored verbatim.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.pps.SetClusterDefaultsResponse"><code class="flex name class">
+<span>class <span class="ident">SetClusterDefaultsResponse</span></span>
+<span>(</span><span>affected_pipelines: List[ForwardRef('<a title="pachyderm_sdk.api.pps.Pipeline" href="#pachyderm_sdk.api.pps.Pipeline">Pipeline</a>')] = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>SetClusterDefaultsResponse(affected_pipelines: List[ForwardRef('Pipeline')] = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class SetClusterDefaultsResponse(betterproto.Message):
+    affected_pipelines: List[&#34;Pipeline&#34;] = betterproto.message_field(2)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.pps.SetClusterDefaultsResponse.affected_pipelines"><code class="name">var <span class="ident">affected_pipelines</span> : List[<a title="pachyderm_sdk.api.pps.Pipeline" href="#pachyderm_sdk.api.pps.Pipeline">Pipeline</a>]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.pps.CreatePipelineTransaction"><code class="flex name class">
+<span>class <span class="ident">CreatePipelineTransaction</span></span>
+<span>(</span><span>create_pipeline_request: <a title="pachyderm_sdk.api.pps.CreatePipelineRequest" href="#pachyderm_sdk.api.pps.CreatePipelineRequest">CreatePipelineRequest</a> = None, user_json: str = None, effective_json: str = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>CreatePipelineTransaction(create_pipeline_request: 'CreatePipelineRequest' = None, user_json: str = None, effective_json: str = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class CreatePipelineTransaction(betterproto.Message):
+    create_pipeline_request: &#34;CreatePipelineRequest&#34; = betterproto.message_field(1)
+    user_json: str = betterproto.string_field(2)
+    effective_json: str = betterproto.string_field(3)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.pps.CreatePipelineTransaction.create_pipeline_request"><code class="name">var <span class="ident">create_pipeline_request</span> : <a title="pachyderm_sdk.api.pps.CreatePipelineRequest" href="#pachyderm_sdk.api.pps.CreatePipelineRequest">CreatePipelineRequest</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.pps.CreatePipelineTransaction.user_json"><code class="name">var <span class="ident">user_json</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.pps.CreatePipelineTransaction.effective_json"><code class="name">var <span class="ident">effective_json</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
 <dt id="pachyderm_sdk.api.pps.ApiStub"><code class="flex name class">
 <span>class <span class="ident">ApiStub</span></span>
 <span>(</span><span>channel: grpc.Channel)</span>
@@ -6548,10 +7155,20 @@ class LokiLogMessage(betterproto.Message):
             request_serializer=RestartDatumRequest.SerializeToString,
             response_deserializer=betterproto_lib_google_protobuf.Empty.FromString,
         )
+        self.__rpc_rerun_pipeline = channel.unary_unary(
+            &#34;/pps_v2.API/RerunPipeline&#34;,
+            request_serializer=RerunPipelineRequest.SerializeToString,
+            response_deserializer=betterproto_lib_google_protobuf.Empty.FromString,
+        )
         self.__rpc_create_pipeline = channel.unary_unary(
             &#34;/pps_v2.API/CreatePipeline&#34;,
             request_serializer=CreatePipelineRequest.SerializeToString,
             response_deserializer=betterproto_lib_google_protobuf.Empty.FromString,
+        )
+        self.__rpc_create_pipeline_v2 = channel.unary_unary(
+            &#34;/pps_v2.API/CreatePipelineV2&#34;,
+            request_serializer=CreatePipelineV2Request.SerializeToString,
+            response_deserializer=CreatePipelineV2Response.FromString,
         )
         self.__rpc_inspect_pipeline = channel.unary_unary(
             &#34;/pps_v2.API/InspectPipeline&#34;,
@@ -6663,6 +7280,16 @@ class LokiLogMessage(betterproto.Message):
             request_serializer=LokiRequest.SerializeToString,
             response_deserializer=LokiLogMessage.FromString,
         )
+        self.__rpc_get_cluster_defaults = channel.unary_unary(
+            &#34;/pps_v2.API/GetClusterDefaults&#34;,
+            request_serializer=GetClusterDefaultsRequest.SerializeToString,
+            response_deserializer=GetClusterDefaultsResponse.FromString,
+        )
+        self.__rpc_set_cluster_defaults = channel.unary_unary(
+            &#34;/pps_v2.API/SetClusterDefaults&#34;,
+            request_serializer=SetClusterDefaultsRequest.SerializeToString,
+            response_deserializer=SetClusterDefaultsResponse.FromString,
+        )
 
     def inspect_job(
         self, *, job: &#34;Job&#34; = None, wait: bool = False, details: bool = False
@@ -6728,7 +7355,8 @@ class LokiLogMessage(betterproto.Message):
         projects: Optional[List[&#34;_pfs__.Project&#34;]] = None,
         pagination_marker: datetime = None,
         number: int = 0,
-        reverse: bool = False
+        reverse: bool = False,
+        jq_filter: str = &#34;&#34;
     ) -&gt; Iterator[&#34;JobSetInfo&#34;]:
         projects = projects or []
 
@@ -6740,6 +7368,7 @@ class LokiLogMessage(betterproto.Message):
             request.pagination_marker = pagination_marker
         request.number = number
         request.reverse = reverse
+        request.jq_filter = jq_filter
 
         for response in self.__rpc_list_job_set(request):
             yield response
@@ -6817,6 +7446,16 @@ class LokiLogMessage(betterproto.Message):
 
         return self.__rpc_restart_datum(request)
 
+    def rerun_pipeline(
+        self, *, pipeline: &#34;Pipeline&#34; = None, reprocess: bool = False
+    ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+        request = RerunPipelineRequest()
+        if pipeline is not None:
+            request.pipeline = pipeline
+        request.reprocess = reprocess
+
+        return self.__rpc_rerun_pipeline(request)
+
     def create_pipeline(
         self,
         *,
@@ -6849,7 +7488,9 @@ class LokiLogMessage(betterproto.Message):
         reprocess_spec: str = &#34;&#34;,
         autoscaling: bool = False,
         tolerations: Optional[List[&#34;Toleration&#34;]] = None,
-        sidecar_resource_requests: &#34;ResourceSpec&#34; = None
+        sidecar_resource_requests: &#34;ResourceSpec&#34; = None,
+        dry_run: bool = False,
+        determined: &#34;Determined&#34; = None
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
         tolerations = tolerations or []
 
@@ -6903,8 +7544,27 @@ class LokiLogMessage(betterproto.Message):
             request.tolerations = tolerations
         if sidecar_resource_requests is not None:
             request.sidecar_resource_requests = sidecar_resource_requests
+        request.dry_run = dry_run
+        if determined is not None:
+            request.determined = determined
 
         return self.__rpc_create_pipeline(request)
+
+    def create_pipeline_v2(
+        self,
+        *,
+        create_pipeline_request_json: str = &#34;&#34;,
+        dry_run: bool = False,
+        update: bool = False,
+        reprocess: bool = False
+    ) -&gt; &#34;CreatePipelineV2Response&#34;:
+        request = CreatePipelineV2Request()
+        request.create_pipeline_request_json = create_pipeline_request_json
+        request.dry_run = dry_run
+        request.update = update
+        request.reprocess = reprocess
+
+        return self.__rpc_create_pipeline_v2(request)
 
     def inspect_pipeline(
         self, *, pipeline: &#34;Pipeline&#34; = None, details: bool = False
@@ -6948,7 +7608,8 @@ class LokiLogMessage(betterproto.Message):
         pipeline: &#34;Pipeline&#34; = None,
         all: bool = False,
         force: bool = False,
-        keep_repo: bool = False
+        keep_repo: bool = False,
+        must_exist: bool = False
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
         request = DeletePipelineRequest()
         if pipeline is not None:
@@ -6956,6 +7617,7 @@ class LokiLogMessage(betterproto.Message):
         request.all = all
         request.force = force
         request.keep_repo = keep_repo
+        request.must_exist = must_exist
 
         return self.__rpc_delete_pipeline(request)
 
@@ -6988,11 +7650,12 @@ class LokiLogMessage(betterproto.Message):
         return self.__rpc_start_pipeline(request)
 
     def stop_pipeline(
-        self, *, pipeline: &#34;Pipeline&#34; = None
+        self, *, pipeline: &#34;Pipeline&#34; = None, must_exist: bool = False
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
         request = StopPipelineRequest()
         if pipeline is not None:
             request.pipeline = pipeline
+        request.must_exist = must_exist
 
         return self.__rpc_stop_pipeline(request)
 
@@ -7187,7 +7850,28 @@ class LokiLogMessage(betterproto.Message):
         request.query = query
 
         for response in self.__rpc_query_loki(request):
-            yield response</code></pre>
+            yield response
+
+    def get_cluster_defaults(self) -&gt; &#34;GetClusterDefaultsResponse&#34;:
+        request = GetClusterDefaultsRequest()
+
+        return self.__rpc_get_cluster_defaults(request)
+
+    def set_cluster_defaults(
+        self,
+        *,
+        regenerate: bool = False,
+        reprocess: bool = False,
+        dry_run: bool = False,
+        cluster_defaults_json: str = &#34;&#34;
+    ) -&gt; &#34;SetClusterDefaultsResponse&#34;:
+        request = SetClusterDefaultsRequest()
+        request.regenerate = regenerate
+        request.reprocess = reprocess
+        request.dry_run = dry_run
+        request.cluster_defaults_json = cluster_defaults_json
+
+        return self.__rpc_set_cluster_defaults(request)</code></pre>
 </details>
 <h3>Subclasses</h3>
 <ul class="hlist">
@@ -7283,7 +7967,7 @@ class LokiLogMessage(betterproto.Message):
 </details>
 </dd>
 <dt id="pachyderm_sdk.api.pps.ApiStub.list_job_set"><code class="name flex">
-<span>def <span class="ident">list_job_set</span></span>(<span>self, *, details: bool = False, projects: Optional[List[ForwardRef('_pfs__.Project')]] = None, pagination_marker: datetime.datetime = None, number: int = 0, reverse: bool = False) ‑> Iterator[<a title="pachyderm_sdk.api.pps.JobSetInfo" href="#pachyderm_sdk.api.pps.JobSetInfo">JobSetInfo</a>]</span>
+<span>def <span class="ident">list_job_set</span></span>(<span>self, *, details: bool = False, projects: Optional[List[ForwardRef('_pfs__.Project')]] = None, pagination_marker: datetime.datetime = None, number: int = 0, reverse: bool = False, jq_filter: str = '') ‑> Iterator[<a title="pachyderm_sdk.api.pps.JobSetInfo" href="#pachyderm_sdk.api.pps.JobSetInfo">JobSetInfo</a>]</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -7298,7 +7982,8 @@ class LokiLogMessage(betterproto.Message):
     projects: Optional[List[&#34;_pfs__.Project&#34;]] = None,
     pagination_marker: datetime = None,
     number: int = 0,
-    reverse: bool = False
+    reverse: bool = False,
+    jq_filter: str = &#34;&#34;
 ) -&gt; Iterator[&#34;JobSetInfo&#34;]:
     projects = projects or []
 
@@ -7310,6 +7995,7 @@ class LokiLogMessage(betterproto.Message):
         request.pagination_marker = pagination_marker
     request.number = number
     request.reverse = reverse
+    request.jq_filter = jq_filter
 
     for response in self.__rpc_list_job_set(request):
         yield response</code></pre>
@@ -7448,8 +8134,28 @@ class LokiLogMessage(betterproto.Message):
     return self.__rpc_restart_datum(request)</code></pre>
 </details>
 </dd>
+<dt id="pachyderm_sdk.api.pps.ApiStub.rerun_pipeline"><code class="name flex">
+<span>def <span class="ident">rerun_pipeline</span></span>(<span>self, *, pipeline: <a title="pachyderm_sdk.api.pps.Pipeline" href="#pachyderm_sdk.api.pps.Pipeline">Pipeline</a> = None, reprocess: bool = False) ‑> betterproto.lib.google.protobuf.Empty</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def rerun_pipeline(
+    self, *, pipeline: &#34;Pipeline&#34; = None, reprocess: bool = False
+) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+    request = RerunPipelineRequest()
+    if pipeline is not None:
+        request.pipeline = pipeline
+    request.reprocess = reprocess
+
+    return self.__rpc_rerun_pipeline(request)</code></pre>
+</details>
+</dd>
 <dt id="pachyderm_sdk.api.pps.ApiStub.create_pipeline"><code class="name flex">
-<span>def <span class="ident">create_pipeline</span></span>(<span>self, *, pipeline: <a title="pachyderm_sdk.api.pps.Pipeline" href="#pachyderm_sdk.api.pps.Pipeline">Pipeline</a> = None, tf_job: <a title="pachyderm_sdk.api.pps.TfJob" href="#pachyderm_sdk.api.pps.TfJob">TfJob</a> = None, transform: <a title="pachyderm_sdk.api.pps.Transform" href="#pachyderm_sdk.api.pps.Transform">Transform</a> = None, parallelism_spec: <a title="pachyderm_sdk.api.pps.ParallelismSpec" href="#pachyderm_sdk.api.pps.ParallelismSpec">ParallelismSpec</a> = None, egress: <a title="pachyderm_sdk.api.pps.Egress" href="#pachyderm_sdk.api.pps.Egress">Egress</a> = None, update: bool = False, output_branch: str = '', s3_out: bool = False, resource_requests: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a> = None, resource_limits: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a> = None, sidecar_resource_limits: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a> = None, input: <a title="pachyderm_sdk.api.pps.Input" href="#pachyderm_sdk.api.pps.Input">Input</a> = None, description: str = '', reprocess: bool = False, service: <a title="pachyderm_sdk.api.pps.Service" href="#pachyderm_sdk.api.pps.Service">Service</a> = None, spout: <a title="pachyderm_sdk.api.pps.Spout" href="#pachyderm_sdk.api.pps.Spout">Spout</a> = None, datum_set_spec: <a title="pachyderm_sdk.api.pps.DatumSetSpec" href="#pachyderm_sdk.api.pps.DatumSetSpec">DatumSetSpec</a> = None, datum_timeout: datetime.timedelta = None, job_timeout: datetime.timedelta = None, salt: str = '', datum_tries: int = 0, scheduling_spec: <a title="pachyderm_sdk.api.pps.SchedulingSpec" href="#pachyderm_sdk.api.pps.SchedulingSpec">SchedulingSpec</a> = None, pod_spec: str = '', pod_patch: str = '', spec_commit: _pfs__.Commit = None, metadata: <a title="pachyderm_sdk.api.pps.Metadata" href="#pachyderm_sdk.api.pps.Metadata">Metadata</a> = None, reprocess_spec: str = '', autoscaling: bool = False, tolerations: Optional[List[ForwardRef('<a title="pachyderm_sdk.api.pps.Toleration" href="#pachyderm_sdk.api.pps.Toleration">Toleration</a>')]] = None, sidecar_resource_requests: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a> = None) ‑> betterproto.lib.google.protobuf.Empty</span>
+<span>def <span class="ident">create_pipeline</span></span>(<span>self, *, pipeline: <a title="pachyderm_sdk.api.pps.Pipeline" href="#pachyderm_sdk.api.pps.Pipeline">Pipeline</a> = None, tf_job: <a title="pachyderm_sdk.api.pps.TfJob" href="#pachyderm_sdk.api.pps.TfJob">TfJob</a> = None, transform: <a title="pachyderm_sdk.api.pps.Transform" href="#pachyderm_sdk.api.pps.Transform">Transform</a> = None, parallelism_spec: <a title="pachyderm_sdk.api.pps.ParallelismSpec" href="#pachyderm_sdk.api.pps.ParallelismSpec">ParallelismSpec</a> = None, egress: <a title="pachyderm_sdk.api.pps.Egress" href="#pachyderm_sdk.api.pps.Egress">Egress</a> = None, update: bool = False, output_branch: str = '', s3_out: bool = False, resource_requests: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a> = None, resource_limits: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a> = None, sidecar_resource_limits: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a> = None, input: <a title="pachyderm_sdk.api.pps.Input" href="#pachyderm_sdk.api.pps.Input">Input</a> = None, description: str = '', reprocess: bool = False, service: <a title="pachyderm_sdk.api.pps.Service" href="#pachyderm_sdk.api.pps.Service">Service</a> = None, spout: <a title="pachyderm_sdk.api.pps.Spout" href="#pachyderm_sdk.api.pps.Spout">Spout</a> = None, datum_set_spec: <a title="pachyderm_sdk.api.pps.DatumSetSpec" href="#pachyderm_sdk.api.pps.DatumSetSpec">DatumSetSpec</a> = None, datum_timeout: datetime.timedelta = None, job_timeout: datetime.timedelta = None, salt: str = '', datum_tries: int = 0, scheduling_spec: <a title="pachyderm_sdk.api.pps.SchedulingSpec" href="#pachyderm_sdk.api.pps.SchedulingSpec">SchedulingSpec</a> = None, pod_spec: str = '', pod_patch: str = '', spec_commit: _pfs__.Commit = None, metadata: <a title="pachyderm_sdk.api.pps.Metadata" href="#pachyderm_sdk.api.pps.Metadata">Metadata</a> = None, reprocess_spec: str = '', autoscaling: bool = False, tolerations: Optional[List[ForwardRef('<a title="pachyderm_sdk.api.pps.Toleration" href="#pachyderm_sdk.api.pps.Toleration">Toleration</a>')]] = None, sidecar_resource_requests: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a> = None, dry_run: bool = False, determined: <a title="pachyderm_sdk.api.pps.Determined" href="#pachyderm_sdk.api.pps.Determined">Determined</a> = None) ‑> betterproto.lib.google.protobuf.Empty</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -7489,7 +8195,9 @@ class LokiLogMessage(betterproto.Message):
     reprocess_spec: str = &#34;&#34;,
     autoscaling: bool = False,
     tolerations: Optional[List[&#34;Toleration&#34;]] = None,
-    sidecar_resource_requests: &#34;ResourceSpec&#34; = None
+    sidecar_resource_requests: &#34;ResourceSpec&#34; = None,
+    dry_run: bool = False,
+    determined: &#34;Determined&#34; = None
 ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
     tolerations = tolerations or []
 
@@ -7543,8 +8251,37 @@ class LokiLogMessage(betterproto.Message):
         request.tolerations = tolerations
     if sidecar_resource_requests is not None:
         request.sidecar_resource_requests = sidecar_resource_requests
+    request.dry_run = dry_run
+    if determined is not None:
+        request.determined = determined
 
     return self.__rpc_create_pipeline(request)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.pps.ApiStub.create_pipeline_v2"><code class="name flex">
+<span>def <span class="ident">create_pipeline_v2</span></span>(<span>self, *, create_pipeline_request_json: str = '', dry_run: bool = False, update: bool = False, reprocess: bool = False) ‑> <a title="pachyderm_sdk.api.pps.CreatePipelineV2Response" href="#pachyderm_sdk.api.pps.CreatePipelineV2Response">CreatePipelineV2Response</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_pipeline_v2(
+    self,
+    *,
+    create_pipeline_request_json: str = &#34;&#34;,
+    dry_run: bool = False,
+    update: bool = False,
+    reprocess: bool = False
+) -&gt; &#34;CreatePipelineV2Response&#34;:
+    request = CreatePipelineV2Request()
+    request.create_pipeline_request_json = create_pipeline_request_json
+    request.dry_run = dry_run
+    request.update = update
+    request.reprocess = reprocess
+
+    return self.__rpc_create_pipeline_v2(request)</code></pre>
 </details>
 </dd>
 <dt id="pachyderm_sdk.api.pps.ApiStub.inspect_pipeline"><code class="name flex">
@@ -7604,7 +8341,7 @@ class LokiLogMessage(betterproto.Message):
 </details>
 </dd>
 <dt id="pachyderm_sdk.api.pps.ApiStub.delete_pipeline"><code class="name flex">
-<span>def <span class="ident">delete_pipeline</span></span>(<span>self, *, pipeline: <a title="pachyderm_sdk.api.pps.Pipeline" href="#pachyderm_sdk.api.pps.Pipeline">Pipeline</a> = None, all: bool = False, force: bool = False, keep_repo: bool = False) ‑> betterproto.lib.google.protobuf.Empty</span>
+<span>def <span class="ident">delete_pipeline</span></span>(<span>self, *, pipeline: <a title="pachyderm_sdk.api.pps.Pipeline" href="#pachyderm_sdk.api.pps.Pipeline">Pipeline</a> = None, all: bool = False, force: bool = False, keep_repo: bool = False, must_exist: bool = False) ‑> betterproto.lib.google.protobuf.Empty</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -7618,7 +8355,8 @@ class LokiLogMessage(betterproto.Message):
     pipeline: &#34;Pipeline&#34; = None,
     all: bool = False,
     force: bool = False,
-    keep_repo: bool = False
+    keep_repo: bool = False,
+    must_exist: bool = False
 ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
     request = DeletePipelineRequest()
     if pipeline is not None:
@@ -7626,6 +8364,7 @@ class LokiLogMessage(betterproto.Message):
     request.all = all
     request.force = force
     request.keep_repo = keep_repo
+    request.must_exist = must_exist
 
     return self.__rpc_delete_pipeline(request)</code></pre>
 </details>
@@ -7679,7 +8418,7 @@ class LokiLogMessage(betterproto.Message):
 </details>
 </dd>
 <dt id="pachyderm_sdk.api.pps.ApiStub.stop_pipeline"><code class="name flex">
-<span>def <span class="ident">stop_pipeline</span></span>(<span>self, *, pipeline: <a title="pachyderm_sdk.api.pps.Pipeline" href="#pachyderm_sdk.api.pps.Pipeline">Pipeline</a> = None) ‑> betterproto.lib.google.protobuf.Empty</span>
+<span>def <span class="ident">stop_pipeline</span></span>(<span>self, *, pipeline: <a title="pachyderm_sdk.api.pps.Pipeline" href="#pachyderm_sdk.api.pps.Pipeline">Pipeline</a> = None, must_exist: bool = False) ‑> betterproto.lib.google.protobuf.Empty</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -7688,11 +8427,12 @@ class LokiLogMessage(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def stop_pipeline(
-    self, *, pipeline: &#34;Pipeline&#34; = None
+    self, *, pipeline: &#34;Pipeline&#34; = None, must_exist: bool = False
 ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
     request = StopPipelineRequest()
     if pipeline is not None:
         request.pipeline = pipeline
+    request.must_exist = must_exist
 
     return self.__rpc_stop_pipeline(request)</code></pre>
 </details>
@@ -8050,6 +8790,47 @@ class LokiLogMessage(betterproto.Message):
         yield response</code></pre>
 </details>
 </dd>
+<dt id="pachyderm_sdk.api.pps.ApiStub.get_cluster_defaults"><code class="name flex">
+<span>def <span class="ident">get_cluster_defaults</span></span>(<span>self) ‑> <a title="pachyderm_sdk.api.pps.GetClusterDefaultsResponse" href="#pachyderm_sdk.api.pps.GetClusterDefaultsResponse">GetClusterDefaultsResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_cluster_defaults(self) -&gt; &#34;GetClusterDefaultsResponse&#34;:
+    request = GetClusterDefaultsRequest()
+
+    return self.__rpc_get_cluster_defaults(request)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.pps.ApiStub.set_cluster_defaults"><code class="name flex">
+<span>def <span class="ident">set_cluster_defaults</span></span>(<span>self, *, regenerate: bool = False, reprocess: bool = False, dry_run: bool = False, cluster_defaults_json: str = '') ‑> <a title="pachyderm_sdk.api.pps.SetClusterDefaultsResponse" href="#pachyderm_sdk.api.pps.SetClusterDefaultsResponse">SetClusterDefaultsResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_cluster_defaults(
+    self,
+    *,
+    regenerate: bool = False,
+    reprocess: bool = False,
+    dry_run: bool = False,
+    cluster_defaults_json: str = &#34;&#34;
+) -&gt; &#34;SetClusterDefaultsResponse&#34;:
+    request = SetClusterDefaultsRequest()
+    request.regenerate = regenerate
+    request.reprocess = reprocess
+    request.dry_run = dry_run
+    request.cluster_defaults_json = cluster_defaults_json
+
+    return self.__rpc_set_cluster_defaults(request)</code></pre>
+</details>
+</dd>
 </dl>
 </dd>
 <dt id="pachyderm_sdk.api.pps.ApiBase"><code class="flex name class">
@@ -8104,6 +8885,7 @@ class LokiLogMessage(betterproto.Message):
         pagination_marker: datetime,
         number: int,
         reverse: bool,
+        jq_filter: str,
         context: &#34;grpc.ServicerContext&#34;,
     ) -&gt; Iterator[&#34;JobSetInfo&#34;]:
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -8162,6 +8944,13 @@ class LokiLogMessage(betterproto.Message):
         context.set_details(&#34;Method not implemented!&#34;)
         raise NotImplementedError(&#34;Method not implemented!&#34;)
 
+    def rerun_pipeline(
+        self, pipeline: &#34;Pipeline&#34;, reprocess: bool, context: &#34;grpc.ServicerContext&#34;
+    ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
     def create_pipeline(
         self,
         pipeline: &#34;Pipeline&#34;,
@@ -8194,8 +8983,22 @@ class LokiLogMessage(betterproto.Message):
         autoscaling: bool,
         tolerations: Optional[List[&#34;Toleration&#34;]],
         sidecar_resource_requests: &#34;ResourceSpec&#34;,
+        dry_run: bool,
+        determined: &#34;Determined&#34;,
         context: &#34;grpc.ServicerContext&#34;,
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def create_pipeline_v2(
+        self,
+        create_pipeline_request_json: str,
+        dry_run: bool,
+        update: bool,
+        reprocess: bool,
+        context: &#34;grpc.ServicerContext&#34;,
+    ) -&gt; &#34;CreatePipelineV2Response&#34;:
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details(&#34;Method not implemented!&#34;)
         raise NotImplementedError(&#34;Method not implemented!&#34;)
@@ -8227,6 +9030,7 @@ class LokiLogMessage(betterproto.Message):
         all: bool,
         force: bool,
         keep_repo: bool,
+        must_exist: bool,
         context: &#34;grpc.ServicerContext&#34;,
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -8253,7 +9057,7 @@ class LokiLogMessage(betterproto.Message):
         raise NotImplementedError(&#34;Method not implemented!&#34;)
 
     def stop_pipeline(
-        self, pipeline: &#34;Pipeline&#34;, context: &#34;grpc.ServicerContext&#34;
+        self, pipeline: &#34;Pipeline&#34;, must_exist: bool, context: &#34;grpc.ServicerContext&#34;
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details(&#34;Method not implemented!&#34;)
@@ -8399,6 +9203,25 @@ class LokiLogMessage(betterproto.Message):
         context.set_details(&#34;Method not implemented!&#34;)
         raise NotImplementedError(&#34;Method not implemented!&#34;)
 
+    def get_cluster_defaults(
+        self, context: &#34;grpc.ServicerContext&#34;
+    ) -&gt; &#34;GetClusterDefaultsResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def set_cluster_defaults(
+        self,
+        regenerate: bool,
+        reprocess: bool,
+        dry_run: bool,
+        cluster_defaults_json: str,
+        context: &#34;grpc.ServicerContext&#34;,
+    ) -&gt; &#34;SetClusterDefaultsResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
     __proto_path__ = &#34;pps_v2.API&#34;
 
     @property
@@ -8454,10 +9277,20 @@ class LokiLogMessage(betterproto.Message):
                 request_deserializer=RestartDatumRequest.FromString,
                 response_serializer=RestartDatumRequest.SerializeToString,
             ),
+            &#34;RerunPipeline&#34;: grpc.unary_unary_rpc_method_handler(
+                self.rerun_pipeline,
+                request_deserializer=RerunPipelineRequest.FromString,
+                response_serializer=RerunPipelineRequest.SerializeToString,
+            ),
             &#34;CreatePipeline&#34;: grpc.unary_unary_rpc_method_handler(
                 self.create_pipeline,
                 request_deserializer=CreatePipelineRequest.FromString,
                 response_serializer=CreatePipelineRequest.SerializeToString,
+            ),
+            &#34;CreatePipelineV2&#34;: grpc.unary_unary_rpc_method_handler(
+                self.create_pipeline_v2,
+                request_deserializer=CreatePipelineV2Request.FromString,
+                response_serializer=CreatePipelineV2Request.SerializeToString,
             ),
             &#34;InspectPipeline&#34;: grpc.unary_unary_rpc_method_handler(
                 self.inspect_pipeline,
@@ -8569,6 +9402,16 @@ class LokiLogMessage(betterproto.Message):
                 request_deserializer=LokiRequest.FromString,
                 response_serializer=LokiRequest.SerializeToString,
             ),
+            &#34;GetClusterDefaults&#34;: grpc.unary_unary_rpc_method_handler(
+                self.get_cluster_defaults,
+                request_deserializer=GetClusterDefaultsRequest.FromString,
+                response_serializer=GetClusterDefaultsRequest.SerializeToString,
+            ),
+            &#34;SetClusterDefaults&#34;: grpc.unary_unary_rpc_method_handler(
+                self.set_cluster_defaults,
+                request_deserializer=SetClusterDefaultsRequest.FromString,
+                response_serializer=SetClusterDefaultsRequest.SerializeToString,
+            ),
         }</code></pre>
 </details>
 <h3>Methods</h3>
@@ -8639,7 +9482,7 @@ class LokiLogMessage(betterproto.Message):
 </details>
 </dd>
 <dt id="pachyderm_sdk.api.pps.ApiBase.list_job_set"><code class="name flex">
-<span>def <span class="ident">list_job_set</span></span>(<span>self, details: bool, projects: Optional[List[ForwardRef('_pfs__.Project')]], pagination_marker: datetime.datetime, number: int, reverse: bool, context: grpc.ServicerContext) ‑> Iterator[<a title="pachyderm_sdk.api.pps.JobSetInfo" href="#pachyderm_sdk.api.pps.JobSetInfo">JobSetInfo</a>]</span>
+<span>def <span class="ident">list_job_set</span></span>(<span>self, details: bool, projects: Optional[List[ForwardRef('_pfs__.Project')]], pagination_marker: datetime.datetime, number: int, reverse: bool, jq_filter: str, context: grpc.ServicerContext) ‑> Iterator[<a title="pachyderm_sdk.api.pps.JobSetInfo" href="#pachyderm_sdk.api.pps.JobSetInfo">JobSetInfo</a>]</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -8654,6 +9497,7 @@ class LokiLogMessage(betterproto.Message):
     pagination_marker: datetime,
     number: int,
     reverse: bool,
+    jq_filter: str,
     context: &#34;grpc.ServicerContext&#34;,
 ) -&gt; Iterator[&#34;JobSetInfo&#34;]:
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -8773,8 +9617,25 @@ class LokiLogMessage(betterproto.Message):
     raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
 </details>
 </dd>
+<dt id="pachyderm_sdk.api.pps.ApiBase.rerun_pipeline"><code class="name flex">
+<span>def <span class="ident">rerun_pipeline</span></span>(<span>self, pipeline: <a title="pachyderm_sdk.api.pps.Pipeline" href="#pachyderm_sdk.api.pps.Pipeline">Pipeline</a>, reprocess: bool, context: grpc.ServicerContext) ‑> betterproto.lib.google.protobuf.Empty</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def rerun_pipeline(
+    self, pipeline: &#34;Pipeline&#34;, reprocess: bool, context: &#34;grpc.ServicerContext&#34;
+) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details(&#34;Method not implemented!&#34;)
+    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
+</details>
+</dd>
 <dt id="pachyderm_sdk.api.pps.ApiBase.create_pipeline"><code class="name flex">
-<span>def <span class="ident">create_pipeline</span></span>(<span>self, pipeline: <a title="pachyderm_sdk.api.pps.Pipeline" href="#pachyderm_sdk.api.pps.Pipeline">Pipeline</a>, tf_job: <a title="pachyderm_sdk.api.pps.TfJob" href="#pachyderm_sdk.api.pps.TfJob">TfJob</a>, transform: <a title="pachyderm_sdk.api.pps.Transform" href="#pachyderm_sdk.api.pps.Transform">Transform</a>, parallelism_spec: <a title="pachyderm_sdk.api.pps.ParallelismSpec" href="#pachyderm_sdk.api.pps.ParallelismSpec">ParallelismSpec</a>, egress: <a title="pachyderm_sdk.api.pps.Egress" href="#pachyderm_sdk.api.pps.Egress">Egress</a>, update: bool, output_branch: str, s3_out: bool, resource_requests: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a>, resource_limits: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a>, sidecar_resource_limits: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a>, input: <a title="pachyderm_sdk.api.pps.Input" href="#pachyderm_sdk.api.pps.Input">Input</a>, description: str, reprocess: bool, service: <a title="pachyderm_sdk.api.pps.Service" href="#pachyderm_sdk.api.pps.Service">Service</a>, spout: <a title="pachyderm_sdk.api.pps.Spout" href="#pachyderm_sdk.api.pps.Spout">Spout</a>, datum_set_spec: <a title="pachyderm_sdk.api.pps.DatumSetSpec" href="#pachyderm_sdk.api.pps.DatumSetSpec">DatumSetSpec</a>, datum_timeout: datetime.timedelta, job_timeout: datetime.timedelta, salt: str, datum_tries: int, scheduling_spec: <a title="pachyderm_sdk.api.pps.SchedulingSpec" href="#pachyderm_sdk.api.pps.SchedulingSpec">SchedulingSpec</a>, pod_spec: str, pod_patch: str, spec_commit: _pfs__.Commit, metadata: <a title="pachyderm_sdk.api.pps.Metadata" href="#pachyderm_sdk.api.pps.Metadata">Metadata</a>, reprocess_spec: str, autoscaling: bool, tolerations: Optional[List[ForwardRef('<a title="pachyderm_sdk.api.pps.Toleration" href="#pachyderm_sdk.api.pps.Toleration">Toleration</a>')]], sidecar_resource_requests: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a>, context: grpc.ServicerContext) ‑> betterproto.lib.google.protobuf.Empty</span>
+<span>def <span class="ident">create_pipeline</span></span>(<span>self, pipeline: <a title="pachyderm_sdk.api.pps.Pipeline" href="#pachyderm_sdk.api.pps.Pipeline">Pipeline</a>, tf_job: <a title="pachyderm_sdk.api.pps.TfJob" href="#pachyderm_sdk.api.pps.TfJob">TfJob</a>, transform: <a title="pachyderm_sdk.api.pps.Transform" href="#pachyderm_sdk.api.pps.Transform">Transform</a>, parallelism_spec: <a title="pachyderm_sdk.api.pps.ParallelismSpec" href="#pachyderm_sdk.api.pps.ParallelismSpec">ParallelismSpec</a>, egress: <a title="pachyderm_sdk.api.pps.Egress" href="#pachyderm_sdk.api.pps.Egress">Egress</a>, update: bool, output_branch: str, s3_out: bool, resource_requests: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a>, resource_limits: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a>, sidecar_resource_limits: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a>, input: <a title="pachyderm_sdk.api.pps.Input" href="#pachyderm_sdk.api.pps.Input">Input</a>, description: str, reprocess: bool, service: <a title="pachyderm_sdk.api.pps.Service" href="#pachyderm_sdk.api.pps.Service">Service</a>, spout: <a title="pachyderm_sdk.api.pps.Spout" href="#pachyderm_sdk.api.pps.Spout">Spout</a>, datum_set_spec: <a title="pachyderm_sdk.api.pps.DatumSetSpec" href="#pachyderm_sdk.api.pps.DatumSetSpec">DatumSetSpec</a>, datum_timeout: datetime.timedelta, job_timeout: datetime.timedelta, salt: str, datum_tries: int, scheduling_spec: <a title="pachyderm_sdk.api.pps.SchedulingSpec" href="#pachyderm_sdk.api.pps.SchedulingSpec">SchedulingSpec</a>, pod_spec: str, pod_patch: str, spec_commit: _pfs__.Commit, metadata: <a title="pachyderm_sdk.api.pps.Metadata" href="#pachyderm_sdk.api.pps.Metadata">Metadata</a>, reprocess_spec: str, autoscaling: bool, tolerations: Optional[List[ForwardRef('<a title="pachyderm_sdk.api.pps.Toleration" href="#pachyderm_sdk.api.pps.Toleration">Toleration</a>')]], sidecar_resource_requests: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a>, dry_run: bool, determined: <a title="pachyderm_sdk.api.pps.Determined" href="#pachyderm_sdk.api.pps.Determined">Determined</a>, context: grpc.ServicerContext) ‑> betterproto.lib.google.protobuf.Empty</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -8814,8 +9675,32 @@ class LokiLogMessage(betterproto.Message):
     autoscaling: bool,
     tolerations: Optional[List[&#34;Toleration&#34;]],
     sidecar_resource_requests: &#34;ResourceSpec&#34;,
+    dry_run: bool,
+    determined: &#34;Determined&#34;,
     context: &#34;grpc.ServicerContext&#34;,
 ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details(&#34;Method not implemented!&#34;)
+    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.pps.ApiBase.create_pipeline_v2"><code class="name flex">
+<span>def <span class="ident">create_pipeline_v2</span></span>(<span>self, create_pipeline_request_json: str, dry_run: bool, update: bool, reprocess: bool, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.pps.CreatePipelineV2Response" href="#pachyderm_sdk.api.pps.CreatePipelineV2Response">CreatePipelineV2Response</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_pipeline_v2(
+    self,
+    create_pipeline_request_json: str,
+    dry_run: bool,
+    update: bool,
+    reprocess: bool,
+    context: &#34;grpc.ServicerContext&#34;,
+) -&gt; &#34;CreatePipelineV2Response&#34;:
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details(&#34;Method not implemented!&#34;)
     raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
@@ -8863,7 +9748,7 @@ class LokiLogMessage(betterproto.Message):
 </details>
 </dd>
 <dt id="pachyderm_sdk.api.pps.ApiBase.delete_pipeline"><code class="name flex">
-<span>def <span class="ident">delete_pipeline</span></span>(<span>self, pipeline: <a title="pachyderm_sdk.api.pps.Pipeline" href="#pachyderm_sdk.api.pps.Pipeline">Pipeline</a>, all: bool, force: bool, keep_repo: bool, context: grpc.ServicerContext) ‑> betterproto.lib.google.protobuf.Empty</span>
+<span>def <span class="ident">delete_pipeline</span></span>(<span>self, pipeline: <a title="pachyderm_sdk.api.pps.Pipeline" href="#pachyderm_sdk.api.pps.Pipeline">Pipeline</a>, all: bool, force: bool, keep_repo: bool, must_exist: bool, context: grpc.ServicerContext) ‑> betterproto.lib.google.protobuf.Empty</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -8877,6 +9762,7 @@ class LokiLogMessage(betterproto.Message):
     all: bool,
     force: bool,
     keep_repo: bool,
+    must_exist: bool,
     context: &#34;grpc.ServicerContext&#34;,
 ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -8924,7 +9810,7 @@ class LokiLogMessage(betterproto.Message):
 </details>
 </dd>
 <dt id="pachyderm_sdk.api.pps.ApiBase.stop_pipeline"><code class="name flex">
-<span>def <span class="ident">stop_pipeline</span></span>(<span>self, pipeline: <a title="pachyderm_sdk.api.pps.Pipeline" href="#pachyderm_sdk.api.pps.Pipeline">Pipeline</a>, context: grpc.ServicerContext) ‑> betterproto.lib.google.protobuf.Empty</span>
+<span>def <span class="ident">stop_pipeline</span></span>(<span>self, pipeline: <a title="pachyderm_sdk.api.pps.Pipeline" href="#pachyderm_sdk.api.pps.Pipeline">Pipeline</a>, must_exist: bool, context: grpc.ServicerContext) ‑> betterproto.lib.google.protobuf.Empty</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -8933,7 +9819,7 @@ class LokiLogMessage(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def stop_pipeline(
-    self, pipeline: &#34;Pipeline&#34;, context: &#34;grpc.ServicerContext&#34;
+    self, pipeline: &#34;Pipeline&#34;, must_exist: bool, context: &#34;grpc.ServicerContext&#34;
 ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details(&#34;Method not implemented!&#34;)
@@ -9240,6 +10126,45 @@ class LokiLogMessage(betterproto.Message):
     raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
 </details>
 </dd>
+<dt id="pachyderm_sdk.api.pps.ApiBase.get_cluster_defaults"><code class="name flex">
+<span>def <span class="ident">get_cluster_defaults</span></span>(<span>self, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.pps.GetClusterDefaultsResponse" href="#pachyderm_sdk.api.pps.GetClusterDefaultsResponse">GetClusterDefaultsResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_cluster_defaults(
+    self, context: &#34;grpc.ServicerContext&#34;
+) -&gt; &#34;GetClusterDefaultsResponse&#34;:
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details(&#34;Method not implemented!&#34;)
+    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.pps.ApiBase.set_cluster_defaults"><code class="name flex">
+<span>def <span class="ident">set_cluster_defaults</span></span>(<span>self, regenerate: bool, reprocess: bool, dry_run: bool, cluster_defaults_json: str, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.pps.SetClusterDefaultsResponse" href="#pachyderm_sdk.api.pps.SetClusterDefaultsResponse">SetClusterDefaultsResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_cluster_defaults(
+    self,
+    regenerate: bool,
+    reprocess: bool,
+    dry_run: bool,
+    cluster_defaults_json: str,
+    context: &#34;grpc.ServicerContext&#34;,
+) -&gt; &#34;SetClusterDefaultsResponse&#34;:
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details(&#34;Method not implemented!&#34;)
+    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
+</details>
+</dd>
 </dl>
 </dd>
 </dl>
@@ -9382,6 +10307,12 @@ class LokiLogMessage(betterproto.Message):
 <li><code><a title="pachyderm_sdk.api.pps.Egress.url" href="#pachyderm_sdk.api.pps.Egress.url">url</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.Egress.object_storage" href="#pachyderm_sdk.api.pps.Egress.object_storage">object_storage</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.Egress.sql_database" href="#pachyderm_sdk.api.pps.Egress.sql_database">sql_database</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.pps.Determined" href="#pachyderm_sdk.api.pps.Determined">Determined</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.pps.Determined.workspaces" href="#pachyderm_sdk.api.pps.Determined.workspaces">workspaces</a></code></li>
 </ul>
 </li>
 <li>
@@ -9582,6 +10513,7 @@ class LokiLogMessage(betterproto.Message):
 <li><code><a title="pachyderm_sdk.api.pps.JobInfo.started" href="#pachyderm_sdk.api.pps.JobInfo.started">started</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.JobInfo.finished" href="#pachyderm_sdk.api.pps.JobInfo.finished">finished</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.JobInfo.details" href="#pachyderm_sdk.api.pps.JobInfo.details">details</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pps.JobInfo.auth_token" href="#pachyderm_sdk.api.pps.JobInfo.auth_token">auth_token</a></code></li>
 </ul>
 </li>
 <li>
@@ -9646,6 +10578,8 @@ class LokiLogMessage(betterproto.Message):
 <li><code><a title="pachyderm_sdk.api.pps.PipelineInfo.type" href="#pachyderm_sdk.api.pps.PipelineInfo.type">type</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.PipelineInfo.auth_token" href="#pachyderm_sdk.api.pps.PipelineInfo.auth_token">auth_token</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.PipelineInfo.details" href="#pachyderm_sdk.api.pps.PipelineInfo.details">details</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pps.PipelineInfo.user_spec_json" href="#pachyderm_sdk.api.pps.PipelineInfo.user_spec_json">user_spec_json</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pps.PipelineInfo.effective_spec_json" href="#pachyderm_sdk.api.pps.PipelineInfo.effective_spec_json">effective_spec_json</a></code></li>
 </ul>
 </li>
 <li>
@@ -9684,6 +10618,7 @@ class LokiLogMessage(betterproto.Message):
 <li><code><a title="pachyderm_sdk.api.pps.PipelineInfoDetails.autoscaling" href="#pachyderm_sdk.api.pps.PipelineInfoDetails.autoscaling">autoscaling</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.PipelineInfoDetails.tolerations" href="#pachyderm_sdk.api.pps.PipelineInfoDetails.tolerations">tolerations</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.PipelineInfoDetails.sidecar_resource_requests" href="#pachyderm_sdk.api.pps.PipelineInfoDetails.sidecar_resource_requests">sidecar_resource_requests</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pps.PipelineInfoDetails.determined" href="#pachyderm_sdk.api.pps.PipelineInfoDetails.determined">determined</a></code></li>
 </ul>
 </li>
 <li>
@@ -9708,12 +10643,13 @@ class LokiLogMessage(betterproto.Message):
 </li>
 <li>
 <h4><code><a title="pachyderm_sdk.api.pps.ListJobSetRequest" href="#pachyderm_sdk.api.pps.ListJobSetRequest">ListJobSetRequest</a></code></h4>
-<ul class="">
+<ul class="two-column">
 <li><code><a title="pachyderm_sdk.api.pps.ListJobSetRequest.details" href="#pachyderm_sdk.api.pps.ListJobSetRequest.details">details</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.ListJobSetRequest.projects" href="#pachyderm_sdk.api.pps.ListJobSetRequest.projects">projects</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.ListJobSetRequest.pagination_marker" href="#pachyderm_sdk.api.pps.ListJobSetRequest.pagination_marker">pagination_marker</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.ListJobSetRequest.number" href="#pachyderm_sdk.api.pps.ListJobSetRequest.number">number</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.ListJobSetRequest.reverse" href="#pachyderm_sdk.api.pps.ListJobSetRequest.reverse">reverse</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pps.ListJobSetRequest.jq_filter" href="#pachyderm_sdk.api.pps.ListJobSetRequest.jq_filter">jq_filter</a></code></li>
 </ul>
 </li>
 <li>
@@ -9848,6 +10784,13 @@ class LokiLogMessage(betterproto.Message):
 </ul>
 </li>
 <li>
+<h4><code><a title="pachyderm_sdk.api.pps.RerunPipelineRequest" href="#pachyderm_sdk.api.pps.RerunPipelineRequest">RerunPipelineRequest</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.pps.RerunPipelineRequest.pipeline" href="#pachyderm_sdk.api.pps.RerunPipelineRequest.pipeline">pipeline</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pps.RerunPipelineRequest.reprocess" href="#pachyderm_sdk.api.pps.RerunPipelineRequest.reprocess">reprocess</a></code></li>
+</ul>
+</li>
+<li>
 <h4><code><a title="pachyderm_sdk.api.pps.CreatePipelineRequest" href="#pachyderm_sdk.api.pps.CreatePipelineRequest">CreatePipelineRequest</a></code></h4>
 <ul class="">
 <li><code><a title="pachyderm_sdk.api.pps.CreatePipelineRequest.pipeline" href="#pachyderm_sdk.api.pps.CreatePipelineRequest.pipeline">pipeline</a></code></li>
@@ -9880,6 +10823,23 @@ class LokiLogMessage(betterproto.Message):
 <li><code><a title="pachyderm_sdk.api.pps.CreatePipelineRequest.autoscaling" href="#pachyderm_sdk.api.pps.CreatePipelineRequest.autoscaling">autoscaling</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.CreatePipelineRequest.tolerations" href="#pachyderm_sdk.api.pps.CreatePipelineRequest.tolerations">tolerations</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.CreatePipelineRequest.sidecar_resource_requests" href="#pachyderm_sdk.api.pps.CreatePipelineRequest.sidecar_resource_requests">sidecar_resource_requests</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pps.CreatePipelineRequest.dry_run" href="#pachyderm_sdk.api.pps.CreatePipelineRequest.dry_run">dry_run</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pps.CreatePipelineRequest.determined" href="#pachyderm_sdk.api.pps.CreatePipelineRequest.determined">determined</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.pps.CreatePipelineV2Request" href="#pachyderm_sdk.api.pps.CreatePipelineV2Request">CreatePipelineV2Request</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.pps.CreatePipelineV2Request.create_pipeline_request_json" href="#pachyderm_sdk.api.pps.CreatePipelineV2Request.create_pipeline_request_json">create_pipeline_request_json</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pps.CreatePipelineV2Request.dry_run" href="#pachyderm_sdk.api.pps.CreatePipelineV2Request.dry_run">dry_run</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pps.CreatePipelineV2Request.update" href="#pachyderm_sdk.api.pps.CreatePipelineV2Request.update">update</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pps.CreatePipelineV2Request.reprocess" href="#pachyderm_sdk.api.pps.CreatePipelineV2Request.reprocess">reprocess</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.pps.CreatePipelineV2Response" href="#pachyderm_sdk.api.pps.CreatePipelineV2Response">CreatePipelineV2Response</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.pps.CreatePipelineV2Response.effective_create_pipeline_request_json" href="#pachyderm_sdk.api.pps.CreatePipelineV2Response.effective_create_pipeline_request_json">effective_create_pipeline_request_json</a></code></li>
 </ul>
 </li>
 <li>
@@ -9907,6 +10867,7 @@ class LokiLogMessage(betterproto.Message):
 <li><code><a title="pachyderm_sdk.api.pps.DeletePipelineRequest.all" href="#pachyderm_sdk.api.pps.DeletePipelineRequest.all">all</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.DeletePipelineRequest.force" href="#pachyderm_sdk.api.pps.DeletePipelineRequest.force">force</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.DeletePipelineRequest.keep_repo" href="#pachyderm_sdk.api.pps.DeletePipelineRequest.keep_repo">keep_repo</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pps.DeletePipelineRequest.must_exist" href="#pachyderm_sdk.api.pps.DeletePipelineRequest.must_exist">must_exist</a></code></li>
 </ul>
 </li>
 <li>
@@ -9934,6 +10895,7 @@ class LokiLogMessage(betterproto.Message):
 <h4><code><a title="pachyderm_sdk.api.pps.StopPipelineRequest" href="#pachyderm_sdk.api.pps.StopPipelineRequest">StopPipelineRequest</a></code></h4>
 <ul class="">
 <li><code><a title="pachyderm_sdk.api.pps.StopPipelineRequest.pipeline" href="#pachyderm_sdk.api.pps.StopPipelineRequest.pipeline">pipeline</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pps.StopPipelineRequest.must_exist" href="#pachyderm_sdk.api.pps.StopPipelineRequest.must_exist">must_exist</a></code></li>
 </ul>
 </li>
 <li>
@@ -10040,6 +11002,44 @@ class LokiLogMessage(betterproto.Message):
 </ul>
 </li>
 <li>
+<h4><code><a title="pachyderm_sdk.api.pps.ClusterDefaults" href="#pachyderm_sdk.api.pps.ClusterDefaults">ClusterDefaults</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.pps.ClusterDefaults.create_pipeline_request" href="#pachyderm_sdk.api.pps.ClusterDefaults.create_pipeline_request">create_pipeline_request</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.pps.GetClusterDefaultsRequest" href="#pachyderm_sdk.api.pps.GetClusterDefaultsRequest">GetClusterDefaultsRequest</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.pps.GetClusterDefaultsResponse" href="#pachyderm_sdk.api.pps.GetClusterDefaultsResponse">GetClusterDefaultsResponse</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.pps.GetClusterDefaultsResponse.cluster_defaults_json" href="#pachyderm_sdk.api.pps.GetClusterDefaultsResponse.cluster_defaults_json">cluster_defaults_json</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.pps.SetClusterDefaultsRequest" href="#pachyderm_sdk.api.pps.SetClusterDefaultsRequest">SetClusterDefaultsRequest</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.pps.SetClusterDefaultsRequest.regenerate" href="#pachyderm_sdk.api.pps.SetClusterDefaultsRequest.regenerate">regenerate</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pps.SetClusterDefaultsRequest.reprocess" href="#pachyderm_sdk.api.pps.SetClusterDefaultsRequest.reprocess">reprocess</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pps.SetClusterDefaultsRequest.dry_run" href="#pachyderm_sdk.api.pps.SetClusterDefaultsRequest.dry_run">dry_run</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pps.SetClusterDefaultsRequest.cluster_defaults_json" href="#pachyderm_sdk.api.pps.SetClusterDefaultsRequest.cluster_defaults_json">cluster_defaults_json</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.pps.SetClusterDefaultsResponse" href="#pachyderm_sdk.api.pps.SetClusterDefaultsResponse">SetClusterDefaultsResponse</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.pps.SetClusterDefaultsResponse.affected_pipelines" href="#pachyderm_sdk.api.pps.SetClusterDefaultsResponse.affected_pipelines">affected_pipelines</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.pps.CreatePipelineTransaction" href="#pachyderm_sdk.api.pps.CreatePipelineTransaction">CreatePipelineTransaction</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.pps.CreatePipelineTransaction.create_pipeline_request" href="#pachyderm_sdk.api.pps.CreatePipelineTransaction.create_pipeline_request">create_pipeline_request</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pps.CreatePipelineTransaction.user_json" href="#pachyderm_sdk.api.pps.CreatePipelineTransaction.user_json">user_json</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pps.CreatePipelineTransaction.effective_json" href="#pachyderm_sdk.api.pps.CreatePipelineTransaction.effective_json">effective_json</a></code></li>
+</ul>
+</li>
+<li>
 <h4><code><a title="pachyderm_sdk.api.pps.ApiStub" href="#pachyderm_sdk.api.pps.ApiStub">ApiStub</a></code></h4>
 <ul class="">
 <li><code><a title="pachyderm_sdk.api.pps.ApiStub.inspect_job" href="#pachyderm_sdk.api.pps.ApiStub.inspect_job">inspect_job</a></code></li>
@@ -10052,7 +11052,9 @@ class LokiLogMessage(betterproto.Message):
 <li><code><a title="pachyderm_sdk.api.pps.ApiStub.inspect_datum" href="#pachyderm_sdk.api.pps.ApiStub.inspect_datum">inspect_datum</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.ApiStub.list_datum" href="#pachyderm_sdk.api.pps.ApiStub.list_datum">list_datum</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.ApiStub.restart_datum" href="#pachyderm_sdk.api.pps.ApiStub.restart_datum">restart_datum</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pps.ApiStub.rerun_pipeline" href="#pachyderm_sdk.api.pps.ApiStub.rerun_pipeline">rerun_pipeline</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.ApiStub.create_pipeline" href="#pachyderm_sdk.api.pps.ApiStub.create_pipeline">create_pipeline</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pps.ApiStub.create_pipeline_v2" href="#pachyderm_sdk.api.pps.ApiStub.create_pipeline_v2">create_pipeline_v2</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.ApiStub.inspect_pipeline" href="#pachyderm_sdk.api.pps.ApiStub.inspect_pipeline">inspect_pipeline</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.ApiStub.list_pipeline" href="#pachyderm_sdk.api.pps.ApiStub.list_pipeline">list_pipeline</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.ApiStub.delete_pipeline" href="#pachyderm_sdk.api.pps.ApiStub.delete_pipeline">delete_pipeline</a></code></li>
@@ -10075,6 +11077,8 @@ class LokiLogMessage(betterproto.Message):
 <li><code><a title="pachyderm_sdk.api.pps.ApiStub.list_task" href="#pachyderm_sdk.api.pps.ApiStub.list_task">list_task</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.ApiStub.get_kube_events" href="#pachyderm_sdk.api.pps.ApiStub.get_kube_events">get_kube_events</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.ApiStub.query_loki" href="#pachyderm_sdk.api.pps.ApiStub.query_loki">query_loki</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pps.ApiStub.get_cluster_defaults" href="#pachyderm_sdk.api.pps.ApiStub.get_cluster_defaults">get_cluster_defaults</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pps.ApiStub.set_cluster_defaults" href="#pachyderm_sdk.api.pps.ApiStub.set_cluster_defaults">set_cluster_defaults</a></code></li>
 </ul>
 </li>
 <li>
@@ -10090,7 +11094,9 @@ class LokiLogMessage(betterproto.Message):
 <li><code><a title="pachyderm_sdk.api.pps.ApiBase.inspect_datum" href="#pachyderm_sdk.api.pps.ApiBase.inspect_datum">inspect_datum</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.ApiBase.list_datum" href="#pachyderm_sdk.api.pps.ApiBase.list_datum">list_datum</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.ApiBase.restart_datum" href="#pachyderm_sdk.api.pps.ApiBase.restart_datum">restart_datum</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pps.ApiBase.rerun_pipeline" href="#pachyderm_sdk.api.pps.ApiBase.rerun_pipeline">rerun_pipeline</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.ApiBase.create_pipeline" href="#pachyderm_sdk.api.pps.ApiBase.create_pipeline">create_pipeline</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pps.ApiBase.create_pipeline_v2" href="#pachyderm_sdk.api.pps.ApiBase.create_pipeline_v2">create_pipeline_v2</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.ApiBase.inspect_pipeline" href="#pachyderm_sdk.api.pps.ApiBase.inspect_pipeline">inspect_pipeline</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.ApiBase.list_pipeline" href="#pachyderm_sdk.api.pps.ApiBase.list_pipeline">list_pipeline</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.ApiBase.delete_pipeline" href="#pachyderm_sdk.api.pps.ApiBase.delete_pipeline">delete_pipeline</a></code></li>
@@ -10113,6 +11119,8 @@ class LokiLogMessage(betterproto.Message):
 <li><code><a title="pachyderm_sdk.api.pps.ApiBase.list_task" href="#pachyderm_sdk.api.pps.ApiBase.list_task">list_task</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.ApiBase.get_kube_events" href="#pachyderm_sdk.api.pps.ApiBase.get_kube_events">get_kube_events</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.ApiBase.query_loki" href="#pachyderm_sdk.api.pps.ApiBase.query_loki">query_loki</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pps.ApiBase.get_cluster_defaults" href="#pachyderm_sdk.api.pps.ApiBase.get_cluster_defaults">get_cluster_defaults</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pps.ApiBase.set_cluster_defaults" href="#pachyderm_sdk.api.pps.ApiBase.set_cluster_defaults">set_cluster_defaults</a></code></li>
 </ul>
 </li>
 </ul>

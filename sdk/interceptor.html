@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
 <title>pachyderm_sdk.interceptor API documentation</title>
-<meta name="description" content="" />
+<meta name="description" content="Implementation of a gRPC interceptor used to set request metadata
+and catch connection errors." />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -22,14 +23,21 @@
 <h1 class="title">Module <code>pachyderm_sdk.interceptor</code></h1>
 </header>
 <section id="section-intro">
+<p>Implementation of a gRPC interceptor used to set request metadata
+and catch connection errors.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">from os import environ
-from typing import Any, Callable, Sequence, Optional, Tuple, Union
+<pre><code class="python">&#34;&#34;&#34;
+Implementation of a gRPC interceptor used to set request metadata
+and catch connection errors.
+&#34;&#34;&#34;
+from os import environ
+from typing import Callable, Sequence, Optional, Tuple, Union, cast
 
 import grpc
+from betterproto import Message
 from grpc_interceptor import ClientCallDetails, ClientInterceptor
 
 from .errors import AuthServiceNotActivated
@@ -42,24 +50,40 @@ class MetadataClientInterceptor(ClientInterceptor):
         self.metadata = metadata
 
     def intercept(
-        self, method: Callable, request: Any, call_details: ClientCallDetails
+        self, method: Callable, request: Message, call_details: ClientCallDetails
     ):
         call_details_metadata = list(call_details.metadata or [])
         call_details_metadata.extend(self.metadata)
         new_details = call_details._replace(metadata=call_details_metadata)
-        future = method(request, new_details)
-        future.add_done_callback(_check_connection_error)
-        return future
+
+        # Error handling happens different depending on whether the response
+        #   is Unary or Stream. If the response is a stream, then the error
+        #   will be raised before the &#34;done_callback&#34; is called and will
+        #   therefore be caught by the try-except block. If the response is
+        #   Unary then the error &#34;done_callback&#34; will be called before the
+        #   error is raised.
+        try:
+            future = method(request, new_details)
+        except grpc.RpcError as error:
+            # gRPC error types are confusing - instantiated errors are Futures.
+            # ref: github.com/grpc/grpc/issues/25334#issuecomment-772730080
+            error = cast(error, grpc.Future)
+            _check_errors(error, request)
+        else:
+            future.add_done_callback(lambda f: _check_errors(f, request))
+            return future
 
 
-def _check_connection_error(grpc_future: grpc.Future):
+def _check_errors(grpc_future: grpc.Future, request: Message):
     &#34;&#34;&#34;Callback function that checks if a gRPC.Future experienced a
-    ConnectionError and attempt to sanitize the error message for the user.
+    ConnectionError or TypeError and attempt to sanitize the error
+    message for the user.
     &#34;&#34;&#34;
     error: Optional[grpc.Call] = grpc_future.exception()
     if error is not None:
-        unable_to_connect = &#34;failed to connect to all addresses&#34; in error.details()
-        if error.code() == grpc.StatusCode.UNAVAILABLE and unable_to_connect:
+        code, details = error.code(), error.details()
+        unable_to_connect = &#34;failed to connect to all addresses&#34; in details
+        if code == grpc.StatusCode.UNAVAILABLE and unable_to_connect:
             error_message = &#34;Could not connect to pachyderm instance\n&#34;
             if &#34;PACHD_PEER_SERVICE_HOST&#34; in environ:
                 error_message += (
@@ -68,7 +92,24 @@ def _check_connection_error(grpc_future: grpc.Future):
                     &#34; python_pachyderm within the pipeline. &#34;
                 )
             raise ConnectionError(error_message) from error
-        raise AuthServiceNotActivated.try_from(error)</code></pre>
+
+        unable_to_serialize = &#34;Exception serializing request&#34; in details
+        if code == grpc.StatusCode.INTERNAL and unable_to_serialize:
+            error_message = (
+                &#34;An error occurred while trying to serialize the following&#34;
+                f&#34; {request.__class__.__qualname__} message.\n &#34;
+                &#34; This is most likely due to one of the fields of&#34;
+                &#34; this message having a value with an incorrect type.\n&#34;
+                f&#34;\tMessage: {request}&#34;
+            )
+            raise TypeError(error_message) from error
+
+        auth_codes = (grpc.StatusCode.UNIMPLEMENTED, grpc.StatusCode.UNAUTHENTICATED)
+        auth_not_activated = &#34;the auth service is not activated&#34; in details
+        if code in auth_codes and auth_not_activated:
+            return AuthServiceNotActivated(details)
+
+        raise error</code></pre>
 </details>
 </section>
 <section>
@@ -96,14 +137,28 @@ def _check_connection_error(grpc_future: grpc.Future):
         self.metadata = metadata
 
     def intercept(
-        self, method: Callable, request: Any, call_details: ClientCallDetails
+        self, method: Callable, request: Message, call_details: ClientCallDetails
     ):
         call_details_metadata = list(call_details.metadata or [])
         call_details_metadata.extend(self.metadata)
         new_details = call_details._replace(metadata=call_details_metadata)
-        future = method(request, new_details)
-        future.add_done_callback(_check_connection_error)
-        return future</code></pre>
+
+        # Error handling happens different depending on whether the response
+        #   is Unary or Stream. If the response is a stream, then the error
+        #   will be raised before the &#34;done_callback&#34; is called and will
+        #   therefore be caught by the try-except block. If the response is
+        #   Unary then the error &#34;done_callback&#34; will be called before the
+        #   error is raised.
+        try:
+            future = method(request, new_details)
+        except grpc.RpcError as error:
+            # gRPC error types are confusing - instantiated errors are Futures.
+            # ref: github.com/grpc/grpc/issues/25334#issuecomment-772730080
+            error = cast(error, grpc.Future)
+            _check_errors(error, request)
+        else:
+            future.add_done_callback(lambda f: _check_errors(f, request))
+            return future</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -117,7 +172,7 @@ def _check_connection_error(grpc_future: grpc.Future):
 <h3>Methods</h3>
 <dl>
 <dt id="pachyderm_sdk.interceptor.MetadataClientInterceptor.intercept"><code class="name flex">
-<span>def <span class="ident">intercept</span></span>(<span>self, method: Callable, request: Any, call_details: grpc_interceptor.client.ClientCallDetails)</span>
+<span>def <span class="ident">intercept</span></span>(<span>self, method: Callable, request: betterproto.Message, call_details: grpc_interceptor.client.ClientCallDetails)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Override this method to implement a custom interceptor.</p>
@@ -152,14 +207,28 @@ value returned from <code>method</code>.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def intercept(
-    self, method: Callable, request: Any, call_details: ClientCallDetails
+    self, method: Callable, request: Message, call_details: ClientCallDetails
 ):
     call_details_metadata = list(call_details.metadata or [])
     call_details_metadata.extend(self.metadata)
     new_details = call_details._replace(metadata=call_details_metadata)
-    future = method(request, new_details)
-    future.add_done_callback(_check_connection_error)
-    return future</code></pre>
+
+    # Error handling happens different depending on whether the response
+    #   is Unary or Stream. If the response is a stream, then the error
+    #   will be raised before the &#34;done_callback&#34; is called and will
+    #   therefore be caught by the try-except block. If the response is
+    #   Unary then the error &#34;done_callback&#34; will be called before the
+    #   error is raised.
+    try:
+        future = method(request, new_details)
+    except grpc.RpcError as error:
+        # gRPC error types are confusing - instantiated errors are Futures.
+        # ref: github.com/grpc/grpc/issues/25334#issuecomment-772730080
+        error = cast(error, grpc.Future)
+        _check_errors(error, request)
+    else:
+        future.add_done_callback(lambda f: _check_errors(f, request))
+        return future</code></pre>
 </details>
 </dd>
 </dl>

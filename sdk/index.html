@@ -26,13 +26,7 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python"># Python version compatibility.
-try:
-    # &gt;= 3.8
-    import importlib.metadata as metadata
-except ImportError:
-    #  &lt; 3.8
-    import importlib_metadata as metadata  # type: ignore
+<pre><code class="python">import importlib.metadata as metadata
 
 __version__ = &#34;&#34;
 try:
@@ -42,8 +36,11 @@ except (FileNotFoundError, ModuleNotFoundError):
 
 from .api.pfs import _additions as __pfs_additions
 from .client import Client
+from .datum_batching import batch_all_datums
+
 __all__ = [
     &#34;Client&#34;,
+    &#34;batch_all_datums&#34;,
 ]</code></pre>
 </details>
 </section>
@@ -56,15 +53,19 @@ __all__ = [
 </dd>
 <dt><code class="name"><a title="pachyderm_sdk.client" href="client.html">pachyderm_sdk.client</a></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The Client used to interact with a Pachyderm instance.</p></div>
 </dd>
 <dt><code class="name"><a title="pachyderm_sdk.config" href="config.html">pachyderm_sdk.config</a></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Functionality for parsing Pachyderm config files.</p></div>
 </dd>
 <dt><code class="name"><a title="pachyderm_sdk.constants" href="constants.html">pachyderm_sdk.constants</a></code></dt>
 <dd>
 <div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="pachyderm_sdk.datum_batching" href="datum_batching.html">pachyderm_sdk.datum_batching</a></code></dt>
+<dd>
+<div class="desc"><p>A high-level decorator for pipeline code that uses the datum-batching feature.</p></div>
 </dd>
 <dt><code class="name"><a title="pachyderm_sdk.errors" href="errors.html">pachyderm_sdk.errors</a></code></dt>
 <dd>
@@ -72,13 +73,90 @@ __all__ = [
 </dd>
 <dt><code class="name"><a title="pachyderm_sdk.interceptor" href="interceptor.html">pachyderm_sdk.interceptor</a></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Implementation of a gRPC interceptor used to set request metadata
+and catch connection errors.</p></div>
 </dd>
 </dl>
 </section>
 <section>
 </section>
 <section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="pachyderm_sdk.batch_all_datums"><code class="name flex">
+<span>def <span class="ident">batch_all_datums</span></span>(<span>user_code: Callable[..., None]) ‑> Callable[..., None]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>A decorator that will repeatedly call the wrapped function until
+all datums have been processed. Before calling the wrapped function,
+this decorator will call the NextDatum endpoint within the worker
+and set any environment variables specified by the worker.</p>
+<p>Any exceptions raised during the execution of the wrapped function
+will be reported back to the worker. See the pachyderm documentation
+for more information on how the datum batching feature works.</p>
+<p>Note: This can only be used within a Pachyderm worker.</p>
+<h2 id="examples">Examples</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; from pachyderm_sdk import batch_all_datums
+&gt;&gt;&gt;
+&gt;&gt;&gt; @batch_all_datums
+&gt;&gt;&gt; def pipeline():
+&gt;&gt;&gt;     # process datums
+&gt;&gt;&gt;     pass
+&gt;&gt;&gt;
+&gt;&gt;&gt; if __name__ == '__main__':
+&gt;&gt;&gt;   # Perform an expensive computation here before
+&gt;&gt;&gt;   #   entering your datum processing function
+&gt;&gt;&gt;   #   i.e. initializing a model.
+&gt;&gt;&gt;   pipeline()
+</code></pre>
+<p>Check the following link for a more substatial example:
+github.com/pachyderm/examples/tree/master/object-detection</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def batch_all_datums(user_code: PIPELINE_FUNC) -&gt; PIPELINE_FUNC:
+    &#34;&#34;&#34;A decorator that will repeatedly call the wrapped function until
+    all datums have been processed. Before calling the wrapped function,
+    this decorator will call the NextDatum endpoint within the worker
+    and set any environment variables specified by the worker.
+
+    Any exceptions raised during the execution of the wrapped function
+    will be reported back to the worker. See the pachyderm documentation
+    for more information on how the datum batching feature works.
+
+    Note: This can only be used within a Pachyderm worker.
+
+    Examples
+    --------
+    &gt;&gt;&gt; from pachyderm_sdk import batch_all_datums
+    &gt;&gt;&gt;
+    &gt;&gt;&gt; @batch_all_datums
+    &gt;&gt;&gt; def pipeline():
+    &gt;&gt;&gt;     # process datums
+    &gt;&gt;&gt;     pass
+    &gt;&gt;&gt;
+    &gt;&gt;&gt; if __name__ == &#39;__main__&#39;:
+    &gt;&gt;&gt;   # Perform an expensive computation here before
+    &gt;&gt;&gt;   #   entering your datum processing function
+    &gt;&gt;&gt;   #   i.e. initializing a model.
+    &gt;&gt;&gt;   pipeline()
+
+    Check the following link for a more substatial example:
+        github.com/pachyderm/examples/tree/master/object-detection
+    &#34;&#34;&#34;
+
+    @wraps(user_code)
+    def wrapper(*args, **kwargs) -&gt; None:
+        worker = Client().worker
+        while True:
+            with worker.batch_datum():
+                user_code(*args, **kwargs)
+
+    return wrapper</code></pre>
+</details>
+</dd>
+</dl>
 </section>
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
@@ -88,12 +166,17 @@ __all__ = [
 <span>(</span><span>host: str = 'localhost', port: int = 30650, auth_token: Optional[str] = None, root_certs: Optional[bytes] = None, transaction_id: str = None, tls: bool = False)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>The :class:<code>.<a title="pachyderm_sdk.Client" href="#pachyderm_sdk.Client">Client</a></code> class that users will primarily interact with.
-Initialize an instance with <code>python_pachyderm.Client()</code>.</p>
-<p>To see documentation on the methods :class:<code>.<a title="pachyderm_sdk.Client" href="#pachyderm_sdk.Client">Client</a></code> can call, refer to the
-<code>mixins</code> module.</p>
-<p>Creates a Pachyderm client. If both files don't exist, a client
-with default settings is created.</p>
+<div class="desc"><p>The Client used to interact with a Pachyderm instance.</p>
+<h2 id="examples">Examples</h2>
+<p>Connect to a pachyderm instance using your local config file:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; from pachyderm_sdk import Client
+&gt;&gt;&gt; client = Client.from_config()
+</code></pre>
+<p>Connect to a pachyderm instance using a URL/address:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; from pachyderm_sdk import Client
+&gt;&gt;&gt; client = Client.from_pachd_address(&quot;test.work.com:30080&quot;)
+</code></pre>
+<p>Creates a Pachyderm client.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>host</code></strong> :&ensp;<code>str</code>, optional</dt>
@@ -117,25 +200,30 @@ used. Otherwise, we use the certs provided by certifi.</dd>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Client:
-    &#34;&#34;&#34;The :class:`.Client` class that users will primarily interact with.
-    Initialize an instance with ``python_pachyderm.Client()``.
+    &#34;&#34;&#34;The Client used to interact with a Pachyderm instance.
 
-    To see documentation on the methods :class:`.Client` can call, refer to the
-    `mixins` module.
+    Examples
+    --------
+    Connect to a pachyderm instance using your local config file:
+    &gt;&gt;&gt; from pachyderm_sdk import Client
+    &gt;&gt;&gt; client = Client.from_config()
+
+    Connect to a pachyderm instance using a URL/address:
+    &gt;&gt;&gt; from pachyderm_sdk import Client
+    &gt;&gt;&gt; client = Client.from_pachd_address(&#34;test.work.com:30080&#34;)
     &#34;&#34;&#34;
 
     def __init__(
         self,
-        host: str = &#39;localhost&#39;,
-        port: int = 30650,
+        host: str = DEFAULT_HOST,
+        port: int = DEFAULT_PORT,
         auth_token: Optional[str] = None,
         root_certs: Optional[bytes] = None,
         transaction_id: str = None,
         tls: bool = False,
     ):
         &#34;&#34;&#34;
-        Creates a Pachyderm client. If both files don&#39;t exist, a client
-        with default settings is created.
+        Creates a Pachyderm client.
 
         Parameters
         ----------
@@ -155,6 +243,8 @@ used. Otherwise, we use the certs provided by certifi.</dd>
             Whether TLS should be used. If `root_certs` are specified, they are
             used. Otherwise, we use the certs provided by certifi.
         &#34;&#34;&#34;
+        host = host or DEFAULT_HOST
+        port = port or DEFAULT_PORT
         if auth_token is None:
             auth_token = os.environ.get(AUTH_TOKEN_ENV)
 
@@ -179,6 +269,8 @@ used. Otherwise, we use the certs provided by certifi.</dd>
 
         # See implementation for api layout.
         self._init_api()
+        # Worker stub is loaded when accessed through the worker property.
+        self._worker = None
 
         if not auth_token and (oidc_token := os.environ.get(OIDC_TOKEN_ENV)):
             self.auth_token = self.auth.authenticate(id_token=oidc_token)
@@ -190,7 +282,10 @@ used. Otherwise, we use the certs provided by certifi.</dd>
         self.enterprise = _EnterpriseStub(self._channel)
         self.identity = _IdentityStub(self._channel)
         self.license = _LicenseStub(self._channel)
-        self.pfs = _PfsStub(self._channel)
+        self.pfs = _PfsStub(
+            self._channel,
+            get_transaction_id=lambda: self.transaction_id,
+        )
         self.pps = _PpsStub(self._channel)
         self.transaction = _TransactionStub(
             self._channel,
@@ -198,12 +293,11 @@ used. Otherwise, we use the certs provided by certifi.</dd>
             set_transaction_id=lambda value: setattr(self, &#34;transaction_id&#34;, value),
         )
         self._version_api = _VersionStub(self._channel)
+        self._worker: Optional[_WorkerStub]
 
     @classmethod
     def new_in_cluster(
-        cls,
-        auth_token: Optional[str] = None,
-        transaction_id: Optional[str] = None
+        cls, auth_token: Optional[str] = None, transaction_id: Optional[str] = None
     ) -&gt; &#34;Client&#34;:
         &#34;&#34;&#34;Creates a Pachyderm client that operates within a Pachyderm cluster.
 
@@ -292,7 +386,7 @@ used. Otherwise, we use the certs provided by certifi.</dd>
         )
 
     @classmethod
-    def from_config(cls, config_file: Union[Path, str]=CONFIG_PATH_LOCAL) -&gt; &#34;Client&#34;:
+    def from_config(cls, config_file: Union[Path, str] = CONFIG_PATH_LOCAL) -&gt; &#34;Client&#34;:
         &#34;&#34;&#34;Creates a Pachyderm client from a config file.
 
         Parameters
@@ -314,15 +408,6 @@ used. Otherwise, we use the certs provided by certifi.</dd>
             root_certs=active_context.server_cas_decoded,
             transaction_id=active_context.active_transaction,
         )
-
-        # Verify the deployment ID of the active context with the cluster.
-        expected_deployment_id = active_context.cluster_deployment_id
-        if expected_deployment_id:
-            cluster_info = client.admin.inspect_cluster()
-            if cluster_info.deployment_id != expected_deployment_id:
-                raise BadClusterDeploymentID(
-                    expected_deployment_id, cluster_info.deployment_id
-                )
 
         return client
 
@@ -360,6 +445,27 @@ used. Otherwise, we use the certs provided by certifi.</dd>
         )
         self._init_api()
 
+    @property
+    def worker(self) -&gt; _WorkerStub:
+        &#34;&#34;&#34;Access the worker API stub.
+
+        This is dynamically loaded in order to provide a helpful error message
+        to the user if they try to interact the worker API from outside a worker.
+        &#34;&#34;&#34;
+        if self._worker is None:
+            port = os.environ.get(WORKER_PORT_ENV)
+            if port is None:
+                raise ConnectionError(
+                    f&#34;Cannot connect to the worker since {WORKER_PORT_ENV} is not set. &#34;
+                    &#34;Are you running inside a pipeline?&#34;
+                )
+            # Note: This channel does not go through the metadata interceptor.
+            channel = _create_channel(
+                address=f&#34;localhost:{port}&#34;, root_certs=None, options=GRPC_CHANNEL_OPTIONS
+            )
+            self._worker = _WorkerStub(channel)
+        return self._worker
+
     def _build_metadata(self):
         metadata = []
         if self._auth_token is not None:
@@ -367,26 +473,6 @@ used. Otherwise, we use the certs provided by certifi.</dd>
         if self._transaction_id is not None:
             metadata.append((&#34;pach-transaction&#34;, self._transaction_id))
         return metadata
-
-    def delete_all(self) -&gt; None:
-        &#34;&#34;&#34;Delete all repos, commits, files, pipelines, and jobs.
-        This resets the cluster to its initial state.
-        &#34;&#34;&#34;
-        # Try removing all identities if auth is activated.
-        with contextlib.suppress(AuthServiceNotActivated):
-            self.identity.delete_all()
-
-        # Try deactivating auth if activated.
-        with contextlib.suppress(AuthServiceNotActivated):
-            self.auth.deactivate()
-
-        # Try removing all licenses if auth is activated.
-        with contextlib.suppress(AuthServiceNotActivated):
-            self.license.delete_all()
-
-        self.pps.delete_all()
-        self.pfs.delete_all()
-        self.transaction.delete_all()
 
     def get_version(self) -&gt; Version:
         &#34;&#34;&#34;Requests version information from the pachd cluster.&#34;&#34;&#34;
@@ -418,9 +504,7 @@ cluster.</dd>
 </summary>
 <pre><code class="python">@classmethod
 def new_in_cluster(
-    cls,
-    auth_token: Optional[str] = None,
-    transaction_id: Optional[str] = None
+    cls, auth_token: Optional[str] = None, transaction_id: Optional[str] = None
 ) -&gt; &#34;Client&#34;:
     &#34;&#34;&#34;Creates a Pachyderm client that operates within a Pachyderm cluster.
 
@@ -558,7 +642,7 @@ config_file defaults to the local config.</dd>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@classmethod
-def from_config(cls, config_file: Union[Path, str]=CONFIG_PATH_LOCAL) -&gt; &#34;Client&#34;:
+def from_config(cls, config_file: Union[Path, str] = CONFIG_PATH_LOCAL) -&gt; &#34;Client&#34;:
     &#34;&#34;&#34;Creates a Pachyderm client from a config file.
 
     Parameters
@@ -580,15 +664,6 @@ def from_config(cls, config_file: Union[Path, str]=CONFIG_PATH_LOCAL) -&gt; &#34
         root_certs=active_context.server_cas_decoded,
         transaction_id=active_context.active_transaction,
     )
-
-    # Verify the deployment ID of the active context with the cluster.
-    expected_deployment_id = active_context.cluster_deployment_id
-    if expected_deployment_id:
-        cluster_info = client.admin.inspect_cluster()
-        if cluster_info.deployment_id != expected_deployment_id:
-            raise BadClusterDeploymentID(
-                expected_deployment_id, cluster_info.deployment_id
-            )
 
     return client</code></pre>
 </details>
@@ -622,40 +697,40 @@ def transaction_id(self):
     return self._transaction_id</code></pre>
 </details>
 </dd>
-</dl>
-<h3>Methods</h3>
-<dl>
-<dt id="pachyderm_sdk.Client.delete_all"><code class="name flex">
-<span>def <span class="ident">delete_all</span></span>(<span>self) ‑> None</span>
-</code></dt>
+<dt id="pachyderm_sdk.Client.worker"><code class="name">var <span class="ident">worker</span> : <a title="pachyderm_sdk.api.worker.extension.WorkerStub" href="api/worker/extension.html#pachyderm_sdk.api.worker.extension.WorkerStub">WorkerStub</a></code></dt>
 <dd>
-<div class="desc"><p>Delete all repos, commits, files, pipelines, and jobs.
-This resets the cluster to its initial state.</p></div>
+<div class="desc"><p>Access the worker API stub.</p>
+<p>This is dynamically loaded in order to provide a helpful error message
+to the user if they try to interact the worker API from outside a worker.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def delete_all(self) -&gt; None:
-    &#34;&#34;&#34;Delete all repos, commits, files, pipelines, and jobs.
-    This resets the cluster to its initial state.
+<pre><code class="python">@property
+def worker(self) -&gt; _WorkerStub:
+    &#34;&#34;&#34;Access the worker API stub.
+
+    This is dynamically loaded in order to provide a helpful error message
+    to the user if they try to interact the worker API from outside a worker.
     &#34;&#34;&#34;
-    # Try removing all identities if auth is activated.
-    with contextlib.suppress(AuthServiceNotActivated):
-        self.identity.delete_all()
-
-    # Try deactivating auth if activated.
-    with contextlib.suppress(AuthServiceNotActivated):
-        self.auth.deactivate()
-
-    # Try removing all licenses if auth is activated.
-    with contextlib.suppress(AuthServiceNotActivated):
-        self.license.delete_all()
-
-    self.pps.delete_all()
-    self.pfs.delete_all()
-    self.transaction.delete_all()</code></pre>
+    if self._worker is None:
+        port = os.environ.get(WORKER_PORT_ENV)
+        if port is None:
+            raise ConnectionError(
+                f&#34;Cannot connect to the worker since {WORKER_PORT_ENV} is not set. &#34;
+                &#34;Are you running inside a pipeline?&#34;
+            )
+        # Note: This channel does not go through the metadata interceptor.
+        channel = _create_channel(
+            address=f&#34;localhost:{port}&#34;, root_certs=None, options=GRPC_CHANNEL_OPTIONS
+        )
+        self._worker = _WorkerStub(channel)
+    return self._worker</code></pre>
 </details>
 </dd>
+</dl>
+<h3>Methods</h3>
+<dl>
 <dt id="pachyderm_sdk.Client.get_version"><code class="name flex">
 <span>def <span class="ident">get_version</span></span>(<span>self) ‑> <a title="pachyderm_sdk.api.version.Version" href="api/version/index.html#pachyderm_sdk.api.version.Version">Version</a></span>
 </code></dt>
@@ -691,8 +766,14 @@ This resets the cluster to its initial state.</p></div>
 <li><code><a title="pachyderm_sdk.client" href="client.html">pachyderm_sdk.client</a></code></li>
 <li><code><a title="pachyderm_sdk.config" href="config.html">pachyderm_sdk.config</a></code></li>
 <li><code><a title="pachyderm_sdk.constants" href="constants.html">pachyderm_sdk.constants</a></code></li>
+<li><code><a title="pachyderm_sdk.datum_batching" href="datum_batching.html">pachyderm_sdk.datum_batching</a></code></li>
 <li><code><a title="pachyderm_sdk.errors" href="errors.html">pachyderm_sdk.errors</a></code></li>
 <li><code><a title="pachyderm_sdk.interceptor" href="interceptor.html">pachyderm_sdk.interceptor</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="pachyderm_sdk.batch_all_datums" href="#pachyderm_sdk.batch_all_datums">batch_all_datums</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
@@ -703,10 +784,10 @@ This resets the cluster to its initial state.</p></div>
 <li><code><a title="pachyderm_sdk.Client.new_in_cluster" href="#pachyderm_sdk.Client.new_in_cluster">new_in_cluster</a></code></li>
 <li><code><a title="pachyderm_sdk.Client.from_pachd_address" href="#pachyderm_sdk.Client.from_pachd_address">from_pachd_address</a></code></li>
 <li><code><a title="pachyderm_sdk.Client.from_config" href="#pachyderm_sdk.Client.from_config">from_config</a></code></li>
-<li><code><a title="pachyderm_sdk.Client.delete_all" href="#pachyderm_sdk.Client.delete_all">delete_all</a></code></li>
 <li><code><a title="pachyderm_sdk.Client.get_version" href="#pachyderm_sdk.Client.get_version">get_version</a></code></li>
 <li><code><a title="pachyderm_sdk.Client.auth_token" href="#pachyderm_sdk.Client.auth_token">auth_token</a></code></li>
 <li><code><a title="pachyderm_sdk.Client.transaction_id" href="#pachyderm_sdk.Client.transaction_id">transaction_id</a></code></li>
+<li><code><a title="pachyderm_sdk.Client.worker" href="#pachyderm_sdk.Client.worker">worker</a></code></li>
 </ul>
 </li>
 </ul>

@@ -45,7 +45,10 @@ import betterproto
 import betterproto.lib.google.protobuf as betterproto_lib_google_protobuf
 import grpc
 
-from .. import pps as _pps__
+from .. import (
+    pfs as _pfs__,
+    pps as _pps__,
+)
 
 
 if TYPE_CHECKING:
@@ -115,6 +118,144 @@ class SetLogLevelResponse(betterproto.Message):
     errored_pods: List[str] = betterproto.string_field(2)
 
 
+@dataclass(eq=False, repr=False)
+class GetDumpV2TemplateRequest(betterproto.Message):
+    filters: List[str] = betterproto.string_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class GetDumpV2TemplateResponse(betterproto.Message):
+    request: &#34;DumpV2Request&#34; = betterproto.message_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class Pipeline(betterproto.Message):
+    project: str = betterproto.string_field(1)
+    name: str = betterproto.string_field(2)
+
+
+@dataclass(eq=False, repr=False)
+class Pod(betterproto.Message):
+    name: str = betterproto.string_field(1)
+    ip: str = betterproto.string_field(2)
+    containers: List[str] = betterproto.string_field(3)
+
+
+@dataclass(eq=False, repr=False)
+class App(betterproto.Message):
+    name: str = betterproto.string_field(1)
+    pods: List[&#34;Pod&#34;] = betterproto.message_field(2)
+    timeout: timedelta = betterproto.message_field(3)
+    pipeline: &#34;Pipeline&#34; = betterproto.message_field(4)
+
+
+@dataclass(eq=False, repr=False)
+class System(betterproto.Message):
+    helm: bool = betterproto.bool_field(1)
+    database: bool = betterproto.bool_field(2)
+    version: bool = betterproto.bool_field(3)
+    describes: List[&#34;App&#34;] = betterproto.message_field(4)
+    logs: List[&#34;App&#34;] = betterproto.message_field(5)
+    loki_logs: List[&#34;App&#34;] = betterproto.message_field(6)
+    binaries: List[&#34;App&#34;] = betterproto.message_field(7)
+    profiles: List[&#34;App&#34;] = betterproto.message_field(8)
+
+
+@dataclass(eq=False, repr=False)
+class StarlarkLiteral(betterproto.Message):
+    &#34;&#34;&#34;StarlarkLiteral is a custom Starlark script.&#34;&#34;&#34;
+
+    name: str = betterproto.string_field(1)
+    &#34;&#34;&#34;
+    The name of the script; used for debug messages and to control where the
+    output goes.
+    &#34;&#34;&#34;
+
+    program_text: str = betterproto.string_field(2)
+    &#34;&#34;&#34;The text of the &#34;debugdump&#34; personality Starlark program.&#34;&#34;&#34;
+
+
+@dataclass(eq=False, repr=False)
+class Starlark(betterproto.Message):
+    &#34;&#34;&#34;Starlark controls the running of a Starlark script.&#34;&#34;&#34;
+
+    builtin: str = betterproto.string_field(1, group=&#34;source&#34;)
+    &#34;&#34;&#34;One built into the pachd binary.&#34;&#34;&#34;
+
+    literal: &#34;StarlarkLiteral&#34; = betterproto.message_field(2, group=&#34;source&#34;)
+    &#34;&#34;&#34;Or a script supplied in this request.&#34;&#34;&#34;
+
+    timeout: timedelta = betterproto.message_field(3)
+    &#34;&#34;&#34;
+    How long to allow the script to run for.  If unset, defaults to 1 minute.
+    &#34;&#34;&#34;
+
+
+@dataclass(eq=False, repr=False)
+class DumpV2Request(betterproto.Message):
+    system: &#34;System&#34; = betterproto.message_field(1)
+    &#34;&#34;&#34;Which system-level information to include in the debug dump.&#34;&#34;&#34;
+
+    pipelines: List[&#34;Pipeline&#34;] = betterproto.message_field(2)
+    &#34;&#34;&#34;
+    Which pipelines to fetch information about and include in the debug dump.
+    &#34;&#34;&#34;
+
+    input_repos: bool = betterproto.bool_field(3)
+    &#34;&#34;&#34;If true, fetch information about non-output repos.&#34;&#34;&#34;
+
+    timeout: timedelta = betterproto.message_field(4)
+    &#34;&#34;&#34;How long to run the dump for.&#34;&#34;&#34;
+
+    defaults: &#34;DumpV2RequestDefaults&#34; = betterproto.message_field(5)
+    &#34;&#34;&#34;Which defaults to include in the debug dump.&#34;&#34;&#34;
+
+    starlark_scripts: List[&#34;Starlark&#34;] = betterproto.message_field(6)
+    &#34;&#34;&#34;A list of Starlark scripts to run.&#34;&#34;&#34;
+
+
+@dataclass(eq=False, repr=False)
+class DumpV2RequestDefaults(betterproto.Message):
+    cluster_defaults: bool = betterproto.bool_field(1)
+    &#34;&#34;&#34;If true, include the cluster defaults.&#34;&#34;&#34;
+
+
+@dataclass(eq=False, repr=False)
+class DumpContent(betterproto.Message):
+    content: bytes = betterproto.bytes_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class DumpProgress(betterproto.Message):
+    task: str = betterproto.string_field(1)
+    total: int = betterproto.int64_field(2)
+    progress: int = betterproto.int64_field(3)
+
+
+@dataclass(eq=False, repr=False)
+class DumpChunk(betterproto.Message):
+    content: &#34;DumpContent&#34; = betterproto.message_field(1, group=&#34;chunk&#34;)
+    progress: &#34;DumpProgress&#34; = betterproto.message_field(2, group=&#34;chunk&#34;)
+
+
+@dataclass(eq=False, repr=False)
+class RunPfsLoadTestRequest(betterproto.Message):
+    spec: str = betterproto.string_field(1)
+    branch: &#34;_pfs__.Branch&#34; = betterproto.message_field(2)
+    seed: int = betterproto.int64_field(3)
+    state_id: str = betterproto.string_field(4)
+
+
+@dataclass(eq=False, repr=False)
+class RunPfsLoadTestResponse(betterproto.Message):
+    spec: str = betterproto.string_field(1)
+    branch: &#34;_pfs__.Branch&#34; = betterproto.message_field(2)
+    seed: int = betterproto.int64_field(3)
+    error: str = betterproto.string_field(4)
+    duration: timedelta = betterproto.message_field(5)
+    state_id: str = betterproto.string_field(6)
+
+
 class DebugStub:
     def __init__(self, channel: &#34;grpc.Channel&#34;):
         self.__rpc_profile = channel.unary_stream(
@@ -136,6 +277,26 @@ class DebugStub:
             &#34;/debug_v2.Debug/SetLogLevel&#34;,
             request_serializer=SetLogLevelRequest.SerializeToString,
             response_deserializer=SetLogLevelResponse.FromString,
+        )
+        self.__rpc_get_dump_v2_template = channel.unary_unary(
+            &#34;/debug_v2.Debug/GetDumpV2Template&#34;,
+            request_serializer=GetDumpV2TemplateRequest.SerializeToString,
+            response_deserializer=GetDumpV2TemplateResponse.FromString,
+        )
+        self.__rpc_dump_v2 = channel.unary_stream(
+            &#34;/debug_v2.Debug/DumpV2&#34;,
+            request_serializer=DumpV2Request.SerializeToString,
+            response_deserializer=DumpChunk.FromString,
+        )
+        self.__rpc_run_pfs_load_test = channel.unary_unary(
+            &#34;/debug_v2.Debug/RunPFSLoadTest&#34;,
+            request_serializer=RunPfsLoadTestRequest.SerializeToString,
+            response_deserializer=RunPfsLoadTestResponse.FromString,
+        )
+        self.__rpc_run_pfs_load_test_default = channel.unary_unary(
+            &#34;/debug_v2.Debug/RunPFSLoadTestDefault&#34;,
+            request_serializer=betterproto_lib_google_protobuf.Empty.SerializeToString,
+            response_deserializer=RunPfsLoadTestResponse.FromString,
         )
 
     def profile(
@@ -188,6 +349,67 @@ class DebugStub:
 
         return self.__rpc_set_log_level(request)
 
+    def get_dump_v2_template(
+        self, *, filters: Optional[List[str]] = None
+    ) -&gt; &#34;GetDumpV2TemplateResponse&#34;:
+        filters = filters or []
+
+        request = GetDumpV2TemplateRequest()
+        request.filters = filters
+
+        return self.__rpc_get_dump_v2_template(request)
+
+    def dump_v2(
+        self,
+        *,
+        system: &#34;System&#34; = None,
+        pipelines: Optional[List[&#34;Pipeline&#34;]] = None,
+        input_repos: bool = False,
+        timeout: timedelta = None,
+        defaults: &#34;DumpV2RequestDefaults&#34; = None,
+        starlark_scripts: Optional[List[&#34;Starlark&#34;]] = None
+    ) -&gt; Iterator[&#34;DumpChunk&#34;]:
+        pipelines = pipelines or []
+        starlark_scripts = starlark_scripts or []
+
+        request = DumpV2Request()
+        if system is not None:
+            request.system = system
+        if pipelines is not None:
+            request.pipelines = pipelines
+        request.input_repos = input_repos
+        if timeout is not None:
+            request.timeout = timeout
+        if defaults is not None:
+            request.defaults = defaults
+        if starlark_scripts is not None:
+            request.starlark_scripts = starlark_scripts
+
+        for response in self.__rpc_dump_v2(request):
+            yield response
+
+    def run_pfs_load_test(
+        self,
+        *,
+        spec: str = &#34;&#34;,
+        branch: &#34;_pfs__.Branch&#34; = None,
+        seed: int = 0,
+        state_id: str = &#34;&#34;
+    ) -&gt; &#34;RunPfsLoadTestResponse&#34;:
+        request = RunPfsLoadTestRequest()
+        request.spec = spec
+        if branch is not None:
+            request.branch = branch
+        request.seed = seed
+        request.state_id = state_id
+
+        return self.__rpc_run_pfs_load_test(request)
+
+    def run_pfs_load_test_default(self) -&gt; &#34;RunPfsLoadTestResponse&#34;:
+        request = betterproto_lib_google_protobuf.Empty()
+
+        return self.__rpc_run_pfs_load_test_default(request)
+
 
 class DebugBase:
     def profile(
@@ -223,6 +445,46 @@ class DebugBase:
         context.set_details(&#34;Method not implemented!&#34;)
         raise NotImplementedError(&#34;Method not implemented!&#34;)
 
+    def get_dump_v2_template(
+        self, filters: Optional[List[str]], context: &#34;grpc.ServicerContext&#34;
+    ) -&gt; &#34;GetDumpV2TemplateResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def dump_v2(
+        self,
+        system: &#34;System&#34;,
+        pipelines: Optional[List[&#34;Pipeline&#34;]],
+        input_repos: bool,
+        timeout: timedelta,
+        defaults: &#34;DumpV2RequestDefaults&#34;,
+        starlark_scripts: Optional[List[&#34;Starlark&#34;]],
+        context: &#34;grpc.ServicerContext&#34;,
+    ) -&gt; Iterator[&#34;DumpChunk&#34;]:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def run_pfs_load_test(
+        self,
+        spec: str,
+        branch: &#34;_pfs__.Branch&#34;,
+        seed: int,
+        state_id: str,
+        context: &#34;grpc.ServicerContext&#34;,
+    ) -&gt; &#34;RunPfsLoadTestResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def run_pfs_load_test_default(
+        self, context: &#34;grpc.ServicerContext&#34;
+    ) -&gt; &#34;RunPfsLoadTestResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
     __proto_path__ = &#34;debug_v2.Debug&#34;
 
     @property
@@ -248,10 +510,37 @@ class DebugBase:
                 request_deserializer=SetLogLevelRequest.FromString,
                 response_serializer=SetLogLevelRequest.SerializeToString,
             ),
+            &#34;GetDumpV2Template&#34;: grpc.unary_unary_rpc_method_handler(
+                self.get_dump_v2_template,
+                request_deserializer=GetDumpV2TemplateRequest.FromString,
+                response_serializer=GetDumpV2TemplateRequest.SerializeToString,
+            ),
+            &#34;DumpV2&#34;: grpc.unary_stream_rpc_method_handler(
+                self.dump_v2,
+                request_deserializer=DumpV2Request.FromString,
+                response_serializer=DumpV2Request.SerializeToString,
+            ),
+            &#34;RunPFSLoadTest&#34;: grpc.unary_unary_rpc_method_handler(
+                self.run_pfs_load_test,
+                request_deserializer=RunPfsLoadTestRequest.FromString,
+                response_serializer=RunPfsLoadTestRequest.SerializeToString,
+            ),
+            &#34;RunPFSLoadTestDefault&#34;: grpc.unary_unary_rpc_method_handler(
+                self.run_pfs_load_test_default,
+                request_deserializer=betterproto_lib_google_protobuf.Empty.FromString,
+                response_serializer=betterproto_lib_google_protobuf.Empty.SerializeToString,
+            ),
         }</code></pre>
 </details>
 </section>
 <section>
+<h2 class="section-title" id="header-submodules">Sub-modules</h2>
+<dl>
+<dt><code class="name"><a title="pachyderm_sdk.api.debug.extension" href="extension.html">pachyderm_sdk.api.debug.extension</a></code></dt>
+<dd>
+<div class="desc"><p>Handwritten classes/methods that augment the existing Debug API.</p></div>
+</dd>
+</dl>
 </section>
 <section>
 </section>
@@ -262,10 +551,11 @@ class DebugBase:
 <dl>
 <dt id="pachyderm_sdk.api.debug.SetLogLevelRequestLogLevel"><code class="flex name class">
 <span>class <span class="ident">SetLogLevelRequestLogLevel</span></span>
-<span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
+<span>(</span><span>*args, **kwds)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>An enumeration.</p></div>
+<div class="desc"><p>The base class for protobuf enumerations, all generated enumerations will inherit
+from this. Bases :class:<code>enum.IntEnum</code>.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -282,6 +572,7 @@ class DebugBase:
 <li>betterproto.Enum</li>
 <li>enum.IntEnum</li>
 <li>builtins.int</li>
+<li>enum.ReprEnum</li>
 <li>enum.Enum</li>
 </ul>
 <h3>Class variables</h3>
@@ -584,6 +875,604 @@ class SetLogLevelResponse(betterproto.Message):
 </dd>
 </dl>
 </dd>
+<dt id="pachyderm_sdk.api.debug.GetDumpV2TemplateRequest"><code class="flex name class">
+<span>class <span class="ident">GetDumpV2TemplateRequest</span></span>
+<span>(</span><span>filters: List[str] = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>GetDumpV2TemplateRequest(filters: List[str] = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class GetDumpV2TemplateRequest(betterproto.Message):
+    filters: List[str] = betterproto.string_field(1)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.debug.GetDumpV2TemplateRequest.filters"><code class="name">var <span class="ident">filters</span> : List[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.debug.GetDumpV2TemplateResponse"><code class="flex name class">
+<span>class <span class="ident">GetDumpV2TemplateResponse</span></span>
+<span>(</span><span>request: <a title="pachyderm_sdk.api.debug.DumpV2Request" href="#pachyderm_sdk.api.debug.DumpV2Request">DumpV2Request</a> = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>GetDumpV2TemplateResponse(request: 'DumpV2Request' = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class GetDumpV2TemplateResponse(betterproto.Message):
+    request: &#34;DumpV2Request&#34; = betterproto.message_field(1)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.debug.GetDumpV2TemplateResponse.request"><code class="name">var <span class="ident">request</span> : <a title="pachyderm_sdk.api.debug.DumpV2Request" href="#pachyderm_sdk.api.debug.DumpV2Request">DumpV2Request</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.debug.Pipeline"><code class="flex name class">
+<span>class <span class="ident">Pipeline</span></span>
+<span>(</span><span>project: str = None, name: str = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Pipeline(project: str = None, name: str = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class Pipeline(betterproto.Message):
+    project: str = betterproto.string_field(1)
+    name: str = betterproto.string_field(2)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.debug.Pipeline.project"><code class="name">var <span class="ident">project</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.debug.Pipeline.name"><code class="name">var <span class="ident">name</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.debug.Pod"><code class="flex name class">
+<span>class <span class="ident">Pod</span></span>
+<span>(</span><span>name: str = None, ip: str = None, containers: List[str] = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Pod(name: str = None, ip: str = None, containers: List[str] = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class Pod(betterproto.Message):
+    name: str = betterproto.string_field(1)
+    ip: str = betterproto.string_field(2)
+    containers: List[str] = betterproto.string_field(3)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.debug.Pod.name"><code class="name">var <span class="ident">name</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.debug.Pod.ip"><code class="name">var <span class="ident">ip</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.debug.Pod.containers"><code class="name">var <span class="ident">containers</span> : List[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.debug.App"><code class="flex name class">
+<span>class <span class="ident">App</span></span>
+<span>(</span><span>name: str = None, pods: List[ForwardRef('<a title="pachyderm_sdk.api.debug.Pod" href="#pachyderm_sdk.api.debug.Pod">Pod</a>')] = None, timeout: datetime.timedelta = None, pipeline: <a title="pachyderm_sdk.api.debug.Pipeline" href="#pachyderm_sdk.api.debug.Pipeline">Pipeline</a> = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>App(name: str = None, pods: List[ForwardRef('Pod')] = None, timeout: datetime.timedelta = None, pipeline: 'Pipeline' = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class App(betterproto.Message):
+    name: str = betterproto.string_field(1)
+    pods: List[&#34;Pod&#34;] = betterproto.message_field(2)
+    timeout: timedelta = betterproto.message_field(3)
+    pipeline: &#34;Pipeline&#34; = betterproto.message_field(4)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.debug.App.name"><code class="name">var <span class="ident">name</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.debug.App.pods"><code class="name">var <span class="ident">pods</span> : List[<a title="pachyderm_sdk.api.debug.Pod" href="#pachyderm_sdk.api.debug.Pod">Pod</a>]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.debug.App.timeout"><code class="name">var <span class="ident">timeout</span> : datetime.timedelta</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.debug.App.pipeline"><code class="name">var <span class="ident">pipeline</span> : <a title="pachyderm_sdk.api.debug.Pipeline" href="#pachyderm_sdk.api.debug.Pipeline">Pipeline</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.debug.System"><code class="flex name class">
+<span>class <span class="ident">System</span></span>
+<span>(</span><span>helm: bool = None, database: bool = None, version: bool = None, describes: List[ForwardRef('<a title="pachyderm_sdk.api.debug.App" href="#pachyderm_sdk.api.debug.App">App</a>')] = None, logs: List[ForwardRef('<a title="pachyderm_sdk.api.debug.App" href="#pachyderm_sdk.api.debug.App">App</a>')] = None, loki_logs: List[ForwardRef('<a title="pachyderm_sdk.api.debug.App" href="#pachyderm_sdk.api.debug.App">App</a>')] = None, binaries: List[ForwardRef('<a title="pachyderm_sdk.api.debug.App" href="#pachyderm_sdk.api.debug.App">App</a>')] = None, profiles: List[ForwardRef('<a title="pachyderm_sdk.api.debug.App" href="#pachyderm_sdk.api.debug.App">App</a>')] = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>System(helm: bool = None, database: bool = None, version: bool = None, describes: List[ForwardRef('App')] = None, logs: List[ForwardRef('App')] = None, loki_logs: List[ForwardRef('App')] = None, binaries: List[ForwardRef('App')] = None, profiles: List[ForwardRef('App')] = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class System(betterproto.Message):
+    helm: bool = betterproto.bool_field(1)
+    database: bool = betterproto.bool_field(2)
+    version: bool = betterproto.bool_field(3)
+    describes: List[&#34;App&#34;] = betterproto.message_field(4)
+    logs: List[&#34;App&#34;] = betterproto.message_field(5)
+    loki_logs: List[&#34;App&#34;] = betterproto.message_field(6)
+    binaries: List[&#34;App&#34;] = betterproto.message_field(7)
+    profiles: List[&#34;App&#34;] = betterproto.message_field(8)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.debug.System.helm"><code class="name">var <span class="ident">helm</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.debug.System.database"><code class="name">var <span class="ident">database</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.debug.System.version"><code class="name">var <span class="ident">version</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.debug.System.describes"><code class="name">var <span class="ident">describes</span> : List[<a title="pachyderm_sdk.api.debug.App" href="#pachyderm_sdk.api.debug.App">App</a>]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.debug.System.logs"><code class="name">var <span class="ident">logs</span> : List[<a title="pachyderm_sdk.api.debug.App" href="#pachyderm_sdk.api.debug.App">App</a>]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.debug.System.loki_logs"><code class="name">var <span class="ident">loki_logs</span> : List[<a title="pachyderm_sdk.api.debug.App" href="#pachyderm_sdk.api.debug.App">App</a>]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.debug.System.binaries"><code class="name">var <span class="ident">binaries</span> : List[<a title="pachyderm_sdk.api.debug.App" href="#pachyderm_sdk.api.debug.App">App</a>]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.debug.System.profiles"><code class="name">var <span class="ident">profiles</span> : List[<a title="pachyderm_sdk.api.debug.App" href="#pachyderm_sdk.api.debug.App">App</a>]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.debug.StarlarkLiteral"><code class="flex name class">
+<span>class <span class="ident">StarlarkLiteral</span></span>
+<span>(</span><span>name: str = None, program_text: str = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>StarlarkLiteral is a custom Starlark script.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class StarlarkLiteral(betterproto.Message):
+    &#34;&#34;&#34;StarlarkLiteral is a custom Starlark script.&#34;&#34;&#34;
+
+    name: str = betterproto.string_field(1)
+    &#34;&#34;&#34;
+    The name of the script; used for debug messages and to control where the
+    output goes.
+    &#34;&#34;&#34;
+
+    program_text: str = betterproto.string_field(2)
+    &#34;&#34;&#34;The text of the &#34;debugdump&#34; personality Starlark program.&#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.debug.StarlarkLiteral.name"><code class="name">var <span class="ident">name</span> : str</code></dt>
+<dd>
+<div class="desc"><p>The name of the script; used for debug messages and to control where the
+output goes.</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.debug.StarlarkLiteral.program_text"><code class="name">var <span class="ident">program_text</span> : str</code></dt>
+<dd>
+<div class="desc"><p>The text of the "debugdump" personality Starlark program.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.debug.Starlark"><code class="flex name class">
+<span>class <span class="ident">Starlark</span></span>
+<span>(</span><span>builtin: str = None, literal: <a title="pachyderm_sdk.api.debug.StarlarkLiteral" href="#pachyderm_sdk.api.debug.StarlarkLiteral">StarlarkLiteral</a> = None, timeout: datetime.timedelta = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Starlark controls the running of a Starlark script.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class Starlark(betterproto.Message):
+    &#34;&#34;&#34;Starlark controls the running of a Starlark script.&#34;&#34;&#34;
+
+    builtin: str = betterproto.string_field(1, group=&#34;source&#34;)
+    &#34;&#34;&#34;One built into the pachd binary.&#34;&#34;&#34;
+
+    literal: &#34;StarlarkLiteral&#34; = betterproto.message_field(2, group=&#34;source&#34;)
+    &#34;&#34;&#34;Or a script supplied in this request.&#34;&#34;&#34;
+
+    timeout: timedelta = betterproto.message_field(3)
+    &#34;&#34;&#34;
+    How long to allow the script to run for.  If unset, defaults to 1 minute.
+    &#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.debug.Starlark.builtin"><code class="name">var <span class="ident">builtin</span> : str</code></dt>
+<dd>
+<div class="desc"><p>One built into the pachd binary.</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.debug.Starlark.literal"><code class="name">var <span class="ident">literal</span> : <a title="pachyderm_sdk.api.debug.StarlarkLiteral" href="#pachyderm_sdk.api.debug.StarlarkLiteral">StarlarkLiteral</a></code></dt>
+<dd>
+<div class="desc"><p>Or a script supplied in this request.</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.debug.Starlark.timeout"><code class="name">var <span class="ident">timeout</span> : datetime.timedelta</code></dt>
+<dd>
+<div class="desc"><p>How long to allow the script to run for.
+If unset, defaults to 1 minute.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.debug.DumpV2Request"><code class="flex name class">
+<span>class <span class="ident">DumpV2Request</span></span>
+<span>(</span><span>system: <a title="pachyderm_sdk.api.debug.System" href="#pachyderm_sdk.api.debug.System">System</a> = None, pipelines: List[ForwardRef('<a title="pachyderm_sdk.api.debug.Pipeline" href="#pachyderm_sdk.api.debug.Pipeline">Pipeline</a>')] = None, input_repos: bool = None, timeout: datetime.timedelta = None, defaults: <a title="pachyderm_sdk.api.debug.DumpV2RequestDefaults" href="#pachyderm_sdk.api.debug.DumpV2RequestDefaults">DumpV2RequestDefaults</a> = None, starlark_scripts: List[ForwardRef('<a title="pachyderm_sdk.api.debug.Starlark" href="#pachyderm_sdk.api.debug.Starlark">Starlark</a>')] = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>DumpV2Request(system: 'System' = None, pipelines: List[ForwardRef('Pipeline')] = None, input_repos: bool = None, timeout: datetime.timedelta = None, defaults: 'DumpV2RequestDefaults' = None, starlark_scripts: List[ForwardRef('Starlark')] = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class DumpV2Request(betterproto.Message):
+    system: &#34;System&#34; = betterproto.message_field(1)
+    &#34;&#34;&#34;Which system-level information to include in the debug dump.&#34;&#34;&#34;
+
+    pipelines: List[&#34;Pipeline&#34;] = betterproto.message_field(2)
+    &#34;&#34;&#34;
+    Which pipelines to fetch information about and include in the debug dump.
+    &#34;&#34;&#34;
+
+    input_repos: bool = betterproto.bool_field(3)
+    &#34;&#34;&#34;If true, fetch information about non-output repos.&#34;&#34;&#34;
+
+    timeout: timedelta = betterproto.message_field(4)
+    &#34;&#34;&#34;How long to run the dump for.&#34;&#34;&#34;
+
+    defaults: &#34;DumpV2RequestDefaults&#34; = betterproto.message_field(5)
+    &#34;&#34;&#34;Which defaults to include in the debug dump.&#34;&#34;&#34;
+
+    starlark_scripts: List[&#34;Starlark&#34;] = betterproto.message_field(6)
+    &#34;&#34;&#34;A list of Starlark scripts to run.&#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.debug.DumpV2Request.system"><code class="name">var <span class="ident">system</span> : <a title="pachyderm_sdk.api.debug.System" href="#pachyderm_sdk.api.debug.System">System</a></code></dt>
+<dd>
+<div class="desc"><p>Which system-level information to include in the debug dump.</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.debug.DumpV2Request.pipelines"><code class="name">var <span class="ident">pipelines</span> : List[<a title="pachyderm_sdk.api.debug.Pipeline" href="#pachyderm_sdk.api.debug.Pipeline">Pipeline</a>]</code></dt>
+<dd>
+<div class="desc"><p>Which pipelines to fetch information about and include in the debug dump.</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.debug.DumpV2Request.input_repos"><code class="name">var <span class="ident">input_repos</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>If true, fetch information about non-output repos.</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.debug.DumpV2Request.timeout"><code class="name">var <span class="ident">timeout</span> : datetime.timedelta</code></dt>
+<dd>
+<div class="desc"><p>How long to run the dump for.</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.debug.DumpV2Request.defaults"><code class="name">var <span class="ident">defaults</span> : <a title="pachyderm_sdk.api.debug.DumpV2RequestDefaults" href="#pachyderm_sdk.api.debug.DumpV2RequestDefaults">DumpV2RequestDefaults</a></code></dt>
+<dd>
+<div class="desc"><p>Which defaults to include in the debug dump.</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.debug.DumpV2Request.starlark_scripts"><code class="name">var <span class="ident">starlark_scripts</span> : List[<a title="pachyderm_sdk.api.debug.Starlark" href="#pachyderm_sdk.api.debug.Starlark">Starlark</a>]</code></dt>
+<dd>
+<div class="desc"><p>A list of Starlark scripts to run.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.debug.DumpV2RequestDefaults"><code class="flex name class">
+<span>class <span class="ident">DumpV2RequestDefaults</span></span>
+<span>(</span><span>cluster_defaults: bool = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>DumpV2RequestDefaults(cluster_defaults: bool = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class DumpV2RequestDefaults(betterproto.Message):
+    cluster_defaults: bool = betterproto.bool_field(1)
+    &#34;&#34;&#34;If true, include the cluster defaults.&#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.debug.DumpV2RequestDefaults.cluster_defaults"><code class="name">var <span class="ident">cluster_defaults</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>If true, include the cluster defaults.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.debug.DumpContent"><code class="flex name class">
+<span>class <span class="ident">DumpContent</span></span>
+<span>(</span><span>content: bytes = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>DumpContent(content: bytes = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class DumpContent(betterproto.Message):
+    content: bytes = betterproto.bytes_field(1)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.debug.DumpContent.content"><code class="name">var <span class="ident">content</span> : bytes</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.debug.DumpProgress"><code class="flex name class">
+<span>class <span class="ident">DumpProgress</span></span>
+<span>(</span><span>task: str = None, total: int = None, progress: int = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>DumpProgress(task: str = None, total: int = None, progress: int = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class DumpProgress(betterproto.Message):
+    task: str = betterproto.string_field(1)
+    total: int = betterproto.int64_field(2)
+    progress: int = betterproto.int64_field(3)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.debug.DumpProgress.task"><code class="name">var <span class="ident">task</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.debug.DumpProgress.total"><code class="name">var <span class="ident">total</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.debug.DumpProgress.progress"><code class="name">var <span class="ident">progress</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.debug.DumpChunk"><code class="flex name class">
+<span>class <span class="ident">DumpChunk</span></span>
+<span>(</span><span>content: <a title="pachyderm_sdk.api.debug.DumpContent" href="#pachyderm_sdk.api.debug.DumpContent">DumpContent</a> = None, progress: <a title="pachyderm_sdk.api.debug.DumpProgress" href="#pachyderm_sdk.api.debug.DumpProgress">DumpProgress</a> = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>DumpChunk(content: 'DumpContent' = None, progress: 'DumpProgress' = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class DumpChunk(betterproto.Message):
+    content: &#34;DumpContent&#34; = betterproto.message_field(1, group=&#34;chunk&#34;)
+    progress: &#34;DumpProgress&#34; = betterproto.message_field(2, group=&#34;chunk&#34;)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.debug.DumpChunk.content"><code class="name">var <span class="ident">content</span> : <a title="pachyderm_sdk.api.debug.DumpContent" href="#pachyderm_sdk.api.debug.DumpContent">DumpContent</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.debug.DumpChunk.progress"><code class="name">var <span class="ident">progress</span> : <a title="pachyderm_sdk.api.debug.DumpProgress" href="#pachyderm_sdk.api.debug.DumpProgress">DumpProgress</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.debug.RunPfsLoadTestRequest"><code class="flex name class">
+<span>class <span class="ident">RunPfsLoadTestRequest</span></span>
+<span>(</span><span>spec: str = None, branch: _pfs__.Branch = None, seed: int = None, state_id: str = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>RunPfsLoadTestRequest(spec: str = None, branch: '_pfs__.Branch' = None, seed: int = None, state_id: str = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class RunPfsLoadTestRequest(betterproto.Message):
+    spec: str = betterproto.string_field(1)
+    branch: &#34;_pfs__.Branch&#34; = betterproto.message_field(2)
+    seed: int = betterproto.int64_field(3)
+    state_id: str = betterproto.string_field(4)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.debug.RunPfsLoadTestRequest.spec"><code class="name">var <span class="ident">spec</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.debug.RunPfsLoadTestRequest.branch"><code class="name">var <span class="ident">branch</span> : <a title="pachyderm_sdk.api.pfs.Branch" href="../pfs/index.html#pachyderm_sdk.api.pfs.Branch">Branch</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.debug.RunPfsLoadTestRequest.seed"><code class="name">var <span class="ident">seed</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.debug.RunPfsLoadTestRequest.state_id"><code class="name">var <span class="ident">state_id</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.debug.RunPfsLoadTestResponse"><code class="flex name class">
+<span>class <span class="ident">RunPfsLoadTestResponse</span></span>
+<span>(</span><span>spec: str = None, branch: _pfs__.Branch = None, seed: int = None, error: str = None, duration: datetime.timedelta = None, state_id: str = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>RunPfsLoadTestResponse(spec: str = None, branch: '_pfs__.Branch' = None, seed: int = None, error: str = None, duration: datetime.timedelta = None, state_id: str = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class RunPfsLoadTestResponse(betterproto.Message):
+    spec: str = betterproto.string_field(1)
+    branch: &#34;_pfs__.Branch&#34; = betterproto.message_field(2)
+    seed: int = betterproto.int64_field(3)
+    error: str = betterproto.string_field(4)
+    duration: timedelta = betterproto.message_field(5)
+    state_id: str = betterproto.string_field(6)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.debug.RunPfsLoadTestResponse.spec"><code class="name">var <span class="ident">spec</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.debug.RunPfsLoadTestResponse.branch"><code class="name">var <span class="ident">branch</span> : <a title="pachyderm_sdk.api.pfs.Branch" href="../pfs/index.html#pachyderm_sdk.api.pfs.Branch">Branch</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.debug.RunPfsLoadTestResponse.seed"><code class="name">var <span class="ident">seed</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.debug.RunPfsLoadTestResponse.error"><code class="name">var <span class="ident">error</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.debug.RunPfsLoadTestResponse.duration"><code class="name">var <span class="ident">duration</span> : datetime.timedelta</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.debug.RunPfsLoadTestResponse.state_id"><code class="name">var <span class="ident">state_id</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
 <dt id="pachyderm_sdk.api.debug.DebugStub"><code class="flex name class">
 <span>class <span class="ident">DebugStub</span></span>
 <span>(</span><span>channel: grpc.Channel)</span>
@@ -615,6 +1504,26 @@ class SetLogLevelResponse(betterproto.Message):
             &#34;/debug_v2.Debug/SetLogLevel&#34;,
             request_serializer=SetLogLevelRequest.SerializeToString,
             response_deserializer=SetLogLevelResponse.FromString,
+        )
+        self.__rpc_get_dump_v2_template = channel.unary_unary(
+            &#34;/debug_v2.Debug/GetDumpV2Template&#34;,
+            request_serializer=GetDumpV2TemplateRequest.SerializeToString,
+            response_deserializer=GetDumpV2TemplateResponse.FromString,
+        )
+        self.__rpc_dump_v2 = channel.unary_stream(
+            &#34;/debug_v2.Debug/DumpV2&#34;,
+            request_serializer=DumpV2Request.SerializeToString,
+            response_deserializer=DumpChunk.FromString,
+        )
+        self.__rpc_run_pfs_load_test = channel.unary_unary(
+            &#34;/debug_v2.Debug/RunPFSLoadTest&#34;,
+            request_serializer=RunPfsLoadTestRequest.SerializeToString,
+            response_deserializer=RunPfsLoadTestResponse.FromString,
+        )
+        self.__rpc_run_pfs_load_test_default = channel.unary_unary(
+            &#34;/debug_v2.Debug/RunPFSLoadTestDefault&#34;,
+            request_serializer=betterproto_lib_google_protobuf.Empty.SerializeToString,
+            response_deserializer=RunPfsLoadTestResponse.FromString,
         )
 
     def profile(
@@ -665,8 +1574,73 @@ class SetLogLevelResponse(betterproto.Message):
             request.duration = duration
         request.recurse = recurse
 
-        return self.__rpc_set_log_level(request)</code></pre>
+        return self.__rpc_set_log_level(request)
+
+    def get_dump_v2_template(
+        self, *, filters: Optional[List[str]] = None
+    ) -&gt; &#34;GetDumpV2TemplateResponse&#34;:
+        filters = filters or []
+
+        request = GetDumpV2TemplateRequest()
+        request.filters = filters
+
+        return self.__rpc_get_dump_v2_template(request)
+
+    def dump_v2(
+        self,
+        *,
+        system: &#34;System&#34; = None,
+        pipelines: Optional[List[&#34;Pipeline&#34;]] = None,
+        input_repos: bool = False,
+        timeout: timedelta = None,
+        defaults: &#34;DumpV2RequestDefaults&#34; = None,
+        starlark_scripts: Optional[List[&#34;Starlark&#34;]] = None
+    ) -&gt; Iterator[&#34;DumpChunk&#34;]:
+        pipelines = pipelines or []
+        starlark_scripts = starlark_scripts or []
+
+        request = DumpV2Request()
+        if system is not None:
+            request.system = system
+        if pipelines is not None:
+            request.pipelines = pipelines
+        request.input_repos = input_repos
+        if timeout is not None:
+            request.timeout = timeout
+        if defaults is not None:
+            request.defaults = defaults
+        if starlark_scripts is not None:
+            request.starlark_scripts = starlark_scripts
+
+        for response in self.__rpc_dump_v2(request):
+            yield response
+
+    def run_pfs_load_test(
+        self,
+        *,
+        spec: str = &#34;&#34;,
+        branch: &#34;_pfs__.Branch&#34; = None,
+        seed: int = 0,
+        state_id: str = &#34;&#34;
+    ) -&gt; &#34;RunPfsLoadTestResponse&#34;:
+        request = RunPfsLoadTestRequest()
+        request.spec = spec
+        if branch is not None:
+            request.branch = branch
+        request.seed = seed
+        request.state_id = state_id
+
+        return self.__rpc_run_pfs_load_test(request)
+
+    def run_pfs_load_test_default(self) -&gt; &#34;RunPfsLoadTestResponse&#34;:
+        request = betterproto_lib_google_protobuf.Empty()
+
+        return self.__rpc_run_pfs_load_test_default(request)</code></pre>
 </details>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="pachyderm_sdk.api.debug.extension.ApiStub" href="extension.html#pachyderm_sdk.api.debug.extension.ApiStub">ApiStub</a></li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="pachyderm_sdk.api.debug.DebugStub.profile"><code class="name flex">
@@ -759,6 +1733,107 @@ class SetLogLevelResponse(betterproto.Message):
     return self.__rpc_set_log_level(request)</code></pre>
 </details>
 </dd>
+<dt id="pachyderm_sdk.api.debug.DebugStub.get_dump_v2_template"><code class="name flex">
+<span>def <span class="ident">get_dump_v2_template</span></span>(<span>self, *, filters: Optional[List[str]] = None) ‑> <a title="pachyderm_sdk.api.debug.GetDumpV2TemplateResponse" href="#pachyderm_sdk.api.debug.GetDumpV2TemplateResponse">GetDumpV2TemplateResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_dump_v2_template(
+    self, *, filters: Optional[List[str]] = None
+) -&gt; &#34;GetDumpV2TemplateResponse&#34;:
+    filters = filters or []
+
+    request = GetDumpV2TemplateRequest()
+    request.filters = filters
+
+    return self.__rpc_get_dump_v2_template(request)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.debug.DebugStub.dump_v2"><code class="name flex">
+<span>def <span class="ident">dump_v2</span></span>(<span>self, *, system: <a title="pachyderm_sdk.api.debug.System" href="#pachyderm_sdk.api.debug.System">System</a> = None, pipelines: Optional[List[ForwardRef('<a title="pachyderm_sdk.api.debug.Pipeline" href="#pachyderm_sdk.api.debug.Pipeline">Pipeline</a>')]] = None, input_repos: bool = False, timeout: datetime.timedelta = None, defaults: <a title="pachyderm_sdk.api.debug.DumpV2RequestDefaults" href="#pachyderm_sdk.api.debug.DumpV2RequestDefaults">DumpV2RequestDefaults</a> = None, starlark_scripts: Optional[List[ForwardRef('<a title="pachyderm_sdk.api.debug.Starlark" href="#pachyderm_sdk.api.debug.Starlark">Starlark</a>')]] = None) ‑> Iterator[<a title="pachyderm_sdk.api.debug.DumpChunk" href="#pachyderm_sdk.api.debug.DumpChunk">DumpChunk</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def dump_v2(
+    self,
+    *,
+    system: &#34;System&#34; = None,
+    pipelines: Optional[List[&#34;Pipeline&#34;]] = None,
+    input_repos: bool = False,
+    timeout: timedelta = None,
+    defaults: &#34;DumpV2RequestDefaults&#34; = None,
+    starlark_scripts: Optional[List[&#34;Starlark&#34;]] = None
+) -&gt; Iterator[&#34;DumpChunk&#34;]:
+    pipelines = pipelines or []
+    starlark_scripts = starlark_scripts or []
+
+    request = DumpV2Request()
+    if system is not None:
+        request.system = system
+    if pipelines is not None:
+        request.pipelines = pipelines
+    request.input_repos = input_repos
+    if timeout is not None:
+        request.timeout = timeout
+    if defaults is not None:
+        request.defaults = defaults
+    if starlark_scripts is not None:
+        request.starlark_scripts = starlark_scripts
+
+    for response in self.__rpc_dump_v2(request):
+        yield response</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.debug.DebugStub.run_pfs_load_test"><code class="name flex">
+<span>def <span class="ident">run_pfs_load_test</span></span>(<span>self, *, spec: str = '', branch: _pfs__.Branch = None, seed: int = 0, state_id: str = '') ‑> <a title="pachyderm_sdk.api.debug.RunPfsLoadTestResponse" href="#pachyderm_sdk.api.debug.RunPfsLoadTestResponse">RunPfsLoadTestResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def run_pfs_load_test(
+    self,
+    *,
+    spec: str = &#34;&#34;,
+    branch: &#34;_pfs__.Branch&#34; = None,
+    seed: int = 0,
+    state_id: str = &#34;&#34;
+) -&gt; &#34;RunPfsLoadTestResponse&#34;:
+    request = RunPfsLoadTestRequest()
+    request.spec = spec
+    if branch is not None:
+        request.branch = branch
+    request.seed = seed
+    request.state_id = state_id
+
+    return self.__rpc_run_pfs_load_test(request)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.debug.DebugStub.run_pfs_load_test_default"><code class="name flex">
+<span>def <span class="ident">run_pfs_load_test_default</span></span>(<span>self) ‑> <a title="pachyderm_sdk.api.debug.RunPfsLoadTestResponse" href="#pachyderm_sdk.api.debug.RunPfsLoadTestResponse">RunPfsLoadTestResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def run_pfs_load_test_default(self) -&gt; &#34;RunPfsLoadTestResponse&#34;:
+    request = betterproto_lib_google_protobuf.Empty()
+
+    return self.__rpc_run_pfs_load_test_default(request)</code></pre>
+</details>
+</dd>
 </dl>
 </dd>
 <dt id="pachyderm_sdk.api.debug.DebugBase"><code class="flex name class">
@@ -804,6 +1879,46 @@ class SetLogLevelResponse(betterproto.Message):
         context.set_details(&#34;Method not implemented!&#34;)
         raise NotImplementedError(&#34;Method not implemented!&#34;)
 
+    def get_dump_v2_template(
+        self, filters: Optional[List[str]], context: &#34;grpc.ServicerContext&#34;
+    ) -&gt; &#34;GetDumpV2TemplateResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def dump_v2(
+        self,
+        system: &#34;System&#34;,
+        pipelines: Optional[List[&#34;Pipeline&#34;]],
+        input_repos: bool,
+        timeout: timedelta,
+        defaults: &#34;DumpV2RequestDefaults&#34;,
+        starlark_scripts: Optional[List[&#34;Starlark&#34;]],
+        context: &#34;grpc.ServicerContext&#34;,
+    ) -&gt; Iterator[&#34;DumpChunk&#34;]:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def run_pfs_load_test(
+        self,
+        spec: str,
+        branch: &#34;_pfs__.Branch&#34;,
+        seed: int,
+        state_id: str,
+        context: &#34;grpc.ServicerContext&#34;,
+    ) -&gt; &#34;RunPfsLoadTestResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def run_pfs_load_test_default(
+        self, context: &#34;grpc.ServicerContext&#34;
+    ) -&gt; &#34;RunPfsLoadTestResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
     __proto_path__ = &#34;debug_v2.Debug&#34;
 
     @property
@@ -828,6 +1943,26 @@ class SetLogLevelResponse(betterproto.Message):
                 self.set_log_level,
                 request_deserializer=SetLogLevelRequest.FromString,
                 response_serializer=SetLogLevelRequest.SerializeToString,
+            ),
+            &#34;GetDumpV2Template&#34;: grpc.unary_unary_rpc_method_handler(
+                self.get_dump_v2_template,
+                request_deserializer=GetDumpV2TemplateRequest.FromString,
+                response_serializer=GetDumpV2TemplateRequest.SerializeToString,
+            ),
+            &#34;DumpV2&#34;: grpc.unary_stream_rpc_method_handler(
+                self.dump_v2,
+                request_deserializer=DumpV2Request.FromString,
+                response_serializer=DumpV2Request.SerializeToString,
+            ),
+            &#34;RunPFSLoadTest&#34;: grpc.unary_unary_rpc_method_handler(
+                self.run_pfs_load_test,
+                request_deserializer=RunPfsLoadTestRequest.FromString,
+                response_serializer=RunPfsLoadTestRequest.SerializeToString,
+            ),
+            &#34;RunPFSLoadTestDefault&#34;: grpc.unary_unary_rpc_method_handler(
+                self.run_pfs_load_test_default,
+                request_deserializer=betterproto_lib_google_protobuf.Empty.FromString,
+                response_serializer=betterproto_lib_google_protobuf.Empty.SerializeToString,
             ),
         }</code></pre>
 </details>
@@ -906,6 +2041,86 @@ class SetLogLevelResponse(betterproto.Message):
     raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
 </details>
 </dd>
+<dt id="pachyderm_sdk.api.debug.DebugBase.get_dump_v2_template"><code class="name flex">
+<span>def <span class="ident">get_dump_v2_template</span></span>(<span>self, filters: Optional[List[str]], context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.debug.GetDumpV2TemplateResponse" href="#pachyderm_sdk.api.debug.GetDumpV2TemplateResponse">GetDumpV2TemplateResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_dump_v2_template(
+    self, filters: Optional[List[str]], context: &#34;grpc.ServicerContext&#34;
+) -&gt; &#34;GetDumpV2TemplateResponse&#34;:
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details(&#34;Method not implemented!&#34;)
+    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.debug.DebugBase.dump_v2"><code class="name flex">
+<span>def <span class="ident">dump_v2</span></span>(<span>self, system: <a title="pachyderm_sdk.api.debug.System" href="#pachyderm_sdk.api.debug.System">System</a>, pipelines: Optional[List[ForwardRef('<a title="pachyderm_sdk.api.debug.Pipeline" href="#pachyderm_sdk.api.debug.Pipeline">Pipeline</a>')]], input_repos: bool, timeout: datetime.timedelta, defaults: <a title="pachyderm_sdk.api.debug.DumpV2RequestDefaults" href="#pachyderm_sdk.api.debug.DumpV2RequestDefaults">DumpV2RequestDefaults</a>, starlark_scripts: Optional[List[ForwardRef('<a title="pachyderm_sdk.api.debug.Starlark" href="#pachyderm_sdk.api.debug.Starlark">Starlark</a>')]], context: grpc.ServicerContext) ‑> Iterator[<a title="pachyderm_sdk.api.debug.DumpChunk" href="#pachyderm_sdk.api.debug.DumpChunk">DumpChunk</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def dump_v2(
+    self,
+    system: &#34;System&#34;,
+    pipelines: Optional[List[&#34;Pipeline&#34;]],
+    input_repos: bool,
+    timeout: timedelta,
+    defaults: &#34;DumpV2RequestDefaults&#34;,
+    starlark_scripts: Optional[List[&#34;Starlark&#34;]],
+    context: &#34;grpc.ServicerContext&#34;,
+) -&gt; Iterator[&#34;DumpChunk&#34;]:
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details(&#34;Method not implemented!&#34;)
+    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.debug.DebugBase.run_pfs_load_test"><code class="name flex">
+<span>def <span class="ident">run_pfs_load_test</span></span>(<span>self, spec: str, branch: _pfs__.Branch, seed: int, state_id: str, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.debug.RunPfsLoadTestResponse" href="#pachyderm_sdk.api.debug.RunPfsLoadTestResponse">RunPfsLoadTestResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def run_pfs_load_test(
+    self,
+    spec: str,
+    branch: &#34;_pfs__.Branch&#34;,
+    seed: int,
+    state_id: str,
+    context: &#34;grpc.ServicerContext&#34;,
+) -&gt; &#34;RunPfsLoadTestResponse&#34;:
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details(&#34;Method not implemented!&#34;)
+    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.debug.DebugBase.run_pfs_load_test_default"><code class="name flex">
+<span>def <span class="ident">run_pfs_load_test_default</span></span>(<span>self, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.debug.RunPfsLoadTestResponse" href="#pachyderm_sdk.api.debug.RunPfsLoadTestResponse">RunPfsLoadTestResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def run_pfs_load_test_default(
+    self, context: &#34;grpc.ServicerContext&#34;
+) -&gt; &#34;RunPfsLoadTestResponse&#34;:
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details(&#34;Method not implemented!&#34;)
+    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
+</details>
+</dd>
 </dl>
 </dd>
 </dl>
@@ -924,6 +2139,11 @@ class SetLogLevelResponse(betterproto.Message):
 <li><h3>Super-module</h3>
 <ul>
 <li><code><a title="pachyderm_sdk.api" href="../index.html">pachyderm_sdk.api</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-submodules">Sub-modules</a></h3>
+<ul>
+<li><code><a title="pachyderm_sdk.api.debug.extension" href="extension.html">pachyderm_sdk.api.debug.extension</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
@@ -998,12 +2218,138 @@ class SetLogLevelResponse(betterproto.Message):
 </ul>
 </li>
 <li>
+<h4><code><a title="pachyderm_sdk.api.debug.GetDumpV2TemplateRequest" href="#pachyderm_sdk.api.debug.GetDumpV2TemplateRequest">GetDumpV2TemplateRequest</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.debug.GetDumpV2TemplateRequest.filters" href="#pachyderm_sdk.api.debug.GetDumpV2TemplateRequest.filters">filters</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.debug.GetDumpV2TemplateResponse" href="#pachyderm_sdk.api.debug.GetDumpV2TemplateResponse">GetDumpV2TemplateResponse</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.debug.GetDumpV2TemplateResponse.request" href="#pachyderm_sdk.api.debug.GetDumpV2TemplateResponse.request">request</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.debug.Pipeline" href="#pachyderm_sdk.api.debug.Pipeline">Pipeline</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.debug.Pipeline.project" href="#pachyderm_sdk.api.debug.Pipeline.project">project</a></code></li>
+<li><code><a title="pachyderm_sdk.api.debug.Pipeline.name" href="#pachyderm_sdk.api.debug.Pipeline.name">name</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.debug.Pod" href="#pachyderm_sdk.api.debug.Pod">Pod</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.debug.Pod.name" href="#pachyderm_sdk.api.debug.Pod.name">name</a></code></li>
+<li><code><a title="pachyderm_sdk.api.debug.Pod.ip" href="#pachyderm_sdk.api.debug.Pod.ip">ip</a></code></li>
+<li><code><a title="pachyderm_sdk.api.debug.Pod.containers" href="#pachyderm_sdk.api.debug.Pod.containers">containers</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.debug.App" href="#pachyderm_sdk.api.debug.App">App</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.debug.App.name" href="#pachyderm_sdk.api.debug.App.name">name</a></code></li>
+<li><code><a title="pachyderm_sdk.api.debug.App.pods" href="#pachyderm_sdk.api.debug.App.pods">pods</a></code></li>
+<li><code><a title="pachyderm_sdk.api.debug.App.timeout" href="#pachyderm_sdk.api.debug.App.timeout">timeout</a></code></li>
+<li><code><a title="pachyderm_sdk.api.debug.App.pipeline" href="#pachyderm_sdk.api.debug.App.pipeline">pipeline</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.debug.System" href="#pachyderm_sdk.api.debug.System">System</a></code></h4>
+<ul class="two-column">
+<li><code><a title="pachyderm_sdk.api.debug.System.helm" href="#pachyderm_sdk.api.debug.System.helm">helm</a></code></li>
+<li><code><a title="pachyderm_sdk.api.debug.System.database" href="#pachyderm_sdk.api.debug.System.database">database</a></code></li>
+<li><code><a title="pachyderm_sdk.api.debug.System.version" href="#pachyderm_sdk.api.debug.System.version">version</a></code></li>
+<li><code><a title="pachyderm_sdk.api.debug.System.describes" href="#pachyderm_sdk.api.debug.System.describes">describes</a></code></li>
+<li><code><a title="pachyderm_sdk.api.debug.System.logs" href="#pachyderm_sdk.api.debug.System.logs">logs</a></code></li>
+<li><code><a title="pachyderm_sdk.api.debug.System.loki_logs" href="#pachyderm_sdk.api.debug.System.loki_logs">loki_logs</a></code></li>
+<li><code><a title="pachyderm_sdk.api.debug.System.binaries" href="#pachyderm_sdk.api.debug.System.binaries">binaries</a></code></li>
+<li><code><a title="pachyderm_sdk.api.debug.System.profiles" href="#pachyderm_sdk.api.debug.System.profiles">profiles</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.debug.StarlarkLiteral" href="#pachyderm_sdk.api.debug.StarlarkLiteral">StarlarkLiteral</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.debug.StarlarkLiteral.name" href="#pachyderm_sdk.api.debug.StarlarkLiteral.name">name</a></code></li>
+<li><code><a title="pachyderm_sdk.api.debug.StarlarkLiteral.program_text" href="#pachyderm_sdk.api.debug.StarlarkLiteral.program_text">program_text</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.debug.Starlark" href="#pachyderm_sdk.api.debug.Starlark">Starlark</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.debug.Starlark.builtin" href="#pachyderm_sdk.api.debug.Starlark.builtin">builtin</a></code></li>
+<li><code><a title="pachyderm_sdk.api.debug.Starlark.literal" href="#pachyderm_sdk.api.debug.Starlark.literal">literal</a></code></li>
+<li><code><a title="pachyderm_sdk.api.debug.Starlark.timeout" href="#pachyderm_sdk.api.debug.Starlark.timeout">timeout</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.debug.DumpV2Request" href="#pachyderm_sdk.api.debug.DumpV2Request">DumpV2Request</a></code></h4>
+<ul class="two-column">
+<li><code><a title="pachyderm_sdk.api.debug.DumpV2Request.system" href="#pachyderm_sdk.api.debug.DumpV2Request.system">system</a></code></li>
+<li><code><a title="pachyderm_sdk.api.debug.DumpV2Request.pipelines" href="#pachyderm_sdk.api.debug.DumpV2Request.pipelines">pipelines</a></code></li>
+<li><code><a title="pachyderm_sdk.api.debug.DumpV2Request.input_repos" href="#pachyderm_sdk.api.debug.DumpV2Request.input_repos">input_repos</a></code></li>
+<li><code><a title="pachyderm_sdk.api.debug.DumpV2Request.timeout" href="#pachyderm_sdk.api.debug.DumpV2Request.timeout">timeout</a></code></li>
+<li><code><a title="pachyderm_sdk.api.debug.DumpV2Request.defaults" href="#pachyderm_sdk.api.debug.DumpV2Request.defaults">defaults</a></code></li>
+<li><code><a title="pachyderm_sdk.api.debug.DumpV2Request.starlark_scripts" href="#pachyderm_sdk.api.debug.DumpV2Request.starlark_scripts">starlark_scripts</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.debug.DumpV2RequestDefaults" href="#pachyderm_sdk.api.debug.DumpV2RequestDefaults">DumpV2RequestDefaults</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.debug.DumpV2RequestDefaults.cluster_defaults" href="#pachyderm_sdk.api.debug.DumpV2RequestDefaults.cluster_defaults">cluster_defaults</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.debug.DumpContent" href="#pachyderm_sdk.api.debug.DumpContent">DumpContent</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.debug.DumpContent.content" href="#pachyderm_sdk.api.debug.DumpContent.content">content</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.debug.DumpProgress" href="#pachyderm_sdk.api.debug.DumpProgress">DumpProgress</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.debug.DumpProgress.task" href="#pachyderm_sdk.api.debug.DumpProgress.task">task</a></code></li>
+<li><code><a title="pachyderm_sdk.api.debug.DumpProgress.total" href="#pachyderm_sdk.api.debug.DumpProgress.total">total</a></code></li>
+<li><code><a title="pachyderm_sdk.api.debug.DumpProgress.progress" href="#pachyderm_sdk.api.debug.DumpProgress.progress">progress</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.debug.DumpChunk" href="#pachyderm_sdk.api.debug.DumpChunk">DumpChunk</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.debug.DumpChunk.content" href="#pachyderm_sdk.api.debug.DumpChunk.content">content</a></code></li>
+<li><code><a title="pachyderm_sdk.api.debug.DumpChunk.progress" href="#pachyderm_sdk.api.debug.DumpChunk.progress">progress</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.debug.RunPfsLoadTestRequest" href="#pachyderm_sdk.api.debug.RunPfsLoadTestRequest">RunPfsLoadTestRequest</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.debug.RunPfsLoadTestRequest.spec" href="#pachyderm_sdk.api.debug.RunPfsLoadTestRequest.spec">spec</a></code></li>
+<li><code><a title="pachyderm_sdk.api.debug.RunPfsLoadTestRequest.branch" href="#pachyderm_sdk.api.debug.RunPfsLoadTestRequest.branch">branch</a></code></li>
+<li><code><a title="pachyderm_sdk.api.debug.RunPfsLoadTestRequest.seed" href="#pachyderm_sdk.api.debug.RunPfsLoadTestRequest.seed">seed</a></code></li>
+<li><code><a title="pachyderm_sdk.api.debug.RunPfsLoadTestRequest.state_id" href="#pachyderm_sdk.api.debug.RunPfsLoadTestRequest.state_id">state_id</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.debug.RunPfsLoadTestResponse" href="#pachyderm_sdk.api.debug.RunPfsLoadTestResponse">RunPfsLoadTestResponse</a></code></h4>
+<ul class="two-column">
+<li><code><a title="pachyderm_sdk.api.debug.RunPfsLoadTestResponse.spec" href="#pachyderm_sdk.api.debug.RunPfsLoadTestResponse.spec">spec</a></code></li>
+<li><code><a title="pachyderm_sdk.api.debug.RunPfsLoadTestResponse.branch" href="#pachyderm_sdk.api.debug.RunPfsLoadTestResponse.branch">branch</a></code></li>
+<li><code><a title="pachyderm_sdk.api.debug.RunPfsLoadTestResponse.seed" href="#pachyderm_sdk.api.debug.RunPfsLoadTestResponse.seed">seed</a></code></li>
+<li><code><a title="pachyderm_sdk.api.debug.RunPfsLoadTestResponse.error" href="#pachyderm_sdk.api.debug.RunPfsLoadTestResponse.error">error</a></code></li>
+<li><code><a title="pachyderm_sdk.api.debug.RunPfsLoadTestResponse.duration" href="#pachyderm_sdk.api.debug.RunPfsLoadTestResponse.duration">duration</a></code></li>
+<li><code><a title="pachyderm_sdk.api.debug.RunPfsLoadTestResponse.state_id" href="#pachyderm_sdk.api.debug.RunPfsLoadTestResponse.state_id">state_id</a></code></li>
+</ul>
+</li>
+<li>
 <h4><code><a title="pachyderm_sdk.api.debug.DebugStub" href="#pachyderm_sdk.api.debug.DebugStub">DebugStub</a></code></h4>
 <ul class="">
 <li><code><a title="pachyderm_sdk.api.debug.DebugStub.profile" href="#pachyderm_sdk.api.debug.DebugStub.profile">profile</a></code></li>
 <li><code><a title="pachyderm_sdk.api.debug.DebugStub.binary" href="#pachyderm_sdk.api.debug.DebugStub.binary">binary</a></code></li>
 <li><code><a title="pachyderm_sdk.api.debug.DebugStub.dump" href="#pachyderm_sdk.api.debug.DebugStub.dump">dump</a></code></li>
 <li><code><a title="pachyderm_sdk.api.debug.DebugStub.set_log_level" href="#pachyderm_sdk.api.debug.DebugStub.set_log_level">set_log_level</a></code></li>
+<li><code><a title="pachyderm_sdk.api.debug.DebugStub.get_dump_v2_template" href="#pachyderm_sdk.api.debug.DebugStub.get_dump_v2_template">get_dump_v2_template</a></code></li>
+<li><code><a title="pachyderm_sdk.api.debug.DebugStub.dump_v2" href="#pachyderm_sdk.api.debug.DebugStub.dump_v2">dump_v2</a></code></li>
+<li><code><a title="pachyderm_sdk.api.debug.DebugStub.run_pfs_load_test" href="#pachyderm_sdk.api.debug.DebugStub.run_pfs_load_test">run_pfs_load_test</a></code></li>
+<li><code><a title="pachyderm_sdk.api.debug.DebugStub.run_pfs_load_test_default" href="#pachyderm_sdk.api.debug.DebugStub.run_pfs_load_test_default">run_pfs_load_test_default</a></code></li>
 </ul>
 </li>
 <li>
@@ -1013,6 +2359,10 @@ class SetLogLevelResponse(betterproto.Message):
 <li><code><a title="pachyderm_sdk.api.debug.DebugBase.binary" href="#pachyderm_sdk.api.debug.DebugBase.binary">binary</a></code></li>
 <li><code><a title="pachyderm_sdk.api.debug.DebugBase.dump" href="#pachyderm_sdk.api.debug.DebugBase.dump">dump</a></code></li>
 <li><code><a title="pachyderm_sdk.api.debug.DebugBase.set_log_level" href="#pachyderm_sdk.api.debug.DebugBase.set_log_level">set_log_level</a></code></li>
+<li><code><a title="pachyderm_sdk.api.debug.DebugBase.get_dump_v2_template" href="#pachyderm_sdk.api.debug.DebugBase.get_dump_v2_template">get_dump_v2_template</a></code></li>
+<li><code><a title="pachyderm_sdk.api.debug.DebugBase.dump_v2" href="#pachyderm_sdk.api.debug.DebugBase.dump_v2">dump_v2</a></code></li>
+<li><code><a title="pachyderm_sdk.api.debug.DebugBase.run_pfs_load_test" href="#pachyderm_sdk.api.debug.DebugBase.run_pfs_load_test">run_pfs_load_test</a></code></li>
+<li><code><a title="pachyderm_sdk.api.debug.DebugBase.run_pfs_load_test_default" href="#pachyderm_sdk.api.debug.DebugBase.run_pfs_load_test_default">run_pfs_load_test_default</a></code></li>
 </ul>
 </li>
 </ul>
