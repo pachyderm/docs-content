@@ -12,7 +12,7 @@ This tutorial is based on the [Standard ML Pipeline Tutorial](/latest/build-dags
 
 ```python
 from pachyderm_sdk import Client 
-from pachyderm_sdk import pfs, pps 
+from pachyderm_sdk.api import pfs, pps
 ```
 
 The imports you'll need for future projects depend on the setup of your instance and the operations you want to perform; see the [API submodules](/sdk/api/) reference documentation for more information. 
