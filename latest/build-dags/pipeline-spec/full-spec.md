@@ -15,7 +15,7 @@ weight: 0
   "pipeline": {
     "name": string,
     "project": {
-      name: "projectName"
+      "name": "projectName"
     },
   },
   "description": string,
