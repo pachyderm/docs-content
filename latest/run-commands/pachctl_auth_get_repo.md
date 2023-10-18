@@ -1,19 +1,25 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl auth get repo"
-description: "Learn about the pachctl_auth_get_repo command"
+description: "Learn about the pachctl auth get repo command"
 ---
 
 ## pachctl auth get repo
 
-Get the role bindings for 'repo'
+Get the role bindings for a repo.
 
 ### Synopsis
 
-Get the role bindings for 'repo'
+This command returns the role bindings for a given repo.
 
 ```
 pachctl auth get repo <repo> [flags]
+```
+
+### Examples
+
+```
+ pachctl auth get repo foo pachctl auth get repo foo --project bar
 ```
 
 ### Options

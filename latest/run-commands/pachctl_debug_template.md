@@ -1,19 +1,29 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl debug template"
-description: "Learn about the pachctl_debug_template command"
+description: "Learn about the pachctl debug template command"
 ---
 
 ## pachctl debug template
 
-Collect a standard set of debugging information.
+Print a yaml debugging template.
 
 ### Synopsis
 
-Collect a standard set of debugging information.
+This command outputs a customizable yaml template useful for debugging. This is often used by Customer Engineering to support your troubleshooting needs. 
+Use the modified template with the `debug dump` command (e.g., `pachctl debug dump --template debug-template.yaml out.tgz`) 
+
 
 ```
 pachctl debug template <file> [flags]
+```
+
+### Examples
+
+```
+ pachctl debug template 
+ pachctl debug template > debug-template.yaml
+
 ```
 
 ### Options

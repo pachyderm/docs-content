@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl list datum"
-description: "Learn about the pachctl_list_datum command"
+description: "Learn about the pachctl list datum command"
 ---
 
 ## pachctl list datum
@@ -12,8 +12,8 @@ Return the datums in a job.
 
 This command returns the datums in a job. 
  
-- To pass in a JSON pipeline spec instead of `pipeline@job`, use the `--file` flag 
-- To specify the project where the parent pipeline lives, use the `--project` flag 
+ To pass in a JSON pipeline spec instead of `pipeline@job`, use the `--file` flag 
+  To specify the project where the parent pipeline lives, use the `--project` flag 
 
 
 ```

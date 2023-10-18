@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl auth roles-for-permission"
-description: "Learn about the pachctl_auth_roles-for-permission command"
+description: "Learn about the pachctl auth roles-for-permission command"
 ---
 
 ## pachctl auth roles-for-permission
@@ -10,10 +10,16 @@ List roles that grant the given permission
 
 ### Synopsis
 
-List roles that grant the given permission
+This command lists roles that grant the given permission.
 
 ```
 pachctl auth roles-for-permission <permission> [flags]
+```
+
+### Examples
+
+```
+ pachctl auth roles-for-permission repoOwner pachctl auth roles-for-permission clusterAdmin
 ```
 
 ### Options

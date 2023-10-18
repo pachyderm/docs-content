@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl inspect job"
-description: "Learn about the pachctl_inspect_job command"
+description: "Learn about the pachctl inspect job command"
 ---
 
 ## pachctl inspect job
@@ -14,8 +14,8 @@ This command returns detailed info about a job, including processing stats, inpu
  
 If you pass in a job set ID (without the `pipeline@`), it will defer you to using the `pachctl list job <id>` command. See examples for proper use. 
  
-- To specify the project where the parent pipeline lives, use the `--project` flag 
-- To specify the output should be raw JSON or YAML, use the `--raw` flag along with `--output`
+ To specify the project where the parent pipeline lives, use the `--project` flag 
+ To specify the output should be raw JSON or YAML, use the `--raw` flag along with `--output`
 
 ```
 pachctl inspect job <pipeline>@<job> [flags]

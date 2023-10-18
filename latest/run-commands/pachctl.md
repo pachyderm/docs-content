@@ -1,5 +1,5 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl"
 description: "Learn about the pachctl command"
 ---
@@ -60,6 +60,7 @@ Documentation: https://docs.pachyderm.com/latest/
 * [pachctl mount](../pachctl_mount)	 - Mount pfs locally. This command blocks.
 * [pachctl port-forward](../pachctl_port-forward)	 - Forward a port on the local machine to pachd. This command blocks.
 * [pachctl put](../pachctl_put)	 - Insert data into Pachyderm.
+* [pachctl rerun](../pachctl_rerun)	 - Manually rerun a Pachyderm resource.
 * [pachctl restart](../pachctl_restart)	 - Cancel and restart an ongoing task.
 * [pachctl resume](../pachctl_resume)	 - Resume a stopped task.
 * [pachctl run](../pachctl_run)	 - Manually run a Pachyderm resource.

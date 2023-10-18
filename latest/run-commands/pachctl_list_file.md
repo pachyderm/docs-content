@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl list file"
-description: "Learn about the pachctl_list_file command"
+description: "Learn about the pachctl list file command"
 ---
 
 ## pachctl list file
@@ -11,7 +11,7 @@ Return the files in a directory.
 ### Synopsis
 
 This command returns the files in a directory. While using this command, take special note of how you can use ancestry syntax (e.g., appending`^2` or `.-1` to `repo@branch`) to inspect the contents of a file from a previous commit. 
-- To specify the project where the repo is located, use the --project flag 
+ To specify the project where the repo is located, use the --project flag 
 
 
 ```

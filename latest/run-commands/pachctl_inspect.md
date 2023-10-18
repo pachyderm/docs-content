@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl inspect"
-description: "Learn about the pachctl_inspect command"
+description: "Learn about the pachctl inspect command"
 ---
 
 ## pachctl inspect
@@ -32,6 +32,7 @@ Show detailed information about a Pachyderm resource.
 * [pachctl inspect cluster](../pachctl_inspect_cluster)	 - Returns info about the pachyderm cluster
 * [pachctl inspect commit](../pachctl_inspect_commit)	 - Return info about a commit.
 * [pachctl inspect datum](../pachctl_inspect_datum)	 - Display detailed info about a single datum.
+* [pachctl inspect defaults](../pachctl_inspect_defaults)	 - Return defaults.
 * [pachctl inspect file](../pachctl_inspect_file)	 - Return info about a file.
 * [pachctl inspect job](../pachctl_inspect_job)	 - Return info about a job.
 * [pachctl inspect pipeline](../pachctl_inspect_pipeline)	 - Return info about a pipeline.

@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl list transaction"
-description: "Learn about the pachctl_list_transaction command"
+description: "Learn about the pachctl list transaction command"
 ---
 
 ## pachctl list transaction
@@ -10,7 +10,7 @@ List transactions.
 
 ### Synopsis
 
-List transactions.
+This command lists transactions.
 
 ```
 pachctl list transaction [flags]

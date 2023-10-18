@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl delete branch"
-description: "Learn about the pachctl_delete_branch command"
+description: "Learn about the pachctl delete branch command"
 ---
 
 ## pachctl delete branch
@@ -12,8 +12,8 @@ Delete a branch
 
 This command deletes a branch while leaving its commits intact. 
 
-- To delete a branch from a repo in another project, use the `--project` flag 
-- To delete a branch regardless of errors, use the `--force` flag 
+ To delete a branch from a repo in another project, use the `--project` flag 
+ To delete a branch regardless of errors, use the `--force` flag 
 
 
 ```

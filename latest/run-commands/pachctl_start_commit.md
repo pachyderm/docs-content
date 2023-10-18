@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl start commit"
-description: "Learn about the pachctl_start_commit command"
+description: "Learn about the pachctl start commit command"
 ---
 
 ## pachctl start commit
@@ -12,9 +12,9 @@ Start a new commit.
 
 This command starts a new commit with parent-commit as the parent on the given branch; if the branch does not exist, it will be created. 
 
-- To specify a parent commit, use the `--parent` flag 
-- To add a message to the commit, use the `--message` or `--description` flag 
-- To specify which project the repo is in, use the `--project` flag 
+ To specify a parent commit, use the `--parent` flag 
+ To add a message to the commit, use the `--message` or `--description` flag 
+ To specify which project the repo is in, use the `--project` flag 
 
 
 ```

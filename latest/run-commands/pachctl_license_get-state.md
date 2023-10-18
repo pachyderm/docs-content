@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl license get-state"
-description: "Learn about the pachctl_license_get-state command"
+description: "Learn about the pachctl license get-state command"
 ---
 
 ## pachctl license get-state
@@ -10,7 +10,7 @@ Get the configuration of the license service.
 
 ### Synopsis
 
-Get the configuration of the license service.
+This command returns the configuration of the Enterprise Server.
 
 ```
 pachctl license get-state [flags]

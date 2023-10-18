@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl start transaction"
-description: "Learn about the pachctl_start_transaction command"
+description: "Learn about the pachctl start transaction command"
 ---
 
 ## pachctl start transaction
@@ -10,7 +10,7 @@ Start a new transaction.
 
 ### Synopsis
 
-Start a new transaction.
+This command starts a new transaction.
 
 ```
 pachctl start transaction [flags]

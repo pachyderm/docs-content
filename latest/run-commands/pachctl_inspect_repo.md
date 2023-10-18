@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl inspect repo"
-description: "Learn about the pachctl_inspect_repo command"
+description: "Learn about the pachctl inspect repo command"
 ---
 
 ## pachctl inspect repo
@@ -12,7 +12,7 @@ Return info about a repo.
 
 This command returns details of the repo such as: `Name`, `Description`, `Created`, and `Size of HEAD on Master`. By default, PachCTL checks for a matching repo in the project that is set to your active context (initially the `default` project).
 
-- To specify the project containing the repo you want to inspect, use the `--project` flag 
+ To specify the project containing the repo you want to inspect, use the `--project` flag 
 
 
 ```

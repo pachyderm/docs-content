@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl config get metrics"
-description: "Learn about the pachctl_config_get_metrics command"
+description: "Learn about the pachctl config get metrics command"
 ---
 
 ## pachctl config get metrics
@@ -10,10 +10,16 @@ Gets whether metrics are enabled.
 
 ### Synopsis
 
-Gets whether metrics are enabled.
+This command returns the status of metric enablement (`pachd.metrics.enabled`).
 
 ```
 pachctl config get metrics [flags]
+```
+
+### Examples
+
+```
+pachctl config get metrics}
 ```
 
 ### Options

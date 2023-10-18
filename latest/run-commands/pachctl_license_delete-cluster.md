@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl license delete-cluster"
-description: "Learn about the pachctl_license_delete-cluster command"
+description: "Learn about the pachctl license delete-cluster command"
 ---
 
 ## pachctl license delete-cluster
@@ -10,17 +10,24 @@ Delete a cluster registered with the license server.
 
 ### Synopsis
 
-Delete a cluster registered with the license server.
+This command deletes a cluster registered with Enterprise Server.
 
 ```
 pachctl license delete-cluster [flags]
+```
+
+### Examples
+
+```
+ pachctl license delete-cluster --id=my-cluster
+
 ```
 
 ### Options
 
 ```
   -h, --help        help for delete-cluster
-      --id string   The id for the cluster to delete
+      --id string   Set the ID for the cluster to delete.
 ```
 
 ### Options inherited from parent commands

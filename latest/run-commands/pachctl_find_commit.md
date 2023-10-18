@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl find commit"
-description: "Learn about the pachctl_find_commit command"
+description: "Learn about the pachctl find commit command"
 ---
 
 ## pachctl find commit
@@ -12,10 +12,10 @@ Find commits with reference to <filePath> within a branch starting from <repo@co
 
 This command returns a list of commits using a reference to their `file/path` within a branch, starting from `repo@<commitID>`. 
 
-- To find commits from a repo in another project, use the `--project` flag 
-- To set a limit on the number of returned commits, use the `--limits` flag 
-- To set a timeout for your commit search, use the `--timeout` flag 
-- To print the results as json, use the `--json` flag 
+ To find commits from a repo in another project, use the `--project` flag 
+ To set a limit on the number of returned commits, use the `--limits` flag 
+ To set a timeout for your commit search, use the `--timeout` flag 
+ To print the results as json, use the `--json` flag 
 
 
 ```

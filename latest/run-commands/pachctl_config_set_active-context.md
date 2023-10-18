@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl config set active-context"
-description: "Learn about the pachctl_config_set_active-context command"
+description: "Learn about the pachctl config set active-context command"
 ---
 
 ## pachctl config set active-context
@@ -10,10 +10,19 @@ Sets the currently active context.
 
 ### Synopsis
 
-Sets the currently active context.
+This command sets the currently active context. This should be a combination of your `proxy.host` value and `proxy.server.http(s)Port number`. 
+ To list all contexts, use `pachctl config list contexts`. 
+ To view details, use `pachctl config get context <context>`. 
+ To clean up your contexts, use `pachctl config delete context <context>`.
 
 ```
 pachctl config set active-context <context> [flags]
+```
+
+### Examples
+
+```
+pachctl config set active-context grpc://localhost:80
 ```
 
 ### Options

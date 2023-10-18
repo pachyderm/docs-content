@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl port-forward"
-description: "Learn about the pachctl_port-forward command"
+description: "Learn about the pachctl port-forward command"
 ---
 
 ## pachctl port-forward

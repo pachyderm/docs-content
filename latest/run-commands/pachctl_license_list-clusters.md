@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl license list-clusters"
-description: "Learn about the pachctl_license_list-clusters command"
+description: "Learn about the pachctl license list-clusters command"
 ---
 
 ## pachctl license list-clusters
@@ -10,7 +10,7 @@ List clusters registered with the license server.
 
 ### Synopsis
 
-List clusters registered with the license server.
+This command lists clusters registered with Enterprise Server.
 
 ```
 pachctl license list-clusters [flags]

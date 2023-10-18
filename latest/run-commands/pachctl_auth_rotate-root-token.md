@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl auth rotate-root-token"
-description: "Learn about the pachctl_auth_rotate-root-token command"
+description: "Learn about the pachctl auth rotate-root-token command"
 ---
 
 ## pachctl auth rotate-root-token
@@ -10,10 +10,16 @@ Rotate the root user's auth token
 
 ### Synopsis
 
-Rotate the root user's auth token
+This command rotates the root user's auth token; you can supply a token to rotate to, or one can be auto-generated.
 
 ```
 pachctl auth rotate-root-token [flags]
+```
+
+### Examples
+
+```
+ pachctl auth rotate-root-token pachctl auth rotate-root-token --supply-token <token>
 ```
 
 ### Options

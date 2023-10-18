@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl license delete-all"
-description: "Learn about the pachctl_license_delete-all command"
+description: "Learn about the pachctl license delete-all command"
 ---
 
 ## pachctl license delete-all
@@ -10,7 +10,7 @@ Delete all data from the license server
 
 ### Synopsis
 
-Delete all data from the license server
+This command deletes all data from Enterprise Server.
 
 ```
 pachctl license delete-all [flags]

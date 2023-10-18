@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl license activate"
-description: "Learn about the pachctl_license_activate command"
+description: "Learn about the pachctl license activate command"
 ---
 
 ## pachctl license activate
@@ -10,10 +10,18 @@ Activate the license server with an activation code
 
 ### Synopsis
 
-Activate the license server with an activation code
+This command activates Enterprise Server with an activation code.
 
 ```
 pachctl license activate [flags]
+```
+
+### Examples
+
+```
+ pachctl license activate
+ pachctl license activate --no-register
+
 ```
 
 ### Options

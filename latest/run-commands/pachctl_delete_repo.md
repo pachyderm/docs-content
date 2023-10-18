@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl delete repo"
-description: "Learn about the pachctl_delete_repo command"
+description: "Learn about the pachctl delete repo command"
 ---
 
 ## pachctl delete repo
@@ -12,11 +12,11 @@ Delete a repo.
 
 This command deletes a repo. If this is a shared resource, it will be deleted for other users as well. 
 
-- To force delete a repo, use the `--force` flag; use with caution 
-- To delete all repos across all projects, use the `--all` flag 
-- To delete a repo of a specific type, use the `--type` flag; options include `USER`, `META`, & `SPEC` 
-- To delete all repos of a specific type across all projects, use the `--all` and `--type` flags 
-- To delete all repos of a specific type in a specific project, use the `--all`, `--type`, and `--project` flags 
+ To force delete a repo, use the `--force` flag; use with caution 
+ To delete all repos across all projects, use the `--all` flag 
+ To delete a repo of a specific type, use the `--type` flag; options include `USER`, `META`, & `SPEC` 
+ To delete all repos of a specific type across all projects, use the `--all` and `--type` flags 
+ To delete all repos of a specific type in a specific project, use the `--all`, `--type`, and `--project` flags 
 
 
 

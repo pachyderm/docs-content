@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl kube-events"
-description: "Learn about the pachctl_kube-events command"
+description: "Learn about the pachctl kube-events command"
 ---
 
 ## pachctl kube-events
@@ -11,8 +11,8 @@ Return the kubernetes events.
 ### Synopsis
 
 This command returns the kubernetes events. 
-- To return results starting from a certain amount of time before now, use the `--since` flag 
-- To return the raw events, use the `--raw` flag 
+ To return results starting from a certain amount of time before now, use the `--since` flag 
+ To return the raw events, use the `--raw` flag 
 
 
 ```

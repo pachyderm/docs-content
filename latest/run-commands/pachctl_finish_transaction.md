@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl finish transaction"
-description: "Learn about the pachctl_finish_transaction command"
+description: "Learn about the pachctl finish transaction command"
 ---
 
 ## pachctl finish transaction
@@ -10,7 +10,7 @@ Execute and clear the currently active transaction.
 
 ### Synopsis
 
-Execute and clear the currently active transaction.
+This command executes and clears the currently active transaction.
 
 ```
 pachctl finish transaction [<transaction>] [flags]

@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl resume transaction"
-description: "Learn about the pachctl_resume_transaction command"
+description: "Learn about the pachctl resume transaction command"
 ---
 
 ## pachctl resume transaction
@@ -10,7 +10,7 @@ Set an existing transaction as active.
 
 ### Synopsis
 
-Set an existing transaction as active.
+This command sets an existing transaction as active; to be used with `pachctl stop transaction`.
 
 ```
 pachctl resume transaction <transaction> [flags]

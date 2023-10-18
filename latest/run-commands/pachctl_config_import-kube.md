@@ -1,19 +1,25 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl config import-kube"
-description: "Learn about the pachctl_config_import-kube command"
+description: "Learn about the pachctl config import-kube command"
 ---
 
 ## pachctl config import-kube
 
-Import a kubernetes context as a Pachyderm context, and set the active Pachyderm context.
+Import a Kubernetes context as a Pachyderm context, and set the active Pachyderm context.
 
 ### Synopsis
 
-Import a kubernetes context as a Pachyderm context. By default the current kubernetes context is used.
+This command imports a Kubernetes context as a Pachyderm context. By default the current kubernetes context is used.
 
 ```
 pachctl config import-kube <context> [flags]
+```
+
+### Examples
+
+```
+ pachctl config import-kube foo pachctl config import-kube foo --overwrite
 ```
 
 ### Options

@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl auth whoami"
-description: "Learn about the pachctl_auth_whoami command"
+description: "Learn about the pachctl auth whoami command"
 ---
 
 ## pachctl auth whoami
@@ -10,7 +10,7 @@ Print your Pachyderm identity
 
 ### Synopsis
 
-Print your Pachyderm identity.
+This command prints your Pachyderm identity (e.g., `user:alan.watts@domain.com`) and session expiration.
 
 ```
 pachctl auth whoami [flags]

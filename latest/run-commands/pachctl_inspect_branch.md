@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl inspect branch"
-description: "Learn about the pachctl_inspect_branch command"
+description: "Learn about the pachctl inspect branch command"
 ---
 
 ## pachctl inspect branch
@@ -12,8 +12,8 @@ Return info about a branch.
 
 This command returns info about a branch, such as its `Name`, `Head Commit`, and `Trigger`. 
 
-- To inspect a branch from a repo in another project, use the `--project` flag 
-- To get additional details about the branch, use the `--raw` flag 
+ To inspect a branch from a repo in another project, use the `--project` flag 
+ To get additional details about the branch, use the `--raw` flag 
 
 
 ```

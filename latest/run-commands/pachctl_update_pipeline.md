@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl update pipeline"
-description: "Learn about the pachctl_update_pipeline command"
+description: "Learn about the pachctl update pipeline command"
 ---
 
 ## pachctl update pipeline
@@ -12,11 +12,11 @@ Update an existing Pachyderm pipeline.
 
 This command updates a Pachyderm pipeline with a new pipeline specification. For details on the format, see https://docs.pachyderm.com/latest/reference/pipeline-spec/ 
  
-- To update a pipeline from a JSON/YAML file, use the `--file` flag 
-- To update a pipeline from a jsonnet template file, use the `--jsonnet` flag. You can optionally pay multiple arguments separately using `--arg` 
-- To reprocess all data in the pipeline, use the `--reprocess` flag 
-- To push your local images to docker registry, use the `--push-images` and `--username` flags 
-- To push your local images to custom registry, use the `--push-images`, `--registry`, and `--username` flags 
+ To update a pipeline from a JSON/YAML file, use the `--file` flag 
+ To update a pipeline from a jsonnet template file, use the `--jsonnet` flag. You can optionally pay multiple arguments separately using `--arg` 
+ To reprocess all data in the pipeline, use the `--reprocess` flag 
+ To push your local images to docker registry, use the `--push-images` and `--username` flags 
+ To push your local images to custom registry, use the `--push-images`, `--registry`, and `--username` flags 
 
 
 ```

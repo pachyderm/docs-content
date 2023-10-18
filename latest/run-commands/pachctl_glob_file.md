@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl glob file"
-description: "Learn about the pachctl_glob_file command"
+description: "Learn about the pachctl glob file command"
 ---
 
 ## pachctl glob file
@@ -12,7 +12,7 @@ Return files that match a glob pattern in a commit.
 
 This command returns files that match a glob pattern in a commit (that is, match a glob pattern in a repo at the state represented by a commit). Glob patterns are documented [here](https://golang.org/pkg/path/filepath/#Match). 
 
-- To specify the project where the repo is located, use the `--project flag` 
+ To specify the project where the repo is located, use the `--project flag` 
 
 
 ```

@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl idp create-connector"
-description: "Learn about the pachctl_idp_create-connector command"
+description: "Learn about the pachctl idp create-connector command"
 ---
 
 ## pachctl idp create-connector
@@ -10,16 +10,22 @@ Create a new identity provider connector.
 
 ### Synopsis
 
-Create a new identity provider connector.
+This command creates a new identity provider connector via a YAML configuration file or through stdin.
 
 ```
 pachctl idp create-connector [flags]
 ```
 
+### Examples
+
+```
+pachctl idp create-connector --config settings.yaml
+```
+
 ### Options
 
 ```
-      --config string   The file to read the YAML-encoded connector configuration from, or '-' for stdin. (default "-")
+      --config string   Set the file to read the YAML-encoded connector configuration from, or use '-' for stdin. (default "-")
   -h, --help            help for create-connector
 ```
 

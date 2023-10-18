@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl inspect project"
-description: "Learn about the pachctl_inspect_project command"
+description: "Learn about the pachctl inspect project command"
 ---
 
 ## pachctl inspect project
@@ -12,7 +12,7 @@ Inspect a project.
 
 This command inspects a project and returns information like its `Name` and `Created at` time. 
 
-- To return additional details, use the `--raw` flag 
+ To return additional details, use the `--raw` flag 
 
 
 ```

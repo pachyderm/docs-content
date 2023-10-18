@@ -1,16 +1,16 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl auth get project"
-description: "Learn about the pachctl_auth_get_project command"
+description: "Learn about the pachctl auth get project command"
 ---
 
 ## pachctl auth get project
 
-Get the role bindings for 'project'
+Get the role bindings for a project
 
 ### Synopsis
 
-Get the role bindings for 'project'
+This command returns the role bindings for a given project.
 
 ```
 pachctl auth get project <project> [flags]

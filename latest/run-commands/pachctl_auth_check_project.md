@@ -1,19 +1,25 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl auth check project"
-description: "Learn about the pachctl_auth_check_project command"
+description: "Learn about the pachctl auth check project command"
 ---
 
 ## pachctl auth check project
 
-Check the permissions a user has on 'project'
+Check the permissions a user has on a project
 
 ### Synopsis
 
-Check the permissions a user has on 'project'
+This command checks the permissions a user has on a given project.
 
 ```
 pachctl auth check project <project> [user] [flags]
+```
+
+### Examples
+
+```
+ pachctl auth check project foo user:alan.watts@domain.com
 ```
 
 ### Options
