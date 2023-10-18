@@ -92,7 +92,7 @@ EOF
  
 
 {{% notice note %}}
-Setting global defaults does not trigger existing pipelines to regenerate automatically unless the pipeline's resources have been affected (e.g., if `cpu` was doubled.) 
+Setting global defaults does not trigger existing pipelines to regenerate automatically unless the `--regenerate` flag is set.
 {{% /notice %}}
 
 ### View Global Cluster Defaults
