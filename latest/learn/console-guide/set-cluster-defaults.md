@@ -14,8 +14,8 @@ You can set global defaults for your cluster from the Console UI that are passed
 
 ## Before You Start
 
-- You must have a running {{%productName%}} cluster and access to the Console UI, either locally our via IdP
-- Read the [Global Config](/{{%release%}}/set-up/global-config) setup guide for context on global defaults outside the scope of the Console UI.
+- You must have a running {{%productName%}} cluster and access to the Console UI, either locally our via [IdP](/{{%release%}}/get-started/connect-to-existing/)
+- Read the [Global Config](/{{%release%}}/set-up/global-config) for more information global defaults
 
 ## How to Set Cluster Defaults
 
