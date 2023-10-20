@@ -38,7 +38,7 @@ This is a top-level attribute of the pipeline spec.
 - Annotations enable you to specify any arbitrary metadata. 
 
 
-Both parameters require a key-value pair.  Do not confuse this parameter with `pod_patch`, which adds metadata to the user container of the pipeline pod. For more information, see [Labels and Selectors](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) and [Kubernetes Annotations](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) in the Kubernetes documentation.
+Both parameters require a key-value pair.  Do not confuse this parameter with `podPatch`, which adds metadata to the user container of the pipeline pod. For more information, see [Labels and Selectors](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) and [Kubernetes Annotations](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) in the Kubernetes documentation.
 
 
 ## When to Use 

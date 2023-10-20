@@ -15,12 +15,12 @@ You can defer processing operations for data in output repositories by configuri
 ## How to Defer Processing in an Output Branch
 
 
-1. In the pipeline specification, add the `output_branch` field with
+1. In the pipeline specification, add the `outputBranch` field with
    the name of the branch in which you want to accumulate your data
    before processing:
 
    ```s
-   "output_branch": "staging"
+   "outputBranch": "staging"
    ```
 
 2. When you want to process data, run:

@@ -18,7 +18,7 @@ This is a top-level attribute of the pipeline spec.
 {
     "pipeline": {...},
     "transform": {...},
-    "reprocess_spec": string,
+    "reprocessSpec": string,
     ...
 }
 ```
@@ -26,11 +26,11 @@ This is a top-level attribute of the pipeline spec.
 ## Behavior 
 
 
-`"reprocess_spec": "until_success"` is the default behavior. To mitigate datums failing for transient connection reasons, {{% productName %}} automatically [retries user code three (3) times before marking a datum as failed](/{{%release%}}/debug/pipelines). Additionally, you can [set the  `datum_tries`](/{{%release%}}/build-dags/pipeline-spec/datum-tries) field to determine the number of times a job attempts to run on a datum when a failure occurs.
+`"reprocessSpec": "until_success"` is the default behavior. To mitigate datums failing for transient connection reasons, {{% productName %}} automatically [retries user code three (3) times before marking a datum as failed](/{{%release%}}/debug/pipelines). Additionally, you can [set the  `datumTries`](/{{%release%}}/build-dags/pipeline-spec/datum-tries) field to determine the number of times a job attempts to run on a datum when a failure occurs.
 
 Let's compare `"until_success"` and `"every_job"`:
 
-Say we have 2 identical pipelines (`reprocess_until_success.json` and `reprocess_at_every_job.json`) but for the `"reprocess_spec"` field set to `"every_job"` in `reprocess_at_every_job.json`. 
+Say we have 2 identical pipelines (`reprocess_until_success.json` and `reprocess_at_every_job.json`) but for the `"reprocessSpec"` field set to `"every_job"` in `reprocess_at_every_job.json`. 
 
 Both use the same input repo and have a glob pattern set to `/*`. 
 
@@ -41,9 +41,9 @@ Both use the same input repo and have a glob pattern set to `/*`.
 
 
 {{% notice warning %}}
-`"reprocess_spec": "every_job` will not take advantage of {{% productName %}}'s default de-duplication. In effect, this can lead to slower pipeline performance. Before using this setting, consider other options such as including metadata in your file, naming your files with a timestamp, UUID, or other unique identifiers in order to take advantage of de-duplication.
+`"reprocessSpec": "every_job` will not take advantage of {{% productName %}}'s default de-duplication. In effect, this can lead to slower pipeline performance. Before using this setting, consider other options such as including metadata in your file, naming your files with a timestamp, UUID, or other unique identifiers in order to take advantage of de-duplication.
 {{% /notice %}}
 
 ## When to Use 
 
-Per default, {{% productName %}} avoids repeated processing of unchanged datums (i.e., it processes only the datums that have changed and skip the unchanged datums). This incremental behavior ensures efficient resource utilization. However, you might need to alter this behavior for specific use cases and **force the reprocessing of all of your datums systematically**. This is especially useful when your pipeline makes an external call to other resources, such as a deployment or triggering an external pipeline system.  Set `"reprocess_spec": "every_job"` in order to enable this behavior. 
+Per default, {{% productName %}} avoids repeated processing of unchanged datums (i.e., it processes only the datums that have changed and skip the unchanged datums). This incremental behavior ensures efficient resource utilization. However, you might need to alter this behavior for specific use cases and **force the reprocessing of all of your datums systematically**. This is especially useful when your pipeline makes an external call to other resources, such as a deployment or triggering an external pipeline system.  Set `"reprocessSpec": "every_job"` in order to enable this behavior. 

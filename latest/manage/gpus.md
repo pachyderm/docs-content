@@ -109,7 +109,7 @@ by [setting up GPU resource limits](/{{%release%}}/build-dags/pipeline-spec/reso
 By default, {{% productName %}} workers are spun up and wait for new input. That works great for pipelines that are processing a lot of new incoming commits. However, for lower volume of input commits, you could have your pipeline workers 'taking' the GPU resource as far as k8s is concerned, but 'idling' as far as you are concerned. 
 
  - Make sure to set the `autoscaling` field to `true` so that if your pipeline is not getting used, the worker pods get spun down and the GPU resource freed.
- - Additionally, specify how much of GPU your pipeline worker will need via the `resource_requests` fields in your [pipeline specification](/{{%release%}}/build-dags/pipeline-spec) with `resource_requests` <= `resource_limits`.
+ - Additionally, specify how much of GPU your pipeline worker will need via the `resourceRequests` fields in your [pipeline specification](/{{%release%}}/build-dags/pipeline-spec) with `resourceRequests` <= `resourceLimits`.
 {{% /notice %}}
 
 Below is an example of a pipeline spec for a GPU-enabled pipeline from our [market sentiment analysis example](https://github.com/pachyderm/examples/tree/master/market-sentiment):
@@ -142,13 +142,13 @@ Below is an example of a pipeline spec for a GPU-enabled pipeline from our [mark
     ],
     "image": "pachyderm/market_sentiment:dev0.25"
   },
-  "resource_limits": {
+  "resourceLimits": {
     "gpu": {
       "type": "nvidia.com/gpu",
       "number": 1
     }
   },
-  "resource_requests": {
+  "resourceRequests": {
     "memory": "4G",
     "cpu": 1
   }

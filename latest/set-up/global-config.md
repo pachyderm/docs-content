@@ -109,7 +109,7 @@ Users can override global defaults in their pipeline specs when necessary. For e
 
 ```s
 {
-  "resource_requests": {
+  "resourceRequests": {
     "cpu": 1,
     "memory": "256Mi",
     "disk": "1Gi",
@@ -121,7 +121,7 @@ A user could disable needing any CPU by setting the following in their pipeline 
 
 ```s
 {
-  "resource_requests": {
+  "resourceRequests": {
     "cpu": null,
   },
 }

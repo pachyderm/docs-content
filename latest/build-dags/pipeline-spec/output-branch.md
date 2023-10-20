@@ -18,7 +18,7 @@ This is a top-level attribute of the pipeline spec.
 {
     "pipeline": {...},
     "transform": {...},
-    "output_branch": string,
+    "outputBranch": string,
     ...
 }
 

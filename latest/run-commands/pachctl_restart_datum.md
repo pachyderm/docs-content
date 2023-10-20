@@ -12,7 +12,7 @@ Restart a stuck datum during a currently running job.
 
 This command restarts a stuck datum during a currently running job; it does not solve failed datums. 
  
-You can configure a job to skip failed datums via the transform.err_cmd setting of your pipeline spec. 
+You can configure a job to skip failed datums via the transform.errCmd setting of your pipeline spec. 
  
  To specify the project where the parent pipeline lives, use the `--project` flag 
 

@@ -146,7 +146,7 @@ You can add a `determined` section to your [pipeline specification](/{{%release%
         "repo": "input",
         "branch": "master",
         "glob": "/",
-        "empty_files": true
+        "emptyFiles": true
       }
     },
     "transform": {

@@ -18,7 +18,7 @@ This is a top-level attribute of the pipeline spec.
 {
     "pipeline": {...},
     "transform": {...},
-    "pod_patch": string,
+    "podPatch": string,
     ...
 }
 
@@ -26,7 +26,7 @@ This is a top-level attribute of the pipeline spec.
 
 ## Behavior 
 
-`pod_patch` is similar to `pod_spec` but is applied as a [JSON
+`podPatch` is similar to `podSpec` but is applied as a [JSON
 Patch](https://tools.ietf.org/html/rfc6902). Note, this means that the
 process outlined above of modifying an existing pod spec and then manually
 blanking unchanged fields won't work, you'll need to create a correctly

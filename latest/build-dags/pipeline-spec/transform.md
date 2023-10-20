@@ -20,30 +20,30 @@ This is a top-level attribute of the pipeline spec.
     "transform": {
         "image": string,
         "cmd": [ string ],
-        "datum_batching": bool,
-        "err_cmd": [ string ],
+        "datumBatching": bool,
+        "errCmd": [ string ],
         "env": {
             string: string
         },
 
         "secrets": [ {
             "name": string,
-            "mount_path": string
+            "mountPath": string
         },
         {
             "name": string,
-            "env_var": string,
+            "envVar": string,
             "key": string
         } ],
-        "image_pull_secrets": [ string ],
+        "imagePullSecrets": [ string ],
         "stdin": [ string ],
-        "err_stdin": [ string ],
-        "accept_return_code": [ int ],
+        "errStdin": [ string ],
+        "acceptReturnCode": [ int ],
         "debug": bool,
         "user": string,
-        "working_dir": string,
+        "workingDir": string,
         "dockerfile": string,
-        "memory_volume": bool,
+        "memoryVolume": bool,
     },
     ...
 }
@@ -55,24 +55,24 @@ This is a top-level attribute of the pipeline spec.
 |Attribute|Description|
 |-|-|
 |cmd| Passes a command to the Docker run invocation.|
-|datum_batching|Enables you to call your user code once for a batch of datums versus calling it per each datum.|
+|datumBatching|Enables you to call your user code once for a batch of datums versus calling it per each datum.|
 |stdin| Passes an array of lines to your command on `stdin`.|
-|err_cmd| Passes a command executed on failed datums.|
-|err_stdin| Passes an array of lines to your error command on `stdin`.|
+|errCmd| Passes a command executed on failed datums.|
+|errStdin| Passes an array of lines to your error command on `stdin`.|
 |env| Enables a key-value map of [environment variables](/{{%release%}}/set-up/environment-variables/) that {{% productName %}} injects into the container. |
 |secrets| Passes an array of secrets to embed sensitive data. |
-|image_pull_secrets| Passes an array of secrets that are mounted before the containers are created.|
-|accept_return_code| Passes an array of return codes that are considered acceptable when your Docker command exits.|
+|imagePullSecrets| Passes an array of secrets that are mounted before the containers are created.|
+|acceptReturnCode| Passes an array of return codes that are considered acceptable when your Docker command exits.|
 |debug| Enables debug logging for the pipeline|
 |user| Sets the user that your code runs as.|
-|working_dir| Sets the directory that your command runs from.|
-|memory_volume| Sets pachyderm-worker's `emptyDir.Medium` to `Memory`, allowing Kubernetes to mount a memory-backed volume (`tmpfs`).|
+|workingDir| Sets the directory that your command runs from.|
+|memoryVolume| Sets pachyderm-worker's `emptyDir.Medium` to `Memory`, allowing Kubernetes to mount a memory-backed volume (`tmpfs`).|
 
 
 ## Behavior 
 
 - `cmd` is not run inside a shell which means that wildcard globbing (`*`), pipes (`|`), and file redirects (`>` and `>>`) do not work. To specify these settings, you can set `cmd` to be a shell of your choice, such as `sh` and pass a shell script to `stdin`.
--  `err_cmd` can be used to ignore failed datums while still writing successful datums to the output repo, instead of failing the whole job when some datums fail. The `transform.err_cmd` command has the same limitations as `transform.cmd`.
+-  `errCmd` can be used to ignore failed datums while still writing successful datums to the output repo, instead of failing the whole job when some datums fail. The `transform.errCmd` command has the same limitations as `transform.cmd`.
 -  `stdin` lines do not have to end in newline characters.
 -  The following environment variables are automatically injected into the container:
    * `PACH_JOB_ID` – the ID of the current job.
@@ -81,14 +81,14 @@ This is a top-level attribute of the pipeline spec.
    * `<input>_COMMIT` - the ID of the input commit. For example, if your
    input is the `images` repo, this will be `images_COMMIT`.
 - `secrets` reference Kubernetes secrets by name and specify a path to map the secrets or
-an environment variable (`env_var`) that the value should be bound to.
+an environment variable (`envVar`) that the value should be bound to.
 -  `0` is always considered a successful exit code.
 -  `tmpfs` is cleared on node reboot and any files you write count against your container's memory limit. This may be useful for workloads that are IO heavy or use memory caches.
 
 {{%notice tip%}}
 **Using a private registry? **
 
-You can use `image_pull_secrets` to mount a secret that contains your registry credentials.
+You can use `imagePullSecrets` to mount a secret that contains your registry credentials.
 
 ```s
 {
@@ -99,7 +99,7 @@ You can use `image_pull_secrets` to mount a secret that contains your registry c
   "transform": {
     "cmd": [ "python3", "/example.py" ],
     "image": "<private container registry>/image:1.0",
-    "image_pull_secrets": [ "k8s-secret-with-creds" ]
+    "imagePullSecrets": [ "k8s-secret-with-creds" ]
   },
   ...
 }

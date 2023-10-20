@@ -18,7 +18,7 @@ This is a top-level attribute of the pipeline spec.
 {
   "pipeline": {...},
   "transform": {...},
-  "resource_limits": {
+  "resourceLimits": {
   "cpu": number,
   "memory": string,
   "gpu": {
@@ -34,7 +34,7 @@ This is a top-level attribute of the pipeline spec.
 
 ## Behavior 
 
-`resource_limits` describes the upper threshold of allowed resources a given
+`resourceLimits` describes the upper threshold of allowed resources a given
 worker can consume. If a worker exceeds this value, it will be evicted.
 
 The `gpu` field is a number that describes how many GPUs each worker needs.

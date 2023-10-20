@@ -25,9 +25,9 @@ You can run the {{%productName%}} Jupyterlab Extension inside of [Determined](ht
 1. Open Determined.
 2. Navigate to the Notebook Launcher.
 3. Click **Show Full Config**.
-4. Replace the `pod_spec` section with the following:
+4. Replace the `podSpec` section with the following:
    ```s
-   pod_spec:
+   podSpec:
        spec:
          containers:
          - name: determined-container

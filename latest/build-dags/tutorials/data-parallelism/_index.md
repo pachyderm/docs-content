@@ -100,17 +100,17 @@ We're going to need to first build a pipeline that will classify the breast canc
     ],
     "image": "pachyderm/breast_cancer_classifier:1.11.6"
   },
-  "resource_limits": {
+  "resourceLimits": {
     "gpu": {
       "type": "nvidia.com/gpu",
       "number": 1
     }
   },
-  "resource_requests": {
+  "resourceRequests": {
     "memory": "4G",
     "cpu": 1
   },
-  "parallelism_spec": {
+  "parallelismSpec": {
     "constant": 8
   }
 }

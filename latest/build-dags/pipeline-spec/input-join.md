@@ -27,10 +27,10 @@ This is a top-level attribute of the pipeline spec.
           "repo": string,
           "branch": string,
           "glob": string,
-          "join_on": string,
-          "outer_join": bool,
+          "joinOn": string,
+          "outerJoin": bool,
           "lazy": bool,
-          "empty_files": bool,
+          "emptyFiles": bool,
           "s3": bool
         }
       },
@@ -41,10 +41,10 @@ This is a top-level attribute of the pipeline spec.
           "repo": string,
           "branch": string,
           "glob": string,
-          "join_on": string,
-          "outer_join": bool,
+          "joinOn": string,
+          "outerJoin": bool,
           "lazy": bool,
-          "empty_files": bool,
+          "emptyFiles": bool,
           "s3": bool
         }
       }
@@ -57,10 +57,10 @@ This is a top-level attribute of the pipeline spec.
 
 ## Behavior 
 
--  A join input must have the `glob` and `join_on` parameters configured
+-  A join input must have the `glob` and `joinOn` parameters configured
 to work properly. A join can combine multiple PFS inputs.
-- You can optionally add `"outer_join": true` to your PFS input.  In that case, you will alter the join's behavior from a default "inner-join" (creates a datum if there is a match only) to a "outer-join" (the repos marked as `"outer_join": true` will see a datum even if there is no match).
-- You can set 0 to many PFS input to `"outer_join": true` within your `join`.
+- You can optionally add `"outerJoin": true` to your PFS input.  In that case, you will alter the join's behavior from a default "inner-join" (creates a datum if there is a match only) to a "outer-join" (the repos marked as `"outerJoin": true` will see a datum even if there is no match).
+- You can set 0 to many PFS input to `"outerJoin": true` within your `join`.
 
 ## Capture Groups 
 
@@ -84,7 +84,7 @@ The following glob patterns in a joint input create the following capture groups
 
 
 Also, joins require you to specify a [replacement group](https://www.regular-expressions.info/replacebackref.html)
-in the `join_on` parameter to define which capture groups you want to tryto match.
+in the `joinOn` parameter to define which capture groups you want to tryto match.
 
 For example, `$1` indicates that you want {{%productName%}} to match based on capture group `1`. Similarly, `$2` matches the capture group `2`. `$1$2` means that it must match both capture groups `1` and `2`.
 
@@ -93,7 +93,7 @@ See the full `join` input configuration in the [pipeline specification](/{{%rele
 You can test your glob pattern and capture groups by using the `pachctl list datum -f <your_pipeline_spec.json>` command.
 
 {{% notice tip %}}
-The content of the capture group defined in the `join_on` parameter is available to your pipeline's code in an environment variable: `PACH_DATUM_<input.name>_JOIN_ON`.
+The content of the capture group defined in the `joinOn` parameter is available to your pipeline's code in an environment variable: `PACH_DATUM_<input.name>_JOIN_ON`.
 {{% /notice %}}
 
 ## Examples
@@ -145,7 +145,7 @@ The following example shows how you can use joins to group matching IDs:
            "repo": "readings",
            "branch": "master",
            "glob": "/*/(*).txt",
-           "join_on": "$1"
+           "joinOn": "$1"
          }
        },
       {
@@ -153,7 +153,7 @@ The following example shows how you can use joins to group matching IDs:
           "repo": "parameters",
           "branch": "master",
           "glob": "/(*).txt",
-          "join_on": "$1"
+          "joinOn": "$1"
         }
       }
     ]
@@ -188,7 +188,7 @@ Building off the previous example, notice that there are 3 files in the `paramet
            "repo": "readings",
            "branch": "master",
            "glob": "/*/(*).txt",
-           "join_on": "$1"
+           "joinOn": "$1"
          }
        },
       {
@@ -196,8 +196,8 @@ Building off the previous example, notice that there are 3 files in the `paramet
           "repo": "parameters",
           "branch": "master",
           "glob": "/(*).txt",
-          "join_on": "$1",
-          "outer_join": true
+          "joinOn": "$1",
+          "outerJoin": true
         }
       }
     ]

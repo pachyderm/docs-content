@@ -59,7 +59,7 @@ Create a **secret** containing your database password in the field `PACHYDERM_SQ
 Append an egress section to your pipeline specification file, then fill in:
 
 - the `url`: the connection string to your database.
-- the `file_format` type: CSV for now.
+- the `fileFormat` type: CSV for now.
 - the `name`: the Kubernetes secret name.
 - the `columns`: Optional array for egress of **CSV files with headers only**. The order of the columns in this array must match the order of the schema columns; however, the CSV columns can be any order. So if the array is ["foo", "bar"] and the CSV file is:
 
@@ -95,9 +95,9 @@ Append an egress section to your pipeline specification file, then fill in:
    ...
 },
 "egress": {
-    "sql_database": {
+    "sqlDatabase": {
         "url": "snowflake://pachyderm@WHMUWUD-CJ80657/PACH_DB/PUBLIC?warehouse=COMPUTE_WH",
-        "file_format": {
+        "fileFormat": {
             "type": "CSV",
             "columns": ["foo", "bar"]
         },

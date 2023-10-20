@@ -18,7 +18,7 @@ This is a top-level attribute of the pipeline spec.
 {
   "pipeline": {...},
   "transform": {...},
-  "spec_commit": {
+  "specCommit": {
     "option": false,
     "branch": {
       "option": false,

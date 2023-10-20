@@ -22,9 +22,9 @@ This is a top-level attribute of the pipeline spec.
         // Egress to an object store
         "URL": "s3://bucket/dir"
         // Egress to a database
-        "sql_database": {
+        "sqlDatabase": {
             "url": string,
-            "file_format": {
+            "fileFormat": {
                 "type": string,
                 "columns": [string]
             },
@@ -43,9 +43,9 @@ This is a top-level attribute of the pipeline spec.
 | Attribute  | Description  |
 |-|-|
 | URL            | The URL of the object store where the pipeline's output data should be written.  |
-| sql_database   | An optional field that is used to specify how the pipeline should write output data to a SQL database.|
+| sqlDatabase   | An optional field that is used to specify how the pipeline should write output data to a SQL database.|
 | url            | The URL of the SQL database, in the format `postgresql://user:password@host:port/database`.  |
-| file_format    | The file format of the output data, which can be specified as `csv` or `tsv`. This field also includes the column names that should be included in the output. |
+| fileFormat    | The file format of the output data, which can be specified as `csv` or `tsv`. This field also includes the column names that should be included in the output. |
 | secret         | The name and key of the Kubernetes secret that contains the password for the SQL database. |
 
 

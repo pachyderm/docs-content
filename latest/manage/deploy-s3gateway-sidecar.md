@@ -35,7 +35,7 @@ deployed in a sidecar and the Kubeflow pod.
 
 1. Open your pipeline spec.
 2. Add `"s3": true` to `input.pfs`.
-3. Add `"s3_out": true` to `pipeline`.
+3. Add `"s3Out": true` to `pipeline`.
 4. Save your spec.
 5. Update your pipeline. 
 
@@ -60,7 +60,7 @@ The following spec example reads files in the input bucket `labresults` and copi
     "stdin": [ "set -x && mkdir -p /tmp/result && aws --endpoint-url $S3_ENDPOINT s3 ls && aws --endpoint-url $S3_ENDPOINT s3 cp s3://labresults/ /tmp/result/ --recursive && aws --endpoint-url $S3_ENDPOINT s3 cp /tmp/result/ s3://out --recursive" ],
     "image": "pachyderm/ubuntu-with-s3-clients:v0.0.1"
   },
-  "s3_out": true
+  "s3Out": true
 }
 ```
 

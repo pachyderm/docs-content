@@ -18,7 +18,7 @@ This is a top-level attribute of the pipeline spec.
 {
   "pipeline": {...},
   "transform": {...},
-  "parallelism_spec": {
+  "parallelismSpec": {
     "constant": int
   },
   ...
