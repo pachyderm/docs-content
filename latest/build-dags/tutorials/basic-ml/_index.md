@@ -22,6 +22,14 @@ Our Docker image's [user code](/{{%release%}}/learn/glossary/user-code) for this
 
 ### 1. Create a Project & Input Repo
 
+{{<stack type="wizard">}}
+{{% wizardRow id="Tool"%}}
+{{% wizardButton option="Pachctl CLI" state="active" %}}
+{{% wizardButton option="Console" %}}
+{{% /wizardRow %}}
+{{% wizardResults %}}
+{{% wizardResult val1="tool/pachctl-cli"%}}
+
 1. Create a project named `standard-ml-tutorial`. 
    ```s
    pachctl create project standard-ml-tutorial
@@ -35,7 +43,27 @@ Our Docker image's [user code](/{{%release%}}/learn/glossary/user-code) for this
    pachctl create repo housing_data
    ```
 
+{{% /wizardResult %}}
+
+{{% wizardResult val1="tool/console"%}}
+
+COMING SOON
+
+
+{{% /wizardResult %}}
+{{% /wizardResults  %}}
+{{</stack>}}
+
+
 ### 2. Create a Regression Pipeline
+
+{{<stack type="wizard">}}
+{{% wizardRow id="Tool"%}}
+{{% wizardButton option="Pachctl CLI" state="active" %}}
+{{% wizardButton option="Console" %}}
+{{% /wizardRow %}}
+{{% wizardResults %}}
+{{% wizardResult val1="tool/pachctl-cli"%}}
 
 1. Create a file named `regression.json` with the following contents:
    ```json
@@ -69,11 +97,29 @@ Our Docker image's [user code](/{{%release%}}/learn/glossary/user-code) for this
    pachctl create pipeline -f regression.json
    ```
 
+{{% /wizardResult %}}
+{{% wizardResult val1="tool/console"%}}
+
+COMING SOON
+
+{{% /wizardResult %}}
+{{% /wizardResults  %}}
+{{</stack>}}
+
+
 {{% notice tip %}}
 The pipeline writes the output to a PFS repo (`/pfs/out/`) created with the same name as the pipeline.
 {{% /notice %}}
 
 ### 3. Upload the Housing Dataset
+
+{{<stack type="wizard">}}
+{{% wizardRow id="Tool"%}}
+{{% wizardButton option="Pachctl CLI" state="active" %}}
+{{% wizardButton option="Console" %}}
+{{% /wizardRow %}}
+{{% wizardResults %}}
+{{% wizardResult val1="tool/pachctl-cli"%}}
 
 1. Download our first example data set, [housing-simplified-1.csv](housing-simplified-1.csv). 
 2. Add the data to your repo. Processing begins automatically --- anytime you add new data, the pipeline will re-run.
@@ -100,8 +146,26 @@ The pipeline writes the output to a PFS repo (`/pfs/out/`) created with the same
    # df117068124643299d46530859851a4b 1       ▇▇▇▇▇▇▇▇ About a minute ago About a minute ago 
    ```
 
+{{% /wizardResult %}}
+{{% wizardResult val1="tool/console"%}}
+
+COMING SOON
+
+{{% /wizardResult %}}
+{{% /wizardResults  %}}
+{{</stack>}}
+
+
 ### 4. Download Output Files
 Once the pipeline is completed, we can download the files that were created.
+
+{{<stack type="wizard">}}
+{{% wizardRow id="Tool"%}}
+{{% wizardButton option="Pachctl CLI" state="active" %}}
+{{% wizardButton option="Console" %}}
+{{% /wizardRow %}}
+{{% wizardResults %}}
+{{% wizardResult val1="tool/pachctl-cli"%}}
 
 1. View a list of the files in the output repo.
    ```s
@@ -118,6 +182,17 @@ Once the pipeline is completed, we can download the files that were created.
    pachctl get file regression@master:/ --recursive --output .
    ```
 
+{{% /wizardResult %}}
+{{% wizardResult val1="tool/console"%}}
+
+COMING SOON
+
+{{% /wizardResult %}}
+{{% /wizardResults  %}}
+{{</stack>}}
+
+
+
 When we inspect the learning curve, we can see that there is a large gap between the training score and the validation score. This typically indicates that our model could benefit from the addition of more data. 
 
 <p align="center">
@@ -128,12 +203,30 @@ Now let's update our dataset with additional examples.
 
 ### 5. Update the Dataset
 
+{{<stack type="wizard">}}
+{{% wizardRow id="Tool"%}}
+{{% wizardButton option="Pachctl CLI" state="active" %}}
+{{% wizardButton option="Console" %}}
+{{% /wizardRow %}}
+{{% wizardResults %}}
+{{% wizardResult val1="tool/pachctl-cli"%}}
+
 1. Download our second example data set, [housing-simplified-2.csv](housing-simplified-2.csv).
 2. Add the data to your repo.
 
    ```s
    pachctl put file housing_data@master:housing-simplified.csv -f /path/to/housing-simplified-2.csv
    ```
+
+{{% /wizardResult %}}
+{{% wizardResult val1="tool/console"%}}
+
+COMING SOON
+
+{{% /wizardResult %}}
+{{% /wizardResults  %}}
+{{</stack>}}
+
 
 {{% notice note %}}
 We could also append new examples to the existing file, but in this tutorial we're overwriting our previous file to one with more data.
@@ -151,6 +244,15 @@ When the job is complete we can download the new files and see that our model ha
 Since the pipeline versions all of our input and output data automatically, we can continue to iterate on our data and code while {{% productName %}} tracks all of our experiments. 
 
 For any given output commit, {{% productName %}} can tell us exactly which input commit of data was run. In this tutorial, we have only run 2 experiments so far, but this becomes incredibly valuable as your experiments continue to evolve and scale.
+
+{{<stack type="wizard">}}
+{{% wizardRow id="Tool"%}}
+{{% wizardButton option="Pachctl CLI" state="active" %}}
+{{% wizardButton option="Console" %}}
+{{% /wizardRow %}}
+{{% wizardResults %}}
+{{% wizardResult val1="tool/pachctl-cli"%}}
+
 
 1. Inspect the commits to your repo.
 
@@ -180,6 +282,17 @@ For any given output commit, {{% productName %}} can tell us exactly which input
       # Finished: 2 minutes ago
       # Size: 12.14KiB
      ```
+
+{{% /wizardResult %}}
+{{% wizardResult val1="tool/console"%}}
+
+COMING SOON
+
+{{% /wizardResult %}}
+{{% /wizardResults  %}}
+{{</stack>}}
+
+
 
 ---
 

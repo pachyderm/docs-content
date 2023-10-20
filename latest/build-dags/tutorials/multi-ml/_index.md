@@ -31,6 +31,14 @@ Each pipeline in this tutorial executes a Python script,  versions the artifacts
 
 ### 1. Create an Input Repo 
 
+{{<stack type="wizard">}}
+{{% wizardRow id="Tool"%}}
+{{% wizardButton option="Pachctl CLI" state="active" %}}
+{{% wizardButton option="Console" %}}
+{{% /wizardRow %}}
+{{% wizardResults %}}
+{{% wizardResult val1="tool/pachctl-cli"%}}
+
 1. Create a project named `multipipeline-tutorial`. 
    ```s
    pachctl create project multipipeline-tutorial
@@ -44,6 +52,19 @@ Each pipeline in this tutorial executes a Python script,  versions the artifacts
    ```s
    pachctl create repo csv_data
    ```
+
+{{% /wizardResult %}}
+
+{{% wizardResult val1="tool/console"%}}
+
+COMING SOON
+
+
+{{% /wizardResult %}}
+{{% /wizardResults  %}}
+{{</stack>}}
+
+
 ### 2. Create the Pipelines
 
 We'll deploy each stage in our ML process as a Pachyderm pipeline. Organizing our work into pipelines allows us to keep track of artifacts created in our ML development process. We can extend or add pipelines at any point to add new functionality or features, while keeping track of code and data changes simultaneously.
@@ -54,6 +75,14 @@ The data analysis pipeline creates a pair plot and a correlation matrix showing 
   <img width="300" src="images/pairplot-1.png">
   <img width="300" src="images/corr_matrix-1.png">
 </p>
+
+{{<stack type="wizard">}}
+{{% wizardRow id="Tool"%}}
+{{% wizardButton option="Pachctl CLI" state="active" %}}
+{{% wizardButton option="Console" %}}
+{{% /wizardRow %}}
+{{% wizardResults %}}
+{{% wizardResult val1="tool/pachctl-cli"%}}
 
 1. Create a file named `data_analysis.json` with the following contents:
    ```s
@@ -86,10 +115,31 @@ The data analysis pipeline creates a pair plot and a correlation matrix showing 
    pachctl create pipeline -f /path/to/data_analysis.json
    ```
 
+{{% /wizardResult %}}
+
+{{% wizardResult val1="tool/console"%}}
+
+COMING SOON
+
+
+{{% /wizardResult %}}
+{{% /wizardResults  %}}
+{{</stack>}}
+
+
+
 #### 2. Split Pipeline
 Split the input `csv` files into `train` and `test` sets. As we new data is added, we will always have access to previous versions of the splits to reproduce experiments and test results. 
 
 Both the `split` pipeline and the `data_analysis` pipeline take the `csv_data` as input but have no dependencies on each other. Pachyderm is able to recognize this. It can run each pipeline simultaneously, scaling each horizontally.
+
+{{<stack type="wizard">}}
+{{% wizardRow id="Tool"%}}
+{{% wizardButton option="Pachctl CLI" state="active" %}}
+{{% wizardButton option="Console" %}}
+{{% /wizardRow %}}
+{{% wizardResults %}}
+{{% wizardResult val1="tool/pachctl-cli"%}}
 
 1. Create a file named `split.json` with the following contents:
    ```s
@@ -122,6 +172,19 @@ Both the `split` pipeline and the `data_analysis` pipeline take the `csv_data` a
    pachctl create pipeline -f /path/to/split.json
    ```
 
+{{% /wizardResult %}}
+
+{{% wizardResult val1="tool/console"%}}
+
+COMING SOON
+
+
+{{% /wizardResult %}}
+{{% /wizardResults  %}}
+{{</stack>}}
+
+
+
 #### 3. Regression Pipeline
 To train the regression model using scikit-learn. In our case, we will train a Random Forest Regressor ensemble. After splitting the data into features and targets (`X` and `y`), we can fit the model to our parameters. Once the model is trained, we will compute our score (r^2) on the test set. 
 
@@ -129,6 +192,14 @@ After the model is trained we output some visualizations to evaluate its effecti
 <p align="center">
   <img src="images/cv_reg_output-1.png">
 </p>
+
+{{<stack type="wizard">}}
+{{% wizardRow id="Tool"%}}
+{{% wizardButton option="Pachctl CLI" state="active" %}}
+{{% wizardButton option="Console" %}}
+{{% /wizardRow %}}
+{{% wizardResults %}}
+{{% wizardResult val1="tool/pachctl-cli"%}}
 
 1. Create a file named `regression.json` with the following contents:
    ```s
@@ -161,26 +232,104 @@ After the model is trained we output some visualizations to evaluate its effecti
    pachctl create pipeline -f /path/to/regression.json
    ```
 
+{{% /wizardResult %}}
+
+{{% wizardResult val1="tool/console"%}}
+
+COMING SOON
+
+
+{{% /wizardResult %}}
+{{% /wizardResults  %}}
+{{</stack>}}
+
+
+
 ### 3. Upload the Dataset
+
+{{<stack type="wizard">}}
+{{% wizardRow id="Tool"%}}
+{{% wizardButton option="Pachctl CLI" state="active" %}}
+{{% wizardButton option="Console" %}}
+{{% /wizardRow %}}
+{{% wizardResults %}}
+{{% wizardResult val1="tool/pachctl-cli"%}}
+
 1. Download our first example data set, [housing-simplified-1.csv](housing-simplified-1.csv). 
 2. Add the data to your repo.
    ```s
    pachctl put file csv_data@master:housing-simplified.csv -f /path/to/housing-simplified-1.csv
    ```
+
+
+{{% /wizardResult %}}
+
+{{% wizardResult val1="tool/console"%}}
+
+COMING SOON
+
+{{% /wizardResult %}}
+{{% /wizardResults  %}}
+{{</stack>}}
+
 ### 4. Download the Results
 
 Once the pipeline has finished, download the results.
+
+{{<stack type="wizard">}}
+{{% wizardRow id="Tool"%}}
+{{% wizardButton option="Pachctl CLI" state="active" %}}
+{{% wizardButton option="Console" %}}
+{{% /wizardRow %}}
+{{% wizardResults %}}
+{{% wizardResult val1="tool/pachctl-cli"%}}
+
    ```s
    pachctl get file regression@master:/ --recursive --output .
    ```
 
+{{% /wizardResult %}}
+
+{{% wizardResult val1="tool/console"%}}
+
+COMING SOON
+
+
+{{% /wizardResult %}}
+{{% /wizardResults  %}}
+{{</stack>}}
+
+
+
+
 ### 5. Update the Dataset
+
+{{<stack type="wizard">}}
+{{% wizardRow id="Tool"%}}
+{{% wizardButton option="Pachctl CLI" state="active" %}}
+{{% wizardButton option="Console" %}}
+{{% /wizardRow %}}
+{{% wizardResults %}}
+{{% wizardResult val1="tool/pachctl-cli"%}}
 
 1. Download our second example data set, [housing-simplified-2.csv](housing-simplified-2.csv). 
 2. Add the data to your repo.
    ```s
    pachctl put file csv_data@master:housing-simplified.csv -f /path/to/housing-simplified-2.csv
    ```
+
+{{% /wizardResult %}}
+
+{{% wizardResult val1="tool/console"%}}
+
+COMING SOON
+
+
+{{% /wizardResult %}}
+{{% /wizardResults  %}}
+{{</stack>}}
+
+
 
 ### 6. Inspect the Data
 

@@ -25,6 +25,14 @@ Our Docker image's [user code](/{{%release%}}/learn/glossary/user-code) for this
 
 ### 1. Create a Project & Input Repo
 
+{{<stack type="wizard">}}
+{{% wizardRow id="Tool"%}}
+{{% wizardButton option="Pachctl CLI" state="active" %}}
+{{% wizardButton option="Console" %}}
+{{% /wizardRow %}}
+{{% wizardResults %}}
+{{% wizardResult val1="tool/pachctl-cli"%}}
+
 1. Create a project named `automl-tutorial`. 
    ```s
    pachctl create project automl-tutorial
@@ -42,7 +50,28 @@ Our Docker image's [user code](/{{%release%}}/learn/glossary/user-code) for this
    pachctl put file csv_data@master:housing-simplified.csv -f /path/to/housing-simplified-1.csv
    ```
 
+{{% /wizardResult %}}
+
+{{% wizardResult val1="tool/console"%}}
+
+COMING SOON
+
+
+{{% /wizardResult %}}
+{{% /wizardResults  %}}
+{{</stack>}}
+
+
+
 ### 2. Create a Jsonnet Pipeline
+
+{{<stack type="wizard">}}
+{{% wizardRow id="Tool"%}}
+{{% wizardButton option="Pachctl CLI" state="active" %}}
+{{% wizardButton option="Console" %}}
+{{% /wizardRow %}}
+{{% wizardResults %}}
+{{% wizardResult val1="tool/pachctl-cli"%}}
 
 1. Download or save our [automl.jsonnet](automl.jsonnet) template. 
    ```s
@@ -80,10 +109,30 @@ Our Docker image's [user code](/{{%release%}}/learn/glossary/user-code) for this
        --arg target_col="MEDV" \
        --arg args="--mode Explain --random_state 42"
    ```
-   
-   The model automatically starts training. Once complete, the trained model and evaluation metrics are output to the AutoML output repo.
+
+{{% /wizardResult %}}
+
+{{% wizardResult val1="tool/console"%}}
+
+COMING SOON
+
+
+{{% /wizardResult %}}
+{{% /wizardResults  %}}
+{{</stack>}}
+
+
+The model automatically starts training. Once complete, the trained model and evaluation metrics are output to the AutoML output repo.
 
 ### 3. Upload the Dataset
+
+{{<stack type="wizard">}}
+{{% wizardRow id="Tool"%}}
+{{% wizardButton option="Pachctl CLI" state="active" %}}
+{{% wizardButton option="Console" %}}
+{{% /wizardRow %}}
+{{% wizardResults %}}
+{{% wizardResult val1="tool/pachctl-cli"%}}
 
 1. Update the dataset using [housing-simplified-2.csv](housing-simplified-2.csv); {{% productName %}} retrains the model automatically.
 
@@ -91,6 +140,19 @@ Our Docker image's [user code](/{{%release%}}/learn/glossary/user-code) for this
 pachctl put file csv_data@master:housing-simplified.csv -f /path/to/housing-simplified-2.csv
 ```
 2. Repeat the previous step as many times as you want. Each time, {{% productName %}} automatically retrains the model and outputs the new model and evaluation metrics to the AutoML output repo. 
+
+
+{{% /wizardResult %}}
+
+{{% wizardResult val1="tool/console"%}}
+
+COMING SOON
+
+
+{{% /wizardResult %}}
+{{% /wizardResults  %}}
+{{</stack>}}
+
 
 
 ---

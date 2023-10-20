@@ -23,6 +23,14 @@ Our Docker image's [user code](/{{%release%}}/learn/glossary/user-code) for this
 
 ### 1. Create an Input Repo
 
+{{<stack type="wizard">}}
+{{% wizardRow id="Tool"%}}
+{{% wizardButton option="Pachctl CLI" state="active" %}}
+{{% wizardButton option="Console" %}}
+{{% /wizardRow %}}
+{{% wizardResults %}}
+{{% wizardResult val1="tool/pachctl-cli"%}}
+
 1. Make sure your Tutorials project we created in the [Standard ML Pipeline](/{{%release%}}/build-dags/tutorials/basic-ml) tutorial is set to your active context. (This would only change if you have updated your active context since completing the first tutorial.)
 
    ```s
@@ -41,6 +49,19 @@ Our Docker image's [user code](/{{%release%}}/learn/glossary/user-code) for this
    pachctl create repo sample_data
    ```
 
+{{% /wizardResult %}}
+
+{{% wizardResult val1="tool/console"%}}
+
+COMING SOON
+
+
+{{% /wizardResult %}}
+{{% /wizardResults  %}}
+{{</stack>}}
+
+
+
 ### 2. Create CPU Pipelines
 
 In task parallelism, we separate out the CPU-based preprocessing and GPU-related tasks, saving us cloud costs when scaling. By separating inference into multiple tasks, each task pipeline can be updated independently, allowing ease of model deployment and collaboration.
@@ -52,6 +73,14 @@ We can split the `run.sh` script used in the previous tutorial ([Data Parallelis
 </p>
 
 #### Crop Pipeline 
+
+{{<stack type="wizard">}}
+{{% wizardRow id="Tool"%}}
+{{% wizardButton option="Pachctl CLI" state="active" %}}
+{{% wizardButton option="Console" %}}
+{{% /wizardRow %}}
+{{% wizardResults %}}
+{{% wizardResult val1="tool/pachctl-cli"%}}
 
 1. Create a file named `crop.json` with the following contents:
   ```s
@@ -81,7 +110,28 @@ We can split the `run.sh` script used in the previous tutorial ([Data Parallelis
 pachctl create pipeline -f /path/to/crop.json
 ```
 
+{{% /wizardResult %}}
+
+{{% wizardResult val1="tool/console"%}}
+
+COMING SOON
+
+
+{{% /wizardResult %}}
+{{% /wizardResults  %}}
+{{</stack>}}
+
+
+
 #### Extract Centers Pipeline
+
+{{<stack type="wizard">}}
+{{% wizardRow id="Tool"%}}
+{{% wizardButton option="Pachctl CLI" state="active" %}}
+{{% wizardButton option="Console" %}}
+{{% /wizardRow %}}
+{{% wizardResults %}}
+{{% wizardResult val1="tool/pachctl-cli"%}}
 
 1. Create a file named `extract_centers.json` with the following contents:
   ```s
@@ -111,9 +161,30 @@ pachctl create pipeline -f /path/to/crop.json
 pachctl create pipeline -f /path/to/extract_centers.json
 ```
 
+{{% /wizardResult %}}
+
+{{% wizardResult val1="tool/console"%}}
+
+COMING SOON
+
+
+{{% /wizardResult %}}
+{{% /wizardResults  %}}
+{{</stack>}}
+
+
+
 ### 3. Create GPU Pipelines
 
 #### Generate Heatmaps Pipeline
+
+{{<stack type="wizard">}}
+{{% wizardRow id="Tool"%}}
+{{% wizardButton option="Pachctl CLI" state="active" %}}
+{{% wizardButton option="Console" %}}
+{{% /wizardRow %}}
+{{% wizardResults %}}
+{{% wizardResult val1="tool/pachctl-cli"%}}
 
 1. Create a file named `generate_heatmaps.json` with the following contents:
   ```s
@@ -179,7 +250,27 @@ pachctl create pipeline -f /path/to/extract_centers.json
   pachctl create pipeline -f /path/to/generate_heatmaps.json
   ```
 
+{{% /wizardResult %}}
+
+{{% wizardResult val1="tool/console"%}}
+
+COMING SOON
+
+{{% /wizardResult %}}
+{{% /wizardResults  %}}
+{{</stack>}}
+
+
+
 #### Classify Pipeline
+
+{{<stack type="wizard">}}
+{{% wizardRow id="Tool"%}}
+{{% wizardButton option="Pachctl CLI" state="active" %}}
+{{% wizardButton option="Console" %}}
+{{% /wizardRow %}}
+{{% wizardResults %}}
+{{% wizardResult val1="tool/pachctl-cli"%}}
 
 1. Create a file named `classify.json` with the following contents:
   ```s
@@ -249,7 +340,27 @@ pachctl create pipeline -f /path/to/extract_centers.json
    pachctl create pipeline -f /path/to/classify.json
    ```
 
+{{% /wizardResult %}}
+
+{{% wizardResult val1="tool/console"%}}
+
+COMING SOON
+
+{{% /wizardResult %}}
+{{% /wizardResults  %}}
+{{</stack>}}
+
+
+
 ### 4. Upload Dataset
+
+{{<stack type="wizard">}}
+{{% wizardRow id="Tool"%}}
+{{% wizardButton option="Pachctl CLI" state="active" %}}
+{{% wizardButton option="Console" %}}
+{{% /wizardRow %}}
+{{% wizardResults %}}
+{{% wizardResult val1="tool/pachctl-cli"%}}
 
 1. Open or download this github repo.
    ```s
@@ -264,6 +375,18 @@ pachctl create pipeline -f /path/to/extract_centers.json
    pachctl put file -r sample_data@master -f sample_data/
    pachctl put file -r models@master -f models/
    ```
+
+{{% /wizardResult %}}
+
+{{% wizardResult val1="tool/console"%}}
+
+COMING SOON
+
+{{% /wizardResult %}}
+{{% /wizardResults  %}}
+{{</stack>}}
+
+
 ---
 
 ## User Code Assets

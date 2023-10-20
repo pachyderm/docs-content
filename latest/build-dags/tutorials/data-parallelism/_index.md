@@ -23,6 +23,14 @@ Our Docker image's [user code](/{{%release%}}/learn/glossary/user-code) for this
 
 ### 1. Create a Project & Input Repos
 
+{{<stack type="wizard">}}
+{{% wizardRow id="Tool"%}}
+{{% wizardButton option="Pachctl CLI" state="active" %}}
+{{% wizardButton option="Console" %}}
+{{% /wizardRow %}}
+{{% wizardResults %}}
+{{% wizardResult val1="tool/pachctl-cli"%}}
+
 1. Create a project named `data-parallelism-tutorial`. 
    ```s
    pachctl create project data-parallelism-tutorial
@@ -38,111 +46,93 @@ Our Docker image's [user code](/{{%release%}}/learn/glossary/user-code) for this
    pachctl create repo sample_data
    ```
 
+{{% /wizardResult %}}
+
+{{% wizardResult val1="tool/console"%}}
+
+COMING SOON
+
+{{% /wizardResult %}}
+{{% /wizardResults  %}}
+{{</stack>}}
+
+
+
 ### 2. Create a Classification Pipeline
 
 We're going to need to first build a pipeline that will classify the breast cancer images. We'll use a [cross input](/{{%release%}}/build-dags/pipeline-spec/input-cross) to combine the sample data and models.
 
+{{<stack type="wizard">}}
+{{% wizardRow id="Tool"%}}
+{{% wizardButton option="Pachctl CLI" state="active" %}}
+{{% wizardButton option="Console" %}}
+{{% /wizardRow %}}
+{{% wizardResults %}}
+{{% wizardResult val1="tool/pachctl-cli"%}}
+
 1. Create a file named `bc_classification.json` with the following contents:
    
-   {{< stack type="wizard" >}}
-
-   {{% wizardRow id ="resource" %}}
-   {{% wizardButton option="GPU" state="active" %}}
-   {{% wizardButton option="CPU" %}}
-   {{% /wizardRow %}}
-
-   {{% wizardResults  %}}
-   {{% wizardResult val1="resource/gpu"%}}
-   ```s
-    {
-     "pipeline": {
-       "name": "bc_classification"
-     },
-     "description": "Run breast cancer classification.",
-     "input": {
-       "cross": [
-         {
-           "pfs": {
-             "repo": "sample_data",
-             "glob": "/*"
-           }
-         },
-         {
-           "pfs": {
-             "repo": "models",
-             "glob": "/"
-           }
-         }
-       ]
-     },
-     "transform": {
-       "cmd": [
-         "/bin/bash", "run.sh", "gpu"
-       ],
-       "image": "pachyderm/breast_cancer_classifier:1.11.6"
-     },
-     "resource_limits": {
-       "gpu": {
-         "type": "nvidia.com/gpu",
-         "number": 1
-       }
-     },
-     "resource_requests": {
-       "memory": "4G",
-       "cpu": 1
-     },
-     "parallelism_spec": {
-       "constant": 8
-     }
-   }
-   ```
-   {{% /wizardResult %}}
-
-   {{% wizardResult val1="resource/cpu"%}}
-   ```s
-   {
-    "pipeline": {
-        "name": "bc_classification_cpu"
-    },
-    "description": "Run breast cancer classification.",
-    "input": {
-        "cross": [
-            {
-              "pfs": {
-                "repo": "sample_data",
-                "glob": "/*"
-              }
-            },
-            {
-              "pfs": {
-                "repo": "models",
-                "glob": "/"
-              }
-            }
-          ]
-    },
-    "transform": {
-        "cmd": [
-            "/bin/bash",
-            "run.sh", "cpu"
-        ],
-        "image": "pachyderm/breast_cancer_classifier:1.11.6"
-    },
-    "parallelism_spec": {
-      "constant": 4
+```s
+ {
+  "pipeline": {
+    "name": "bc_classification"
+  },
+  "description": "Run breast cancer classification.",
+  "input": {
+    "cross": [
+      {
+        "pfs": {
+          "repo": "sample_data",
+          "glob": "/*"
+        }
+      },
+      {
+        "pfs": {
+          "repo": "models",
+          "glob": "/"
+        }
+      }
+    ]
+  },
+  "transform": {
+    "cmd": [
+      "/bin/bash", "run.sh", "gpu"
+    ],
+    "image": "pachyderm/breast_cancer_classifier:1.11.6"
+  },
+  "resource_limits": {
+    "gpu": {
+      "type": "nvidia.com/gpu",
+      "number": 1
     }
-   }
-   ```
-   {{% /wizardResult %}}
-   {{% /wizardResults %}}
+  },
+  "resource_requests": {
+    "memory": "4G",
+    "cpu": 1
+  },
+  "parallelism_spec": {
+    "constant": 8
+  }
+}
+```
 
-
-   {{< /stack>}}
 2. Save the file.
 3. Create the pipeline.
    ```s
    pachctl create pipeline -f /path/to/bc_classification.json
    ```
+
+{{% /wizardResult %}}
+
+{{% wizardResult val1="tool/console"%}}
+
+COMING SOON
+
+
+{{% /wizardResult %}}
+{{% /wizardResults  %}}
+{{</stack>}}
+
 
 {{% notice tip %}}
 #### Datum Shape 
@@ -173,6 +163,14 @@ The `gen_exam_list_before_cropping.pkl` is a pickled version of the image list, 
 
 ### 3. Upload Dataset 
 
+{{<stack type="wizard">}}
+{{% wizardRow id="Tool"%}}
+{{% wizardButton option="Pachctl CLI" state="active" %}}
+{{% wizardButton option="Console" %}}
+{{% /wizardRow %}}
+{{% wizardResults %}}
+{{% wizardResult val1="tool/pachctl-cli"%}}
+
 1. Open or download this github repo.
    ```s
    gh repo clone pachyderm/docs-content
@@ -187,6 +185,19 @@ The `gen_exam_list_before_cropping.pkl` is a pickled version of the image list, 
    pachctl put file -r sample_data@master -f sample_data/
    pachctl put file -r models@master -f models/
    ```
+
+{{% /wizardResult %}}
+
+{{% wizardResult val1="tool/console"%}}
+
+COMING SOON
+
+
+{{% /wizardResult %}}
+{{% /wizardResults  %}}
+{{</stack>}}
+
+
 
 ---
 
