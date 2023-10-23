@@ -19,7 +19,11 @@ pachctl draw pipeline [flags]
 ### Examples
 
 ```
- pachctl draw pipeline --commit 5f93d03b65fa421996185e53f7f8b1e4 pachctl draw pipeline --box-width 20 pachctl draw pipeline --edge-height 8 pachctl draw pipeline --project foo pachctl draw pipeline --box-width 20 --edge-height 8 --commit 5f93d03b65fa421996185e53f7f8b1e4
+ pachctl draw pipeline --commit 5f93d03b65fa421996185e53f7f8b1e4 
+ pachctl draw pipeline --box-width 20 
+ pachctl draw pipeline --edge-height 8 
+ pachctl draw pipeline --project foo 
+ pachctl draw pipeline --box-width 20 --edge-height 8 --commit 5f93d03b65fa421996185e53f7f8b1e4
 ```
 
 ### Options

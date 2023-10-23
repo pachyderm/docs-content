@@ -26,7 +26,8 @@ pachctl connect <address> [flags]
 ### Examples
 
 ```
- pachctl connect localhost:80 pachctl connect localhost:80 --alias my-private-cluster
+ pachctl connect localhost:80 
+ pachctl connect localhost:80 --alias my-private-cluster
 ```
 
 ### Options

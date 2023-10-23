@@ -220,6 +220,9 @@ kubectl create secret generic loki-service-account --from-file="${LOKI_GSA_NAME}
 ```
 ## 8. Build a Helm Values File
 
+{{% include "shared/security/mockidp" %}}
+
+
 1. Create a values.yaml file, inserting the variables we've created in the previous steps:
 ```s
 cat <<EOF > ${NAME}.values.yaml

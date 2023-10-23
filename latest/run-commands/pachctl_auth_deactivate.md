@@ -19,7 +19,8 @@ pachctl auth deactivate [flags]
 ### Examples
 
 ```
- pachctl auth deactivate pachctl auth deactivate --enterprise
+ pachctl auth deactivate 
+ pachctl auth deactivate --enterprise
 ```
 
 ### Options

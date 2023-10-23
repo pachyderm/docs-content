@@ -19,7 +19,8 @@ pachctl config set context <context> [flags]
 ### Examples
 
 ```
- pachctl config set context foo pachctl config set context foo --overwrite
+ pachctl config set context foo 
+ pachctl config set context foo --overwrite
 ```
 
 ### Options

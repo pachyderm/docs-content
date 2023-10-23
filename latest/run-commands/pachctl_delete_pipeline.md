@@ -19,7 +19,11 @@ pachctl delete pipeline (<pipeline>|--all) [flags]
 ### Examples
 
 ```
- pachctl delete pipeline foo pachctl delete pipeline --all pachctl delete pipeline foo --force pachctl delete pipeline foo --keep-repo pachctl delete pipeline foo --project bar --keep-repo
+ pachctl delete pipeline foo 
+ pachctl delete pipeline --all 
+ pachctl delete pipeline foo --force 
+ pachctl delete pipeline foo --keep-repo 
+ pachctl delete pipeline foo --project bar --keep-repo
 ```
 
 ### Options

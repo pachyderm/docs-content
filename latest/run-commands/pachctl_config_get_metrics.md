@@ -19,7 +19,7 @@ pachctl config get metrics [flags]
 ### Examples
 
 ```
-pachctl config get metrics}
+pachctl config get metrics
 ```
 
 ### Options

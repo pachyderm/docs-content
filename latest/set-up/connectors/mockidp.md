@@ -10,7 +10,16 @@ seriesPart:
 weight: 01
 ---
 
-MockIDP is used for testing and development so that you can run {{% productName %}} and experiment with [permissions](/latest/set-up/authorization/permissions/) locally without having to set up an external identity provider.
+MockIDP is used for **testing** and **development** so that you can run {{% productName %}} and experiment with [permissions](/latest/set-up/authorization/permissions/) locally without having to set up an external identity provider.
+
+{{% notice warning %}}
+
+**Do not use mockIDP for clusters that will be deployed into production.**  If you do upgrade a cluster with mockIDP enabled, you must revoke the default mockIDP admin user by running the following command:
+
+```s
+pachctl auth revoke --user kilgore@kilgore.trout
+```
+{{% /notice %}}
 
 ## Before You Start 
 

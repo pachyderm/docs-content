@@ -19,7 +19,8 @@ pachctl config import-kube <context> [flags]
 ### Examples
 
 ```
- pachctl config import-kube foo pachctl config import-kube foo --overwrite
+ pachctl config import-kube foo 
+ pachctl config import-kube foo --overwrite
 ```
 
 ### Options

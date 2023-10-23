@@ -19,7 +19,9 @@ pachctl auth revoke [flags]
 ### Examples
 
 ```
- pachctl auth revoke --token <token> pachctl auth revoke --user <user> pachctl auth revoke --enterprise --user <user>
+ pachctl auth revoke --token <token> 
+ pachctl auth revoke --user <user> 
+ pachctl auth revoke --enterprise --user <user>
 ```
 
 ### Options

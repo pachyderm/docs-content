@@ -24,7 +24,7 @@ pachctl config get active-context [flags]
 ### Examples
 
 ```
-pachctl config get active-context}
+pachctl config get active-context
 ```
 
 ### Options

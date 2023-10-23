@@ -19,7 +19,8 @@ pachctl auth roles-for-permission <permission> [flags]
 ### Examples
 
 ```
- pachctl auth roles-for-permission repoOwner pachctl auth roles-for-permission clusterAdmin
+ pachctl auth roles-for-permission repoOwner 
+ pachctl auth roles-for-permission clusterAdmin
 ```
 
 ### Options

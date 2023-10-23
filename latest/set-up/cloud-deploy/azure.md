@@ -211,6 +211,9 @@ section in the [Azure Portal](https://portal.azure.com/) or by running the follo
 ```
 {{% /wizardResult %}}
 {{% wizardResult val1="version/enterprise" %}}
+
+{{% include "shared/security/mockidp" %}}
+
 ```yaml    
  deployTarget: "MICROSOFT"
  proxy:

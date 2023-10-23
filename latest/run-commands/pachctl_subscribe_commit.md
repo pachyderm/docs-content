@@ -24,7 +24,7 @@ pachctl subscribe commit <repo>[@<branch>] [flags]
 ### Examples
 
 ```
-	 pachctl subscribe commit foo@master ➔ subscribe to commits in the foo repo on the master branch 
+ pachctl subscribe commit foo@master ➔ subscribe to commits in the foo repo on the master branch 
  pachctl subscribe commit foo@bar --from 0001a0100b1c10d01111e001fg00h00i ➔ starting at <commit-id>, subscribe to commits in the foo repo on the master branch 
  pachctl subscribe commit foo@bar --new ➔ subscribe to commits in the foo repo on the master branch, but only for new commits created from now on 
 

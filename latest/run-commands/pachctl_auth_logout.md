@@ -19,7 +19,8 @@ pachctl auth logout [flags]
 ### Examples
 
 ```
- pachctl auth logout pachctl auth logout --enterprise
+ pachctl auth logout 
+ pachctl auth logout --enterprise
 ```
 
 ### Options

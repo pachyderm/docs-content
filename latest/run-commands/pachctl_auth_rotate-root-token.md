@@ -19,7 +19,8 @@ pachctl auth rotate-root-token [flags]
 ### Examples
 
 ```
- pachctl auth rotate-root-token pachctl auth rotate-root-token --supply-token <token>
+ pachctl auth rotate-root-token 
+ pachctl auth rotate-root-token --supply-token <token>
 ```
 
 ### Options

@@ -19,7 +19,8 @@ pachctl auth set cluster [role1,role2 | none ] subject [flags]
 ### Examples
 
 ```
- pachctl auth set cluster clusterOwner user:alan.watts@domain.com pachctl auth set cluster clusterWriter, clusterReader robot:my-robot
+ pachctl auth set cluster clusterOwner user:alan.watts@domain.com 
+ pachctl auth set cluster clusterWriter, clusterReader robot:my-robot
 ```
 
 ### Options

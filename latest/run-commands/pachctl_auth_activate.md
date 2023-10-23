@@ -21,7 +21,10 @@ pachctl auth activate [flags]
 ### Examples
 
 ```
- pachctl auth activate pachctl auth activate --supply-root-token pachctl auth activate --enterprise pachctl auth activate --issuer http://pachd:1658/ --redirect http://localhost:30657/authorization-code/callback --client-id pachd
+pachctl auth activate 
+pachctl auth activate --supply-root-token 
+pachctl auth activate --enterprise 
+pachctl auth activate --issuer http://pachd:1658/ --redirect http://localhost:30657/authorization-code/callback --client-id pachd
 ```
 
 ### Options

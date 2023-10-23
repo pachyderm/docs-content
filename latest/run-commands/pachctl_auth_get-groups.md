@@ -19,7 +19,9 @@ pachctl auth get-groups [username] [flags]
 ### Examples
 
 ```
- pachctl auth get-groups pachctl auth get-groups alan.watts@domain.com pachctl auth get-groups alan.watts@domain.com --enterprise
+ pachctl auth get-groups 
+ pachctl auth get-groups alan.watts@domain.com 
+ pachctl auth get-groups alan.watts@domain.com --enterprise
 ```
 
 ### Options
