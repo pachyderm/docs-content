@@ -1,7 +1,7 @@
 ---
 # metadata # 
 title: Latest
-description: Version 2.7.x 
+description: Version 2.8.x 
 date: 
 # taxonomy #
 tags:
