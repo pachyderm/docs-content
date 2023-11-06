@@ -53,7 +53,7 @@ You can set global defaults for your cluster from the Console UI that are passed
       - Previously processed datums are reprocessed
 8. Select **Save**.
 
-![cluster defaults](/images/console/cluster-defaults.gif)
+{{<youtube YbL44gqm73E>}}
 
 ## How to View Cluster Defaults Applied to a Pipeline
 
@@ -69,4 +69,4 @@ In addition to viewing Cluster Defaults from the Project Dashboard page, you can
 Cluster Defaults that have been overridden by user inputs have a user icon next to them in the **Effective Spec** view.
 {{%/notice%}}
 
-![view cluster defaults](/images/console/view-cluster-defaults.gif)
+{{<youtube kS37jgaB8n0>}}
