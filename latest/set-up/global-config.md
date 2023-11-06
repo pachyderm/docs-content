@@ -86,6 +86,8 @@ EOF
       - Previously processed datums are reprocessed
 8. Select **Save**.
 
+{{<youtube YbL44gqm73E>}}
+
 {{% /wizardResult%}}
 {{% /wizardResults%}}
 {{</stack>}}
