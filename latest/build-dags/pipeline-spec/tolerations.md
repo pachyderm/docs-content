@@ -36,7 +36,7 @@ Pipeline tolerations enable you to run a pipeline on a node that has a taint.
 - You can have as many tolerations as you'd like, or none at all. 
 - Taints behave almost exactly like the Kuberentes API, with the exception of some enums such as `Exists` and `DoesNotExist` being replaced with Golang equivalents like `EXISTS` and `DOES_NOT_EXIST`. 
 
-### Example of Tagging a Node
+### Example of Tainting a Node
 
 ```s
 kubectl taint node example dedicated:NoSchedule
