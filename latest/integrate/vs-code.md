@@ -1,10 +1,10 @@
 ---
 # metadata # 
-title: VS Code Intellisense
-description: Learn how to add intellisense to VS Code for Pachyderm pipelines.
+title: VS Code Auto-Completion
+description: Learn how to add auto-completion to VS Code for Pachyderm pipelines.
 date: 
 # taxonomy #
-tags: ["integrations", "intellisense", "VS Code"]
+tags: ["integrations", "auto-completion", "VS Code"]
 series:
 seriesPart:
 weight: 
@@ -12,15 +12,15 @@ beta: false
 directory: true
 ---
 
-You can draft [Pipeline Specifications (PPS)](/{{%release%}}/build-dags/pipeline-spec/) in JSON or YAML in VS Code with the help of intelligent code completion. This guide will show you how to add intellisense to VS Code for Pachyderm pipelines. 
+You can draft [Pipeline Specifications (PPS)](/{{%release%}}/build-dags/pipeline-spec/) in JSON or YAML in VS Code with the help of intelligent code completion. This guide will show you how to add auto-completion to VS Code for Pachyderm pipelines. 
 
-Once installed, add `.pipeline.json` or `.pipeline.yaml` to the end of your file name and you will have access to intellisense.
+Once installed, add `.pipeline.json` or `.pipeline.yaml` to the end of your file name and you will have access to auto-completion.
 
 ## Before You Start
 
 - You must have VS Code installed on your local machine.
 
-## How to Add Intellisense to VS Code
+## How to Add Auto-Completion to VS Code
 
 ### JSON 
 
@@ -38,7 +38,7 @@ Once installed, add `.pipeline.json` or `.pipeline.yaml` to the end of your file
     ```
     {{<youtube zSt0lIeYrtY>}}
 
-Now all files with the `.pipeline.json` extension will have access to intellisense.
+Now all files with the `.pipeline.json` extension will have access to auto-completion.
 
 ### YAML
 
@@ -52,4 +52,4 @@ Now all files with the `.pipeline.json` extension will have access to intellisen
     }
     ```
 
-Now all files with the `.pipeline.yaml` extension will have access to intellisense.
+Now all files with the `.pipeline.yaml` extension will have access to auto-completion.
