@@ -42,14 +42,20 @@ Our Docker image's [user code](/{{%release%}}/learn/glossary/user-code) for this
    ```s
    pachctl create repo housing_data
    ```
-
 {{% /wizardResult %}}
-
 {{% wizardResult val1="tool/console"%}}
-
-COMING SOON
-
-
+1. Navigate to Console. 
+2. Select **Create Project**.
+3. Provide a project **Name** and **Description**.
+    - **Name**: `standard-ml-tutorial`
+    - **Description**: `My first project tutorial.`
+4. Select **Create**.
+5. Scroll to the project's row and select **View Project**.
+6. Select **Create Your First Repo**.
+7. Provide a repo **Name** and **Description**.
+    - **Name**: `housing_data`
+    - **Description**: `Repo for initial housing data`
+8. Select **Create**.
 {{% /wizardResult %}}
 {{% /wizardResults  %}}
 {{</stack>}}
@@ -100,7 +106,39 @@ COMING SOON
 {{% /wizardResult %}}
 {{% wizardResult val1="tool/console"%}}
 
-COMING SOON
+1. Select **Create** > **Pipeline**.
+2. Overwrite the default json with the following:
+   ```json
+   {
+     "pipeline": {
+       "name": "regression",
+       "project": {
+         "name": "standard-ml-tutorial"
+       }
+     },
+     "description": "A pipeline that trains produces a regression model for housing prices.",
+     "input": {
+       "pfs": {
+         "glob": "/*",
+         "repo": "housing_data"
+       }
+     },
+     "transform": {
+       "cmd": [
+         "python",
+         "regression.py",
+         "--input",
+         "/pfs/housing_data/",
+         "--target-col",
+         "MEDV",
+         "--output",
+         "/pfs/out/"
+       ],
+       "image": "pachyderm/housing-prices:1.11.0"
+     }
+   }
+   ```
+3. Select **Create Pipeline**. 
 
 {{% /wizardResult %}}
 {{% /wizardResults  %}}
@@ -149,7 +187,11 @@ The pipeline writes the output to a PFS repo (`/pfs/out/`) created with the same
 {{% /wizardResult %}}
 {{% wizardResult val1="tool/console"%}}
 
-COMING SOON
+1. Download our first example data set, [housing-simplified-1.csv](housing-simplified-1.csv). 
+2. Select the **housing_data** repo > **Upload Files**.
+3. Select **Browse Files**.
+4. Choose the `housing-simplified-1.csv` file.
+5. Select **Upload**.
 
 {{% /wizardResult %}}
 {{% /wizardResults  %}}
@@ -185,7 +227,10 @@ Once the pipeline is completed, we can download the files that were created.
 {{% /wizardResult %}}
 {{% wizardResult val1="tool/console"%}}
 
-COMING SOON
+1. Scroll to the repo in the DAG. 
+2. Select **Output** > **Inspect Commits**.
+3. Select the most recent commit.
+4. Select **Download**.
 
 {{% /wizardResult %}}
 {{% /wizardResults  %}}
@@ -221,7 +266,8 @@ Now let's update our dataset with additional examples.
 {{% /wizardResult %}}
 {{% wizardResult val1="tool/console"%}}
 
-COMING SOON
+1. Download our second example data set, [housing-simplified-2.csv](housing-simplified-2.csv).
+2. Add the data to your repo following the same steps as before. 
 
 {{% /wizardResult %}}
 {{% /wizardResults  %}}
@@ -286,7 +332,10 @@ For any given output commit, {{% productName %}} can tell us exactly which input
 {{% /wizardResult %}}
 {{% wizardResult val1="tool/console"%}}
 
-COMING SOON
+Commits get listed automatically in the side panel's **Output** view.
+
+1. Scroll to the repo in the DAG. 
+2. Select **Output**. The side panel updates.
 
 {{% /wizardResult %}}
 {{% /wizardResults  %}}

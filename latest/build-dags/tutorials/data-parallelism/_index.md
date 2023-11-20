@@ -50,7 +50,19 @@ Our Docker image's [user code](/{{%release%}}/learn/glossary/user-code) for this
 
 {{% wizardResult val1="tool/console"%}}
 
-COMING SOON
+1. Navigate to Console. 
+2. Select **Create Project**.
+3. Provide a project **Name** and **Description**.
+    - **Name**: `data-parallelism-tutorial`
+    - **Description**: `My fourth project tutorial.`
+4. Select **Create**.
+5. Scroll to the project's row and select **View Project**.
+6. Select **Create Your First Repo**.
+7. Provide a repo **Name** and **Description**.
+    - **Name**: `models`
+    - **Description**: `Repo for initial models`
+8. Select **Create**.
+9. Create another repo named `sample_data`.
 
 {{% /wizardResult %}}
 {{% /wizardResults  %}}
@@ -75,7 +87,10 @@ We're going to need to first build a pipeline that will classify the breast canc
 ```s
  {
   "pipeline": {
-    "name": "bc_classification"
+    "name": "bc_classification",
+    "project": {
+      "name": "data-parallelism-tutorial"
+    },
   },
   "description": "Run breast cancer classification.",
   "input": {
@@ -126,8 +141,54 @@ We're going to need to first build a pipeline that will classify the breast canc
 
 {{% wizardResult val1="tool/console"%}}
 
-COMING SOON
-
+1. Select **Create** > **Pipeline**.
+2. Overwrite the default json with the following:
+   ```s
+    {
+     "pipeline": {
+       "name": "bc_classification",
+       "project": {
+         "name": "data-parallelism-tutorial"
+       },
+     },
+     "description": "Run breast cancer classification.",
+     "input": {
+       "cross": [
+         {
+           "pfs": {
+             "repo": "sample_data",
+             "glob": "/*"
+           }
+         },
+         {
+           "pfs": {
+             "repo": "models",
+             "glob": "/"
+           }
+         }
+       ]
+     },
+     "transform": {
+       "cmd": [
+         "/bin/bash", "run.sh", "gpu"
+       ],
+       "image": "pachyderm/breast_cancer_classifier:1.11.6"
+     },
+     "resourceLimits": {
+       "gpu": {
+         "type": "nvidia.com/gpu",
+         "number": 1
+       }
+     },
+     "resourceRequests": {
+       "memory": "4G",
+       "cpu": 1
+     },
+     "parallelismSpec": {
+       "constant": 8
+     }
+   }
+   ```
 
 {{% /wizardResult %}}
 {{% /wizardResults  %}}
@@ -163,14 +224,6 @@ The `gen_exam_list_before_cropping.pkl` is a pickled version of the image list, 
 
 ### 3. Upload Dataset 
 
-{{<stack type="wizard">}}
-{{% wizardRow id="Tool"%}}
-{{% wizardButton option="Pachctl CLI" state="active" %}}
-{{% wizardButton option="Console" %}}
-{{% /wizardRow %}}
-{{% wizardResults %}}
-{{% wizardResult val1="tool/pachctl-cli"%}}
-
 1. Open or download this github repo.
    ```s
    gh repo clone pachyderm/docs-content
@@ -179,25 +232,36 @@ The `gen_exam_list_before_cropping.pkl` is a pickled version of the image list, 
    ```s
    cd content/{{%release%}}/build-dags/tutorials/data-parallelism
    ```
-
 3. Upload the `sample_data` and `models` folders to your repos.
+
+   {{<stack type="wizard">}}
+   {{% wizardRow id="Tool"%}}
+   {{% wizardButton option="Pachctl CLI" state="active" %}}
+   {{% wizardButton option="Console" %}}
+   {{% /wizardRow %}}
+   {{% wizardResults %}}
+   {{% wizardResult val1="tool/pachctl-cli"%}}
+
    ```s
    pachctl put file -r sample_data@master -f sample_data/
    pachctl put file -r models@master -f models/
    ```
 
-{{% /wizardResult %}}
+   {{% /wizardResult %}}
 
-{{% wizardResult val1="tool/console"%}}
+   {{% wizardResult val1="tool/console"%}}
 
-COMING SOON
-
-
-{{% /wizardResult %}}
-{{% /wizardResults  %}}
-{{</stack>}}
-
-
+   1. Select the **sample_data** repo > **Upload Files**.
+   2. Select **Browse Files**.
+   3. Choose the `sample_data` directory.
+   4. Select **Upload**.
+   5. Select the **models** repo > **Upload Files**.
+   6. Select **Browse Files**.
+   7. Choose the `models` directory.
+   8. Select **Upload**.
+   {{% /wizardResult %}}
+   {{% /wizardResults  %}}
+   {{</stack>}}
 
 ---
 

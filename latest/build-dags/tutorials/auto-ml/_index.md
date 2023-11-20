@@ -53,9 +53,18 @@ Our Docker image's [user code](/{{%release%}}/learn/glossary/user-code) for this
 {{% /wizardResult %}}
 
 {{% wizardResult val1="tool/console"%}}
-
-COMING SOON
-
+1. Navigate to Console. 
+2. Select **Create Project**.
+3. Provide a project **Name** and **Description**.
+    - **Name**: `automl-tutorial`
+    - **Description**: `My second project tutorial.`
+4. Select **Create**.
+5. Scroll to the project's row and select **View Project**.
+6. Select **Create Your First Repo**.
+7. Provide a repo **Name** and **Description**.
+    - **Name**: `housing_data`
+    - **Description**: `Repo for initial housing data`
+8. Select **Create**.
 
 {{% /wizardResult %}}
 {{% /wizardResults  %}}
@@ -114,8 +123,7 @@ COMING SOON
 
 {{% wizardResult val1="tool/console"%}}
 
-COMING SOON
-
+This part must be done through the CLI due to the pipeline's use of Jsonnet.
 
 {{% /wizardResult %}}
 {{% /wizardResults  %}}
@@ -134,25 +142,25 @@ The model automatically starts training. Once complete, the trained model and ev
 {{% wizardResults %}}
 {{% wizardResult val1="tool/pachctl-cli"%}}
 
-1. Update the dataset using [housing-simplified-2.csv](housing-simplified-2.csv); {{% productName %}} retrains the model automatically.
+Update the dataset using [housing-simplified-2.csv](housing-simplified-2.csv); {{% productName %}} retrains the model automatically.
 
 ```bash
 pachctl put file csv_data@master:housing-simplified.csv -f /path/to/housing-simplified-2.csv
 ```
-2. Repeat the previous step as many times as you want. Each time, {{% productName %}} automatically retrains the model and outputs the new model and evaluation metrics to the AutoML output repo. 
-
-
 {{% /wizardResult %}}
 
 {{% wizardResult val1="tool/console"%}}
 
-COMING SOON
-
-
+1. Download the data set, [housing-simplified-2.csv](housing-simplified-2.csv). 
+2. Select the **regression** repo > **Upload Files**.
+3. Select **Browse Files**.
+4. Choose the `housing-simplified-1.csv` file.
+5. Select **Upload**.
 {{% /wizardResult %}}
 {{% /wizardResults  %}}
 {{</stack>}}
 
+Repeat the previous step as many times as you want. Each time, {{% productName %}} automatically retrains the model and outputs the new model and evaluation metrics to the AutoML output repo. 
 
 
 ---

@@ -54,11 +54,20 @@ Each pipeline in this tutorial executes a Python script,  versions the artifacts
    ```
 
 {{% /wizardResult %}}
-
 {{% wizardResult val1="tool/console"%}}
 
-COMING SOON
-
+1. Navigate to Console. 
+2. Select **Create Project**.
+3. Provide a project **Name** and **Description**.
+    - **Name**: `multipipeline-tutorial`
+    - **Description**: `My third project tutorial.`
+4. Select **Create**.
+5. Scroll to the project's row and select **View Project**.
+6. Select **Create Your First Repo**.
+7. Provide a repo **Name** and **Description**.
+    - **Name**: `csv_data`
+    - **Description**: `Repo for initial csv data`
+8. Select **Create**.
 
 {{% /wizardResult %}}
 {{% /wizardResults  %}}
@@ -88,7 +97,10 @@ The data analysis pipeline creates a pair plot and a correlation matrix showing 
    ```s
    {
     "pipeline": {
-        "name": "data_analysis"
+        "name": "data_analysis",
+        "project": {
+            "name": "multipipeline-tutorial"
+        },
     },
     "description": "Data analysis pipeline that creates pairplots and correlation matrices for csv files.",
     "input": {
@@ -119,7 +131,34 @@ The data analysis pipeline creates a pair plot and a correlation matrix showing 
 
 {{% wizardResult val1="tool/console"%}}
 
-COMING SOON
+1. Select **Create** > **Pipeline**.
+2. Overwrite the default json with the following:
+   ```s
+   {
+    "pipeline": {
+        "name": "data_analysis",
+        "project": {
+            "name": "multipipeline-tutorial"
+        },
+    },
+    "description": "Data analysis pipeline that creates pairplots and correlation matrices for csv files.",
+    "input": {
+        "pfs": {
+            "glob": "/*",
+            "repo": "csv_data"
+        }
+    },
+    "transform": {
+        "cmd": [
+            "python", "data_analysis.py",
+            "--input", "/pfs/csv_data/",
+            "--target-col", "MEDV",
+            "--output", "/pfs/out/"
+        ],
+        "image": "jimmywhitaker/housing-prices-int:dev0.2"
+    }
+   }
+   ```
 
 
 {{% /wizardResult %}}
@@ -145,7 +184,10 @@ Both the `split` pipeline and the `data_analysis` pipeline take the `csv_data` a
    ```s
    {
     "pipeline": {
-        "name": "split"
+        "name": "split",
+        "project": {
+            "name": "multipipeline-tutorial"
+        },
     },
     "description": "A pipeline that splits tabular data into training and testing sets.",
     "input": {
@@ -176,8 +218,34 @@ Both the `split` pipeline and the `data_analysis` pipeline take the `csv_data` a
 
 {{% wizardResult val1="tool/console"%}}
 
-COMING SOON
-
+1. Select **Create** > **Pipeline**.
+2. Overwrite the default json with the following:
+   ```s
+   {
+    "pipeline": {
+        "name": "split",
+        "project": {
+            "name": "multipipeline-tutorial"
+        },
+    },
+    "description": "A pipeline that splits tabular data into training and testing sets.",
+    "input": {
+        "pfs": {
+            "glob": "/*",
+            "repo": "csv_data"
+        }
+    },
+    "transform": {
+        "cmd": [
+            "python", "split.py",
+            "--input", "/pfs/csv_data/",
+            "--test-size", "0.1",
+            "--output", "/pfs/out/"
+        ],
+        "image": "jimmywhitaker/housing-prices-int:dev0.2"
+    }
+   }
+   ```
 
 {{% /wizardResult %}}
 {{% /wizardResults  %}}
@@ -205,7 +273,10 @@ After the model is trained we output some visualizations to evaluate its effecti
    ```s
    {
     "pipeline": {
-        "name": "regression"
+        "name": "regression",
+        "project": {
+            "name": "multipipeline-tutorial"
+        },
     },
     "description": "A pipeline that trains and tests a regression model for tabular.",
     "input": {
@@ -236,8 +307,34 @@ After the model is trained we output some visualizations to evaluate its effecti
 
 {{% wizardResult val1="tool/console"%}}
 
-COMING SOON
-
+1. Select **Create** > **Pipeline**.
+2. Overwrite the default json with the following:
+   ```s
+   {
+    "pipeline": {
+        "name": "regression",
+        "project": {
+            "name": "multipipeline-tutorial"
+        },
+    },
+    "description": "A pipeline that trains and tests a regression model for tabular.",
+    "input": {
+        "pfs": {
+            "glob": "/*/",
+            "repo": "split"
+        }
+    },
+    "transform": {
+        "cmd": [
+            "python", "regression.py",
+            "--input", "/pfs/split/",
+            "--target-col", "MEDV",
+            "--output", "/pfs/out/"
+        ],
+        "image": "jimmywhitaker/housing-prices-int:dev0.2"
+    }
+   }
+   ```
 
 {{% /wizardResult %}}
 {{% /wizardResults  %}}
@@ -260,13 +357,15 @@ COMING SOON
    ```s
    pachctl put file csv_data@master:housing-simplified.csv -f /path/to/housing-simplified-1.csv
    ```
-
-
 {{% /wizardResult %}}
 
 {{% wizardResult val1="tool/console"%}}
 
-COMING SOON
+1. Download our first example data set, [housing-simplified-1.csv](housing-simplified-1.csv). 
+2. Select the **csv_data** repo > **Upload Files**.
+3. Select **Browse Files**.
+4. Choose the `housing-simplified-1.csv` file.
+5. Select **Upload**.
 
 {{% /wizardResult %}}
 {{% /wizardResults  %}}
@@ -292,8 +391,10 @@ Once the pipeline has finished, download the results.
 
 {{% wizardResult val1="tool/console"%}}
 
-COMING SOON
-
+1. Scroll to the repo in the DAG. 
+2. Select **Output** > **Inspect Commits**.
+3. Select the most recent commit.
+4. Select **Download**.
 
 {{% /wizardResult %}}
 {{% /wizardResults  %}}
