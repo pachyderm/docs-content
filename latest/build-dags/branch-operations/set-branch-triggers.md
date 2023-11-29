@@ -19,26 +19,23 @@ You can set branch triggers to fire when:
 - A specific number of commits have been made (`--trigger-size`)
 - The amount of unprocessed data reaches a certain size (`--trigger-commits`)
 
-When more than one is specified, a branch repoint will be triggered when any of
-the conditions is met. To guarantee that they all must be met, add
-`--trigger-all`.
+When more than one is specified, a branch repoint will be triggered when any of the conditions is met. To guarantee that they all must be met, add `--trigger-all`.
 
 
 ## How to Automate Deferred Processing via Branch Triggers
 
-Let's make the `master` branch automatically trigger when there's 1 Megabyte of new data on the `staging` branch.
 
 1. Create a repo.
 ```s
 pachctl create repo data
 ```
-2. Create the staging branch. This is the **target** branch that will trigger the master branch to update its head; as of 2.8.0, it must be created first.
+1. Create the a trigger branch (in this case, `staging`). This is the branch that the trigger conditions will watch; when met, the target branch updates its head to the same commit as the trigger branch; as of 2.8.0, the trigger branch must be created first.
 
 ```s
 pachctl create branch data@staging
 ```
 
-3. Create a master branch with trigger settings (see [pachctl create branch options](/{{%release%}}/run-commands/pachctl_create_branch#options)).
+3. Create a target branch (in this case, `master`) with trigger settings (see [pachctl create branch options](/{{%release%}}/run-commands/pachctl_create_branch#options)).
 
 ```s
 pachctl create branch data@master --trigger staging --trigger-size 1MB
