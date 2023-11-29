@@ -17,7 +17,7 @@ This is a top-level attribute of the pipeline spec.
 {
   "pipeline": {...},
   "transform": {...},
-  "sidecar_resource_limits": {
+  "sidecarResourceLimits": {
     "cpu": number,
     "memory": string,
     "gpu": {
@@ -43,17 +43,17 @@ This is a top-level attribute of the pipeline spec.
 
 
 ## Behavior 
-The `sidecar_resource_limits` field in a {{% productName %}} Pipeline Spec is used to specify the resource limits for any sidecar containers that are run alongside the main pipeline container.
+The `sidecarResourceLimits` field in a {{% productName %}} Pipeline Spec is used to specify the resource limits for any sidecar containers that are run alongside the main pipeline container.
 
 In a {{% productName %}} Pipeline, sidecar containers can be used to perform additional tasks alongside the main pipeline container, such as logging, monitoring, or handling external dependencies. By specifying resource limits for these sidecar containers, you can ensure that they don't consume too many resources and impact the performance of the main pipeline container.
 
-This field can also be useful in deployments where Kubernetes automatically applies resource limits to containers, which might conflict with {{% productName %}} pipelines' resource requests. Such a deployment might fail if {{% productName %}} requests more than the default Kubernetes limit. The `sidecar_resource_limits` enables you to explicitly specify these resources to fix the issue.
+This field can also be useful in deployments where Kubernetes automatically applies resource limits to containers, which might conflict with {{% productName %}} pipelines' resource requests. Such a deployment might fail if {{% productName %}} requests more than the default Kubernetes limit. The `sidecarResourceLimits` enables you to explicitly specify these resources to fix the issue.
 
 
 
 ## When to Use 
 
-You should use the `sidecar_resource_limits` field in a {{% productName %}} Pipeline Spec when you have sidecar containers that perform additional tasks alongside the main pipeline container, and you want to set resource limits for those sidecar containers.
+You should use the `sidecarResourceLimits` field in a {{% productName %}} Pipeline Spec when you have sidecar containers that perform additional tasks alongside the main pipeline container, and you want to set resource limits for those sidecar containers.
 
 Example scenarios:
 

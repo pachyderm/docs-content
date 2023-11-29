@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl config update context"
-description: "Learn about the pachctl_config_update_context command"
+description: "Learn about the pachctl config update context command"
 ---
 
 ## pachctl config update context
@@ -10,10 +10,23 @@ Updates a context.
 
 ### Synopsis
 
-Updates an existing context config from a given name (or the currently-active context, if no name is given).
+This command updates an existing context config from a given name (or the currently-active context, if no name is given).
 
 ```
 pachctl config update context [<context>] [flags]
+```
+
+### Examples
+
+```
+ pachctl config update context foo 
+ pachctl config update context foo --pachd-address localhost:30650 
+ pachctl config update context foo --cluster-name my-cluster 
+ pachctl config update context foo --auth-info my-auth-info 
+ pachctl config update context foo --server-cas /path/to/ca.crt 
+ pachctl config update context foo --namespace my-namespace 
+ pachctl config update context foo --project my-project 
+ pachctl config update context foo --remove-cluster-deployment-id
 ```
 
 ### Options

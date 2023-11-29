@@ -1,19 +1,25 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl config set metrics"
-description: "Learn about the pachctl_config_set_metrics command"
+description: "Learn about the pachctl config set metrics command"
 ---
 
 ## pachctl config set metrics
 
-Sets whether metrics are enabled.
+Controls whether metrics are enabled or not.
 
 ### Synopsis
 
-Sets whether metrics are enabled.
+This command controls whether metrics are enabled or not.
 
 ```
 pachctl config set metrics (true | false) [flags]
+```
+
+### Examples
+
+```
+pachctl config set metrics true
 ```
 
 ### Options

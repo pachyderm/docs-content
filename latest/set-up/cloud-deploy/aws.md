@@ -166,6 +166,9 @@ pachd:
 ```
 {{% /wizardResult %}}
 {{% wizardResult val1="version/enterprise" %}}
+
+{{% include "shared/security/mockidp" %}}
+
 ```yaml
 global:
   postgresql:

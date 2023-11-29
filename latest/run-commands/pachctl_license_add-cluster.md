@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl license add-cluster"
-description: "Learn about the pachctl_license_add-cluster command"
+description: "Learn about the pachctl license add-cluster command"
 ---
 
 ## pachctl license add-cluster
@@ -10,19 +10,26 @@ Register a new cluster with the license server.
 
 ### Synopsis
 
-Register a new cluster with the license server.
+This command registers a new cluster with Enterprise Server.
 
 ```
 pachctl license add-cluster [flags]
 ```
 
+### Examples
+
+```
+ pachctl license add-cluster --id=my-cluster --address=grpc://my-cluster:1653 --secret=secret
+
+```
+
 ### Options
 
 ```
-      --address string   The host and port where the cluster can be reached
+      --address string   Set the host and port where the cluster can be reached.
   -h, --help             help for add-cluster
-      --id string        The id for the cluster to register
-      --secret string    The shared secret to use to authenticate this cluster
+      --id string        Set the ID for the cluster to register.
+      --secret string    Set the shared secret to use to authenticate this cluster.
 ```
 
 ### Options inherited from parent commands

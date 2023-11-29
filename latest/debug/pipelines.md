@@ -40,7 +40,7 @@ If you are running on the Community Edition, you might have **hit the limit set 
 
 That scenario is quite easy to troubleshoot:
 
-1. Check your number of pipelines and parallelism settings (`"parallelism_spec"` attribute in your pipeline specification files) against our [limits](/{{%release%}}/manage/scaling-limits).
+1. Check your number of pipelines and parallelism settings (`"parallelismSpec"` attribute in your pipeline specification files) against our [limits](/{{%release%}}/manage/scaling-limits).
 1. Additionally, your stderr and pipeline logs (`pachctl log -p <pipeline name> --master` or `pachctl log -p <pipeline name> --worker`) should contain one or both of those messages:
 
    - **number of pipelines limit exceeded**: {{% productName %}} Community Edition requires an activation key to create more than 16 total pipelines (you have X).  Use the command `pachctl license activate` to enter your key.
@@ -64,7 +64,7 @@ failed to process datum <UUID> with error: <user code error>
 
 This means {{% productName %}} successfully got to the point where it was running user code, but that code exited with a non-zero error code. If any datum in a pipeline fails, the entire job will be marked as failed, but datums that did not fail will not need to be reprocessed on future jobs. You can use `pachctl inspect datum <job-id> <datum-id>` or `pachctl logs` with the `--pipeline`, `--job` or `--datum` flags to get more details.
 
-There are some cases where users may want mark a datum as successful even for a non-zero error code by setting the `transform.accept_return_code` field in the pipeline config .
+There are some cases where users may want mark a datum as successful even for a non-zero error code by setting the `transform.acceptReturnCode` field in the pipeline config .
 
 #### Retries
 
@@ -94,7 +94,7 @@ Just like with user code failures, {{% productName %}} will automatically retry 
 
 Data failures can be triaged in a few different way depending on the nature of the failure and design of the pipeline.
 
-In some cases, where malformed datums are expected to happen occasionally, they can be “swallowed” (e.g. marked as successful using `transform.accept_return_codes` or written out to a “failed_datums” directory and handled within user code). This would simply require the necessary updates to the user code and pipeline config as described above. For cases where your code detects bad input data, a "dead letter queue" design pattern may be needed. Many {{% productName %}} developers use a special directory in each output repo for "bad data" and pipelines with globs for detecting bad data direct that data for automated and manual intervention.
+In some cases, where malformed datums are expected to happen occasionally, they can be “swallowed” (e.g. marked as successful using `transform.acceptReturnCode` or written out to a “failed_datums” directory and handled within user code). This would simply require the necessary updates to the user code and pipeline config as described above. For cases where your code detects bad input data, a "dead letter queue" design pattern may be needed. Many {{% productName %}} developers use a special directory in each output repo for "bad data" and pipelines with globs for detecting bad data direct that data for automated and manual intervention.
 
 If a few files as part of the input commit are causing the failure, they can simply be removed from the HEAD commit with `start commit`, `delete file`, `finish commit`. The files can also be corrected in this manner as well. This method is similar to a revert in Git -- the “bad” data will still live in the older commits in {{% productName %}}, but will not be part of the HEAD commit and therefore not processed by the pipeline.
 
@@ -120,7 +120,7 @@ Triaging system failures varies as widely as the issues do themselves. Here are 
 - Credentials: check your secrets in k8s, make sure they’re added correctly to the pipeline config, and double check your roles/perms within the cluster
 - OOM: Increase the memory limit/request or node size for your pipeline. If you are very resource constrained, making your datums smaller to require less resources may be necessary.
 - Network: Check to make sure etcd and pachd are up and running, that k8s DNS is correctly configured for pods to resolve each other and outside resources, firewalls and other networking configurations allow k8s components to reach each other, and ingress controllers are configured correctly
-- Check your container image name in the pipeline config and image_pull_secret.
+- Check your container image name in the pipeline config and `imagePullSecret`.
 
 ## Specific scenarios
 

@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl idp set-config"
-description: "Learn about the pachctl_idp_set-config command"
+description: "Learn about the pachctl idp set-config command"
 ---
 
 ## pachctl idp set-config
@@ -10,16 +10,22 @@ Set the identity server config
 
 ### Synopsis
 
-Set the identity server config
+This command sets the identity server config via a YAML configuration file or by using `-` for stdin; requires an active enterprise key and authentication to be enabled.
 
 ```
 pachctl idp set-config [flags]
 ```
 
+### Examples
+
+```
+pachctl idp set-config --config settings.yaml
+```
+
 ### Options
 
 ```
-      --config string   The file to read the YAML-encoded configuration from, or '-' for stdin. (default "-")
+      --config string   Set the file to read the YAML-encoded configuration from, or use '-' for stdin. (default "-")
   -h, --help            help for set-config
 ```
 

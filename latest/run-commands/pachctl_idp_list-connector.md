@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl idp list-connector"
-description: "Learn about the pachctl_idp_list-connector command"
+description: "Learn about the pachctl idp list-connector command"
 ---
 
 ## pachctl idp list-connector
@@ -10,7 +10,7 @@ List identity provider connectors
 
 ### Synopsis
 
-List identity provider connectors
+This command lists identity provider connectors.
 
 ```
 pachctl idp list-connector [flags]

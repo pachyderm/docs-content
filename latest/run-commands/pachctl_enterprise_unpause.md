@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl enterprise unpause"
-description: "Learn about the pachctl_enterprise_unpause command"
+description: "Learn about the pachctl enterprise unpause command"
 ---
 
 ## pachctl enterprise unpause
@@ -10,7 +10,7 @@ Unpause the cluster.
 
 ### Synopsis
 
-Unpause the cluster.
+This command unpauses the cluster.
 
 ```
 pachctl enterprise unpause [flags]

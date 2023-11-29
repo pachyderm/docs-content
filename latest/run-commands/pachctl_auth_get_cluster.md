@@ -1,16 +1,16 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl auth get cluster"
-description: "Learn about the pachctl_auth_get_cluster command"
+description: "Learn about the pachctl auth get cluster command"
 ---
 
 ## pachctl auth get cluster
 
-Get the role bindings for 'cluster'
+Get the role bindings for the cluster
 
 ### Synopsis
 
-Get the role bindings for 'cluster'
+This command returns the role bindings for the cluster.
 
 ```
 pachctl auth get cluster [flags]

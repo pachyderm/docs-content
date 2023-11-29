@@ -112,7 +112,7 @@ In {{% productName %}}, a Secret can be used in three different ways:
       In this case, in {{% productName %}}'s pipeline specification file, you need to reference Kubernetes' Secret by its:
 
       - **`name`**
-      - and specify an environment variable named **`env_var`** that the value of your  **`key`** should be bound to. 
+      - and specify an environment variable named **`envVar`** that the value of your  **`key`** should be bound to. 
 
       This makes for easy access to your Secret's data in your pipeline's code. 
       For example, this is useful for passing the password to a third-party system to your pipeline's code.
@@ -124,7 +124,7 @@ In {{% productName %}}, a Secret can be used in three different ways:
          ...
          "secrets": [ {
             "name": "string",
-            "env_var": "string",
+            "envVar": "string",
             "key": string
          }]
       }
@@ -132,7 +132,7 @@ In {{% productName %}}, a Secret can be used in three different ways:
    ### Example 
    Example of a pipeline specification file assigning a Secret's values to environment variables.
 
-   Look at the pipeline specification in this example and see how we used the  `"env_var"` to pass CLEARML API credentials to the pipeline code.
+   Look at the pipeline specification in this example and see how we used the  `"envVar"` to pass CLEARML API credentials to the pipeline code.
 
    ```json
    {
@@ -158,12 +158,12 @@ In {{% productName %}}, a Secret can be used in three different ways:
          "secrets": [
             {
             "name": "clearml",
-            "env_var": "CLEARML_API_ACCESS_KEY",
+            "envVar": "CLEARML_API_ACCESS_KEY",
             "key": "access"
             },
             {
             "name": "clearml",
-            "env_var": "CLEARML_API_SECRET_KEY",
+            "envVar": "CLEARML_API_SECRET_KEY",
             "key": "secret"
             }
          ]
@@ -198,14 +198,14 @@ In {{% productName %}}, a Secret can be used in three different ways:
 
       [Image pull Secrets](https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod) are a different kind of secret used to store access credentials to your private image registry. 
       
-      You reference Image Pull Secrets (or Docker Registry Secrets) by setting the **`image_pull_secrets`** field of your pipeline specification file to the secret's name you created (ex: `"mysecretname"`).
+      You reference Image Pull Secrets (or Docker Registry Secrets) by setting the **`imagePullSecrets`** field of your pipeline specification file to the secret's name you created (ex: `"mysecretname"`).
 
       ```JSON
       "transform": {
          "image": "string",
          "cmd": [ string ],
          ...
-         "image_pull_secrets": [ string ]
+         "imagePullSecrets": [ string ]
       }
       ```
 

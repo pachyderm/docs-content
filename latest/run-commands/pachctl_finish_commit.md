@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl finish commit"
-description: "Learn about the pachctl_finish_commit command"
+description: "Learn about the pachctl finish commit command"
 ---
 
 ## pachctl finish commit
@@ -12,9 +12,9 @@ Finish a started commit.
 
 This command finishes a started commit. 
 
-- To force finish a commit, use the `--force` flag 
-- To add a message to the commit, use the `--message` or `--description` flag 
-- To specify which project the repo is in, use the `--project` flag 
+ To force finish a commit, use the `--force` flag 
+ To add a message to the commit, use the `--message` or `--description` flag 
+ To specify which project the repo is in, use the `--project` flag 
 
 
 ```

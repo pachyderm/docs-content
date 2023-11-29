@@ -28,7 +28,7 @@ This is a top-level attribute of the pipeline spec.
         "branch": string,
         "glob": string,
         "lazy" bool,
-        "empty_files": bool,
+        "emptyFiles": bool,
         "s3": bool
       }
     },
@@ -40,7 +40,7 @@ This is a top-level attribute of the pipeline spec.
         "branch": string,
         "glob": string,
         "lazy" bool,
-        "empty_files": bool,
+        "emptyFiles": bool,
         "s3": bool
       }
     }

@@ -17,7 +17,7 @@ This is a top-level attribute of the pipeline spec.
 {
   "pipeline": {...},
   "transform": {...},
-  "sidecar_resource_requests": {
+  "sidecarResourceRequests": {
     "cpu": number,
     "memory": string,
     "gpu": {
@@ -43,6 +43,6 @@ This is a top-level attribute of the pipeline spec.
 
 
 ## Behavior 
-The `sidecar_resource_requests` field in a {{% productName %}} Pipeline Spec is used to specify the resource requests for the storage container that runs alongside the user container.
+The `sidecarResourceRequests` field in a {{% productName %}} Pipeline Spec is used to specify the resource requests for the storage container that runs alongside the user container.
 
 In a {{% productName %}} Pipeline, the storage container is used to perform additional tasks alongside the user pipeline container, such as logging, monitoring, or handling external dependencies. By specifying resource requests for this sidecar container, you can ensure that the storage container has enough resources reserved as to not impact the performance of the user container.

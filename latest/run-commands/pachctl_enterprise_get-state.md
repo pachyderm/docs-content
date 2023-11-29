@@ -1,16 +1,16 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl enterprise get-state"
-description: "Learn about the pachctl_enterprise_get-state command"
+description: "Learn about the pachctl enterprise get-state command"
 ---
 
 ## pachctl enterprise get-state
 
-Check whether the Pachyderm cluster has enterprise features activated
+Check whether the Pachyderm cluster has an active enterprise license.
 
 ### Synopsis
 
-Check whether the Pachyderm cluster has enterprise features activated
+This command checks whether the Pachyderm cluster has an active enterprise license; If so, it also returns the expiration date of the license.
 
 ```
 pachctl enterprise get-state [flags]

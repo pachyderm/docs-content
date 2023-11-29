@@ -18,7 +18,7 @@ This is a top-level attribute of the pipeline spec.
 {
   "pipeline": {...},
   "transform": {...},
-  "resource_requests": {
+  "resourceRequests": {
     "cpu": number,
     "memory": string,
     "gpu": {
@@ -34,7 +34,7 @@ This is a top-level attribute of the pipeline spec.
 
 ## Behavior 
 
-`resource_requests` describes the amount of resources that the pipeline
+`resourceRequests` describes the amount of resources that the pipeline
 workers will consume. Knowing this in advance
 enables {{% productName %}} to schedule big jobs on separate machines, so that they
 do not conflict, slow down, or terminate.
@@ -47,7 +47,7 @@ following default resources:
 - The init container requests the same amount of CPU, memory, and disk
 space that is set for the user container.
 
-The `resource_requests` parameter enables you to overwrite these default
+The `resourceRequests` parameter enables you to overwrite these default
 values.
 
 The `memory` field is a string that describes the amount of memory, in bytes,
@@ -58,7 +58,7 @@ For example, a worker that needs to read a 1GB file into memory might set
 `"memory": "1.2G"` with a little extra for the code to use in addition to the
 file. Workers for this pipeline will be placed on machines with at least
 1.2GB of free memory, and other large workers will be prevented from using it,
-if they also set their `resource_requests`.
+if they also set their `resourceRequests`.
 
 The `cpu` field is a number that describes the amount of CPU time in `cpu
 seconds/real seconds` that each worker needs. Setting `"cpu": 0.5` indicates that

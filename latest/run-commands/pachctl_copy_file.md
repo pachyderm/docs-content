@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl copy file"
-description: "Learn about the pachctl_copy_file command"
+description: "Learn about the pachctl copy file command"
 ---
 
 ## pachctl copy file
@@ -12,9 +12,9 @@ Copy files between pfs paths.
 
 This command files between pfs paths. While using this command, take special note of which project is set to your active context by running `pachctl list projects` and checking for the `*` in the ACTIVE column. 
 
-- To append to an existing file, use the --append flag.
-- To specify the project where both the source and destination repos are located, use the --project flag. This is only necessary if the project in question is not set to your active context.
-- To copy a file from one project to another, use the --src-project and --dest-project flags. Needing to use one (or both) depends on whether or not either project is set to your active context.
+ To append to an existing file, use the --append flag.
+ To specify the project where both the source and destination repos are located, use the --project flag. This is only necessary if the project in question is not set to your active context.
+ To copy a file from one project to another, use the --src-project and --dest-project flags. Needing to use one (or both) depends on whether or not either project is set to your active context.
 
 
 ```

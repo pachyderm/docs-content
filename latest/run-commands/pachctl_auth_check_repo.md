@@ -1,26 +1,32 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl auth check repo"
-description: "Learn about the pachctl_auth_check_repo command"
+description: "Learn about the pachctl auth check repo command"
 ---
 
 ## pachctl auth check repo
 
-Check the permissions a user has on 'repo'
+Check the permissions a user has on a repo
 
 ### Synopsis
 
-Check the permissions a user has on 'repo'
+This command checks the permissions a given subject (user, robot) has on a given repo.
 
 ```
 pachctl auth check repo <repo> [<user>] [flags]
+```
+
+### Examples
+
+```
+ pachctl auth check repo foo user:alan.watts@domain.com pachctl auth check repo foo user:alan.watts@domain.com --project bar pachctl auth check repo foo robot:my-robot
 ```
 
 ### Options
 
 ```
   -h, --help             help for repo
-      --project string   The project containing the repo. (default "video-to-frame-traces")
+      --project string   Define the project containing the repo. (default "video-to-frame-traces")
 ```
 
 ### Options inherited from parent commands

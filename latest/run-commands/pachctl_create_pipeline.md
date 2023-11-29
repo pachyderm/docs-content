@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl create pipeline"
-description: "Learn about the pachctl_create_pipeline command"
+description: "Learn about the pachctl create pipeline command"
 ---
 
 ## pachctl create pipeline
@@ -14,10 +14,10 @@ This command creates a new pipeline from a pipeline specification.
  
 You can create a pipeline using a JSON/YAML file or a jsonnet template file -- via either a local filepath or URL. Multiple pipelines can be created from one file.For details on the format, see https://docs.pachyderm.com/latest/reference/pipeline_spec/. 
  
-- To create a pipeline from a JSON/YAML file, use the `--file` flag 
-- To create a pipeline from a jsonnet template file, use the `--jsonnet` flag; you can optionally pay multiple arguments separately using `--arg` 
-- To push your local images to docker registry, use the `--push-images` and `--username` flags 
-- To push your local images to custom registry, use the `--push-images`, `--registry`, and `--username` flags 
+ To create a pipeline from a JSON/YAML file, use the `--file` flag 
+ To create a pipeline from a jsonnet template file, use the `--jsonnet` flag; you can optionally pay multiple arguments separately using `--arg` 
+ To push your local images to docker registry, use the `--push-images` and `--username` flags 
+ To push your local images to custom registry, use the `--push-images`, `--registry`, and `--username` flags 
 
 
 ```

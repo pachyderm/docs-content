@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl idp list-client"
-description: "Learn about the pachctl_idp_list-client command"
+description: "Learn about the pachctl idp list-client command"
 ---
 
 ## pachctl idp list-client
@@ -10,7 +10,7 @@ List OIDC clients.
 
 ### Synopsis
 
-List OIDC clients.
+This command lists OIDC clients.
 
 ```
 pachctl idp list-client [flags]

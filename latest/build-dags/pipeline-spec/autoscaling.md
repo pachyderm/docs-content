@@ -30,8 +30,8 @@ The `autoscaling` attribute in a {{% productName %}} Pipeline Spec is used to sp
 
 If the `autoscaling` attribute is set to `true`, {{% productName %}} will monitor the processing load of the pipeline, and automatically scale up or down the number of worker nodes as needed to keep up with the demand. This can help to ensure that the pipeline is always running at optimal efficiency, without wasting resources when the load is low.
 
-- `autocaling` is set to `false` by default.
-- The maximum number of workers is controlled by the `parallelism_spec`.
+- `autoscaling` is set to `false` by default.
+- The maximum number of workers is controlled by the `parallelismSpec`.
 - A pipeline with no outstanding jobs will go into *standby*. A pipeline in a *standby* state consumes no resources. 
 
 ## When to Use 

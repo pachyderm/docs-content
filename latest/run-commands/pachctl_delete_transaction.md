@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl delete transaction"
-description: "Learn about the pachctl_delete_transaction command"
+description: "Learn about the pachctl delete transaction command"
 ---
 
 ## pachctl delete transaction
@@ -10,7 +10,7 @@ Cancel and delete an existing transaction.
 
 ### Synopsis
 
-Cancel and delete an existing transaction.
+This command cancels and deletes an existing transaction.
 
 ```
 pachctl delete transaction [<transaction>] [flags]

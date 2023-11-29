@@ -1,19 +1,25 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl auth set project"
-description: "Learn about the pachctl_auth_set_project command"
+description: "Learn about the pachctl auth set project command"
 ---
 
 ## pachctl auth set project
 
-Set the roles that 'subject' has on 'project'
+Set the roles that a subject has on a project 
 
 ### Synopsis
 
-Set the roles that 'subject' has on 'project'
+This command sets the roles that a given subject has on a given project (`projectViewer`, `projectWriter`, `projectOwner`, `projectCreator`).
 
 ```
 pachctl auth set project <project> [role1,role2 | none ] <subject> [flags]
+```
+
+### Examples
+
+```
+ pachctl auth set project foo projectOwner user:alan.watts@domain.com pachctl auth set project foo projectWriter, projectReader robot:my-robot
 ```
 
 ### Options

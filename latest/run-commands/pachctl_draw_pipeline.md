@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl draw pipeline"
-description: "Learn about the pachctl_draw_pipeline command"
+description: "Learn about the pachctl draw pipeline command"
 ---
 
 ## pachctl draw pipeline
@@ -19,7 +19,11 @@ pachctl draw pipeline [flags]
 ### Examples
 
 ```
- pachctl draw pipeline --commit 5f93d03b65fa421996185e53f7f8b1e4 pachctl draw pipeline --box-width 20 pachctl draw pipeline --edge-height 8 pachctl draw pipeline --project foo pachctl draw pipeline --box-width 20 --edge-height 8 --commit 5f93d03b65fa421996185e53f7f8b1e4
+ pachctl draw pipeline --commit 5f93d03b65fa421996185e53f7f8b1e4 
+ pachctl draw pipeline --box-width 20 
+ pachctl draw pipeline --edge-height 8 
+ pachctl draw pipeline --project foo 
+ pachctl draw pipeline --box-width 20 --edge-height 8 --commit 5f93d03b65fa421996185e53f7f8b1e4
 ```
 
 ### Options

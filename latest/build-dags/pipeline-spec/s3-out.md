@@ -18,7 +18,7 @@ This is a top-level attribute of the pipeline spec.
 {
     "pipeline": {...},
     "transform": {...},
-    "s3_out": bool,
+    "s3Out": bool,
     ...
 }
 
@@ -26,7 +26,7 @@ This is a top-level attribute of the pipeline spec.
 
 ## Behavior 
 
-`s3_out` allows your pipeline code to write results out to an S3 gateway
+`s3Out` allows your pipeline code to write results out to an S3 gateway
 endpoint instead of the typical `pfs/out` directory. When this parameter
 is set to `true`, {{% productName %}} includes a sidecar S3 gateway instance
 container in the same pod as the pipeline container. The address of the

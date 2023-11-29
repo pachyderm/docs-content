@@ -14,8 +14,8 @@ You may have a local or a network-attached storage that you want your
 pipeline to write files to.
 You can mount that folder as a volume in Kubernetes
 and make it available in your pipeline worker by using the
-`pod_patch` pipeline parameter.
-The `pod_patch` parameter takes a string that specifies the changes
+`podPatch` pipeline parameter.
+The `podPatch` parameter takes a string that specifies the changes
 that you want to add to your existing manifest. To create
 a patch, you need to generate a diff of the original ReplicationController
 and the one with your changes. You can use one of the online JSON patch
@@ -119,12 +119,12 @@ field.
       For example, if you are modifying the `edges` pipeline, open the
       `edges.json` file.
 
-3. Add the patch as a one-liner under the `pod_patch` parameter.
+3. Add the patch as a one-liner under the `podPatch` parameter.
 
       **Example:**
 
       ```json
-      "pod_patch": "[{\"op\": \"add\",\"path\": \"/volumes/-\",\"value\": {\"name\": \"task-pv-storage\",\"persistentVolumeClaim\": {\"claimName\": \"task-pv-claim\"}}}, {\"op\": \"add\",\"path\": \"/containers/0/volumeMounts/-\",\"value\": {\"mountPath\": \"/data\",\"name\": \"task-pv-storage\"}}]"
+      "podPatch": "[{\"op\": \"add\",\"path\": \"/volumes/-\",\"value\": {\"name\": \"task-pv-storage\",\"persistentVolumeClaim\": {\"claimName\": \"task-pv-claim\"}}}, {\"op\": \"add\",\"path\": \"/containers/0/volumeMounts/-\",\"value\": {\"mountPath\": \"/data\",\"name\": \"task-pv-storage\"}}]"
       ```
 
       You need to add a backslash (\) before every quote (") sign

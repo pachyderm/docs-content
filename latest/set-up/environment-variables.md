@@ -121,8 +121,8 @@ Most users find the following environment variables particularly useful:
 
 | Environment Variable       | Description |
 | -- | -- |
-|`AWS_ACCESS_KEY_ID`| The ID that contains your AWS access key; requires `pfs.s3: true` or `s3_out:true` in your pipeline spec.|
-|`AWS_SECRET_ACCESS_KEY`| The name of the secret which contains your AWS access key; requires `pfs.s3: true` or `s3_out:true` in your pipeline spec.|
+|`AWS_ACCESS_KEY_ID`| The ID that contains your AWS access key; requires `pfs.s3: true` or `s3Out:true` in your pipeline spec.|
+|`AWS_SECRET_ACCESS_KEY`| The name of the secret which contains your AWS access key; requires `pfs.s3: true` or `s3Out:true` in your pipeline spec.|
 | `PACH_JOB_ID`              | The ID of the current job. For example, <br> `PACH_JOB_ID=8991d6e811554b2a8eccaff10ebfb341`. |
 | `PACH_DATUM_ID`             | The ID of the current Datum.|
 |`PACH_DATUM_<input.name>_JOIN_ON`|Exposes the `join_on` match to the pipeline's job. |

@@ -19,8 +19,8 @@ This is a top-level attribute of the pipeline spec.
   "pipeline": {...},
   "transform": {...},
   "service": {
-    "internal_port": int,
-    "external_port": int
+    "internalPort": int,
+    "externalPort": int
   },
   ...
 }
@@ -31,14 +31,14 @@ This is a top-level attribute of the pipeline spec.
 
 |Attribute|Description|
 |-|-|
-|`internal_port`| The port that the user code binds to inside the container. |
-|`external_port`| The port on which it is exposed through the `NodePorts` functionality of Kubernetes services.|
+|`internalPort`| The port that the user code binds to inside the container. |
+|`externalPort`| The port on which it is exposed through the `NodePorts` functionality of Kubernetes services.|
 
 ## Behavior 
 
 - When enabled, `transform.cmd` is not expected to exit and will restart if it does.
 - The service becomes exposed outside the container using a Kubernetes service.
-- You can access the service at `http://<kubernetes-host>:<external_port>`.
+- You can access the service at `http://<kubernetes-host>:<externalPort>`.
 - The Service starts running at the **first commit** in the input repo.
 
 ## When to Use
@@ -49,6 +49,6 @@ Example scenarios:
 
 - **Microservices architecture**: If you are building a microservices architecture, you may want to expose individual pipelines as services that can be accessed by other services in the cluster. By using the service field to expose your pipeline as a Kubernetes service, you can easily connect it to other services in the cluster.
 
-- **Client access**: If you want to allow external clients to access the output of your pipeline, you can use the service field to expose your pipeline as a Kubernetes service and provide clients with the service's IP address and `external_port`.
+- **Client access**: If you want to allow external clients to access the output of your pipeline, you can use the service field to expose your pipeline as a Kubernetes service and provide clients with the service's IP address and `externalPort`.
 
-- **Load balancing**: By exposing your pipeline as a Kubernetes service, you can take advantage of Kubernetes' built-in load balancing capabilities. Kubernetes automatically load balances traffic to the service's IP address and `external_port` across all the replicas of the pipeline's container.
+- **Load balancing**: By exposing your pipeline as a Kubernetes service, you can take advantage of Kubernetes' built-in load balancing capabilities. Kubernetes automatically load balances traffic to the service's IP address and `externalPort` across all the replicas of the pipeline's container.

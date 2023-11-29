@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl create branch"
-description: "Learn about the pachctl_create_branch command"
+description: "Learn about the pachctl create branch command"
 ---
 
 ## pachctl create branch
@@ -12,11 +12,11 @@ Create a new branch, or update an existing branch, on a repo.
 
 This command creates or updates a branch on a repo. 
 
-- To create a branch for a repo in a particular project, use the `--project` flag; this requires the repo to already exist in that project 
-- To attach an existing commit as the head commit of the new branch, use the `--head` flag 
-- To set a trigger, use the `--trigger` flag, pass in the branch (from same repo, without `repo@`), and set conditions using any of the `--trigger` options 
-- To require all defined triggering conditions to be met, use the `--trigger-all` flag; otherwise, each condition can execute the trigger 
-- To attach provenance to the new branch, use the `--provenance` flag. You can inspect provenance using `pachctl inspect branch foo@bar` 
+ To create a branch for a repo in a particular project, use the `--project` flag; this requires the repo to already exist in that project 
+ To attach an existing commit as the head commit of the new branch, use the `--head` flag 
+ To set a trigger, use the `--trigger` flag, pass in the branch (from same repo, without `repo@`), and set conditions using any of the `--trigger` options 
+ To require all defined triggering conditions to be met, use the `--trigger-all` flag; otherwise, each condition can execute the trigger 
+ To attach provenance to the new branch, use the `--provenance` flag. You can inspect provenance using `pachctl inspect branch foo@bar` 
 
 Note: Starting a commit on the branch also creates it, so there's often no need to call this.
 

@@ -23,6 +23,14 @@ Our Docker image's [user code](/{{%release%}}/learn/glossary/user-code) for this
 
 ### 1. Create an Input Repo
 
+{{<stack type="wizard">}}
+{{% wizardRow id="Tool"%}}
+{{% wizardButton option="Pachctl CLI" state="active" %}}
+{{% wizardButton option="Console" %}}
+{{% /wizardRow %}}
+{{% wizardResults %}}
+{{% wizardResult val1="tool/pachctl-cli"%}}
+
 1. Make sure your Tutorials project we created in the [Standard ML Pipeline](/{{%release%}}/build-dags/tutorials/basic-ml) tutorial is set to your active context. (This would only change if you have updated your active context since completing the first tutorial.)
 
    ```s
@@ -41,6 +49,20 @@ Our Docker image's [user code](/{{%release%}}/learn/glossary/user-code) for this
    pachctl create repo sample_data
    ```
 
+{{% /wizardResult %}}
+
+{{% wizardResult val1="tool/console"%}}
+
+1. Navigate to Console. 
+2. Select the previous `standard-ml-pipeline` project.
+3. Create a `models` and `sample_data` repo.
+
+{{% /wizardResult %}}
+{{% /wizardResults  %}}
+{{</stack>}}
+
+
+
 ### 2. Create CPU Pipelines
 
 In task parallelism, we separate out the CPU-based preprocessing and GPU-related tasks, saving us cloud costs when scaling. By separating inference into multiple tasks, each task pipeline can be updated independently, allowing ease of model deployment and collaboration.
@@ -53,11 +75,22 @@ We can split the `run.sh` script used in the previous tutorial ([Data Parallelis
 
 #### Crop Pipeline 
 
+{{<stack type="wizard">}}
+{{% wizardRow id="Tool"%}}
+{{% wizardButton option="Pachctl CLI" state="active" %}}
+{{% wizardButton option="Console" %}}
+{{% /wizardRow %}}
+{{% wizardResults %}}
+{{% wizardResult val1="tool/pachctl-cli"%}}
+
 1. Create a file named `crop.json` with the following contents:
   ```s
   {
   "pipeline": {
-    "name": "crop"
+    "name": "crop",
+    "project": {
+      "name": "standard-ml-pipeline"
+    },
   },
   "description": "Remove background of image and save cropped files.",
   "input": {
@@ -81,13 +114,60 @@ We can split the `run.sh` script used in the previous tutorial ([Data Parallelis
 pachctl create pipeline -f /path/to/crop.json
 ```
 
+{{% /wizardResult %}}
+
+{{% wizardResult val1="tool/console"%}}
+
+1. Select **Create** > **Pipeline**.
+2. Overwrite the default json with the following:
+  ```s
+  {
+  "pipeline": {
+    "name": "crop",
+    "project": {
+      "name": "standard-ml-pipeline"
+    },
+  },
+  "description": "Remove background of image and save cropped files.",
+  "input": {
+    "pfs": {
+      "repo": "sample_data",
+      "glob": "/*"
+    }
+  },
+  "transform": {
+    "cmd": [
+      "/bin/bash",
+      "multi-stage/crop.sh"
+    ],
+    "image": "pachyderm/breast_cancer_classifier:1.11.6"
+  }
+  }
+  ```
+
+{{% /wizardResult %}}
+{{% /wizardResults  %}}
+{{</stack>}}
+
+
 #### Extract Centers Pipeline
+
+{{<stack type="wizard">}}
+{{% wizardRow id="Tool"%}}
+{{% wizardButton option="Pachctl CLI" state="active" %}}
+{{% wizardButton option="Console" %}}
+{{% /wizardRow %}}
+{{% wizardResults %}}
+{{% wizardResult val1="tool/pachctl-cli"%}}
 
 1. Create a file named `extract_centers.json` with the following contents:
   ```s
   {
     "pipeline": {
-        "name": "extract_centers"
+        "name": "extract_centers",
+        "project": {
+            "name": "standard-ml-pipeline"
+        },
     },
     "description": "Compute and Extract Optimal Image Centers.",
     "input": {
@@ -111,15 +191,63 @@ pachctl create pipeline -f /path/to/crop.json
 pachctl create pipeline -f /path/to/extract_centers.json
 ```
 
+{{% /wizardResult %}}
+
+{{% wizardResult val1="tool/console"%}}
+
+1. Select **Create** > **Pipeline**.
+2. Overwrite the default json with the following:
+  ```s
+  {
+    "pipeline": {
+        "name": "extract_centers",
+        "project": {
+            "name": "standard-ml-pipeline"
+        },
+    },
+    "description": "Compute and Extract Optimal Image Centers.",
+    "input": {
+      "pfs": {
+        "repo": "crop",
+        "glob": "/*"
+      }
+    },
+    "transform": {
+        "cmd": [
+            "/bin/bash",
+            "multi-stage/extract_centers.sh"
+        ],
+        "image": "pachyderm/breast_cancer_classifier:1.11.6"
+    }
+  }
+  ```
+
+{{% /wizardResult %}}
+{{% /wizardResults  %}}
+{{</stack>}}
+
+
+
 ### 3. Create GPU Pipelines
 
 #### Generate Heatmaps Pipeline
+
+{{<stack type="wizard">}}
+{{% wizardRow id="Tool"%}}
+{{% wizardButton option="Pachctl CLI" state="active" %}}
+{{% wizardButton option="Console" %}}
+{{% /wizardRow %}}
+{{% wizardResults %}}
+{{% wizardResult val1="tool/pachctl-cli"%}}
 
 1. Create a file named `generate_heatmaps.json` with the following contents:
   ```s
   {
   "pipeline": {
-    "name": "generate_heatmaps"
+    "name": "generate_heatmaps",
+    "project": {
+      "name": "standard-ml-pipeline"
+    },
   },
   "description": "Generates benign and malignant heatmaps for cropped images using patch classifier.",
   "input": {
@@ -130,7 +258,7 @@ pachctl create pipeline -f /path/to/extract_centers.json
             "pfs": {
               "repo": "crop",
               "glob": "/(*)",
-              "join_on": "$1",
+              "joinOn": "$1",
               "lazy": false
             }
           },
@@ -138,7 +266,7 @@ pachctl create pipeline -f /path/to/extract_centers.json
             "pfs": {
               "repo": "extract_centers",
               "glob": "/(*)",
-              "join_on": "$1",
+              "joinOn": "$1",
               "lazy": false
             }
           }
@@ -160,13 +288,13 @@ pachctl create pipeline -f /path/to/extract_centers.json
     ],
     "image": "pachyderm/breast_cancer_classifier:1.11.6"
   },
-  "resource_limits": {
+  "resourceLimits": {
     "gpu": {
       "type": "nvidia.com/gpu",
       "number": 1
     }
   },
-  "resource_requests": {
+  "resourceRequests": {
     "memory": "4G",
     "cpu": 1
   }
@@ -179,13 +307,95 @@ pachctl create pipeline -f /path/to/extract_centers.json
   pachctl create pipeline -f /path/to/generate_heatmaps.json
   ```
 
+{{% /wizardResult %}}
+
+{{% wizardResult val1="tool/console"%}}
+
+1. Select **Create** > **Pipeline**.
+2. Overwrite the default json with the following:
+  ```s
+  {
+  "pipeline": {
+    "name": "generate_heatmaps",
+    "project": {
+      "name": "standard-ml-pipeline"
+    },
+  },
+  "description": "Generates benign and malignant heatmaps for cropped images using patch classifier.",
+  "input": {
+    "cross": [
+      {
+        "join": [
+          {
+            "pfs": {
+              "repo": "crop",
+              "glob": "/(*)",
+              "joinOn": "$1",
+              "lazy": false
+            }
+          },
+          {
+            "pfs": {
+              "repo": "extract_centers",
+              "glob": "/(*)",
+              "joinOn": "$1",
+              "lazy": false
+            }
+          }
+        ]
+      },
+      {
+        "pfs": {
+          "repo": "models",
+          "glob": "/",
+          "lazy": false
+        }
+      }
+    ]
+  },
+  "transform": {
+    "cmd": [
+      "/bin/bash",
+      "multi-stage/generate_heatmaps.sh"
+    ],
+    "image": "pachyderm/breast_cancer_classifier:1.11.6"
+  },
+  "resourceLimits": {
+    "gpu": {
+      "type": "nvidia.com/gpu",
+      "number": 1
+    }
+  },
+  "resourceRequests": {
+    "memory": "4G",
+    "cpu": 1
+  }
+  }
+
+{{% /wizardResult %}}
+{{% /wizardResults  %}}
+{{</stack>}}
+
+
+
 #### Classify Pipeline
+
+{{<stack type="wizard">}}
+{{% wizardRow id="Tool"%}}
+{{% wizardButton option="Pachctl CLI" state="active" %}}
+{{% wizardButton option="Console" %}}
+{{% /wizardRow %}}
+{{% wizardResults %}}
+{{% wizardResult val1="tool/pachctl-cli"%}}
 
 1. Create a file named `classify.json` with the following contents:
   ```s
    {
   "pipeline": {
-    "name": "classify"
+    "name": "classify",
+    "project": {
+      "name": "standard-ml-pipeline"
+    },
   },
   "description": "Runs the image only model and image+heatmaps model for breast cancer prediction.",
   "input": {
@@ -196,21 +406,21 @@ pachctl create pipeline -f /path/to/extract_centers.json
             "pfs": {
               "repo": "crop",
               "glob": "/(*)",
-              "join_on": "$1"
+              "joinOn": "$1"
             }
           },
           {
             "pfs": {
               "repo": "extract_centers",
               "glob": "/(*)",
-              "join_on": "$1"
+              "joinOn": "$1"
             }
           },
           {
             "pfs": {
               "repo": "generate_heatmaps",
               "glob": "/(*)",
-              "join_on": "$1"
+              "joinOn": "$1"
             }
           }
         ]
@@ -230,13 +440,13 @@ pachctl create pipeline -f /path/to/extract_centers.json
     ],
     "image": "pachyderm/breast_cancer_classifier:1.11.6"
   },
-  "resource_limits": {
+  "resourceLimits": {
     "gpu": {
       "type": "nvidia.com/gpu",
       "number": 1
     }
   },
-  "resource_requests": {
+  "resourceRequests": {
     "memory": "4G",
     "cpu": 1
   }
@@ -249,6 +459,83 @@ pachctl create pipeline -f /path/to/extract_centers.json
    pachctl create pipeline -f /path/to/classify.json
    ```
 
+{{% /wizardResult %}}
+
+{{% wizardResult val1="tool/console"%}}
+
+1. Select **Create** > **Pipeline**.
+2. Overwrite the default json with the following:
+  ```s
+   {
+  "pipeline": {
+    "name": "classify",
+    "project": {
+      "name": "standard-ml-pipeline"
+    },
+  },
+  "description": "Runs the image only model and image+heatmaps model for breast cancer prediction.",
+  "input": {
+    "cross": [
+      {
+        "join": [
+          {
+            "pfs": {
+              "repo": "crop",
+              "glob": "/(*)",
+              "joinOn": "$1"
+            }
+          },
+          {
+            "pfs": {
+              "repo": "extract_centers",
+              "glob": "/(*)",
+              "joinOn": "$1"
+            }
+          },
+          {
+            "pfs": {
+              "repo": "generate_heatmaps",
+              "glob": "/(*)",
+              "joinOn": "$1"
+            }
+          }
+        ]
+      },
+      {
+        "pfs": {
+          "repo": "models",
+          "glob": "/"
+        }
+      }
+    ]
+  },
+  "transform": {
+    "cmd": [
+      "/bin/bash",
+      "multi-stage/classify.sh"
+    ],
+    "image": "pachyderm/breast_cancer_classifier:1.11.6"
+  },
+  "resourceLimits": {
+    "gpu": {
+      "type": "nvidia.com/gpu",
+      "number": 1
+    }
+  },
+  "resourceRequests": {
+    "memory": "4G",
+    "cpu": 1
+  }
+  }
+
+  ```
+
+{{% /wizardResult %}}
+{{% /wizardResults  %}}
+{{</stack>}}
+
+
+
 ### 4. Upload Dataset
 
 1. Open or download this github repo.
@@ -260,10 +547,35 @@ pachctl create pipeline -f /path/to/extract_centers.json
    cd content/{{%release%}}/build-dags/tutorials/task-parallelism
    ```
 3. Upload the `sample_data` and `models` folders to your repos.
+
+   {{<stack type="wizard">}}
+   {{% wizardRow id="Tool"%}}
+   {{% wizardButton option="Pachctl CLI" state="active" %}}
+   {{% wizardButton option="Console" %}}
+   {{% /wizardRow %}}
+   {{% wizardResults %}}
+   {{% wizardResult val1="tool/pachctl-cli"%}}
    ```s
    pachctl put file -r sample_data@master -f sample_data/
    pachctl put file -r models@master -f models/
    ```
+
+   {{% /wizardResult %}}
+
+   {{% wizardResult val1="tool/console"%}}
+
+   1. Open the `sample_data` repo.
+   2. Select **Upload** > **Files**.
+   3. Upload the `sample_data` folder.
+   4. Open the `models` repo.
+   5. Select **Upload** > **Files**.
+   6. Upload the `models` folder.
+
+   {{% /wizardResult %}}
+   {{% /wizardResults  %}}
+   {{</stack>}}
+
+
 ---
 
 ## User Code Assets

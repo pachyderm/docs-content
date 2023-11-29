@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl delete pipeline"
-description: "Learn about the pachctl_delete_pipeline command"
+description: "Learn about the pachctl delete pipeline command"
 ---
 
 ## pachctl delete pipeline
@@ -19,7 +19,11 @@ pachctl delete pipeline (<pipeline>|--all) [flags]
 ### Examples
 
 ```
- pachctl delete pipeline foo pachctl delete pipeline --all pachctl delete pipeline foo --force pachctl delete pipeline foo --keep-repo pachctl delete pipeline foo --project bar --keep-repo
+ pachctl delete pipeline foo 
+ pachctl delete pipeline --all 
+ pachctl delete pipeline foo --force 
+ pachctl delete pipeline foo --keep-repo 
+ pachctl delete pipeline foo --project bar --keep-repo
 ```
 
 ### Options

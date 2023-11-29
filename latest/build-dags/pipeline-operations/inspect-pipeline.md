@@ -47,7 +47,7 @@ Input:
     "project": "standard-ml-tutorial",
     "name": "housing_data",
     "repo": "housing_data",
-    "repo_type": "user",
+    "repoType": "user",
     "branch": "master",
     "glob": "/*"
   }
@@ -67,7 +67,7 @@ Transform:
     "--output",
     "/pfs/out/"
   ],
-  "datum_batching": true
+  "datumBatching": true
 }
 ```
 {{% /wizardResult %}}

@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl wait"
-description: "Learn about the pachctl_wait command"
+description: "Learn about the pachctl wait command"
 ---
 
 ## pachctl wait

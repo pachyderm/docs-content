@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl inspect commit"
-description: "Learn about the pachctl_inspect_commit command"
+description: "Learn about the pachctl inspect commit command"
 ---
 
 ## pachctl inspect commit
@@ -12,8 +12,8 @@ Return info about a commit.
 
 This command returns information about the commit, such as the commit location (`branch@commit-id`), originating branch, start/finish times, and size. 
 
-- To view the raw details of the commit in JSON format, use the `--raw` flag 
-- To specify which project the repo is in, use the `--project` flag 
+ To view the raw details of the commit in JSON format, use the `--raw` flag 
+ To specify which project the repo is in, use the `--project` flag 
 
 
 ```

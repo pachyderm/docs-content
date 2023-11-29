@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl list branch"
-description: "Learn about the pachctl_list_branch command"
+description: "Learn about the pachctl list branch command"
 ---
 
 ## pachctl list branch
@@ -12,8 +12,8 @@ Return all branches on a repo.
 
 This command returns all branches on a repo. 
 
-- To list branches from a repo in another project, use the `--project` flag 
-- To get additional details about the branches, use the `--raw` flag 
+ To list branches from a repo in another project, use the `--project` flag 
+ To get additional details about the branches, use the `--raw` flag 
 
 
 ```

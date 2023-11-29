@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl config set active-enterprise-context"
-description: "Learn about the pachctl_config_set_active-enterprise-context command"
+description: "Learn about the pachctl config set active-enterprise-context command"
 ---
 
 ## pachctl config set active-enterprise-context
@@ -10,10 +10,16 @@ Sets the currently active enterprise context.
 
 ### Synopsis
 
-Sets the currently active enterprise context.
+This command sets the currently active enterprise context for deployments using Enterprise Server.
 
 ```
 pachctl config set active-enterprise-context <context> [flags]
+```
+
+### Examples
+
+```
+pachctl config set active-enterprise-context foo
 ```
 
 ### Options

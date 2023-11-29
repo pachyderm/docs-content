@@ -11,7 +11,7 @@ directory: true
 ---
 
 {{% notice note%}}
-The `err_cmd` parameter enables you to fail a datum without failing the
+The `errCmd` parameter enables you to fail a datum without failing the
 whole job.
 {{% /notice%}}
 
@@ -33,7 +33,7 @@ will be processed.
 
 To configure a condition under which you want your failed datums not
 to fail the whole job, you can add your custom error code in
-`err_cmd` and `err_stdin` fields in your pipeline specification.
+`errCmd` and `errStdin` fields in your pipeline specification.
 
 For example, your DAG consists of two pipelines:
 
@@ -57,12 +57,12 @@ the `cmd` field against your datums.
 1. If a datum is processed without errors, {{% productName %}} marks it as
 `processed`.
 1. If a datum fails, {{% productName %}} executes your
-error code (`err_cmd`) on that datum.
-1. If the code in `err_cmd` successfully runs on the *skipped* datum,
+error code (`errCmd`) on that datum.
+1. If the code in `errCmd` successfully runs on the *skipped* datum,
 {{% productName %}} marks the skipped datum as `recovered`. The datum is in a
 failed state and, therefore, the pipeline does not put it into the output
 repository, but successful datums continue onto the next step in your DAG.
-1. If the `err_cmd` code fails on the skipped datum, the datum is marked
+1. If the `errCmd` code fails on the skipped datum, the datum is marked
 as failed, and, consequently, the job is marked as failed.
 
 You can view the processed, skipped, and recovered datums in the `PROGRESS`
@@ -78,10 +78,10 @@ successfully processed, only these two successful datums are used in
 the next pipeline.
 
 If you want to let the job proceed with only the successful datums being
-written to the output, set `"err_cmd" : ["true"]`. The failed datums,
-which are "recovered" by `err_cmd` in this way, will be retried on
+written to the output, set `"errCmd" : ["true"]`. The failed datums,
+which are "recovered" by `errCmd` in this way, will be retried on
 the next job, just as failed datums.
 
 {{% notice note %}}
-**See Also**: [Example err_cmd pipeline](https://github.com/pachyderm/pachyderm/tree/{{% majorMinorVersion %}}/examples/err_cmd/)
+**See Also**: [Example errCmd pipeline](https://github.com/pachyderm/pachyderm/tree/{{% majorMinorVersion %}}/examples/err_cmd/)
 {{%/notice%}}

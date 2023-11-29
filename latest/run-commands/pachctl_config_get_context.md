@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl config get context"
-description: "Learn about the pachctl_config_get_context command"
+description: "Learn about the pachctl config get context command"
 ---
 
 ## pachctl config get context
@@ -10,10 +10,16 @@ Gets a context.
 
 ### Synopsis
 
-Gets the config of a context by its name.
+This command returns the config of a context by its name. This includes the pachd address, cluster deployment ID, and actively set project name.
 
 ```
 pachctl config get context <context> [flags]
+```
+
+### Examples
+
+```
+pachctl config get context foo
 ```
 
 ### Options

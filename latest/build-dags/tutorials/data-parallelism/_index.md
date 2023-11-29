@@ -23,6 +23,14 @@ Our Docker image's [user code](/{{%release%}}/learn/glossary/user-code) for this
 
 ### 1. Create a Project & Input Repos
 
+{{<stack type="wizard">}}
+{{% wizardRow id="Tool"%}}
+{{% wizardButton option="Pachctl CLI" state="active" %}}
+{{% wizardButton option="Console" %}}
+{{% /wizardRow %}}
+{{% wizardResults %}}
+{{% wizardResult val1="tool/pachctl-cli"%}}
+
 1. Create a project named `data-parallelism-tutorial`. 
    ```s
    pachctl create project data-parallelism-tutorial
@@ -38,25 +46,110 @@ Our Docker image's [user code](/{{%release%}}/learn/glossary/user-code) for this
    pachctl create repo sample_data
    ```
 
+{{% /wizardResult %}}
+
+{{% wizardResult val1="tool/console"%}}
+
+1. Navigate to Console. 
+2. Select **Create Project**.
+3. Provide a project **Name** and **Description**.
+    - **Name**: `data-parallelism-tutorial`
+    - **Description**: `My fourth project tutorial.`
+4. Select **Create**.
+5. Scroll to the project's row and select **View Project**.
+6. Select **Create Your First Repo**.
+7. Provide a repo **Name** and **Description**.
+    - **Name**: `models`
+    - **Description**: `Repo for initial models`
+8. Select **Create**.
+9. Create another repo named `sample_data`.
+
+{{% /wizardResult %}}
+{{% /wizardResults  %}}
+{{</stack>}}
+
+
+
 ### 2. Create a Classification Pipeline
 
 We're going to need to first build a pipeline that will classify the breast cancer images. We'll use a [cross input](/{{%release%}}/build-dags/pipeline-spec/input-cross) to combine the sample data and models.
 
+{{<stack type="wizard">}}
+{{% wizardRow id="Tool"%}}
+{{% wizardButton option="Pachctl CLI" state="active" %}}
+{{% wizardButton option="Console" %}}
+{{% /wizardRow %}}
+{{% wizardResults %}}
+{{% wizardResult val1="tool/pachctl-cli"%}}
+
 1. Create a file named `bc_classification.json` with the following contents:
    
-   {{< stack type="wizard" >}}
+```s
+ {
+  "pipeline": {
+    "name": "bc_classification",
+    "project": {
+      "name": "data-parallelism-tutorial"
+    },
+  },
+  "description": "Run breast cancer classification.",
+  "input": {
+    "cross": [
+      {
+        "pfs": {
+          "repo": "sample_data",
+          "glob": "/*"
+        }
+      },
+      {
+        "pfs": {
+          "repo": "models",
+          "glob": "/"
+        }
+      }
+    ]
+  },
+  "transform": {
+    "cmd": [
+      "/bin/bash", "run.sh", "gpu"
+    ],
+    "image": "pachyderm/breast_cancer_classifier:1.11.6"
+  },
+  "resourceLimits": {
+    "gpu": {
+      "type": "nvidia.com/gpu",
+      "number": 1
+    }
+  },
+  "resourceRequests": {
+    "memory": "4G",
+    "cpu": 1
+  },
+  "parallelismSpec": {
+    "constant": 8
+  }
+}
+```
 
-   {{% wizardRow id ="resource" %}}
-   {{% wizardButton option="GPU" state="active" %}}
-   {{% wizardButton option="CPU" %}}
-   {{% /wizardRow %}}
+2. Save the file.
+3. Create the pipeline.
+   ```s
+   pachctl create pipeline -f /path/to/bc_classification.json
+   ```
 
-   {{% wizardResults  %}}
-   {{% wizardResult val1="resource/gpu"%}}
+{{% /wizardResult %}}
+
+{{% wizardResult val1="tool/console"%}}
+
+1. Select **Create** > **Pipeline**.
+2. Overwrite the default json with the following:
    ```s
     {
      "pipeline": {
-       "name": "bc_classification"
+       "name": "bc_classification",
+       "project": {
+         "name": "data-parallelism-tutorial"
+       },
      },
      "description": "Run breast cancer classification.",
      "input": {
@@ -81,68 +174,26 @@ We're going to need to first build a pipeline that will classify the breast canc
        ],
        "image": "pachyderm/breast_cancer_classifier:1.11.6"
      },
-     "resource_limits": {
+     "resourceLimits": {
        "gpu": {
          "type": "nvidia.com/gpu",
          "number": 1
        }
      },
-     "resource_requests": {
+     "resourceRequests": {
        "memory": "4G",
        "cpu": 1
      },
-     "parallelism_spec": {
+     "parallelismSpec": {
        "constant": 8
      }
    }
    ```
-   {{% /wizardResult %}}
 
-   {{% wizardResult val1="resource/cpu"%}}
-   ```s
-   {
-    "pipeline": {
-        "name": "bc_classification_cpu"
-    },
-    "description": "Run breast cancer classification.",
-    "input": {
-        "cross": [
-            {
-              "pfs": {
-                "repo": "sample_data",
-                "glob": "/*"
-              }
-            },
-            {
-              "pfs": {
-                "repo": "models",
-                "glob": "/"
-              }
-            }
-          ]
-    },
-    "transform": {
-        "cmd": [
-            "/bin/bash",
-            "run.sh", "cpu"
-        ],
-        "image": "pachyderm/breast_cancer_classifier:1.11.6"
-    },
-    "parallelism_spec": {
-      "constant": 4
-    }
-   }
-   ```
-   {{% /wizardResult %}}
-   {{% /wizardResults %}}
+{{% /wizardResult %}}
+{{% /wizardResults  %}}
+{{</stack>}}
 
-
-   {{< /stack>}}
-2. Save the file.
-3. Create the pipeline.
-   ```s
-   pachctl create pipeline -f /path/to/bc_classification.json
-   ```
 
 {{% notice tip %}}
 #### Datum Shape 
@@ -181,12 +232,36 @@ The `gen_exam_list_before_cropping.pkl` is a pickled version of the image list, 
    ```s
    cd content/{{%release%}}/build-dags/tutorials/data-parallelism
    ```
-
 3. Upload the `sample_data` and `models` folders to your repos.
+
+   {{<stack type="wizard">}}
+   {{% wizardRow id="Tool"%}}
+   {{% wizardButton option="Pachctl CLI" state="active" %}}
+   {{% wizardButton option="Console" %}}
+   {{% /wizardRow %}}
+   {{% wizardResults %}}
+   {{% wizardResult val1="tool/pachctl-cli"%}}
+
    ```s
    pachctl put file -r sample_data@master -f sample_data/
    pachctl put file -r models@master -f models/
    ```
+
+   {{% /wizardResult %}}
+
+   {{% wizardResult val1="tool/console"%}}
+
+   1. Select the **sample_data** repo > **Upload Files**.
+   2. Select **Browse Files**.
+   3. Choose the `sample_data` directory.
+   4. Select **Upload**.
+   5. Select the **models** repo > **Upload Files**.
+   6. Select **Browse Files**.
+   7. Choose the `models` directory.
+   8. Select **Upload**.
+   {{% /wizardResult %}}
+   {{% /wizardResults  %}}
+   {{</stack>}}
 
 ---
 

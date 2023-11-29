@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl license update-cluster"
-description: "Learn about the pachctl_license_update-cluster command"
+description: "Learn about the pachctl license update-cluster command"
 ---
 
 ## pachctl license update-cluster
@@ -10,20 +10,29 @@ Update an existing cluster registered with the license server.
 
 ### Synopsis
 
-Update an existing cluster registered with the license server.
+This command updates an existing cluster registered with Enterprise Server.
 
 ```
 pachctl license update-cluster [flags]
 ```
 
+### Examples
+
+```
+ pachctl license update-cluster --id=my-cluster --address=grpc://my-cluster:1653 
+ pachctl license update-cluster --id=my-cluster --user-address=grpc://my-cluster:1653
+ pachctl license update-cluster --id=my-cluster --cluster-deployment-id=1234
+
+```
+
 ### Options
 
 ```
-      --address string                 The host and port where the cluster can be reached by the enterprise server
-      --cluster-deployment-id string   The deployment id of the updated cluster
+      --address string                 Set the host and port where the cluster can be reached by the enterprise server.
+      --cluster-deployment-id string   Set the deployment ID of the updated cluster.
   -h, --help                           help for update-cluster
-      --id string                      The id for the cluster to update
-      --user-address string            The host and port where the cluster can be reached by a user
+      --id string                      Set the ID for the cluster to update.
+      --user-address string            Set the host and port where the cluster can be reached by a user.
 ```
 
 ### Options inherited from parent commands

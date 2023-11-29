@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl enterprise heartbeat"
-description: "Learn about the pachctl_enterprise_heartbeat command"
+description: "Learn about the pachctl enterprise heartbeat command"
 ---
 
 ## pachctl enterprise heartbeat
@@ -10,7 +10,9 @@ Sync the enterprise state with the license server immediately.
 
 ### Synopsis
 
-Sync the enterprise state with the license server immediately.
+This command syncs the enterprise state with the license server immediately. 
+
+This means that if there is an active enterprise license associated with the enterprise server, the cluster will also have access to enterprise features.
 
 ```
 pachctl enterprise heartbeat [flags]

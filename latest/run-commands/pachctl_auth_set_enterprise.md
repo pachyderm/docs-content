@@ -1,16 +1,16 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl auth set enterprise"
-description: "Learn about the pachctl_auth_set_enterprise command"
+description: "Learn about the pachctl auth set enterprise command"
 ---
 
 ## pachctl auth set enterprise
 
-Set the roles that 'subject' has on the enterprise server
+Set the roles that a subject has on the enterprise server
 
 ### Synopsis
 
-Set the roles that 'subject' has on the enterprise server
+This command sets the roles that a given subject has on the enterprise server.
 
 ```
 pachctl auth set enterprise [role1,role2 | none ] subject [flags]

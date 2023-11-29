@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl create"
-description: "Learn about the pachctl_create command"
+description: "Learn about the pachctl create command"
 ---
 
 ## pachctl create
@@ -29,6 +29,7 @@ Create a new instance of a Pachyderm resource.
 
 * [pachctl](../pachctl)	 - 
 * [pachctl create branch](../pachctl_create_branch)	 - Create a new branch, or update an existing branch, on a repo.
+* [pachctl create defaults](../pachctl_create_defaults)	 - Set cluster defaults.
 * [pachctl create pipeline](../pachctl_create_pipeline)	 - Create a new pipeline.
 * [pachctl create project](../pachctl_create_project)	 - Create a new project.
 * [pachctl create repo](../pachctl_create_repo)	 - Create a new repo in your active project.

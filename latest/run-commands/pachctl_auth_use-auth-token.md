@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl auth use-auth-token"
-description: "Learn about the pachctl_auth_use-auth-token command"
+description: "Learn about the pachctl auth use-auth-token command"
 ---
 
 ## pachctl auth use-auth-token
@@ -19,7 +19,7 @@ pachctl auth use-auth-token [flags]
 ### Options
 
 ```
-      --enterprise   Use the token for the enterprise context
+      --enterprise   Use the token for the enterprise context.
   -h, --help         help for use-auth-token
 ```
 

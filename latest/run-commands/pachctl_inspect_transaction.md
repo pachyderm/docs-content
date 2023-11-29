@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl inspect transaction"
-description: "Learn about the pachctl_inspect_transaction command"
+description: "Learn about the pachctl inspect transaction command"
 ---
 
 ## pachctl inspect transaction
@@ -10,7 +10,7 @@ Print information about an open transaction.
 
 ### Synopsis
 
-Print information about an open transaction.
+This command prints information about an open transaction.
 
 ```
 pachctl inspect transaction [<transaction>] [flags]

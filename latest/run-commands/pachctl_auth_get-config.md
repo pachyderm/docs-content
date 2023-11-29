@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl auth get-config"
-description: "Learn about the pachctl_auth_get-config command"
+description: "Learn about the pachctl auth get-config command"
 ---
 
 ## pachctl auth get-config

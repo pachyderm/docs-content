@@ -87,9 +87,9 @@ Generally speaking, the only attributes that are strictly required for all scena
         }
     },
   "egress": {
-      "sql_database": {
+      "sqlDatabase": {
           "url": string,
-          "file_format": {
+          "fileFormat": {
               "type": string,
               "columns": [string]
           },
@@ -174,8 +174,8 @@ Generally speaking, the only attributes that are strictly required for all scena
         }
     },
   "service": {
-      "internal_port": int,
-      "external_port": int
+      "internalPort": int,
+      "externalPort": int
     },
 }
 ```
@@ -219,7 +219,7 @@ Generally speaking, the only attributes that are strictly required for all scena
             "glob": "/*"
         }
     },
-  "s3_out": true,
+  "s3Out": true,
 }
 ```
 {{% /wizardResult %}}
@@ -242,45 +242,45 @@ Generally speaking, the only attributes that are strictly required for all scena
         "label": string
     }
   },
-  "tf_job": {
-    "tf_job": string,
+  "tfJob": {
+    "tfJob": string,
   },
   "transform": {
     "image": string,
     "cmd": [ string ],
-    "err_cmd": [ string ],
+    "errCmd": [ string ],
     "env": {
         string: string
     },
     "secrets": [ {
         "name": string,
-        "mount_path": string
+        "mountPath": string
     },
     {
         "name": string,
-        "env_var": string,
+        "envVar": string,
         "key": string
     } ],
-    "image_pull_secrets": [ string ],
+    "imagePullSecrets": [ string ],
     "stdin": [ string ],
-    "err_stdin": [ string ],
-    "accept_return_code": [ int ],
+    "errStdin": [ string ],
+    "acceptReturnCode": [ int ],
     "debug": bool,
     "user": string,
-    "working_dir": string,
+    "workingDir": string,
     "dockerfile": string,
-    "memory_volume": bool,
+    "memoryVolume": bool,
   },
-  "parallelism_spec": {
+  "parallelismSpec": {
     "constant": int
   },
   "egress": {
     // Egress to an object store
     "URL": "s3://bucket/dir"
     // Egress to a database
-    "sql_database": {
+    "sqlDatabase": {
         "url": string,
-        "file_format": {
+        "fileFormat": {
             "type": string,
             "columns": [string]
         },
@@ -291,19 +291,19 @@ Generally speaking, the only attributes that are strictly required for all scena
     }
   },
   "update": bool,
-  "output_branch": string,
+  "outputBranch": string,
   [
     {
-      "worker_id": string,
-      "job_id": string,
-      "datum_status" : {
+      "workerId": string,
+      "jobId": string,
+      "datumStatus" : {
         "started": timestamp,
         "data": []
       }
     }
   ],
-  "s3_out": bool,
-  "resource_requests": {
+  "s3Out": bool,
+  "resourceRequests": {
     "cpu": number,
     "memory": string,
     "gpu": {
@@ -312,7 +312,7 @@ Generally speaking, the only attributes that are strictly required for all scena
     }
     "disk": string,
   },
-  "resource_limits": {
+  "resourceLimits": {
     "cpu": number,
     "memory": string,
     "gpu": {
@@ -321,7 +321,7 @@ Generally speaking, the only attributes that are strictly required for all scena
     }
     "disk": string,
   },
-  "sidecar_resource_limits": {
+  "sidecarResourceLimits": {
     "cpu": number,
     "memory": string,
     "gpu": {
@@ -336,32 +336,32 @@ Generally speaking, the only attributes that are strictly required for all scena
   "description": string,
   "reprocess": bool,
   "service": {
-    "internal_port": int,
-    "external_port": int
+    "internalPort": int,
+    "externalPort": int
   },
   "spout": {
     \\ Optionally, you can combine a spout with a service:
     "service": {
-      "internal_port": int,
-      "external_port": int
+      "internalPort": int,
+      "externalPort": int
     }
   },
-  "datum_set_spec": {
+  "datumSetSpec": {
     "number": int,
-    "size_bytes": int,
-    "per_worker": int,
+    "sizeBytes": int,
+    "perWorker": int,
   }
-  "datum_timeout": string,
-  "job_timeout": string,
+  "datumTimeout": string,
+  "jobTimeout": string,
   "salt": string,
-  "datum_tries": int,
-  "scheduling_spec": {
-    "node_selector": {string: string},
-    "priority_class_name": string
+  "datumTries": int,
+  "schedulingSpec": {
+    "nodeSelector": {string: string},
+    "priorityClassName": string
   },
-  "pod_spec": string,
-  "pod_patch": string,
-  "spec_commit": {
+  "podSpec": string,
+  "podPatch": string,
+  "specCommit": {
     "option": false,
     "branch": {
       "option": false,
@@ -381,7 +381,7 @@ Generally speaking, the only attributes that are strictly required for all scena
   "metadata": {
 
   },
-  "reprocess_spec": string,
+  "reprocessSpec": string,
   "autoscaling": bool
 }
 
@@ -392,20 +392,20 @@ Generally speaking, the only attributes that are strictly required for all scena
 "pfs": {
   "name": string,
   "repo": string,
-  "repo_type":string,
+  "repoType":string,
   "branch": string,
   "commit":string,
   "glob": string,
-  "join_on":string,
-  "outer_join": bool,
-  "group_by": string,
+  "joinOn":string,
+  "outerJoin": bool,
+  "groupBy": string,
   "lazy" bool,
-  "empty_files": bool,
+  "emptyFiles": bool,
   "s3": bool,
   "trigger": {
     "branch": string,
     "all": bool,
-    "cron_spec": string,
+    "cronSpec": string,
   },
 }
 
@@ -421,7 +421,7 @@ Generally speaking, the only attributes that are strictly required for all scena
       "branch": string,
       "glob": string,
       "lazy" bool,
-      "empty_files": bool,
+      "emptyFiles": bool,
       "s3": bool
     }
   },
@@ -432,7 +432,7 @@ Generally speaking, the only attributes that are strictly required for all scena
       "branch": string,
       "glob": string,
       "lazy" bool,
-      "empty_files": bool,
+      "emptyFiles": bool,
       "s3": bool
     }
   }
@@ -451,10 +451,10 @@ Generally speaking, the only attributes that are strictly required for all scena
       "repo": string,
       "branch": string,
       "glob": string,
-      "join_on": string,
-      "outer_join": bool,
+      "joinOn": string,
+      "outerJoin": bool,
       "lazy": bool,
-      "empty_files": bool,
+      "emptyFiles": bool,
       "s3": bool
     }
   },
@@ -464,10 +464,10 @@ Generally speaking, the only attributes that are strictly required for all scena
       "repo": string,
       "branch": string,
       "glob": string,
-      "join_on": string,
-      "outer_join": bool,
+      "joinOn": string,
+      "outerJoin": bool,
       "lazy": bool,
-      "empty_files": bool,
+      "emptyFiles": bool,
       "s3": bool
     }
   }
@@ -485,9 +485,9 @@ Generally speaking, the only attributes that are strictly required for all scena
       "repo": string,
       "branch": string,
       "glob": string,
-      "group_by": string,
+      "groupBy": string,
       "lazy": bool,
-      "empty_files": bool,
+      "emptyFiles": bool,
       "s3": bool
     }
   },
@@ -497,9 +497,9 @@ Generally speaking, the only attributes that are strictly required for all scena
       "repo": string,
       "branch": string,
       "glob": string,
-      "group_by": string,
+      "groupBy": string,
       "lazy": bool,
-      "empty_files": bool,
+      "emptyFiles": bool,
       "s3": bool
     }
   }

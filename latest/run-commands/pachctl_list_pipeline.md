@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl list pipeline"
-description: "Learn about the pachctl_list_pipeline command"
+description: "Learn about the pachctl list pipeline command"
 ---
 
 ## pachctl list pipeline
@@ -12,9 +12,9 @@ Return info about all pipelines.
 
 This command returns information about all pipelines. 
  
-- To return pipelines with a specific state, use the `--state` flag 
-- To return pipelines as they existed at a specific commit, use the `--commit` flag 
-- To return a history of pipeline revisions, use the `--history` flag 
+ To return pipelines with a specific state, use the `--state` flag 
+ To return pipelines as they existed at a specific commit, use the `--commit` flag 
+ To return a history of pipeline revisions, use the `--history` flag 
 
 
 ```

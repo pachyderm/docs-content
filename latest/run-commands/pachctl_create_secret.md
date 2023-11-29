@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl create secret"
-description: "Learn about the pachctl_create_secret command"
+description: "Learn about the pachctl create secret command"
 ---
 
 ## pachctl create secret

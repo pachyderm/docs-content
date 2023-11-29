@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl enterprise deactivate"
-description: "Learn about the pachctl_enterprise_deactivate command"
+description: "Learn about the pachctl enterprise deactivate command"
 ---
 
 ## pachctl enterprise deactivate
@@ -10,7 +10,7 @@ Deactivate the enterprise service
 
 ### Synopsis
 
-Deactivate the enterprise service
+This command deactivates the enterprise service.
 
 ```
 pachctl enterprise deactivate [flags]

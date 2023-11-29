@@ -1,19 +1,25 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl auth set repo"
-description: "Learn about the pachctl_auth_set_repo command"
+description: "Learn about the pachctl auth set repo command"
 ---
 
 ## pachctl auth set repo
 
-Set the roles that 'subject' has on 'repo'
+Set the roles that a subject has on repo
 
 ### Synopsis
 
-Set the roles that 'subject' has on 'repo'
+This command sets the roles (`repoReader`, `repoWriter`, `repoOwner`) that a subject (user, robot) has on a given repo.
 
 ```
 pachctl auth set repo <repo> [role1,role2 | none ] <subject> [flags]
+```
+
+### Examples
+
+```
+ pachctl auth set repo foo repoOwner user:alan.watts@domain.com pachctl auth set repo foo repoWriter, repoReader robot:my-robot pachctl auth set repo foo none robot:my-robot --project foobar
 ```
 
 ### Options

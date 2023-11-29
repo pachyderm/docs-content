@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl config get active-enterprise-context"
-description: "Learn about the pachctl_config_get_active-enterprise-context command"
+description: "Learn about the pachctl config get active-enterprise-context command"
 ---
 
 ## pachctl config get active-enterprise-context
@@ -10,7 +10,7 @@ Gets the currently active enterprise context.
 
 ### Synopsis
 
-Gets the currently active enterprise context.
+This command returns the currently active enterprise context for deployments using Enterprise Server.
 
 ```
 pachctl config get active-enterprise-context [flags]

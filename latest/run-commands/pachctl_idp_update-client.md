@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl idp update-client"
-description: "Learn about the pachctl_idp_update-client command"
+description: "Learn about the pachctl idp update-client command"
 ---
 
 ## pachctl idp update-client
@@ -10,16 +10,22 @@ Update an OIDC client.
 
 ### Synopsis
 
-Update an OIDC client.
+This command updates an OIDC client's settings via a YAML configuration file or stdin input.
 
 ```
 pachctl idp update-client [flags]
 ```
 
+### Examples
+
+```
+pachctl idp update-client --config settings.yaml
+```
+
 ### Options
 
 ```
-      --config string   The file to read the YAML-encoded client configuration from, or '-' for stdin. (default "-")
+      --config string   Set the file to read the YAML-encoded client configuration from, or use '-' for stdin. (default "-")
   -h, --help            help for update-client
 ```
 

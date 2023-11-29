@@ -25,6 +25,14 @@ Our Docker image's [user code](/{{%release%}}/learn/glossary/user-code) for this
 
 ### 1. Create a Project & Input Repo
 
+{{<stack type="wizard">}}
+{{% wizardRow id="Tool"%}}
+{{% wizardButton option="Pachctl CLI" state="active" %}}
+{{% wizardButton option="Console" %}}
+{{% /wizardRow %}}
+{{% wizardResults %}}
+{{% wizardResult val1="tool/pachctl-cli"%}}
+
 1. Create a project named `automl-tutorial`. 
    ```s
    pachctl create project automl-tutorial
@@ -42,7 +50,37 @@ Our Docker image's [user code](/{{%release%}}/learn/glossary/user-code) for this
    pachctl put file csv_data@master:housing-simplified.csv -f /path/to/housing-simplified-1.csv
    ```
 
+{{% /wizardResult %}}
+
+{{% wizardResult val1="tool/console"%}}
+1. Navigate to Console. 
+2. Select **Create Project**.
+3. Provide a project **Name** and **Description**.
+    - **Name**: `automl-tutorial`
+    - **Description**: `My second project tutorial.`
+4. Select **Create**.
+5. Scroll to the project's row and select **View Project**.
+6. Select **Create Your First Repo**.
+7. Provide a repo **Name** and **Description**.
+    - **Name**: `housing_data`
+    - **Description**: `Repo for initial housing data`
+8. Select **Create**.
+
+{{% /wizardResult %}}
+{{% /wizardResults  %}}
+{{</stack>}}
+
+
+
 ### 2. Create a Jsonnet Pipeline
+
+{{<stack type="wizard">}}
+{{% wizardRow id="Tool"%}}
+{{% wizardButton option="Pachctl CLI" state="active" %}}
+{{% wizardButton option="Console" %}}
+{{% /wizardRow %}}
+{{% wizardResults %}}
+{{% wizardResult val1="tool/pachctl-cli"%}}
 
 1. Download or save our [automl.jsonnet](automl.jsonnet) template. 
    ```s
@@ -80,17 +118,49 @@ Our Docker image's [user code](/{{%release%}}/learn/glossary/user-code) for this
        --arg target_col="MEDV" \
        --arg args="--mode Explain --random_state 42"
    ```
-   
-   The model automatically starts training. Once complete, the trained model and evaluation metrics are output to the AutoML output repo.
+
+{{% /wizardResult %}}
+
+{{% wizardResult val1="tool/console"%}}
+
+This part must be done through the CLI due to the pipeline's use of Jsonnet.
+
+{{% /wizardResult %}}
+{{% /wizardResults  %}}
+{{</stack>}}
+
+
+The model automatically starts training. Once complete, the trained model and evaluation metrics are output to the AutoML output repo.
 
 ### 3. Upload the Dataset
 
-1. Update the dataset using [housing-simplified-2.csv](housing-simplified-2.csv); {{% productName %}} retrains the model automatically.
+{{<stack type="wizard">}}
+{{% wizardRow id="Tool"%}}
+{{% wizardButton option="Pachctl CLI" state="active" %}}
+{{% wizardButton option="Console" %}}
+{{% /wizardRow %}}
+{{% wizardResults %}}
+{{% wizardResult val1="tool/pachctl-cli"%}}
+
+Update the dataset using [housing-simplified-2.csv](housing-simplified-2.csv); {{% productName %}} retrains the model automatically.
 
 ```bash
 pachctl put file csv_data@master:housing-simplified.csv -f /path/to/housing-simplified-2.csv
 ```
-2. Repeat the previous step as many times as you want. Each time, {{% productName %}} automatically retrains the model and outputs the new model and evaluation metrics to the AutoML output repo. 
+{{% /wizardResult %}}
+
+{{% wizardResult val1="tool/console"%}}
+
+1. Download the data set, [housing-simplified-2.csv](housing-simplified-2.csv). 
+2. Select the **regression** repo > **Upload Files**.
+3. Select **Browse Files**.
+4. Choose the `housing-simplified-1.csv` file.
+5. Select **Upload**.
+{{% /wizardResult %}}
+{{% /wizardResults  %}}
+{{</stack>}}
+
+Repeat the previous step as many times as you want. Each time, {{% productName %}} automatically retrains the model and outputs the new model and evaluation metrics to the AutoML output repo. 
 
 
 ---

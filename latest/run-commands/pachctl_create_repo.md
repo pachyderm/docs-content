@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl create repo"
-description: "Learn about the pachctl_create_repo command"
+description: "Learn about the pachctl create repo command"
 ---
 
 ## pachctl create repo
@@ -12,8 +12,8 @@ Create a new repo in your active project.
 
 This command creates a repo in the project that is set to your active context (initially the `default` project).
 
-- To specify which project to create the repo in, use the `--project` flag 
-- To add a description to the project, use the `--description` flag  
+ To specify which project to create the repo in, use the `--project` flag 
+ To add a description to the project, use the `--description` flag  
 
 
 ```

@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl idp create-client"
-description: "Learn about the pachctl_idp_create-client command"
+description: "Learn about the pachctl idp create-client command"
 ---
 
 ## pachctl idp create-client
@@ -10,16 +10,22 @@ Create a new OIDC client.
 
 ### Synopsis
 
-Create a new OIDC client.
+This command creates a new OIDC client via a YAML configuration file or through stdin.
 
 ```
 pachctl idp create-client [flags]
 ```
 
+### Examples
+
+```
+pachctl idp create-client --config settings.yaml
+```
+
 ### Options
 
 ```
-      --config string   The file to read the YAML-encoded client configuration from, or '-' for stdin. (default "-")
+      --config string   Set the file to read the YAML-encoded client configuration from, or use '-' for stdin. (default "-")
   -h, --help            help for create-client
 ```
 

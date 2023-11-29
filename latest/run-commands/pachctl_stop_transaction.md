@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl stop transaction"
-description: "Learn about the pachctl_stop_transaction command"
+description: "Learn about the pachctl stop transaction command"
 ---
 
 ## pachctl stop transaction
@@ -10,7 +10,7 @@ Stop modifying the current transaction.
 
 ### Synopsis
 
-Stop modifying the current transaction.
+This command stops modifying the current transaction; to be used with `pachctl resume transaction`. This command is ideal for drafting a transaction in multiple steps.
 
 ```
 pachctl stop transaction [flags]

@@ -20,8 +20,8 @@ This is a top-level attribute of the pipeline spec.
   "spout": {
   \\ Optionally, you can combine a spout with a service:
   "service": {
-    "internal_port": int,
-    "external_port": int
+    "internalPort": int,
+    "externalPort": int
     }
   },
   ...
@@ -34,8 +34,8 @@ This is a top-level attribute of the pipeline spec.
 |Attribute| Description|
 |-|-|
 |`service`|An optional field that is used to specify how to expose the spout as a Kubernetes service.|
-|internal_port| Used for the spout's container.|
-|external_port| Used for the Kubernetes service that exposes the spout.|
+|internalPort| Used for the spout's container.|
+|externalPort| Used for the Kubernetes service that exposes the spout.|
 
 ## Behavior 
 

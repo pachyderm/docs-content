@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl run pps-load-test"
-description: "Learn about the pachctl_run_pps-load-test command"
+description: "Learn about the pachctl run pps-load-test command"
 ---
 
 ## pachctl run pps-load-test
@@ -11,9 +11,9 @@ Run a PPS load test.
 ### Synopsis
 
 This command runs a PPS load test for a specified pipeline specification file. 
-- To run a load test with a specific seed, use the `--seed` flag 
-- To run a load test with a specific parallelism count, use the `--parallelism` flag 
-- To run a load test with a specific pod patch, use the `--pod-patch` flag
+ To run a load test with a specific seed, use the `--seed` flag 
+ To run a load test with a specific parallelism count, use the `--parallelism` flag 
+ To run a load test with a specific pod patch, use the `--pod-patch` flag
 
 ```
 pachctl run pps-load-test <spec-file>  [flags]

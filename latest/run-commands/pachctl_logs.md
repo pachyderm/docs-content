@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl logs"
-description: "Learn about the pachctl_logs command"
+description: "Learn about the pachctl logs command"
 ---
 
 ## pachctl logs
@@ -11,14 +11,14 @@ Return logs from a job.
 ### Synopsis
 
 This command returns logs from a job. 
-- To filter your logs by pipeline, use the `--pipeline` flag 
-- To filter your logs by job, use the `--job` flag 
-- To filter your logs by datum, use the `--datum` flag 
-- To filter your logs by the master process, use the `--master` flag  with the `--pipeline` flag 
-- To filter your logs by the worker process, use the `--worker` flag 
-- To follow the logs as more are created, use the `--follow` flag 
-- To set the number of lines to return, use the `--tail` flag 
-- To return results starting from a certain amount of time before now, use the `--since` flag 
+ To filter your logs by pipeline, use the `--pipeline` flag 
+ To filter your logs by job, use the `--job` flag 
+ To filter your logs by datum, use the `--datum` flag 
+ To filter your logs by the master process, use the `--master` flag  with the `--pipeline` flag 
+ To filter your logs by the worker process, use the `--worker` flag 
+ To follow the logs as more are created, use the `--follow` flag 
+ To set the number of lines to return, use the `--tail` flag 
+ To return results starting from a certain amount of time before now, use the `--since` flag 
 
 
 ```

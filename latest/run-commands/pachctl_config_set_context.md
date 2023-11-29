@@ -1,7 +1,7 @@
 ---
-date: 2023-09-07T13:28:03-04:00
+date: 2023-10-18T16:51:53-04:00
 title: "pachctl config set context"
-description: "Learn about the pachctl_config_set_context command"
+description: "Learn about the pachctl config set context command"
 ---
 
 ## pachctl config set context
@@ -10,10 +10,17 @@ Set a context.
 
 ### Synopsis
 
-Set a context config from a given name and a JSON configuration file on stdin
+This command sets a context config from a given name and a JSON configuration file on stdin
 
 ```
 pachctl config set context <context> [flags]
+```
+
+### Examples
+
+```
+ pachctl config set context foo 
+ pachctl config set context foo --overwrite
 ```
 
 ### Options
