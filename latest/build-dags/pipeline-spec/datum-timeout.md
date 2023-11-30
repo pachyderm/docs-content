@@ -33,7 +33,7 @@ Other considerations:
 
 - Not set by default, allowing a datum to process for as long as needed.
 - Takes precedence over the parallelism or number of datums; no single datum is allowed to exceed this value.
-- The value must be a string that represents a time value, such as `1s`, `5m`, or `15h`. 
+- The value must be a string that represents time in seconds (e.g., `7200s` as `7,200` seconds).
 
 ## When to Use 
 
