@@ -274,7 +274,6 @@ pod/postgres-0                                 1/1     Running     0          2m
 kubectl get services | grep pachyderm-proxy | awk '{print $4}'
 ```
 2. Connect to your cluster:
-   
    {{< stack type="wizard">}}
 
    {{% wizardRow id="Method" %}}
@@ -296,3 +295,9 @@ kubectl get services | grep pachyderm-proxy | awk '{print $4}'
    {{% /wizardResults%}}
 
    {{</stack>}}
+   The above comment connects to the proxy using the 30650 port whereas the proxy is listening on the 80 port. Also, the command in its present format didn't work for us as it could not connect to the server. We had to 
+   use
+   ```s
+   pachctl connect <proxy ip>:80 
+   ```
+   
