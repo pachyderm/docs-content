@@ -78,7 +78,6 @@ Example scenarios:
 {{% wizardRow id="Examples"%}}
 {{% wizardButton option="Every 60s" state="active" %}}
 {{% wizardButton option="Daily With Overwrites" %}}
-{{% wizardButton option="SQL Ingest" %}}
 {{% /wizardRow %}}
 
 {{% wizardResults  %}}
@@ -103,18 +102,8 @@ Example scenarios:
   }
 ```
 {{% /wizardResult %}}
-{{% wizardResult val1="examples/sql-ingest"%}}
-```json
-pachctl update pipeline --jsonnet https://raw.githubusercontent.com/pachyderm/pachyderm/{{% majorMinorVersion %}}/src/templates/sql_ingest_cron.jsonnet \
-  --arg name=myingest \
-  --arg url="mysql://root@mysql:3306/test_db" \
-  --arg query="SELECT * FROM test_data" \
-  --arg hasHeader=false \
-  --arg cronSpec="@every 60s" \
-  --arg secretName="mysql-creds" \
-  --arg format=json 
-```
-{{% /wizardResult %}}
+
+
 {{% /wizardResults %}}
 
 {{< /stack >}}
