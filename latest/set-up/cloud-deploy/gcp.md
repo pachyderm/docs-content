@@ -318,7 +318,11 @@ proxy:
     enabled: false
 EOF
 ```
-2. Install using the following command:
+{{% notice note %}}
+If your Postgres deployment requires SSL, you may need to update the parameters in the [**global**](/{{% release %}}/manage/helm-values/global) section of your Helm Chart Values (HCVs)
+{{% /notice %}}
+
+1. Install using the following command:
 ```s
 helm repo add pachyderm https://helm.pachyderm.com
 helm repo update

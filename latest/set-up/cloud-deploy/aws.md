@@ -215,6 +215,10 @@ console:
 {{% /wizardResults %}}
 {{< /stack>}}
 
+{{% notice note %}}
+If your Postgres deployment requires SSL, you may need to set up additional parameters in the [**global**](/{{% release %}}/manage/helm-values/global) section of your Helm Chart Values (HCVs)
+{{% /notice %}}
+
 ## 6. Configure Helm
 
 Run the following to add the {{% productName %}} repo to Helm:

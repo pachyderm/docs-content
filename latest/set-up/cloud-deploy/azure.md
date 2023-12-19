@@ -241,6 +241,10 @@ section in the [Azure Portal](https://portal.azure.com/) or by running the follo
 {{% /wizardResults %}}
 {{< /stack>}}
 
+{{% notice note %}}
+If your Postgres deployment requires SSL, you may need to set up additional parameters in the [**global**](/{{% release %}}/manage/helm-values/global) section of your Helm Chart Values (HCVs)
+{{% /notice %}}
+
 ## 4. Configure Helm
 
 Run the following to add the {{% productName %}} repo to Helm:
