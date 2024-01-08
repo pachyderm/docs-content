@@ -87,7 +87,7 @@ You are now ready to continue to Step 1.
 ## 2. Install Pachctl CLI
 {{< stack type="wizard" >}}
  {{% wizardRow id="operating-system" %}}
-  {{% wizardButton option="MacOs & Windows" state="active" %}}
+  {{% wizardButton option="MacOS & Windows" state="active" %}}
   {{% wizardButton option="Debian" %}}
   {{% wizardButton option="Linux" %}}
  {{% /wizardRow %}}
