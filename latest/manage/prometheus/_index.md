@@ -27,90 +27,97 @@ Please refer to your full Prometheus documentation for further installation deta
 {{% /notice %}}
 
 ## Prometheus installation and Service Monitor creation
-1. Helm install [kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack#kube-prometheus-stack),
-Prometheus' **Kubernetes cluster monitoring** using the Prometheus Operator:
 
-    - Get Repo Info
-    ```s
-    helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-    helm repo update
-    ```
+### 1. Install Kube-Prometheus-Stack
 
-    - Install the Prometheus-operator helm chart
-    ```s
-    helm install <a-release-name> prometheus-community/kube-prometheus-stack
-    ```
+You'll need to install the [kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack#kube-prometheus-stack), Prometheus' **Kubernetes cluster monitoring** using the Prometheus Operator.
 
-1. Create a ServiceMonitor for {{%productName%}} in Kubernetes:
-    - Create a myprometheusservice.yaml
-        ```s
-        apiVersion: monitoring.coreos.com/v1
-        kind: ServiceMonitor
-        metadata:
-          name: pachyderm-scraper
-          labels:
-            release: <a-release-name>
-        spec:
-            selector:
-                matchLabels:
-                  suite: pachyderm
-            namespaceSelector:
-                matchNames:
-                - default
-            endpoints:
-            - port: prom-metrics
-              interval: 30s
-        ```
-    - Create a ServiceMonitor looking to scrape metrics from `suite: pachyderm`:
-        ```s
-        kubectl create -f myprometheusservice.yaml
-        ```
-        The prometheus-operator will search for the pods based on the label selector `<a-release-name>`
-        and creates a prometheus target so prometheus will scrape the metrics endpoint `prom-metrics`.
+1. Get repo info.
+   
+  ```s
+  helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+  helm repo update
+  ```
+2. Install the Prometheus-operator Helm chart.
+  ```s
+  helm install <a-release-name> prometheus-community/kube-prometheus-stack
+  ```
 
-        In this case, it looks for anything with the label `suite: pachyderm` -
-        which is by default associated with all {{%productName%}} resources.
+### 2. Create a ServiceMonitor for {{%productName%}} in Kubernetes
+
+1. Create a `myprometheusservice.yaml` file with the following:
+  ```s
+  apiVersion: monitoring.coreos.com/v1
+  kind: ServiceMonitor
+  metadata:
+    name: pachyderm-scraper
+    labels:
+      release: <a-release-name>
+  spec:
+      selector:
+          matchLabels:
+            suite: pachyderm
+      namespaceSelector:
+          matchNames:
+          - default
+      endpoints:
+      - port: prom-metrics
+        interval: 30s
+  ```
+2. Create a ServiceMonitor looking to scrape metrics from `suite: pachyderm`:
+   
+  ```s
+  kubectl create -f myprometheusservice.yaml
+  ```
+
+The prometheus-operator will search for the pods based on the label selector `<a-release-name>`
+and creates a prometheus target so prometheus will scrape the metrics endpoint `prom-metrics`.
+
+In this case, it looks for anything with the label `suite: pachyderm` - which is by default associated with all {{%productName%}} resources.
 
 {{% notice note %}}
-   Our Service Monitor `pachyderm-scraper` above maps the endpoint port `prom-metrics`
-       to a corresponding `prom-metrics` port described in {{%productName%}}'s deployment manifest.
-       Let's take a quick look at this file:
+Our Service Monitor `pachyderm-scraper` above maps the endpoint port `prom-metrics`
+    to a corresponding `prom-metrics` port described in {{%productName%}}'s deployment manifest.
+    Let's take a quick look at this file:
 
-   ```s
-   kubectl -o json get service/pachd
+```s
+kubectl -o json get service/pachd
+```
+In the json file, find:
+
+```json
+   {
+   "name": "prom-metrics",
+   "port": 1656,
+   "protocol": "TCP",
+   "targetPort": "prom-metrics"
+   }
+```
+{{% /notice %}}
+
+### 3. Create a PodMonitor for {{%productName%}} in Kubernetes 
+
+1. Create a `mypodmonitor.yaml` file with the following:
+  ```s
+   apiVersion: monitoring.coreos.com/v1
+   kind: PodMonitor
+   metadata:
+    name: worker-scraper
+    labels:
+      release: pach-prom
+   spec:
+    selector:
+      matchLabels:
+        app: pipeline
+        component: worker
+    podMetricsEndpoints:
+    - port: metrics-storage
    ```
-   In the json file, find:
+   
+  The prometheus-operator will search for worker pods and create
+   a prometheus target so that prometheus will scrape the storage
+   sidecar metrics endpoint `metrics-storage`.
 
-   ```json
-      {
-      "name": "prom-metrics",
-      "port": 1656,
-      "protocol": "TCP",
-      "targetPort": "prom-metrics"
-      }
-   ```
-   {{% /notice %}}
-
-1.  Create a PodMonitor for {{%productName%}} in Kubernetes:
-	- Create a mypodmonitor.yaml
-		```s
-		apiVersion: monitoring.coreos.com/v1
-		kind: PodMonitor
-		metadata:
-		  name: worker-scraper
-		  labels:
-		    release: pach-prom
-		spec:
-		  selector:
-		    matchLabels:
-		      app: pipeline
-		      component: worker
-		  podMetricsEndpoints:
-		  - port: metrics-storage
-		```
-		The prometheus-operator will search for worker pods and create
-		a prometheus target so that prometheus will scrape the storage
-		sidecar metrics endpoint `metrics-storage`.
 ## Port-Forward
 
 Connect to Prometheus using the following command:
