@@ -751,7 +751,7 @@ We have everything we need to make the comparison collage, but before we do that
 cat <<EOF > content_shuffler.yaml
 pipeline:
   name: content_shuffler
-  description: A pipeline that collapses our inputs into one datum for the collager.
+description: A pipeline that collapses our inputs into one datum for the collager.
 input:
   union:
     - pfs:
