@@ -1,0 +1,13 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: worker-scraper
+  labels:
+    release: pach-prom
+spec:
+  selector:
+    matchLabels:
+      app: pipeline
+      component: worker
+  podMetricsEndpoints:
+  - port: metrics-storage
