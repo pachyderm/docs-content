@@ -35,7 +35,7 @@ directory: true
 
 **Manual Step Summary**:
 
-1. Open a Powershell terminal.
+1. Open a PowerShell terminal.
 2. Run each of the following:
 
 ```s
@@ -61,7 +61,7 @@ sudo apt upgrade -y
 ```s
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
-All installation steps after [1. Install Docker Desktop](#1-install-docker-desktop) must be run through the WSL terminal (Ubuntu) and not in Powershell. 
+All installation steps after [1. Install Docker Desktop](#1-install-docker-desktop) must be run through the WSL terminal (Ubuntu) and not in PowerShell. 
 
 You are now ready to continue to Step 1.
  {{% /wizardResult %}}
