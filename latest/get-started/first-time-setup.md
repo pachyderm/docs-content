@@ -43,9 +43,10 @@ dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux 
 
 dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
 ```
-2. Download the latest [WSL2 Linux Kernel for x64 machines](https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi).
 3. Run each of the following:
 ```s
+wsl --update
+
 wsl --set-default-version 2
 
 wsl --install -d Ubuntu 
