@@ -1,28 +1,28 @@
 ---
-# metadata # 
+# metadata #
 title: Monitor with Prometheus
-description: Learn how to monitor a cluster using Prometheus. 
-date: 
+description: Learn how to monitor a cluster using Prometheus.
+date:
 # taxonomy #
-tags: 
+tags:
 series:
 seriesPart:
 weight: 21
---- 
+---
 
 {{% notice note %}}
 To monitor a {{%productName%}} cluster
-with Prometheus, a ***Enterprise License*** is required. 
+with Prometheus, a ***Enterprise License*** is required.
 {{% /notice %}}
 
 
-{{%productName%}}'s deployment manifest exposes Prometheus metrics, 
+{{%productName%}}'s deployment manifest exposes Prometheus metrics,
 allowing an easy set up of the monitoring of your cluster.
-Only available for self-managed deployments today. 
+Only available for self-managed deployments today.
 
 
 {{% notice warning %}}
-These installation steps are for **Informational Purposes** ONLY. 
+These installation steps are for **Informational Purposes** ONLY.
 Please refer to your full Prometheus documentation for further installation details and any troubleshooting advice.
 {{% /notice %}}
 
@@ -90,7 +90,27 @@ Prometheus' **Kubernetes cluster monitoring** using the Prometheus Operator:
       }
    ```
    {{% /notice %}}
-    
+
+1.  Create a PodMonitor for {{%productName%}} in Kubernetes:
+	- Create a mypodmonitor.yaml
+		```s
+		apiVersion: monitoring.coreos.com/v1
+		kind: PodMonitor
+		metadata:
+		  name: worker-scraper
+		  labels:
+		    release: pach-prom
+		spec:
+		  selector:
+		    matchLabels:
+		      app: pipeline
+		      component: worker
+		  podMetricsEndpoints:
+		  - port: metrics-storage
+		```
+		The prometheus-operator will search for worker pods and create
+		a prometheus target so that prometheus will scrape the storage
+		sidecar metrics endpoint `metrics-storage`.
 ## Port-Forward
 
 Connect to Prometheus using the following command:
@@ -107,4 +127,3 @@ Run a pipeline of your choice. The `pachyderm-scraper` should be visible:
 ![pachyderm scraper target](/images/prometheus_target_pachyderm_scaper.png)
 
 In the ClassicUI tab, you should be able to see the new {{% productName %}}metrics.
-
