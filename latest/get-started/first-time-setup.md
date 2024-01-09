@@ -81,8 +81,8 @@ You are now ready to continue to Step 1.
 {{< stack type="wizard" >}}
  {{% wizardRow id="operating-system" %}}
   {{% wizardButton option="MacOS" state="active" %}}
-  {{% wizardButton option="Debian" %}}
-  {{% wizardButton option="Linux" %}}
+  {{% wizardButton option="Debian & Ubuntu" %}}
+  {{% wizardButton option="Other Linux" %}}
  {{% /wizardRow %}}
 
  {{% wizardResults %}}
@@ -91,14 +91,19 @@ You are now ready to continue to Step 1.
 brew tap pachyderm/tap && brew install pachyderm/tap/pachctl@{{% majorMinorNumber %}}  
 ```
  {{% /wizardResult%}}
- {{% wizardResult val1="operating-system/debian" %}}
+ {{% wizardResult val1="operating-system/debian-ubuntu" %}}
 
+**AMD**
 ```s
 curl -o /tmp/pachctl.deb -L https://github.com/pachyderm/pachyderm/releases/download/v{{% latestPatchNumber %}}/pachctl_{{% latestPatchNumber %}}_amd64.deb && sudo dpkg -i /tmp/pachctl.deb
 ```
+**ARM**
+```s
+curl -o /tmp/pachctl.deb -L https://github.com/pachyderm/pachyderm/releases/download/v{{% latestPatchNumber %}}/pachctl_{{% latestPatchNumber %}}_arm64.deb && sudo dpkg -i /tmp/pachctl.deb
+```
  {{% /wizardResult%}}
 
- {{% wizardResult val1="operating-system/linux" %}}
+ {{% wizardResult val1="operating-system/other-linux" %}}
 
   **AMD**
  ```s
