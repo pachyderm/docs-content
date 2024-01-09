@@ -65,12 +65,6 @@ All installation steps after [1. Install Docker Desktop](#1-install-docker-deskt
 
 You are now ready to continue to Step 1.
  {{% /wizardResult %}}
- {{% wizardResult val1="operating-system/linux" %}}
-  - You can optionally install [Homebrew](https://brew.sh/) to easily install tools like Helm. 
-```s
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-```
- {{% /wizardResult %}}
 {{% /wizardResults %}}
 {{< /stack >}}
 
@@ -86,25 +80,30 @@ You are now ready to continue to Step 1.
 ## 2. Install Pachctl CLI
 {{< stack type="wizard" >}}
  {{% wizardRow id="operating-system" %}}
-  {{% wizardButton option="MacOs & Windows" state="active" %}}
-  {{% wizardButton option="Debian" %}}
-  {{% wizardButton option="Linux" %}}
+  {{% wizardButton option="MacOS" state="active" %}}
+  {{% wizardButton option="Debian & Ubuntu" %}}
+  {{% wizardButton option="Other Linux" %}}
  {{% /wizardRow %}}
 
  {{% wizardResults %}}
- {{% wizardResult val1="operating-system/macos-windows" %}}
+ {{% wizardResult val1="operating-system/macos" %}}
  ```s
 brew tap pachyderm/tap && brew install pachyderm/tap/pachctl@{{% majorMinorNumber %}}  
 ```
  {{% /wizardResult%}}
- {{% wizardResult val1="operating-system/debian" %}}
+ {{% wizardResult val1="operating-system/debian-ubuntu" %}}
 
+**AMD**
 ```s
 curl -o /tmp/pachctl.deb -L https://github.com/pachyderm/pachyderm/releases/download/v{{% latestPatchNumber %}}/pachctl_{{% latestPatchNumber %}}_amd64.deb && sudo dpkg -i /tmp/pachctl.deb
 ```
+**ARM**
+```s
+curl -o /tmp/pachctl.deb -L https://github.com/pachyderm/pachyderm/releases/download/v{{% latestPatchNumber %}}/pachctl_{{% latestPatchNumber %}}_arm64.deb && sudo dpkg -i /tmp/pachctl.deb
+```
  {{% /wizardResult%}}
 
- {{% wizardResult val1="operating-system/linux" %}}
+ {{% wizardResult val1="operating-system/other-linux" %}}
 
   **AMD**
  ```s
@@ -122,9 +121,35 @@ curl-L https://github.com/pachyderm/pachyderm/releases/download/v{{%latestPatchN
 ## 3. Install & Configure Helm
 
 1. Install [Helm](https://helm.sh/docs/intro/install/):
+
+{{< stack type="wizard" >}}
+ {{% wizardRow id="operating-system" %}}
+  {{% wizardButton option="MacOS" state="active" %}}
+  {{% wizardButton option="Debian & Ubuntu" %}}
+  {{% wizardButton option="Other Linux" %}}
+ {{% /wizardRow %}}
+
+ {{% wizardResults %}}
+ {{% wizardResult val1="operating-system/macos" %}}
 ```s
 brew install helm
 ```
+ {{% /wizardResult%}}
+
+ {{% wizardResult val1="operating-system/debian-ubuntu" %}}
+```s
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+```
+ {{% /wizardResult%}}
+
+ {{% wizardResult val1="operating-system/other-linux" %}}
+```s
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+```
+ {{%/wizardResult%}}
+ {{%/wizardResults%}}
+ {{</stack>}}
+
 2. Add the Pachyderm repo to Helm:
 ```s
 helm repo add pachyderm https://helm.pachyderm.com  
