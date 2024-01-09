@@ -92,7 +92,7 @@ You are now ready to continue to Step 1.
 brew tap pachyderm/tap && brew install pachyderm/tap/pachctl@{{% majorMinorNumber %}}  
 ```
  {{% /wizardResult%}}
- {{% wizardResult val1="operating-system/debian-ubuntu-including-WSL" %}}
+ {{% wizardResult val1="operating-system/debian-ubuntu-including-wsl" %}}
 
 **AMD**
 ```s
@@ -137,7 +137,7 @@ brew install helm
 ```
  {{% /wizardResult%}}
 
- {{% wizardResult val1="operating-system/debian-ubuntu-including-WSL" %}}
+ {{% wizardResult val1="operating-system/debian-ubuntu-including-wsl" %}}
 ```s
 curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 ```
