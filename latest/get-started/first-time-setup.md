@@ -19,7 +19,6 @@ directory: true
  {{% wizardRow id="operating-system" %}}
   {{% wizardButton option="macOS" state="active" %}}
   {{% wizardButton option="Windows" %}}
-  {{% wizardButton option="Linux" %}}
  {{% /wizardRow %}}
 
 {{% wizardResults %}}
@@ -30,12 +29,12 @@ directory: true
   ```
  {{% /wizardResult %}}
  {{% wizardResult val1="operating-system/windows" %}}
- - You must have [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) enabled (`wsl --install`) and a Linux distribution installed; if Linux does not boot in your WSL terminal after downloading from the Microsoft store, see the [manual installation guide](https://learn.microsoft.com/en-us/windows/wsl/install-manual).
+ - You must have [Windows Subsystem for Linux (WSL) 2](https://learn.microsoft.com/en-us/windows/wsl/install) enabled (`wsl --install`) and a Linux distribution installed; if Linux does not boot in your WSL terminal after downloading from the Microsoft store, see the [manual installation guide](https://learn.microsoft.com/en-us/windows/wsl/install-manual).
 
 
 **Manual Step Summary**:
 
-1. Open a Powershell terminal.
+1. Open a PowerShell terminal.
 2. Run each of the following:
 
 ```s
@@ -43,9 +42,10 @@ dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux 
 
 dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
 ```
-2. Download the latest [WSL2 Linux Kernel for x64 machines](https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi).
 3. Run each of the following:
 ```s
+wsl --update
+
 wsl --set-default-version 2
 
 wsl --install -d Ubuntu 
@@ -61,15 +61,9 @@ sudo apt upgrade -y
 ```s
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
-All installation steps after [1. Install Docker Desktop](#1-install-docker-desktop) must be run through the WSL terminal (Ubuntu) and not in Powershell. 
+All installation steps after [1. Install Docker Desktop](#1-install-docker-desktop) must be run through the WSL terminal (Ubuntu) and not in PowerShell. 
 
 You are now ready to continue to Step 1.
- {{% /wizardResult %}}
- {{% wizardResult val1="operating-system/linux" %}}
-  - You can optionally install [Homebrew](https://brew.sh/) to easily install tools like Helm. 
-```s
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-```
  {{% /wizardResult %}}
 {{% /wizardResults %}}
 {{< /stack >}}
@@ -80,31 +74,37 @@ You are now ready to continue to Step 1.
 2. Navigate to **Settings** for [Mac](https://docs.docker.com/desktop/settings/mac/), [Windows](https://docs.docker.com/desktop/settings/windows/), or [Linux](https://docs.docker.com/desktop/settings/linux/). 
    - Adjust your resources (~4 CPUs and ~12GB Memory) 
    - [Enable Kubernetes](https://docs.docker.com/desktop/kubernetes/)
+   - On Windows, enable Docker Desktop integration in Ubuntu if Ubuntu is not your default Linux distro.
 3. Select **Apply & Restart**.
 
 
 ## 2. Install Pachctl CLI
 {{< stack type="wizard" >}}
  {{% wizardRow id="operating-system" %}}
-  {{% wizardButton option="MacOs & Windows" state="active" %}}
-  {{% wizardButton option="Debian" %}}
-  {{% wizardButton option="Linux" %}}
+  {{% wizardButton option="MacOS" state="active" %}}
+  {{% wizardButton option="Debian & Ubuntu (Including WSL)" %}}
+  {{% wizardButton option="Other Linux" %}}
  {{% /wizardRow %}}
 
  {{% wizardResults %}}
- {{% wizardResult val1="operating-system/macos-windows" %}}
+ {{% wizardResult val1="operating-system/macos" %}}
  ```s
 brew tap pachyderm/tap && brew install pachyderm/tap/pachctl@{{% majorMinorNumber %}}  
 ```
  {{% /wizardResult%}}
- {{% wizardResult val1="operating-system/debian" %}}
+ {{% wizardResult val1="operating-system/debian-ubuntu-including-wsl" %}}
 
+**AMD**
 ```s
 curl -o /tmp/pachctl.deb -L https://github.com/pachyderm/pachyderm/releases/download/v{{% latestPatchNumber %}}/pachctl_{{% latestPatchNumber %}}_amd64.deb && sudo dpkg -i /tmp/pachctl.deb
 ```
+**ARM**
+```s
+curl -o /tmp/pachctl.deb -L https://github.com/pachyderm/pachyderm/releases/download/v{{% latestPatchNumber %}}/pachctl_{{% latestPatchNumber %}}_arm64.deb && sudo dpkg -i /tmp/pachctl.deb
+```
  {{% /wizardResult%}}
 
- {{% wizardResult val1="operating-system/linux" %}}
+ {{% wizardResult val1="operating-system/other-linux" %}}
 
   **AMD**
  ```s
@@ -112,7 +112,7 @@ curl -o /tmp/pachctl.deb -L https://github.com/pachyderm/pachyderm/releases/down
  ```
 **ARM**
 ```s
-curl-L https://github.com/pachyderm/pachyderm/releases/download/v{{%latestPatchNumber%}}/pachctl_{{%latestPatchNumber%}}_linux_arm64.tar.gz | sudo  tar -xzv --strip-components=1 -C /usr/local/bin
+curl -L https://github.com/pachyderm/pachyderm/releases/download/v{{%latestPatchNumber%}}/pachctl_{{%latestPatchNumber%}}_linux_arm64.tar.gz | sudo  tar -xzv --strip-components=1 -C /usr/local/bin
 ```
  {{%/wizardResult%}}
  {{%/wizardResults%}}
@@ -122,9 +122,35 @@ curl-L https://github.com/pachyderm/pachyderm/releases/download/v{{%latestPatchN
 ## 3. Install & Configure Helm
 
 1. Install [Helm](https://helm.sh/docs/intro/install/):
+
+{{< stack type="wizard" >}}
+ {{% wizardRow id="operating-system" %}}
+  {{% wizardButton option="MacOS" state="active" %}}
+  {{% wizardButton option="Debian & Ubuntu (Including WSL)" %}}
+  {{% wizardButton option="Other Linux" %}}
+ {{% /wizardRow %}}
+
+ {{% wizardResults %}}
+ {{% wizardResult val1="operating-system/macos" %}}
 ```s
 brew install helm
 ```
+ {{% /wizardResult%}}
+
+ {{% wizardResult val1="operating-system/debian-ubuntu-including-wsl" %}}
+```s
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+```
+ {{% /wizardResult%}}
+
+ {{% wizardResult val1="operating-system/other-linux" %}}
+```s
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+```
+ {{%/wizardResult%}}
+ {{%/wizardResults%}}
+ {{</stack>}}
+
 2. Add the Pachyderm repo to Helm:
 ```s
 helm repo add pachyderm https://helm.pachyderm.com  
