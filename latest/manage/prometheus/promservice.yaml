@@ -3,7 +3,7 @@ kind: ServiceMonitor
 metadata:
   name: pachyderm-scraper
   labels:
-    release: pach-prom
+    release: default
 spec:
     selector:
         matchLabels:
