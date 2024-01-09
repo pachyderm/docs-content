@@ -82,8 +82,8 @@ You are now ready to continue to Step 1.
 {{< stack type="wizard" >}}
  {{% wizardRow id="operating-system" %}}
   {{% wizardButton option="MacOS" state="active" %}}
-  {{% wizardButton option="Debian" %}}
-  {{% wizardButton option="Linux" %}}
+  {{% wizardButton option="Debian & Ubuntu (Including WSL)" %}}
+  {{% wizardButton option="Other Linux" %}}
  {{% /wizardRow %}}
 
  {{% wizardResults %}}
