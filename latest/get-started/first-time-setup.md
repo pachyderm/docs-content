@@ -80,13 +80,13 @@ You are now ready to continue to Step 1.
 ## 2. Install Pachctl CLI
 {{< stack type="wizard" >}}
  {{% wizardRow id="operating-system" %}}
-  {{% wizardButton option="MacOs & Windows" state="active" %}}
+  {{% wizardButton option="MacOS" state="active" %}}
   {{% wizardButton option="Debian" %}}
   {{% wizardButton option="Linux" %}}
  {{% /wizardRow %}}
 
  {{% wizardResults %}}
- {{% wizardResult val1="operating-system/macos-windows" %}}
+ {{% wizardResult val1="operating-system/macos" %}}
  ```s
 brew tap pachyderm/tap && brew install pachyderm/tap/pachctl@{{% majorMinorNumber %}}  
 ```
