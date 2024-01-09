@@ -81,6 +81,7 @@ You are now ready to continue to Step 1.
 2. Navigate to **Settings** for [Mac](https://docs.docker.com/desktop/settings/mac/), [Windows](https://docs.docker.com/desktop/settings/windows/), or [Linux](https://docs.docker.com/desktop/settings/linux/). 
    - Adjust your resources (~4 CPUs and ~12GB Memory) 
    - [Enable Kubernetes](https://docs.docker.com/desktop/kubernetes/)
+   - On Windows, enable Docker Desktop integration in Ubuntu if Ubuntu is not your default Linux distro.
 3. Select **Apply & Restart**.
 
 
