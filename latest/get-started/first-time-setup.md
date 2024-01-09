@@ -19,7 +19,6 @@ directory: true
  {{% wizardRow id="operating-system" %}}
   {{% wizardButton option="macOS" state="active" %}}
   {{% wizardButton option="Windows" %}}
-  {{% wizardButton option="Linux" %}}
  {{% /wizardRow %}}
 
 {{% wizardResults %}}
@@ -82,9 +81,9 @@ You are now ready to continue to Step 1.
 ## 2. Install Pachctl CLI
 {{< stack type="wizard" >}}
  {{% wizardRow id="operating-system" %}}
-  {{% wizardButton option="MacOS & Windows" state="active" %}}
-  {{% wizardButton option="Debian" %}}
-  {{% wizardButton option="Linux" %}}
+  {{% wizardButton option="MacOS" state="active" %}}
+  {{% wizardButton option="Debian & Ubuntu (Including WSL)" %}}
+  {{% wizardButton option="Other Linux" %}}
  {{% /wizardRow %}}
 
  {{% wizardResults %}}
@@ -93,7 +92,7 @@ You are now ready to continue to Step 1.
 brew tap pachyderm/tap && brew install pachyderm/tap/pachctl@{{% majorMinorNumber %}}  
 ```
  {{% /wizardResult%}}
- {{% wizardResult val1="operating-system/debian-ubuntu" %}}
+ {{% wizardResult val1="operating-system/debian-ubuntu-including-WSL" %}}
 
 **AMD**
 ```s
@@ -127,7 +126,7 @@ curl -L https://github.com/pachyderm/pachyderm/releases/download/v{{%latestPatch
 {{< stack type="wizard" >}}
  {{% wizardRow id="operating-system" %}}
   {{% wizardButton option="MacOS" state="active" %}}
-  {{% wizardButton option="Debian & Ubuntu" %}}
+  {{% wizardButton option="Debian & Ubuntu (Including WSL)" %}}
   {{% wizardButton option="Other Linux" %}}
  {{% /wizardRow %}}
 
@@ -138,7 +137,7 @@ brew install helm
 ```
  {{% /wizardResult%}}
 
- {{% wizardResult val1="operating-system/debian-ubuntu" %}}
+ {{% wizardResult val1="operating-system/debian-ubuntu-including-WSL" %}}
 ```s
 curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 ```
