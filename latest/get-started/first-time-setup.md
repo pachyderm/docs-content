@@ -19,7 +19,6 @@ directory: true
  {{% wizardRow id="operating-system" %}}
   {{% wizardButton option="macOS" state="active" %}}
   {{% wizardButton option="Windows" %}}
-  {{% wizardButton option="Linux" %}}
  {{% /wizardRow %}}
 
 {{% wizardResults %}}
