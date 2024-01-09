@@ -30,12 +30,12 @@ directory: true
   ```
  {{% /wizardResult %}}
  {{% wizardResult val1="operating-system/windows" %}}
- - You must have [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) enabled (`wsl --install`) and a Linux distribution installed; if Linux does not boot in your WSL terminal after downloading from the Microsoft store, see the [manual installation guide](https://learn.microsoft.com/en-us/windows/wsl/install-manual).
+ - You must have [Windows Subsystem for Linux (WSL) 2](https://learn.microsoft.com/en-us/windows/wsl/install) enabled (`wsl --install`) and a Linux distribution installed; if Linux does not boot in your WSL terminal after downloading from the Microsoft store, see the [manual installation guide](https://learn.microsoft.com/en-us/windows/wsl/install-manual).
 
 
 **Manual Step Summary**:
 
-1. Open a Powershell terminal.
+1. Open a PowerShell terminal.
 2. Run each of the following:
 
 ```s
@@ -43,9 +43,10 @@ dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux 
 
 dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
 ```
-2. Download the latest [WSL2 Linux Kernel for x64 machines](https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi).
 3. Run each of the following:
 ```s
+wsl --update
+
 wsl --set-default-version 2
 
 wsl --install -d Ubuntu 
@@ -61,7 +62,7 @@ sudo apt upgrade -y
 ```s
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
-All installation steps after [1. Install Docker Desktop](#1-install-docker-desktop) must be run through the WSL terminal (Ubuntu) and not in Powershell. 
+All installation steps after [1. Install Docker Desktop](#1-install-docker-desktop) must be run through the WSL terminal (Ubuntu) and not in PowerShell. 
 
 You are now ready to continue to Step 1.
  {{% /wizardResult %}}
@@ -74,15 +75,16 @@ You are now ready to continue to Step 1.
 2. Navigate to **Settings** for [Mac](https://docs.docker.com/desktop/settings/mac/), [Windows](https://docs.docker.com/desktop/settings/windows/), or [Linux](https://docs.docker.com/desktop/settings/linux/). 
    - Adjust your resources (~4 CPUs and ~12GB Memory) 
    - [Enable Kubernetes](https://docs.docker.com/desktop/kubernetes/)
+   - On Windows, enable Docker Desktop integration in Ubuntu if Ubuntu is not your default Linux distro.
 3. Select **Apply & Restart**.
 
 
 ## 2. Install Pachctl CLI
 {{< stack type="wizard" >}}
  {{% wizardRow id="operating-system" %}}
-  {{% wizardButton option="MacOS" state="active" %}}
-  {{% wizardButton option="Debian & Ubuntu" %}}
-  {{% wizardButton option="Other Linux" %}}
+  {{% wizardButton option="MacOS & Windows" state="active" %}}
+  {{% wizardButton option="Debian" %}}
+  {{% wizardButton option="Linux" %}}
  {{% /wizardRow %}}
 
  {{% wizardResults %}}
