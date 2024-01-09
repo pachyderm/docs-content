@@ -95,7 +95,7 @@ In the json file, find:
 ```
 {{% /notice %}}
 
-### 3. Create a PodMonitor for {{%productName%}} in Kubernetes 
+<!-- ### 3. Create a PodMonitor for {{%productName%}} in Kubernetes 
 
 1. Create a `mypodmonitor.yaml` file with the following:
   ```s
@@ -116,7 +116,7 @@ In the json file, find:
    
   The prometheus-operator will search for worker pods and create
    a prometheus target so that prometheus will scrape the storage
-   sidecar metrics endpoint `metrics-storage`.
+   sidecar metrics endpoint `metrics-storage`. -->
 
 ## Port-Forward
 
