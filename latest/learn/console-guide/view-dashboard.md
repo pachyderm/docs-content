@@ -7,7 +7,7 @@ date:
 tags: 
 series:
 seriesPart:
-weight: 1
+weight: 2
 ---
 
 You can quickly tab between projects to get a high-level view of the status of its jobs from Console's main dashboard.

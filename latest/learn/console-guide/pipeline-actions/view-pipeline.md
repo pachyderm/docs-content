@@ -1,7 +1,7 @@
 ---
 # metadata # 
-title:  View Pipelines
-description: Learn how to view pipeline details in the console UI.
+title:  View Pipeline Details
+description: Learn how to view pipeline details (Jobs, Metadata, Spec) in the console UI.
 date: 
 # taxonomy #
 tags: 

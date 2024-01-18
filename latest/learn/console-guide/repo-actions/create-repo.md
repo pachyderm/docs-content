@@ -1,21 +1,20 @@
 ---
 # metadata # 
-title:  View Project
-description: Learn how to view a project in the console UI.
+title:  Create Repo
+description: Learn how to create a repo in the console UI.
 date: 
 # taxonomy #
 tags: 
 series:
 seriesPart:
-weight: 2
+weight: 1
 ---
 
-## How to View a Project in Console
+# How to Create a Repo in Console
 
 1. Authenticate to {{%productName%}} or access Console via [Localhost](http://localhost).
 2. Scroll through the project list to find a project you want to view.
 3. Select **View Project**.
+4. Select **Create** > **Input Repository** from the sidebar.
 
-Your project is displayed as a DAG (Directed Acyclic Graph) by default.
-
-![view project](/images/console/view-project.gif)
+{{<youtube PwtYRNu3G6I>}} 
