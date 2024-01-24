@@ -17,26 +17,9 @@ label: Optional
 
 ## Values 
 
-The following section contains a series of tabs for commonly used configurations for this section of your values.yml Helm chart. 
-
-
-{{< stack type="wizard">}}
-
-{{% wizardRow id="Options"%}}
-{{% wizardButton option="TLS Disabled" state="active" %}}
-{{% wizardButton option="TLS New Secret" %}}
-{{% wizardButton option="TLS Existing Secret" %}}
-{{% wizardButton option="ES Disabled" %}}
-
-{{% /wizardRow %}}
-
-{{% wizardResults  %}}
-{{% wizardResult val1="options/tls-disabled" %}}
-
-```s
-
+```yaml
 enterpriseServer:
-  enabled: true
+  enabled: false
   affinity: {}
   annotations: {}
   tolerations: []
@@ -49,48 +32,15 @@ enterpriseServer:
     oidcPort: 31657
     identityPort: 31658
     s3GatewayPort: 31600
+  # There are three options for TLS:
+  # 1. Disabled
+  # 2. Enabled, existingSecret, specify secret name
+  # 3. Enabled, newSecret, must specify cert, key and name
   tls:
     enabled: false
-  resources:
-    {}
-    
-    #limits:
-    #  cpu: "1"
-    #  memory: "2G"
-    #requests:
-    #  cpu: "1"
-    #  memory: "2G"
-
-  podLabels: {} # specifies labels to add to the pachd pod.
-  clusterDeploymentID: ""
-  image:
-    repository: "pachyderm/pachd"
-    pullPolicy: "IfNotPresent"
-    tag: "" #  defaults to the chart’s specified appVersion.
-```
-
-{{% /wizardResult %}}
-{{% wizardResult val1="options/tls-new-secret" %}}
-```s
-
-enterpriseServer:
-  enabled: true
-  affinity: {}
-  annotations: {}
-  tolerations: []
-  priorityClassName: ""
-  nodeSelector: {}
-  service:
-    type: ClusterIP
-    apiGRPCPort: 31650
-    prometheusPort: 31656
-    oidcPort: 31657
-    identityPort: 31658
-    s3GatewayPort: 31600
-  tls:
-    enabled: true
+    secretName: ""
     newSecret:
-      create: true
+      create: false
       crt: ""
       key: ""
   resources:
@@ -101,60 +51,13 @@ enterpriseServer:
     #requests:
     #  cpu: "1"
     #  memory: "2G"
-  podLabels: {} #  specifies labels to add to the pachd pod.
+  # podLabels specifies labels to add to the pachd pod.
+  podLabels: {}
   clusterDeploymentID: ""
   image:
     repository: "pachyderm/pachd"
     pullPolicy: "IfNotPresent"
-    tag: "" # defaults to the chart’s specified appVersion.
+    # tag defaults to the chart’s specified appVersion.
+    tag: ""
 ```
-{{% /wizardResult %}}
-{{% wizardResult val1="options/tls-existing-secret" %}}
-```s
-
-enterpriseServer:
-  enabled: true
-  affinity: {}
-  annotations: {}
-  tolerations: []
-  priorityClassName: ""
-  nodeSelector: {}
-  service:
-    type: ClusterIP
-    apiGRPCPort: 31650
-    prometheusPort: 31656
-    oidcPort: 31657
-    identityPort: 31658
-    s3GatewayPort: 31600
-  tls:
-    enabled: true
-    secretName: ""
-  resources:
-    {}
-
-    #limits:
-    #  cpu: "1"
-    #  memory: "2G"
-    #requests:
-    #  cpu: "1"
-    #  memory: "2G"
-
-  podLabels: {} # specifies labels to add to the pachd pod.
-  clusterDeploymentID: ""
-  image:
-    repository: "pachyderm/pachd"
-    pullPolicy: "IfNotPresent"
-    tag: "" # defaults to the chart’s specified appVersion.
-```
-{{% /wizardResult %}}
-
-{{% wizardResult val1="options/es-disabled" %}}
-```s
-
-enterpriseServer:
-  enabled: false
-```
-{{% /wizardResult %}}
-{{% /wizardResults  %}}
-{{< /stack >}}
 

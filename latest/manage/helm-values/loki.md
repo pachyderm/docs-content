@@ -22,9 +22,6 @@ Loki Stack contains values that are passed to the loki-stack subchart. For more 
 
 ## Values
 
-The following section contains a series of tabs for commonly used configurations for this section of your values.yml Helm chart. 
-
-
 ```s
 loki-stack:
   loki:
@@ -45,6 +42,11 @@ loki-stack:
       nodeSelector: {}
       tolerations: []
     config:
+      server:
+        grpc_server_max_recv_msg_size: 67108864 # 64MiB
+      query_scheduler:
+        grpc_client_config:
+          max_send_msg_size: 67108864 # 64MiB
       limits_config:
         retention_period: 24h
         retention_stream:
@@ -154,6 +156,9 @@ loki-stack:
           # this gets all kubernetes labels as well
           - action: labelmap
             regex: __meta_kubernetes_pod_label_(.+)
+    # Tolerations for promtail pods. Promtail must run on any node where pachyderm resources will run or you won't get any logs for them
+    # For example, GKE gpu nodes have a default taint of nvidia.com/gpu=present:NoSchedule so if you use GPUs we wouldn't have logs
+    tolerations: []
     livenessProbe:
       failureThreshold: 5
       tcpSocket:

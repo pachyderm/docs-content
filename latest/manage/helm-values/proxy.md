@@ -17,12 +17,7 @@ Proxy is a service that handles all {{% productName %}} traffic (S3, Console, OI
 
 ## Values
 
-
-
 ```s
-
-# The proxy is a service to handle all Pachyderm traffic (S3, Console, OIDC, Dex, GRPC) on a single
-# port; good for exposing directly to the Internet.
 proxy:
   # If enabled, create a proxy deployment (based on the Envoy proxy) and a service to expose it.  If
   # ingress is also enabled, any Ingress traffic will be routed through the proxy before being sent
@@ -143,5 +138,4 @@ preflightCheckJob:
   # logging settings
   sqlQueryLogs: false
   disableLogSampling: false
-
 ```

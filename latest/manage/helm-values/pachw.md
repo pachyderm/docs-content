@@ -38,91 +38,32 @@ Workloads that constantly process storage and compaction tasks because they are 
 
 Workloads that utilize GPUs and other expensive resources may want to add a node selector to scope PachW instances to less expensive nodes.
 
-
-
 ## Values 
 
-{{< stack type="wizard">}}
-
-{{% wizardRow id="Options"%}}
-{{% wizardButton option="Enabled"  state="active"%}}
-{{% wizardButton option="With Minimum" %}}
-{{% wizardButton option="With Specific Resources"  %}}
-{{% wizardButton option="As Sidecars (Legacy)"  %}}
-
-{{% /wizardRow %}}
-
-{{% wizardResults %}}
-
-{{% wizardResult val1="options/enabled" %}}
-
-```s
+```yaml
 pachw:
-  inheritFromPachd: true # defaults below configuration options like 'resources' and 'tolerations' to  values from pachd
-  maxReplicas: 1
-  minReplicas: 0
+  # When set to true, inheritFromPachd defaults below configuration options like 'resources' and 'tolerations' to
+  # values from pachd. These values can be overridden by defining the corresponding pachw values below.
+  # When set to false, a nil value will be used by default instead. Some configuration variables will always use their
+  # corresponding pachd value, regardless of whether 'inheritFromPachd' is true, such as 'serviceAccountName'
+  inheritFromPachd: true
+  # When set to true, inSidecars also processes storage related tasks in pipeline storage sidecars like version 2.4 or less.
+  # when enabled, pachw instances can still run in their own dedicated kubernetes deployment if maxReplicas is greater than 0.
+  # For more control of where pachw instances run, 'inSidecars' should be disabled.
   inSidecars: false
-  #tolerations: []
-  #affinity: {}
-  #nodeSelector: {}
-  ```
-
-{{% /wizardResult %}}
-
-
-{{% wizardResult val1="options/with-minimum" %}}
-```s
-pachw:
-  inheritFromPachd: true # defaults below configuration options like 'resources' and 'tolerations' to  values from pachd
-  maxReplicas: 6 # set to match the number of pipeline replicas you have; sample formula: pipeline count * parallelism = target maxReplicas
-  minReplicas: 1
-  #tolerations: []
-  #affinity: {}
-  #nodeSelector: {}
-  #resources: # sets kubernetes resource configuration for pachw pods. If not defined, config from pachd is reused. We recommend defining resources when running pachw with a high value of maxReplicas (when formula is: target maxReplicas * 1.5).
-   #limits:
-     #cpu: "1"
-     #memory: "2G"
-   #requests:
-     #cpu: "1"
-   #memory: "2G"
-```
-
-{{% /wizardResult %}}
-
-{{% wizardResult val1="options/with-specific-resources" %}}
-```s
-pachw:
-  inheritFromPachd: false # defaults below configuration options like 'resources' and 'tolerations' to  values from pachd
-  maxReplicas: 6 # set to match the number of pipeline replicas you have; sample formula: pipeline count * parallelism = target maxReplicas
-  minReplicas: 1
-  #tolerations: []
-  #affinity: {}
-  #nodeSelector: {}
-  resources: # sets kubernetes resource configuration for pachw pods. If not defined, config from pachd is reused. We recommend defining resources when running pachw with a high value of maxReplicas (when formula is: target maxReplicas * 1.5).
-   limits:
-     cpu: "1"
-     memory: "2G"
-   requests:
-     cpu: "1"
-   memory: "2G"
-```
-
-{{% /wizardResult %}}
-
-{{% wizardResult val1="options/as-sidecars-legacy" %}}
-```s
-pachw:
-  inheritFromPachd: true # defaults below configuration options like 'resources' and 'tolerations' to  values from pachd
-  inSidecars: true # processes storage related tasks in pipeline storage sidecars like version 2.4.2 or less.
+  # maxReplicas should be tuned based on the number of pipelines on a user-per-user basis.
   maxReplicas: 1
+  # minReplicas: 0
+  # We recommend defining resources when running pachw with a high value of maxReplicas.
+  #resources:
+  #  limits:
+  #    cpu: "1"
+  #    memory: "2G"
+  #  requests:
+  #    cpu: "1"
+  #  memory: "2G"
+  #
   #tolerations: []
   #affinity: {}
   #nodeSelector: {}
 ```
-
-{{% /wizardResult %}}
-
-{{% /wizardResults %}}
-
-{{</stack >}}

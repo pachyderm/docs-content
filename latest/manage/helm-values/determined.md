@@ -1,0 +1,380 @@
+---
+# metadata # 
+title:  Determined HCVs
+description:  Configure the connection to Determined.
+date: 
+# taxonomy #
+tags: ["helm"]
+series: ["helm"]
+seriesPart:
+weight: 
+label: Recommended
+hidden: true
+--- 
+
+##  Values 
+
+```yaml
+determined:
+  enabled: false
+  # The image registry to be used to pull the Master image.
+  # Determined OSS edition uses the determinedai repository in DockerHub.
+  imageRegistry: determinedai
+  # HPE Machine Learning Development Environment (MLDE), Determined Enterprise Edition, uses the HPE MSC as the image registry
+  #imageRegistry: hub.myenterpriselicense.hpe.com/hpe-mlde/<SKU>
+  # ATTENTION
+  # Please also set:
+  #   - communicated product SKU,
+  #   - enterpriseEdition flag to true,
+  # and configure the imagePullSecretName to the HPE MSC credentials K8s Secret (e.g. mlde-hpe-registry)
+  #
+  # To get the HPE MSC credentials go to the myenterpriselicense.hpe.com website, and along with the information provided with your order
+  # create the HPE MSC credentials K8s Secret (e.g. mlde-hpe-registry) using the following command:
+  # kubectl create secret docker-registry mlde-hpe-registry  \
+  # --docker-server=hub.myenterpriselicense.hpe.com/hpe-mlde/<SKU> \
+  # --docker-username=<HPE MSC user name>  \
+  # --docker-password=<HPE MSC MLDE license key> \
+  # --docker-email=<HPE MSC user email> \
+  # -n <MLDE deployment K8s namespace, if any>
+
+  # Default images used during the deployment
+  defaultImages:
+    # PostgreSQL image
+    postgreSQL: "postgres:10.14"
+
+    # default Kube Scheduler image
+    kubeScheduler: "k8s.gcr.io/scheduler-plugins/kube-scheduler:v0.18.9"
+
+    # Kube Scheduler used when the K8s default scheduler is set to preemption
+    # when, defaultScheduler: preemption
+    kubeSchedulerPreemption: "determinedai/kube-scheduler:0.17.0"
+
+    # default images for CPU and GPU environments
+    cpuImage: "determinedai/environments:py-3.8-pytorch-1.12-tf-2.8-cpu-9d07809"
+    gpuImage: "determinedai/environments:cuda-11.3-pytorch-1.12-tf-2.11-gpu-2b7e2a1"
+
+  # Install Determined enterprise edition.
+  enterpriseEdition: false
+
+  # Should be configured if using the master image in the Determined enterprise edition
+  # or private registry.
+  imagePullSecretName: ""
+
+  # Logger Level in master.yaml - Four severity levels: debug, info, warn, error
+  logLevel: info
+  # Sets in master.yaml the output of Logger in color mode - Values: true (default), false
+  logColor: true
+
+  # masterPort configures the port at which the Determined master listens for connections on.
+  masterPort: 8080
+
+  # Enables the creation of non-namespaced objects - Default: true
+  # Non-namespaced object are cluster-wide resources, such as the PriorityClasses.
+  # In multiple installation on a single cluster (using different namespaces),
+  # this flag set to false avoids to recreate non-namespaced objects. In some cases (e.g., GitOps w/ArgoCD)
+  # creating existing cluster-wide resources could stop/hang automatic deployments.
+  #
+  # WARNING
+  # The first installation must run with the createNonNamespacedObjects flag set to true to ensure
+  # the non-namespaced objects are created.
+  createNonNamespacedObjects: true
+
+  # External ca.crt injection certificate/s secret name
+  # Command to create the ca cert secret:
+  #     kubectl create secret generic <external ca cert secret name, e.g., ext-ca-cert> --from-file=<ca.crt or ca bundle filename> -n <namespace>
+  #
+  # externalCaCertSecretName: <external ca cert secret name, e.g., ext-ca-cert>
+
+  # When useNodePortForMaster is set to false (default), a LoadBalancer service is deployed to make
+  # the Determined master reachable from outside the cluster. When useNodePortForMaster is set to
+  # true, the master will instead be exposed behind a NodePort service. When using a NodePort service
+  # users will typically have to configure an Ingress to make the Determined master reachable from
+  # outside the cluster. NodePort service is recommended when configuring TLS termination in a
+  # load-balancer.
+  useNodePortForMaster: false
+
+  # Enable route support for Openshift by setting enabled to true. Configure tls termination (i.e edge) if needed.
+  # openshiftRoute:
+  # enabled:
+  # host:
+  # termination:
+
+  # tlsSecret enables TLS encryption for all communication made to the Determined master (TLS
+  # termination is performed in the Determined master). This includes communication between the
+  # Determined master and the task containers it launches, but does not include communication between
+  # the task containers (distributed training). The specified Secret of type tls must already exist in
+  # the same namespace in which Determined is being installed.
+  # tlsSecret:
+
+  # security:
+  # defaultTask sets the user and group that tasks will run as. For convenience, the default Determined
+  # environments contain an unprivileged user named det-nobody, which does have a writable HOME
+  # directory. The det-nobody user is a suitable default user when using the default Determined
+  # environment images and when running containers as root is not desired.
+  # defaultTask:
+  #   user: det-nobody
+  #   uid: 65533
+  #   group: det-nobody
+  #   gid: 65533
+  # authz option (EE-only) sets the authorization mode.
+  # authz:
+  #   type: rbac
+
+  # oidc (EE-only) enables OpenID Connect Integration, which is only available if enterpriseEdition
+  # is true. It allows users to use single sign-on with their organization’s identity provider.
+  # clientSecretKey is the key of the secret contained in the secret.
+  oidc:
+    enabled: false
+    provider: ""
+    idpRecipientUrl: ""
+    idpSsoUrl: ""
+    clientId: ""
+    clientSecretKey: ""
+    clientSecretName: ""
+    authenticationClaim: ""
+    scimAuthenticationAttribute: ""
+
+  # scim (EE-only) enables System for Cross-domain Identity Management (SCIM) integration, which is
+  # only available if enterpriseEdition is true. It allows administrators to easily and securely
+  # provision users and groups through their standard identity provider (IdP).
+  # scim:
+  #   enabled: true
+  #   auth:
+  #     type: basic
+  #     username: determined
+  #     password: password
+
+  # db sets the configurations for the database.
+  db:
+    # To deploy your own Postgres DB, provide a hostAddress. If hostAddress is provided, Determined
+    # will skip deploying a Postgres DB.
+    # hostAddress:
+
+    # Required parameters, whether you are using your own DB or a Determined DB.
+    name: determined
+    user: postgres
+    password: postgres
+    port: 5432
+
+    # Only used for Determined DB deployment. Configures the size of the PersistentVolumeClaim for the
+    # Determined deployed database, as well as the CPU and memory requirements. Should be adjusted for
+    # scale.
+    storageSize: 30Gi
+    cpuRequest: "2"
+    memRequest: 8Gi
+    #  cpuLimit: 2
+    #  memLimit: 8Gi
+
+    # useNodePortForDB configures whether ClusterIP or NodePort service type is used for the
+    # Determined deployed DB. By default ClusterIP is used.
+    useNodePortForDB: false
+
+    # storageClassName configures the StorageClass used by the PersistentVolumeClaim for the
+    # Determined deployed database. This can be left blank if a default storage class is specified in
+    # the cluster. If dynamic provisioning of PersistentVolumes is disabled, users must manually
+    # create a PersistentVolume that will match the PersistentVolumeClaim.
+    # storageClassName:
+
+    # ssl_mode and ssl_root_cert configure the TLS connection to the database. Users must first
+    # create a kubernetes secret or configMap containing their certificate and specify its name in
+    # certResourceName. For sslRootCert, specify the name of the file only (not path).
+    # sslMode: verify-ca
+    # sslRootCert: <cert_name>
+    # resourceType: <secret/configMap>
+    # certResourceName: <secret/configMap name>
+
+  # checkpointStorage controls where checkpoints are stored. Supported types include `shared_fs`,
+  # `gcs`, and `s3`.
+  checkpointStorage:
+    # Applicable to all checkpointStorage types.
+    saveExperimentBest: 0
+    saveTrialBest: 1
+    saveTrialLatest: 1
+
+    # Comment out if not using `shared_fs`. Users are strongly discouraged from using `shared_fs` for
+    # storage beyond initial testing as most Kubernetes cluster nodes do not have a shared file
+    # system.
+    type: shared_fs
+    hostPath: /checkpoints
+
+    # For storing in GCS.
+    # type: gcs
+    # bucket: <bucket_name>
+    # prefix: <prefix>
+
+    # For storing in S3.
+    # type: s3
+    # bucket: <bucket_name>
+    # accessKey: <access_key>
+    # secretKey: <secret_key>
+    # endpointUrl: <endpoint_url>
+    # prefix: <prefix>
+
+    # For storing in Azure Blob Storage with a connection string.
+    # Do NOT use if already using Azure Blob Storage with account URL
+    # type: azure
+    # container: <container_name>
+    # connection_string: <connection_string>
+
+    # For storing in Azure Blob Storage with an account URL.
+    # Do NOT use if already using Azure Blob Storage with connection string.
+    # The `credential` field is optional.
+    # type: azure
+    # container: <container_name>
+    # account_url: <account_url>
+    # credential: <credential>
+
+  # This is the number of GPUs there are per machine. Determined uses this information when scheduling
+  # multi-GPU tasks. Each multi-GPU (distributed training) task will be scheduled as a set of
+  # `slotsPerTask / maxSlotsPerPod` separate pods, with each pod assigned up to `maxSlotsPerPod` GPUs.
+  # Distributed tasks with sizes that are not divisible by `maxSlotsPerPod` are never scheduled. If
+  # you have a cluster of different size nodes (e.g., 4 and 8 GPUs per node), set `maxSlotsPerPod` to
+  # the greatest common divisor of all the sizes (4, in that case).
+  # maxSlotsPerPod:
+
+  ## For CPU-only clusters, use `slotType: cpu`, and make sure to set `slotResourceRequest` below.
+  # slotType: cpu
+  # slotResourceRequests:
+  ## Number of cpu units requested for compute slots. Note: since kubernetes may schedule some
+  ## system tasks on the nodes which take up some resources, 8-core node may not always fit
+  ## a `cpu: 8` task container.
+  # cpu: 7
+
+  # Memory and CPU requirements for the master instance. Should be adjusted for scale.
+  masterCpuRequest: "2"
+  masterMemRequest: 8Gi
+  # masterCpuLimit: "2"
+  # masterMemLimit: 8Gi
+
+  ## Configure the task container defaults. Tasks include trials, commands, TensorBoards, notebooks,
+  ## and shells. For all task containers, shm_size_bytes and network_mode are configurable. For
+  ## trials, the network interface used by distributed (multi-machine) training is configurable.
+  taskContainerDefaults:
+    # networkMode: bridge
+    # dtrainNetworkInterface: "<network interface name>"
+    forcePullImage: false
+
+    # Configure a default pod spec for all GPU tasks (experiments, notebooks, commands) and CPU tasks
+    # (CPU notebooks, TensorBoards, zero-slot commands). If a pod spec is defined for an individual
+    # task, that pod spec will replace the default one that is defined here. See
+    # https://docs:determined.ai/latest/topic-guides/custom-pod-specs.html for more details.
+    # cpuPodSpec:
+    # gpuPodSpec:
+
+    # Configure default Docker images for all GPU tasks (experiments, notebooks, commands) and
+    # CPU tasks (CPU notebooks, TensorBoards, zero-slot commands). If a Docker image is defined
+    # for an individual task, that image will replace the default one that is defined here.
+    # If specifying a default image, both GPU and CPU default images must be defined.
+    # cpuImage:
+    # gpuImage:
+
+  ## Configure whether we collect anonymous information about the usage of Determined.
+  telemetry:
+    enabled: true
+
+  ## Configure Prometheus endpoints for monitoring.
+  # observability:
+  #   enable_prometheus: true
+
+  ## A user-friendly name to identify this cluster by.
+  # clusterName: Dev
+
+  ## Specifies the duration in seconds before idle
+  ## TensorBoard instances are automatically terminated.
+  ## A TensorBoard instance is considered to be idle if
+  ## it does not receive any HTTP traffic. The default timeout is 300 seconds (5 minutes).
+  # tensorboardTimeout: 300
+
+  ## Specifies the duration in seconds before idle notebook instances are automatically terminated.
+  ## This behavior is disabled by default.
+  # notebookTimeout: 1800
+
+  # defaultPassword sets the password for the admin and determined user accounts.
+  # defaultPassword:
+
+  ## Configure how trial logs are stored.
+  # logging:
+  ## The backend to use. Can be `default` to send logs to the master to store in the PostgreSQL
+  ## database or `elastic` to store logs in an Elasticsearch cluster (without going through the
+  ## master).
+  # type: default
+
+  ## The remaining options should be provided only for the `elastic` backend.
+
+  ## The host and port to use to connect to the Elasticsearch cluster.
+  # host: <host>
+  # port: <port>
+
+  ## Authentication and TLS options for making the connection to Elasticsearch.
+  # security:
+  # username: <username>
+  # password: <password>
+  # tls:
+  # enabled: true
+  # skipVerify: false
+
+  ## The name to use when verifying the certificate, if different from the name used to connect.
+  # certificateName: <name>
+
+  ## This value must contain the contents of the certificate file, not a path. It may be set
+  ## directly or using `helm install --set-file logging.security.tls.certificate=<path>`.
+  # certificate: <certificate contents>
+
+  ## Configure the default Determined scheduler
+  ## Currently supports "coscheduler" for gang scheduling and "preemption" for priority based
+  ## scheduling with preemption
+  # defaultScheduler: preemption
+
+  ## Configure the resource pools in the Determined cluster.
+  resourcePools:
+    - pool_name: default
+  # defaultAuxResourcePool: default
+  # defaultComputeResourcePool: default
+
+console:
+  # enabled controls whether the console manifests are created or not.
+  enabled: true
+  annotations: {}
+  image:
+    # repository is the image repo to pull from; together with tag it
+    # replicates the --console-image & --registry arguments to pachctl
+    # deploy.
+    repository: "pachyderm/haberdashery"
+    pullPolicy: "IfNotPresent"
+    # tag is the image repo to pull from; together with repository it
+    # replicates the --console-image argument to pachctl deploy.
+    # defaults to .Chart.AppVersion
+    tag: ""
+  priorityClassName: ""
+  nodeSelector: {}
+  tolerations: []
+  # podLabels specifies labels to add to the console pod.
+  podLabels: {}
+  # resources specifies the resource request and limits.
+  resources:
+    {}
+    #limits:
+    #  cpu: "1"
+    #  memory: "2G"
+    #requests:
+    #  cpu: "1"
+    #  memory: "2G"
+  config:
+    reactAppRuntimeIssuerURI: "" # Inferred if running locally or using ingress
+    oauthRedirectURI: "" # Infered if running locally or using ingress
+    oauthClientID: "console"
+    oauthClientSecret: "" # Autogenerated on install if blank
+    # oauthClientSecretSecretName is used to set the OAuth Client Secret via an existing k8s secret.
+    # The value is pulled from the key, "OAUTH_CLIENT_SECRET".
+    oauthClientSecretSecretName: ""
+    graphqlPort: 4000
+    pachdAddress: "pachd-peer:30653"
+    disableTelemetry: false # Disables analytics and error data collection
+
+  service:
+    annotations: {}
+    # labels specifies labels to add to the console service.
+    labels: {}
+    # type specifies the Kubernetes type of the console service.
+    type: ClusterIP
+```
