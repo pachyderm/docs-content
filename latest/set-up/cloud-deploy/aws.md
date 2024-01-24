@@ -99,7 +99,7 @@ For production environments, it is **strongly recommended that you disable the b
 | *Public access* | Set the Public access to `No` for production environments. |
 | *VPC security group* | Create a new VPC security group and open the postgreSQL port or use an existing one. |
 | *Password authentication* or *Password and IAM database authentication* | Choose one or the other. |
-| *Database name* | In the *Database options* section, enter {{%productName%}}'s Database name (We are using `{{% productName %}}`in this example.) and click *Create database* to create your PostgreSQL service. Your instance is running. <br>Warning: If you do not specify a database name, Amazon RDS does not create a database.|
+| *Database name* | In the *Database options* section, enter {{%productName%}}'s Database name (We are using `Pachyderm`in this example.) and click *Create database* to create your PostgreSQL service. Your instance is running. <br>Warning: If you do not specify a database name, Amazon RDS does not create a database.|
 
    {{% notice info %}}
   **Standalone Clusters**
@@ -109,7 +109,7 @@ For production environments, it is **strongly recommended that you disable the b
    Multi-cluster setups use [Enterprise Server](/{{%release%}}/set-up/enterprise-server) to handle authentication, so you do not need to create a `dex` database.
    {{% /notice %}}
    
-1. Create a new user account and **grant it full CRUD permissions to both `{{% productName %}}`and (when applicable) `dex` databases**. Read about managing PostgreSQL users and roles in this [blog](https://aws.amazon.com/blogs/database/managing-postgresql-users-and-roles/). {{%productName%}} will use the same username to connect to `{{% productName %}}`as well as to `dex`. 
+1. Create a new user account and **grant it full CRUD permissions to both the `Pachyderm` and (when applicable) `dex` databases**. Read about managing PostgreSQL users and roles in this [blog](https://aws.amazon.com/blogs/database/managing-postgresql-users-and-roles/). {{%productName%}} will use the same username to connect to `Pachyderm`as well as to `dex`. 
 
 ## 5. Create a Values.yaml
 
