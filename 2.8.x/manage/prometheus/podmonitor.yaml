@@ -1,0 +1,19 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: worker-scraper
+  labels:
+    release: default
+spec:
+  selector:
+    matchLabels:
+      app: pipeline
+      component: worker
+  namespaceSelector:
+    matchNames:
+      - default
+  podMetricsEndpoints:
+  - port: metrics-storage
+    path: /metrics
+  - port: metrics-user
+    path: /metrics

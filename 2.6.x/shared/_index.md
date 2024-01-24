@@ -1,4 +1,0 @@
----
-title: Shared
-hidden: true
----
