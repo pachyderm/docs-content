@@ -17,7 +17,6 @@ beta: true
 You can choose between {{% productName %}}'s pre-built image (a custom version of [`jupyter/scipy-notebook`](https://jupyter-docker-stacks.readthedocs.io/en/latest/using/selecting.html#jupyter-scipy-notebook)) or add the extension to your own image. {{% productName %}}'s image includes:
 
 - The extension jupyterlab-pachyderm
-- [FUSE](https://osxfuse.github.io/)
 - A pre-created `/pfs` directory that mounts to and grants ownership to the JupyterLab User
 - A `mount-server` binary 
 
@@ -26,7 +25,14 @@ You can choose between {{% productName %}}'s pre-built image (a custom version o
 1. Open your terminal.
 2. Run the following:
  ```s
- docker run -it -p 8888:8888 -e GRANT_SUDO=yes --user root --device /dev/fuse --privileged --entrypoint /opt/conda/bin/jupyter pachyderm/notebooks-user:v{{% extensionJupyterLab %}}  lab --allow-root
+ docker run -it \
+  -p 8888:8888 \
+  -e GRANT_SUDO=yes \
+  --user root \
+  --device /dev/fuse \
+  --privileged \
+  --entrypoint /opt/conda/bin/jupyter \
+  pachyderm/notebooks-user:v{{% extensionJupyterLab %}} 
  ```
 3. Open the UI using the link provided in the terminal following:
  ```s
