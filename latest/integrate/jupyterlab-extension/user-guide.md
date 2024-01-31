@@ -71,7 +71,7 @@ You can view the full compiled pipeline spec from the **Pipline Spec Preview** s
 4. Scroll to a repository's row.
 5. Select **Load**.
 
-![load repo](/images/jupyterlab-extension/mount-mount-repo.gif)
+![load repo](/images/jupyterlab-extension/mount-load-repo.gif)
 
 <!-- 2. Open a **Terminal** from the launcher.
 1. Navigate to the **Mounted Repositories** tab.
