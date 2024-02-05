@@ -22,9 +22,10 @@ weight: 7
 
 | Version  | Release Status | Support |
 | -------- | -------------- | ------- |
+| 2.8.x    | GA             | Yes     |
 | 2.7.x    | GA             | Yes     |
 | 2.6.x    | GA             | Yes     |
-| 2.5.x    | GA             | Yes     |           
+| 2.5.x    | EOL            | no      |           
 | 2.4.x    | EOL            | No     |
 | 2.3.x    | EOL            | No      |
 | 2.2.x    | EOL             | No      |
