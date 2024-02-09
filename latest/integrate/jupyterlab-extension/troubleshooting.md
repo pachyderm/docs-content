@@ -1,23 +1,14 @@
 ---
-# metadata # 
+# metadata #
 title: Troubleshooting
 description: Learn how to troubleshoot the JupyterLab Mount Extension.
-date: 
+date:
 # taxonomy #
 tags: ["integrations", "jupyterlab", "notebooks"]
 series:
 seriesPart:
 weight: 5
-beta: true 
----
-
-In general, restarting your server should resolve most JupyterLab Mount Extension issues. To restart your server, run the following command from the terminal window in Jupyterlab:
-
-```s
-pkill -f "mount-server"
-```
-The server restarts by itself.
-
+beta: true
 ---
 
 ## Known Issues
@@ -36,5 +27,5 @@ We recommend the following:
   podman machine ssh
   sudo rpm-ostree install qemu-user-static && sudo systemctl reboot THEN
   ```
-   then replace the keyword `docker` with `podman` in all the commands above. 
+   then replace the keyword `docker` with `podman` in all the commands above.
   - Or make sure that your qemu version is > `6.2`
