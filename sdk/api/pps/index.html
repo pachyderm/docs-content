@@ -38,11 +38,14 @@ from datetime import (
 )
 from typing import (
     TYPE_CHECKING,
+    AsyncIterable,
     AsyncIterator,
     Dict,
+    Iterable,
     Iterator,
     List,
     Optional,
+    Union,
 )
 
 import betterproto
@@ -628,6 +631,8 @@ class PipelineInfoDetails(betterproto.Message):
     tolerations: List[&#34;Toleration&#34;] = betterproto.message_field(34)
     sidecar_resource_requests: &#34;ResourceSpec&#34; = betterproto.message_field(35)
     determined: &#34;Determined&#34; = betterproto.message_field(36)
+    maximum_expected_uptime: timedelta = betterproto.message_field(37)
+    workers_started_at: datetime = betterproto.message_field(38)
 
 
 @dataclass(eq=False, repr=False)
@@ -874,6 +879,25 @@ class ListDatumRequestFilter(betterproto.Message):
 
 
 @dataclass(eq=False, repr=False)
+class CreateDatumRequest(betterproto.Message):
+    &#34;&#34;&#34;
+    Emits a stream of datums as they are created from the given input. Client
+    must cancel the stream when it no longer wants to receive datums.
+    &#34;&#34;&#34;
+
+    input: &#34;Input&#34; = betterproto.message_field(1)
+    &#34;&#34;&#34;
+    Input is the input to list datums from. The datums listed are the ones
+    that would be run if a pipeline was created with the provided input. The
+    input field is only required for the first request. The server ignores
+    subsequent requests&#39; input field.
+    &#34;&#34;&#34;
+
+    number: int = betterproto.int64_field(2)
+    &#34;&#34;&#34;Number of datums to return in next response&#34;&#34;&#34;
+
+
+@dataclass(eq=False, repr=False)
 class DatumSetSpec(betterproto.Message):
     &#34;&#34;&#34;
     DatumSetSpec specifies how a pipeline should split its datums into datum
@@ -969,6 +993,7 @@ class CreatePipelineRequest(betterproto.Message):
     sidecar_resource_requests: &#34;ResourceSpec&#34; = betterproto.message_field(35)
     dry_run: bool = betterproto.bool_field(37)
     determined: &#34;Determined&#34; = betterproto.message_field(38)
+    maximum_expected_uptime: timedelta = betterproto.message_field(39)
 
 
 @dataclass(eq=False, repr=False)
@@ -1011,10 +1036,7 @@ class ListPipelineRequest(betterproto.Message):
     &#34;&#34;&#34;
 
     details: bool = betterproto.bool_field(3)
-    &#34;&#34;&#34;
-    When true, return PipelineInfos with the details field, which requires
-    loading the pipeline spec from PFS.
-    &#34;&#34;&#34;
+    &#34;&#34;&#34;Deprecated: Details are always returned.&#34;&#34;&#34;
 
     jq_filter: str = betterproto.string_field(4)
     &#34;&#34;&#34;A jq program string for additional result filtering&#34;&#34;&#34;
@@ -1026,6 +1048,13 @@ class ListPipelineRequest(betterproto.Message):
     &#34;&#34;&#34;
     Projects to filter on. Empty list means no filter, so return all pipelines.
     &#34;&#34;&#34;
+
+    def __post_init__(self) -&gt; None:
+        super().__post_init__()
+        if self.is_set(&#34;details&#34;):
+            warnings.warn(
+                &#34;ListPipelineRequest.details is deprecated&#34;, DeprecationWarning
+            )
 
 
 @dataclass(eq=False, repr=False)
@@ -1093,6 +1122,31 @@ class RunPipelineRequest(betterproto.Message):
 @dataclass(eq=False, repr=False)
 class RunCronRequest(betterproto.Message):
     pipeline: &#34;Pipeline&#34; = betterproto.message_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class CheckStatusRequest(betterproto.Message):
+    &#34;&#34;&#34;Request to check the status of pipelines within a project.&#34;&#34;&#34;
+
+    all: bool = betterproto.bool_field(1, group=&#34;context&#34;)
+    &#34;&#34;&#34;boolean field indicating status of all project pipelines.&#34;&#34;&#34;
+
+    project: &#34;_pfs__.Project&#34; = betterproto.message_field(2, group=&#34;context&#34;)
+    &#34;&#34;&#34;project field&#34;&#34;&#34;
+
+
+@dataclass(eq=False, repr=False)
+class CheckStatusResponse(betterproto.Message):
+    &#34;&#34;&#34;Response for check status request. Provides alerts if any.&#34;&#34;&#34;
+
+    project: &#34;_pfs__.Project&#34; = betterproto.message_field(1)
+    &#34;&#34;&#34;project field&#34;&#34;&#34;
+
+    pipeline: &#34;Pipeline&#34; = betterproto.message_field(2)
+    &#34;&#34;&#34;pipeline field&#34;&#34;&#34;
+
+    alerts: List[str] = betterproto.string_field(3)
+    &#34;&#34;&#34;alert indicators&#34;&#34;&#34;
 
 
 @dataclass(eq=False, repr=False)
@@ -1225,7 +1279,44 @@ class CreatePipelineTransaction(betterproto.Message):
     effective_json: str = betterproto.string_field(3)
 
 
+@dataclass(eq=False, repr=False)
+class ProjectDefaults(betterproto.Message):
+    create_pipeline_request: &#34;CreatePipelineRequest&#34; = betterproto.message_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class GetProjectDefaultsRequest(betterproto.Message):
+    project: &#34;_pfs__.Project&#34; = betterproto.message_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class GetProjectDefaultsResponse(betterproto.Message):
+    project_defaults_json: str = betterproto.string_field(1)
+    &#34;&#34;&#34;
+    A JSON-encoded ProjectDefaults message, this is the verbatim input passed
+    to SetProjectDefaults.
+    &#34;&#34;&#34;
+
+
+@dataclass(eq=False, repr=False)
+class SetProjectDefaultsRequest(betterproto.Message):
+    project: &#34;_pfs__.Project&#34; = betterproto.message_field(1)
+    regenerate: bool = betterproto.bool_field(2)
+    reprocess: bool = betterproto.bool_field(3)
+    dry_run: bool = betterproto.bool_field(4)
+    project_defaults_json: str = betterproto.string_field(5)
+    &#34;&#34;&#34;
+    A JSON-encoded ProjectDefaults message, this will be stored verbatim.
+    &#34;&#34;&#34;
+
+
+@dataclass(eq=False, repr=False)
+class SetProjectDefaultsResponse(betterproto.Message):
+    affected_pipelines: List[&#34;Pipeline&#34;] = betterproto.message_field(1)
+
+
 class ApiStub:
+
     def __init__(self, channel: &#34;grpc.Channel&#34;):
         self.__rpc_inspect_job = channel.unary_unary(
             &#34;/pps_v2.API/InspectJob&#34;,
@@ -1270,6 +1361,11 @@ class ApiStub:
         self.__rpc_list_datum = channel.unary_stream(
             &#34;/pps_v2.API/ListDatum&#34;,
             request_serializer=ListDatumRequest.SerializeToString,
+            response_deserializer=DatumInfo.FromString,
+        )
+        self.__rpc_create_datum = channel.stream_stream(
+            &#34;/pps_v2.API/CreateDatum&#34;,
+            request_serializer=CreateDatumRequest.SerializeToString,
             response_deserializer=DatumInfo.FromString,
         )
         self.__rpc_restart_datum = channel.unary_unary(
@@ -1331,6 +1427,11 @@ class ApiStub:
             &#34;/pps_v2.API/RunCron&#34;,
             request_serializer=RunCronRequest.SerializeToString,
             response_deserializer=betterproto_lib_google_protobuf.Empty.FromString,
+        )
+        self.__rpc_check_status = channel.unary_stream(
+            &#34;/pps_v2.API/CheckStatus&#34;,
+            request_serializer=CheckStatusRequest.SerializeToString,
+            response_deserializer=CheckStatusResponse.FromString,
         )
         self.__rpc_create_secret = channel.unary_unary(
             &#34;/pps_v2.API/CreateSecret&#34;,
@@ -1412,10 +1513,21 @@ class ApiStub:
             request_serializer=SetClusterDefaultsRequest.SerializeToString,
             response_deserializer=SetClusterDefaultsResponse.FromString,
         )
+        self.__rpc_get_project_defaults = channel.unary_unary(
+            &#34;/pps_v2.API/GetProjectDefaults&#34;,
+            request_serializer=GetProjectDefaultsRequest.SerializeToString,
+            response_deserializer=GetProjectDefaultsResponse.FromString,
+        )
+        self.__rpc_set_project_defaults = channel.unary_unary(
+            &#34;/pps_v2.API/SetProjectDefaults&#34;,
+            request_serializer=SetProjectDefaultsRequest.SerializeToString,
+            response_deserializer=SetProjectDefaultsResponse.FromString,
+        )
 
     def inspect_job(
         self, *, job: &#34;Job&#34; = None, wait: bool = False, details: bool = False
     ) -&gt; &#34;JobInfo&#34;:
+
         request = InspectJobRequest()
         if job is not None:
             request.job = job
@@ -1427,6 +1539,7 @@ class ApiStub:
     def inspect_job_set(
         self, *, job_set: &#34;JobSet&#34; = None, wait: bool = False, details: bool = False
     ) -&gt; Iterator[&#34;JobInfo&#34;]:
+
         request = InspectJobSetRequest()
         if job_set is not None:
             request.job_set = job_set
@@ -1498,6 +1611,7 @@ class ApiStub:
     def subscribe_job(
         self, *, pipeline: &#34;Pipeline&#34; = None, details: bool = False
     ) -&gt; Iterator[&#34;JobInfo&#34;]:
+
         request = SubscribeJobRequest()
         if pipeline is not None:
             request.pipeline = pipeline
@@ -1509,6 +1623,7 @@ class ApiStub:
     def delete_job(
         self, *, job: &#34;Job&#34; = None
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         request = DeleteJobRequest()
         if job is not None:
             request.job = job
@@ -1518,6 +1633,7 @@ class ApiStub:
     def stop_job(
         self, *, job: &#34;Job&#34; = None, reason: str = &#34;&#34;
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         request = StopJobRequest()
         if job is not None:
             request.job = job
@@ -1526,6 +1642,7 @@ class ApiStub:
         return self.__rpc_stop_job(request)
 
     def inspect_datum(self, *, datum: &#34;Datum&#34; = None) -&gt; &#34;DatumInfo&#34;:
+
         request = InspectDatumRequest()
         if datum is not None:
             request.datum = datum
@@ -1542,6 +1659,7 @@ class ApiStub:
         number: int = 0,
         reverse: bool = False
     ) -&gt; Iterator[&#34;DatumInfo&#34;]:
+
         request = ListDatumRequest()
         if job is not None:
             request.job = job
@@ -1554,6 +1672,16 @@ class ApiStub:
         request.reverse = reverse
 
         for response in self.__rpc_list_datum(request):
+            yield response
+
+    def create_datum(
+        self,
+        request_iterator: Union[
+            AsyncIterable[&#34;CreateDatumRequest&#34;], Iterable[&#34;CreateDatumRequest&#34;]
+        ],
+    ) -&gt; Iterator[&#34;DatumInfo&#34;]:
+
+        for response in self.__rpc_create_datum(request_iterator):
             yield response
 
     def restart_datum(
@@ -1571,6 +1699,7 @@ class ApiStub:
     def rerun_pipeline(
         self, *, pipeline: &#34;Pipeline&#34; = None, reprocess: bool = False
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         request = RerunPipelineRequest()
         if pipeline is not None:
             request.pipeline = pipeline
@@ -1612,7 +1741,8 @@ class ApiStub:
         tolerations: Optional[List[&#34;Toleration&#34;]] = None,
         sidecar_resource_requests: &#34;ResourceSpec&#34; = None,
         dry_run: bool = False,
-        determined: &#34;Determined&#34; = None
+        determined: &#34;Determined&#34; = None,
+        maximum_expected_uptime: timedelta = None
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
         tolerations = tolerations or []
 
@@ -1669,6 +1799,8 @@ class ApiStub:
         request.dry_run = dry_run
         if determined is not None:
             request.determined = determined
+        if maximum_expected_uptime is not None:
+            request.maximum_expected_uptime = maximum_expected_uptime
 
         return self.__rpc_create_pipeline(request)
 
@@ -1680,6 +1812,7 @@ class ApiStub:
         update: bool = False,
         reprocess: bool = False
     ) -&gt; &#34;CreatePipelineV2Response&#34;:
+
         request = CreatePipelineV2Request()
         request.create_pipeline_request_json = create_pipeline_request_json
         request.dry_run = dry_run
@@ -1691,6 +1824,7 @@ class ApiStub:
     def inspect_pipeline(
         self, *, pipeline: &#34;Pipeline&#34; = None, details: bool = False
     ) -&gt; &#34;PipelineInfo&#34;:
+
         request = InspectPipelineRequest()
         if pipeline is not None:
             request.pipeline = pipeline
@@ -1733,6 +1867,7 @@ class ApiStub:
         keep_repo: bool = False,
         must_exist: bool = False
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         request = DeletePipelineRequest()
         if pipeline is not None:
             request.pipeline = pipeline
@@ -1765,6 +1900,7 @@ class ApiStub:
     def start_pipeline(
         self, *, pipeline: &#34;Pipeline&#34; = None
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         request = StartPipelineRequest()
         if pipeline is not None:
             request.pipeline = pipeline
@@ -1774,6 +1910,7 @@ class ApiStub:
     def stop_pipeline(
         self, *, pipeline: &#34;Pipeline&#34; = None, must_exist: bool = False
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         request = StopPipelineRequest()
         if pipeline is not None:
             request.pipeline = pipeline
@@ -1802,15 +1939,29 @@ class ApiStub:
     def run_cron(
         self, *, pipeline: &#34;Pipeline&#34; = None
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         request = RunCronRequest()
         if pipeline is not None:
             request.pipeline = pipeline
 
         return self.__rpc_run_cron(request)
 
+    def check_status(
+        self, *, all: bool = False, project: &#34;_pfs__.Project&#34; = None
+    ) -&gt; Iterator[&#34;CheckStatusResponse&#34;]:
+
+        request = CheckStatusRequest()
+        request.all = all
+        if project is not None:
+            request.project = project
+
+        for response in self.__rpc_check_status(request):
+            yield response
+
     def create_secret(
         self, *, file: bytes = b&#34;&#34;
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         request = CreateSecretRequest()
         request.file = file
 
@@ -1819,6 +1970,7 @@ class ApiStub:
     def delete_secret(
         self, *, secret: &#34;Secret&#34; = None
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         request = DeleteSecretRequest()
         if secret is not None:
             request.secret = secret
@@ -1826,11 +1978,13 @@ class ApiStub:
         return self.__rpc_delete_secret(request)
 
     def list_secret(self) -&gt; &#34;SecretInfos&#34;:
+
         request = betterproto_lib_google_protobuf.Empty()
 
         return self.__rpc_list_secret(request)
 
     def inspect_secret(self, *, secret: &#34;Secret&#34; = None) -&gt; &#34;SecretInfo&#34;:
+
         request = InspectSecretRequest()
         if secret is not None:
             request.secret = secret
@@ -1838,6 +1992,7 @@ class ApiStub:
         return self.__rpc_inspect_secret(request)
 
     def delete_all(self) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         request = betterproto_lib_google_protobuf.Empty()
 
         return self.__rpc_delete_all(request)
@@ -1876,6 +2031,7 @@ class ApiStub:
             yield response
 
     def activate_auth(self) -&gt; &#34;ActivateAuthResponse&#34;:
+
         request = ActivateAuthRequest()
 
         return self.__rpc_activate_auth(request)
@@ -1894,6 +2050,7 @@ class ApiStub:
         data_total: int = 0,
         stats: &#34;ProcessStats&#34; = None
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         request = UpdateJobStateRequest()
         if job is not None:
             request.job = job
@@ -1920,6 +2077,7 @@ class ApiStub:
         pod_patch: str = &#34;&#34;,
         state_id: str = &#34;&#34;
     ) -&gt; &#34;RunLoadTestResponse&#34;:
+
         request = RunLoadTestRequest()
         request.dag_spec = dag_spec
         request.load_spec = load_spec
@@ -1931,6 +2089,7 @@ class ApiStub:
         return self.__rpc_run_load_test(request)
 
     def run_load_test_default(self) -&gt; &#34;RunLoadTestResponse&#34;:
+
         request = betterproto_lib_google_protobuf.Empty()
 
         return self.__rpc_run_load_test_default(request)
@@ -1938,6 +2097,7 @@ class ApiStub:
     def render_template(
         self, *, template: str = &#34;&#34;, args: Dict[str, str] = None
     ) -&gt; &#34;RenderTemplateResponse&#34;:
+
         request = RenderTemplateRequest()
         request.template = template
         request.args = args
@@ -1945,6 +2105,7 @@ class ApiStub:
         return self.__rpc_render_template(request)
 
     def list_task(self, *, group: &#34;Group&#34; = None) -&gt; Iterator[&#34;_taskapi__.TaskInfo&#34;]:
+
         request = _taskapi__.ListTaskRequest()
         if group is not None:
             request.group = group
@@ -1955,6 +2116,7 @@ class ApiStub:
     def get_kube_events(
         self, *, since: timedelta = None, query: str = &#34;&#34;
     ) -&gt; Iterator[&#34;LokiLogMessage&#34;]:
+
         request = LokiRequest()
         if since is not None:
             request.since = since
@@ -1966,6 +2128,7 @@ class ApiStub:
     def query_loki(
         self, *, since: timedelta = None, query: str = &#34;&#34;
     ) -&gt; Iterator[&#34;LokiLogMessage&#34;]:
+
         request = LokiRequest()
         if since is not None:
             request.since = since
@@ -1975,6 +2138,7 @@ class ApiStub:
             yield response
 
     def get_cluster_defaults(self) -&gt; &#34;GetClusterDefaultsResponse&#34;:
+
         request = GetClusterDefaultsRequest()
 
         return self.__rpc_get_cluster_defaults(request)
@@ -1987,6 +2151,7 @@ class ApiStub:
         dry_run: bool = False,
         cluster_defaults_json: str = &#34;&#34;
     ) -&gt; &#34;SetClusterDefaultsResponse&#34;:
+
         request = SetClusterDefaultsRequest()
         request.regenerate = regenerate
         request.reprocess = reprocess
@@ -1995,8 +2160,39 @@ class ApiStub:
 
         return self.__rpc_set_cluster_defaults(request)
 
+    def get_project_defaults(
+        self, *, project: &#34;_pfs__.Project&#34; = None
+    ) -&gt; &#34;GetProjectDefaultsResponse&#34;:
+
+        request = GetProjectDefaultsRequest()
+        if project is not None:
+            request.project = project
+
+        return self.__rpc_get_project_defaults(request)
+
+    def set_project_defaults(
+        self,
+        *,
+        project: &#34;_pfs__.Project&#34; = None,
+        regenerate: bool = False,
+        reprocess: bool = False,
+        dry_run: bool = False,
+        project_defaults_json: str = &#34;&#34;
+    ) -&gt; &#34;SetProjectDefaultsResponse&#34;:
+
+        request = SetProjectDefaultsRequest()
+        if project is not None:
+            request.project = project
+        request.regenerate = regenerate
+        request.reprocess = reprocess
+        request.dry_run = dry_run
+        request.project_defaults_json = project_defaults_json
+
+        return self.__rpc_set_project_defaults(request)
+
 
 class ApiBase:
+
     def inspect_job(
         self, job: &#34;Job&#34;, wait: bool, details: bool, context: &#34;grpc.ServicerContext&#34;
     ) -&gt; &#34;JobInfo&#34;:
@@ -2088,6 +2284,15 @@ class ApiBase:
         context.set_details(&#34;Method not implemented!&#34;)
         raise NotImplementedError(&#34;Method not implemented!&#34;)
 
+    def create_datum(
+        self,
+        request_iterator: Iterator[&#34;CreateDatumRequest&#34;],
+        context: &#34;grpc.ServicerContext&#34;,
+    ) -&gt; Iterator[&#34;DatumInfo&#34;]:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
     def restart_datum(
         self,
         job: &#34;Job&#34;,
@@ -2139,6 +2344,7 @@ class ApiBase:
         sidecar_resource_requests: &#34;ResourceSpec&#34;,
         dry_run: bool,
         determined: &#34;Determined&#34;,
+        maximum_expected_uptime: timedelta,
         context: &#34;grpc.ServicerContext&#34;,
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -2231,6 +2437,13 @@ class ApiBase:
     def run_cron(
         self, pipeline: &#34;Pipeline&#34;, context: &#34;grpc.ServicerContext&#34;
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def check_status(
+        self, all: bool, project: &#34;_pfs__.Project&#34;, context: &#34;grpc.ServicerContext&#34;
+    ) -&gt; Iterator[&#34;CheckStatusResponse&#34;]:
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details(&#34;Method not implemented!&#34;)
         raise NotImplementedError(&#34;Method not implemented!&#34;)
@@ -2376,6 +2589,26 @@ class ApiBase:
         context.set_details(&#34;Method not implemented!&#34;)
         raise NotImplementedError(&#34;Method not implemented!&#34;)
 
+    def get_project_defaults(
+        self, project: &#34;_pfs__.Project&#34;, context: &#34;grpc.ServicerContext&#34;
+    ) -&gt; &#34;GetProjectDefaultsResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def set_project_defaults(
+        self,
+        project: &#34;_pfs__.Project&#34;,
+        regenerate: bool,
+        reprocess: bool,
+        dry_run: bool,
+        project_defaults_json: str,
+        context: &#34;grpc.ServicerContext&#34;,
+    ) -&gt; &#34;SetProjectDefaultsResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
     __proto_path__ = &#34;pps_v2.API&#34;
 
     @property
@@ -2425,6 +2658,11 @@ class ApiBase:
                 self.list_datum,
                 request_deserializer=ListDatumRequest.FromString,
                 response_serializer=ListDatumRequest.SerializeToString,
+            ),
+            &#34;CreateDatum&#34;: grpc.stream_stream_rpc_method_handler(
+                self.create_datum,
+                request_deserializer=CreateDatumRequest.FromString,
+                response_serializer=CreateDatumRequest.SerializeToString,
             ),
             &#34;RestartDatum&#34;: grpc.unary_unary_rpc_method_handler(
                 self.restart_datum,
@@ -2485,6 +2723,11 @@ class ApiBase:
                 self.run_cron,
                 request_deserializer=RunCronRequest.FromString,
                 response_serializer=RunCronRequest.SerializeToString,
+            ),
+            &#34;CheckStatus&#34;: grpc.unary_stream_rpc_method_handler(
+                self.check_status,
+                request_deserializer=CheckStatusRequest.FromString,
+                response_serializer=CheckStatusRequest.SerializeToString,
             ),
             &#34;CreateSecret&#34;: grpc.unary_unary_rpc_method_handler(
                 self.create_secret,
@@ -2565,6 +2808,16 @@ class ApiBase:
                 self.set_cluster_defaults,
                 request_deserializer=SetClusterDefaultsRequest.FromString,
                 response_serializer=SetClusterDefaultsRequest.SerializeToString,
+            ),
+            &#34;GetProjectDefaults&#34;: grpc.unary_unary_rpc_method_handler(
+                self.get_project_defaults,
+                request_deserializer=GetProjectDefaultsRequest.FromString,
+                response_serializer=GetProjectDefaultsRequest.SerializeToString,
+            ),
+            &#34;SetProjectDefaults&#34;: grpc.unary_unary_rpc_method_handler(
+                self.set_project_defaults,
+                request_deserializer=SetProjectDefaultsRequest.FromString,
+                response_serializer=SetProjectDefaultsRequest.SerializeToString,
             ),
         }</code></pre>
 </details>
@@ -4668,10 +4921,10 @@ run.</p></div>
 </dd>
 <dt id="pachyderm_sdk.api.pps.PipelineInfoDetails"><code class="flex name class">
 <span>class <span class="ident">PipelineInfoDetails</span></span>
-<span>(</span><span>transform: <a title="pachyderm_sdk.api.pps.Transform" href="#pachyderm_sdk.api.pps.Transform">Transform</a> = None, tf_job: <a title="pachyderm_sdk.api.pps.TfJob" href="#pachyderm_sdk.api.pps.TfJob">TfJob</a> = None, parallelism_spec: <a title="pachyderm_sdk.api.pps.ParallelismSpec" href="#pachyderm_sdk.api.pps.ParallelismSpec">ParallelismSpec</a> = None, egress: <a title="pachyderm_sdk.api.pps.Egress" href="#pachyderm_sdk.api.pps.Egress">Egress</a> = None, created_at: datetime.datetime = None, recent_error: str = None, workers_requested: int = None, workers_available: int = None, output_branch: str = None, resource_requests: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a> = None, resource_limits: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a> = None, sidecar_resource_limits: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a> = None, input: <a title="pachyderm_sdk.api.pps.Input" href="#pachyderm_sdk.api.pps.Input">Input</a> = None, description: str = None, salt: str = None, reason: str = None, service: <a title="pachyderm_sdk.api.pps.Service" href="#pachyderm_sdk.api.pps.Service">Service</a> = None, spout: <a title="pachyderm_sdk.api.pps.Spout" href="#pachyderm_sdk.api.pps.Spout">Spout</a> = None, datum_set_spec: <a title="pachyderm_sdk.api.pps.DatumSetSpec" href="#pachyderm_sdk.api.pps.DatumSetSpec">DatumSetSpec</a> = None, datum_timeout: datetime.timedelta = None, job_timeout: datetime.timedelta = None, datum_tries: int = None, scheduling_spec: <a title="pachyderm_sdk.api.pps.SchedulingSpec" href="#pachyderm_sdk.api.pps.SchedulingSpec">SchedulingSpec</a> = None, pod_spec: str = None, pod_patch: str = None, s3_out: bool = None, metadata: <a title="pachyderm_sdk.api.pps.Metadata" href="#pachyderm_sdk.api.pps.Metadata">Metadata</a> = None, reprocess_spec: str = None, unclaimed_tasks: int = None, worker_rc: str = None, autoscaling: bool = None, tolerations: List[ForwardRef('<a title="pachyderm_sdk.api.pps.Toleration" href="#pachyderm_sdk.api.pps.Toleration">Toleration</a>')] = None, sidecar_resource_requests: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a> = None, determined: <a title="pachyderm_sdk.api.pps.Determined" href="#pachyderm_sdk.api.pps.Determined">Determined</a> = None)</span>
+<span>(</span><span>transform: <a title="pachyderm_sdk.api.pps.Transform" href="#pachyderm_sdk.api.pps.Transform">Transform</a> = None, tf_job: <a title="pachyderm_sdk.api.pps.TfJob" href="#pachyderm_sdk.api.pps.TfJob">TfJob</a> = None, parallelism_spec: <a title="pachyderm_sdk.api.pps.ParallelismSpec" href="#pachyderm_sdk.api.pps.ParallelismSpec">ParallelismSpec</a> = None, egress: <a title="pachyderm_sdk.api.pps.Egress" href="#pachyderm_sdk.api.pps.Egress">Egress</a> = None, created_at: datetime.datetime = None, recent_error: str = None, workers_requested: int = None, workers_available: int = None, output_branch: str = None, resource_requests: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a> = None, resource_limits: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a> = None, sidecar_resource_limits: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a> = None, input: <a title="pachyderm_sdk.api.pps.Input" href="#pachyderm_sdk.api.pps.Input">Input</a> = None, description: str = None, salt: str = None, reason: str = None, service: <a title="pachyderm_sdk.api.pps.Service" href="#pachyderm_sdk.api.pps.Service">Service</a> = None, spout: <a title="pachyderm_sdk.api.pps.Spout" href="#pachyderm_sdk.api.pps.Spout">Spout</a> = None, datum_set_spec: <a title="pachyderm_sdk.api.pps.DatumSetSpec" href="#pachyderm_sdk.api.pps.DatumSetSpec">DatumSetSpec</a> = None, datum_timeout: datetime.timedelta = None, job_timeout: datetime.timedelta = None, datum_tries: int = None, scheduling_spec: <a title="pachyderm_sdk.api.pps.SchedulingSpec" href="#pachyderm_sdk.api.pps.SchedulingSpec">SchedulingSpec</a> = None, pod_spec: str = None, pod_patch: str = None, s3_out: bool = None, metadata: <a title="pachyderm_sdk.api.pps.Metadata" href="#pachyderm_sdk.api.pps.Metadata">Metadata</a> = None, reprocess_spec: str = None, unclaimed_tasks: int = None, worker_rc: str = None, autoscaling: bool = None, tolerations: List[ForwardRef('<a title="pachyderm_sdk.api.pps.Toleration" href="#pachyderm_sdk.api.pps.Toleration">Toleration</a>')] = None, sidecar_resource_requests: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a> = None, determined: <a title="pachyderm_sdk.api.pps.Determined" href="#pachyderm_sdk.api.pps.Determined">Determined</a> = None, maximum_expected_uptime: datetime.timedelta = None, workers_started_at: datetime.datetime = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>PipelineInfoDetails(transform: 'Transform' = None, tf_job: 'TfJob' = None, parallelism_spec: 'ParallelismSpec' = None, egress: 'Egress' = None, created_at: datetime.datetime = None, recent_error: str = None, workers_requested: int = None, workers_available: int = None, output_branch: str = None, resource_requests: 'ResourceSpec' = None, resource_limits: 'ResourceSpec' = None, sidecar_resource_limits: 'ResourceSpec' = None, input: 'Input' = None, description: str = None, salt: str = None, reason: str = None, service: 'Service' = None, spout: 'Spout' = None, datum_set_spec: 'DatumSetSpec' = None, datum_timeout: datetime.timedelta = None, job_timeout: datetime.timedelta = None, datum_tries: int = None, scheduling_spec: 'SchedulingSpec' = None, pod_spec: str = None, pod_patch: str = None, s3_out: bool = None, metadata: 'Metadata' = None, reprocess_spec: str = None, unclaimed_tasks: int = None, worker_rc: str = None, autoscaling: bool = None, tolerations: List[ForwardRef('Toleration')] = None, sidecar_resource_requests: 'ResourceSpec' = None, determined: 'Determined' = None)</p></div>
+<div class="desc"><p>PipelineInfoDetails(transform: 'Transform' = None, tf_job: 'TfJob' = None, parallelism_spec: 'ParallelismSpec' = None, egress: 'Egress' = None, created_at: datetime.datetime = None, recent_error: str = None, workers_requested: int = None, workers_available: int = None, output_branch: str = None, resource_requests: 'ResourceSpec' = None, resource_limits: 'ResourceSpec' = None, sidecar_resource_limits: 'ResourceSpec' = None, input: 'Input' = None, description: str = None, salt: str = None, reason: str = None, service: 'Service' = None, spout: 'Spout' = None, datum_set_spec: 'DatumSetSpec' = None, datum_timeout: datetime.timedelta = None, job_timeout: datetime.timedelta = None, datum_tries: int = None, scheduling_spec: 'SchedulingSpec' = None, pod_spec: str = None, pod_patch: str = None, s3_out: bool = None, metadata: 'Metadata' = None, reprocess_spec: str = None, unclaimed_tasks: int = None, worker_rc: str = None, autoscaling: bool = None, tolerations: List[ForwardRef('Toleration')] = None, sidecar_resource_requests: 'ResourceSpec' = None, determined: 'Determined' = None, maximum_expected_uptime: datetime.timedelta = None, workers_started_at: datetime.datetime = None)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4717,7 +4970,9 @@ class PipelineInfoDetails(betterproto.Message):
     autoscaling: bool = betterproto.bool_field(33)
     tolerations: List[&#34;Toleration&#34;] = betterproto.message_field(34)
     sidecar_resource_requests: &#34;ResourceSpec&#34; = betterproto.message_field(35)
-    determined: &#34;Determined&#34; = betterproto.message_field(36)</code></pre>
+    determined: &#34;Determined&#34; = betterproto.message_field(36)
+    maximum_expected_uptime: timedelta = betterproto.message_field(37)
+    workers_started_at: datetime = betterproto.message_field(38)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -4861,6 +5116,14 @@ Exactly one of 'tf_job' and 'transform' should be set</p></div>
 <div class="desc"></div>
 </dd>
 <dt id="pachyderm_sdk.api.pps.PipelineInfoDetails.determined"><code class="name">var <span class="ident">determined</span> : <a title="pachyderm_sdk.api.pps.Determined" href="#pachyderm_sdk.api.pps.Determined">Determined</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.pps.PipelineInfoDetails.maximum_expected_uptime"><code class="name">var <span class="ident">maximum_expected_uptime</span> : datetime.timedelta</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.pps.PipelineInfoDetails.workers_started_at"><code class="name">var <span class="ident">workers_started_at</span> : datetime.datetime</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -5690,6 +5953,55 @@ class ListDatumRequestFilter(betterproto.Message):
 </dd>
 </dl>
 </dd>
+<dt id="pachyderm_sdk.api.pps.CreateDatumRequest"><code class="flex name class">
+<span>class <span class="ident">CreateDatumRequest</span></span>
+<span>(</span><span>input: <a title="pachyderm_sdk.api.pps.Input" href="#pachyderm_sdk.api.pps.Input">Input</a> = None, number: int = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Emits a stream of datums as they are created from the given input. Client
+must cancel the stream when it no longer wants to receive datums.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class CreateDatumRequest(betterproto.Message):
+    &#34;&#34;&#34;
+    Emits a stream of datums as they are created from the given input. Client
+    must cancel the stream when it no longer wants to receive datums.
+    &#34;&#34;&#34;
+
+    input: &#34;Input&#34; = betterproto.message_field(1)
+    &#34;&#34;&#34;
+    Input is the input to list datums from. The datums listed are the ones
+    that would be run if a pipeline was created with the provided input. The
+    input field is only required for the first request. The server ignores
+    subsequent requests&#39; input field.
+    &#34;&#34;&#34;
+
+    number: int = betterproto.int64_field(2)
+    &#34;&#34;&#34;Number of datums to return in next response&#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.pps.CreateDatumRequest.input"><code class="name">var <span class="ident">input</span> : <a title="pachyderm_sdk.api.pps.Input" href="#pachyderm_sdk.api.pps.Input">Input</a></code></dt>
+<dd>
+<div class="desc"><p>Input is the input to list datums from. The datums listed are the ones
+that would be run if a pipeline was created with the provided input. The
+input field is only required for the first request. The server ignores
+subsequent requests' input field.</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.pps.CreateDatumRequest.number"><code class="name">var <span class="ident">number</span> : int</code></dt>
+<dd>
+<div class="desc"><p>Number of datums to return in next response</p></div>
+</dd>
+</dl>
+</dd>
 <dt id="pachyderm_sdk.api.pps.DatumSetSpec"><code class="flex name class">
 <span>class <span class="ident">DatumSetSpec</span></span>
 <span>(</span><span>number: int = None, size_bytes: int = None, per_worker: int = None)</span>
@@ -5823,10 +6135,10 @@ class RerunPipelineRequest(betterproto.Message):
 </dd>
 <dt id="pachyderm_sdk.api.pps.CreatePipelineRequest"><code class="flex name class">
 <span>class <span class="ident">CreatePipelineRequest</span></span>
-<span>(</span><span>pipeline: <a title="pachyderm_sdk.api.pps.Pipeline" href="#pachyderm_sdk.api.pps.Pipeline">Pipeline</a> = None, tf_job: <a title="pachyderm_sdk.api.pps.TfJob" href="#pachyderm_sdk.api.pps.TfJob">TfJob</a> = None, transform: <a title="pachyderm_sdk.api.pps.Transform" href="#pachyderm_sdk.api.pps.Transform">Transform</a> = None, parallelism_spec: <a title="pachyderm_sdk.api.pps.ParallelismSpec" href="#pachyderm_sdk.api.pps.ParallelismSpec">ParallelismSpec</a> = None, egress: <a title="pachyderm_sdk.api.pps.Egress" href="#pachyderm_sdk.api.pps.Egress">Egress</a> = None, update: bool = None, output_branch: str = None, s3_out: bool = None, resource_requests: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a> = None, resource_limits: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a> = None, sidecar_resource_limits: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a> = None, input: <a title="pachyderm_sdk.api.pps.Input" href="#pachyderm_sdk.api.pps.Input">Input</a> = None, description: str = None, reprocess: bool = None, service: <a title="pachyderm_sdk.api.pps.Service" href="#pachyderm_sdk.api.pps.Service">Service</a> = None, spout: <a title="pachyderm_sdk.api.pps.Spout" href="#pachyderm_sdk.api.pps.Spout">Spout</a> = None, datum_set_spec: <a title="pachyderm_sdk.api.pps.DatumSetSpec" href="#pachyderm_sdk.api.pps.DatumSetSpec">DatumSetSpec</a> = None, datum_timeout: datetime.timedelta = None, job_timeout: datetime.timedelta = None, salt: str = None, datum_tries: int = None, scheduling_spec: <a title="pachyderm_sdk.api.pps.SchedulingSpec" href="#pachyderm_sdk.api.pps.SchedulingSpec">SchedulingSpec</a> = None, pod_spec: str = None, pod_patch: str = None, spec_commit: _pfs__.Commit = None, metadata: <a title="pachyderm_sdk.api.pps.Metadata" href="#pachyderm_sdk.api.pps.Metadata">Metadata</a> = None, reprocess_spec: str = None, autoscaling: bool = None, tolerations: List[ForwardRef('<a title="pachyderm_sdk.api.pps.Toleration" href="#pachyderm_sdk.api.pps.Toleration">Toleration</a>')] = None, sidecar_resource_requests: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a> = None, dry_run: bool = None, determined: <a title="pachyderm_sdk.api.pps.Determined" href="#pachyderm_sdk.api.pps.Determined">Determined</a> = None)</span>
+<span>(</span><span>pipeline: <a title="pachyderm_sdk.api.pps.Pipeline" href="#pachyderm_sdk.api.pps.Pipeline">Pipeline</a> = None, tf_job: <a title="pachyderm_sdk.api.pps.TfJob" href="#pachyderm_sdk.api.pps.TfJob">TfJob</a> = None, transform: <a title="pachyderm_sdk.api.pps.Transform" href="#pachyderm_sdk.api.pps.Transform">Transform</a> = None, parallelism_spec: <a title="pachyderm_sdk.api.pps.ParallelismSpec" href="#pachyderm_sdk.api.pps.ParallelismSpec">ParallelismSpec</a> = None, egress: <a title="pachyderm_sdk.api.pps.Egress" href="#pachyderm_sdk.api.pps.Egress">Egress</a> = None, update: bool = None, output_branch: str = None, s3_out: bool = None, resource_requests: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a> = None, resource_limits: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a> = None, sidecar_resource_limits: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a> = None, input: <a title="pachyderm_sdk.api.pps.Input" href="#pachyderm_sdk.api.pps.Input">Input</a> = None, description: str = None, reprocess: bool = None, service: <a title="pachyderm_sdk.api.pps.Service" href="#pachyderm_sdk.api.pps.Service">Service</a> = None, spout: <a title="pachyderm_sdk.api.pps.Spout" href="#pachyderm_sdk.api.pps.Spout">Spout</a> = None, datum_set_spec: <a title="pachyderm_sdk.api.pps.DatumSetSpec" href="#pachyderm_sdk.api.pps.DatumSetSpec">DatumSetSpec</a> = None, datum_timeout: datetime.timedelta = None, job_timeout: datetime.timedelta = None, salt: str = None, datum_tries: int = None, scheduling_spec: <a title="pachyderm_sdk.api.pps.SchedulingSpec" href="#pachyderm_sdk.api.pps.SchedulingSpec">SchedulingSpec</a> = None, pod_spec: str = None, pod_patch: str = None, spec_commit: _pfs__.Commit = None, metadata: <a title="pachyderm_sdk.api.pps.Metadata" href="#pachyderm_sdk.api.pps.Metadata">Metadata</a> = None, reprocess_spec: str = None, autoscaling: bool = None, tolerations: List[ForwardRef('<a title="pachyderm_sdk.api.pps.Toleration" href="#pachyderm_sdk.api.pps.Toleration">Toleration</a>')] = None, sidecar_resource_requests: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a> = None, dry_run: bool = None, determined: <a title="pachyderm_sdk.api.pps.Determined" href="#pachyderm_sdk.api.pps.Determined">Determined</a> = None, maximum_expected_uptime: datetime.timedelta = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>CreatePipelineRequest(pipeline: 'Pipeline' = None, tf_job: 'TfJob' = None, transform: 'Transform' = None, parallelism_spec: 'ParallelismSpec' = None, egress: 'Egress' = None, update: bool = None, output_branch: str = None, s3_out: bool = None, resource_requests: 'ResourceSpec' = None, resource_limits: 'ResourceSpec' = None, sidecar_resource_limits: 'ResourceSpec' = None, input: 'Input' = None, description: str = None, reprocess: bool = None, service: 'Service' = None, spout: 'Spout' = None, datum_set_spec: 'DatumSetSpec' = None, datum_timeout: datetime.timedelta = None, job_timeout: datetime.timedelta = None, salt: str = None, datum_tries: int = None, scheduling_spec: 'SchedulingSpec' = None, pod_spec: str = None, pod_patch: str = None, spec_commit: '_pfs__.Commit' = None, metadata: 'Metadata' = None, reprocess_spec: str = None, autoscaling: bool = None, tolerations: List[ForwardRef('Toleration')] = None, sidecar_resource_requests: 'ResourceSpec' = None, dry_run: bool = None, determined: 'Determined' = None)</p></div>
+<div class="desc"><p>CreatePipelineRequest(pipeline: 'Pipeline' = None, tf_job: 'TfJob' = None, transform: 'Transform' = None, parallelism_spec: 'ParallelismSpec' = None, egress: 'Egress' = None, update: bool = None, output_branch: str = None, s3_out: bool = None, resource_requests: 'ResourceSpec' = None, resource_limits: 'ResourceSpec' = None, sidecar_resource_limits: 'ResourceSpec' = None, input: 'Input' = None, description: str = None, reprocess: bool = None, service: 'Service' = None, spout: 'Spout' = None, datum_set_spec: 'DatumSetSpec' = None, datum_timeout: datetime.timedelta = None, job_timeout: datetime.timedelta = None, salt: str = None, datum_tries: int = None, scheduling_spec: 'SchedulingSpec' = None, pod_spec: str = None, pod_patch: str = None, spec_commit: '_pfs__.Commit' = None, metadata: 'Metadata' = None, reprocess_spec: str = None, autoscaling: bool = None, tolerations: List[ForwardRef('Toleration')] = None, sidecar_resource_requests: 'ResourceSpec' = None, dry_run: bool = None, determined: 'Determined' = None, maximum_expected_uptime: datetime.timedelta = None)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -5883,7 +6195,8 @@ class CreatePipelineRequest(betterproto.Message):
     tolerations: List[&#34;Toleration&#34;] = betterproto.message_field(34)
     sidecar_resource_requests: &#34;ResourceSpec&#34; = betterproto.message_field(35)
     dry_run: bool = betterproto.bool_field(37)
-    determined: &#34;Determined&#34; = betterproto.message_field(38)</code></pre>
+    determined: &#34;Determined&#34; = betterproto.message_field(38)
+    maximum_expected_uptime: timedelta = betterproto.message_field(39)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -6027,6 +6340,10 @@ if Update is true</p></div>
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="pachyderm_sdk.api.pps.CreatePipelineRequest.maximum_expected_uptime"><code class="name">var <span class="ident">maximum_expected_uptime</span> : datetime.timedelta</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 </dl>
 </dd>
 <dt id="pachyderm_sdk.api.pps.CreatePipelineV2Request"><code class="flex name class">
@@ -6162,10 +6479,7 @@ class ListPipelineRequest(betterproto.Message):
     &#34;&#34;&#34;
 
     details: bool = betterproto.bool_field(3)
-    &#34;&#34;&#34;
-    When true, return PipelineInfos with the details field, which requires
-    loading the pipeline spec from PFS.
-    &#34;&#34;&#34;
+    &#34;&#34;&#34;Deprecated: Details are always returned.&#34;&#34;&#34;
 
     jq_filter: str = betterproto.string_field(4)
     &#34;&#34;&#34;A jq program string for additional result filtering&#34;&#34;&#34;
@@ -6176,7 +6490,14 @@ class ListPipelineRequest(betterproto.Message):
     projects: List[&#34;_pfs__.Project&#34;] = betterproto.message_field(6)
     &#34;&#34;&#34;
     Projects to filter on. Empty list means no filter, so return all pipelines.
-    &#34;&#34;&#34;</code></pre>
+    &#34;&#34;&#34;
+
+    def __post_init__(self) -&gt; None:
+        super().__post_init__()
+        if self.is_set(&#34;details&#34;):
+            warnings.warn(
+                &#34;ListPipelineRequest.details is deprecated&#34;, DeprecationWarning
+            )</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -6199,8 +6520,7 @@ historical versions.</p></div>
 </dd>
 <dt id="pachyderm_sdk.api.pps.ListPipelineRequest.details"><code class="name">var <span class="ident">details</span> : bool</code></dt>
 <dd>
-<div class="desc"><p>When true, return PipelineInfos with the details field, which requires
-loading the pipeline spec from PFS.</p></div>
+<div class="desc"><p>Deprecated: Details are always returned.</p></div>
 </dd>
 <dt id="pachyderm_sdk.api.pps.ListPipelineRequest.jq_filter"><code class="name">var <span class="ident">jq_filter</span> : str</code></dt>
 <dd>
@@ -6477,6 +6797,87 @@ class RunCronRequest(betterproto.Message):
 <dt id="pachyderm_sdk.api.pps.RunCronRequest.pipeline"><code class="name">var <span class="ident">pipeline</span> : <a title="pachyderm_sdk.api.pps.Pipeline" href="#pachyderm_sdk.api.pps.Pipeline">Pipeline</a></code></dt>
 <dd>
 <div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.pps.CheckStatusRequest"><code class="flex name class">
+<span>class <span class="ident">CheckStatusRequest</span></span>
+<span>(</span><span>all: bool = None, project: _pfs__.Project = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Request to check the status of pipelines within a project.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class CheckStatusRequest(betterproto.Message):
+    &#34;&#34;&#34;Request to check the status of pipelines within a project.&#34;&#34;&#34;
+
+    all: bool = betterproto.bool_field(1, group=&#34;context&#34;)
+    &#34;&#34;&#34;boolean field indicating status of all project pipelines.&#34;&#34;&#34;
+
+    project: &#34;_pfs__.Project&#34; = betterproto.message_field(2, group=&#34;context&#34;)
+    &#34;&#34;&#34;project field&#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.pps.CheckStatusRequest.all"><code class="name">var <span class="ident">all</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>boolean field indicating status of all project pipelines.</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.pps.CheckStatusRequest.project"><code class="name">var <span class="ident">project</span> : <a title="pachyderm_sdk.api.pfs.Project" href="../pfs/index.html#pachyderm_sdk.api.pfs.Project">Project</a></code></dt>
+<dd>
+<div class="desc"><p>project field</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.pps.CheckStatusResponse"><code class="flex name class">
+<span>class <span class="ident">CheckStatusResponse</span></span>
+<span>(</span><span>project: _pfs__.Project = None, pipeline: <a title="pachyderm_sdk.api.pps.Pipeline" href="#pachyderm_sdk.api.pps.Pipeline">Pipeline</a> = None, alerts: List[str] = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Response for check status request. Provides alerts if any.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class CheckStatusResponse(betterproto.Message):
+    &#34;&#34;&#34;Response for check status request. Provides alerts if any.&#34;&#34;&#34;
+
+    project: &#34;_pfs__.Project&#34; = betterproto.message_field(1)
+    &#34;&#34;&#34;project field&#34;&#34;&#34;
+
+    pipeline: &#34;Pipeline&#34; = betterproto.message_field(2)
+    &#34;&#34;&#34;pipeline field&#34;&#34;&#34;
+
+    alerts: List[str] = betterproto.string_field(3)
+    &#34;&#34;&#34;alert indicators&#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.pps.CheckStatusResponse.project"><code class="name">var <span class="ident">project</span> : <a title="pachyderm_sdk.api.pfs.Project" href="../pfs/index.html#pachyderm_sdk.api.pfs.Project">Project</a></code></dt>
+<dd>
+<div class="desc"><p>project field</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.pps.CheckStatusResponse.pipeline"><code class="name">var <span class="ident">pipeline</span> : <a title="pachyderm_sdk.api.pps.Pipeline" href="#pachyderm_sdk.api.pps.Pipeline">Pipeline</a></code></dt>
+<dd>
+<div class="desc"><p>pipeline field</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.pps.CheckStatusResponse.alerts"><code class="name">var <span class="ident">alerts</span> : List[str]</code></dt>
+<dd>
+<div class="desc"><p>alert indicators</p></div>
 </dd>
 </dl>
 </dd>
@@ -7093,6 +7494,169 @@ class CreatePipelineTransaction(betterproto.Message):
 </dd>
 </dl>
 </dd>
+<dt id="pachyderm_sdk.api.pps.ProjectDefaults"><code class="flex name class">
+<span>class <span class="ident">ProjectDefaults</span></span>
+<span>(</span><span>create_pipeline_request: <a title="pachyderm_sdk.api.pps.CreatePipelineRequest" href="#pachyderm_sdk.api.pps.CreatePipelineRequest">CreatePipelineRequest</a> = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>ProjectDefaults(create_pipeline_request: 'CreatePipelineRequest' = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class ProjectDefaults(betterproto.Message):
+    create_pipeline_request: &#34;CreatePipelineRequest&#34; = betterproto.message_field(1)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.pps.ProjectDefaults.create_pipeline_request"><code class="name">var <span class="ident">create_pipeline_request</span> : <a title="pachyderm_sdk.api.pps.CreatePipelineRequest" href="#pachyderm_sdk.api.pps.CreatePipelineRequest">CreatePipelineRequest</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.pps.GetProjectDefaultsRequest"><code class="flex name class">
+<span>class <span class="ident">GetProjectDefaultsRequest</span></span>
+<span>(</span><span>project: _pfs__.Project = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>GetProjectDefaultsRequest(project: '_pfs__.Project' = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class GetProjectDefaultsRequest(betterproto.Message):
+    project: &#34;_pfs__.Project&#34; = betterproto.message_field(1)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.pps.GetProjectDefaultsRequest.project"><code class="name">var <span class="ident">project</span> : <a title="pachyderm_sdk.api.pfs.Project" href="../pfs/index.html#pachyderm_sdk.api.pfs.Project">Project</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.pps.GetProjectDefaultsResponse"><code class="flex name class">
+<span>class <span class="ident">GetProjectDefaultsResponse</span></span>
+<span>(</span><span>project_defaults_json: str = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>GetProjectDefaultsResponse(project_defaults_json: str = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class GetProjectDefaultsResponse(betterproto.Message):
+    project_defaults_json: str = betterproto.string_field(1)
+    &#34;&#34;&#34;
+    A JSON-encoded ProjectDefaults message, this is the verbatim input passed
+    to SetProjectDefaults.
+    &#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.pps.GetProjectDefaultsResponse.project_defaults_json"><code class="name">var <span class="ident">project_defaults_json</span> : str</code></dt>
+<dd>
+<div class="desc"><p>A JSON-encoded ProjectDefaults message, this is the verbatim input passed
+to SetProjectDefaults.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.pps.SetProjectDefaultsRequest"><code class="flex name class">
+<span>class <span class="ident">SetProjectDefaultsRequest</span></span>
+<span>(</span><span>project: _pfs__.Project = None, regenerate: bool = None, reprocess: bool = None, dry_run: bool = None, project_defaults_json: str = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>SetProjectDefaultsRequest(project: '_pfs__.Project' = None, regenerate: bool = None, reprocess: bool = None, dry_run: bool = None, project_defaults_json: str = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class SetProjectDefaultsRequest(betterproto.Message):
+    project: &#34;_pfs__.Project&#34; = betterproto.message_field(1)
+    regenerate: bool = betterproto.bool_field(2)
+    reprocess: bool = betterproto.bool_field(3)
+    dry_run: bool = betterproto.bool_field(4)
+    project_defaults_json: str = betterproto.string_field(5)
+    &#34;&#34;&#34;
+    A JSON-encoded ProjectDefaults message, this will be stored verbatim.
+    &#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.pps.SetProjectDefaultsRequest.project"><code class="name">var <span class="ident">project</span> : <a title="pachyderm_sdk.api.pfs.Project" href="../pfs/index.html#pachyderm_sdk.api.pfs.Project">Project</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.pps.SetProjectDefaultsRequest.regenerate"><code class="name">var <span class="ident">regenerate</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.pps.SetProjectDefaultsRequest.reprocess"><code class="name">var <span class="ident">reprocess</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.pps.SetProjectDefaultsRequest.dry_run"><code class="name">var <span class="ident">dry_run</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.pps.SetProjectDefaultsRequest.project_defaults_json"><code class="name">var <span class="ident">project_defaults_json</span> : str</code></dt>
+<dd>
+<div class="desc"><p>A JSON-encoded ProjectDefaults message, this will be stored verbatim.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.pps.SetProjectDefaultsResponse"><code class="flex name class">
+<span>class <span class="ident">SetProjectDefaultsResponse</span></span>
+<span>(</span><span>affected_pipelines: List[ForwardRef('<a title="pachyderm_sdk.api.pps.Pipeline" href="#pachyderm_sdk.api.pps.Pipeline">Pipeline</a>')] = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>SetProjectDefaultsResponse(affected_pipelines: List[ForwardRef('Pipeline')] = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class SetProjectDefaultsResponse(betterproto.Message):
+    affected_pipelines: List[&#34;Pipeline&#34;] = betterproto.message_field(1)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.pps.SetProjectDefaultsResponse.affected_pipelines"><code class="name">var <span class="ident">affected_pipelines</span> : List[<a title="pachyderm_sdk.api.pps.Pipeline" href="#pachyderm_sdk.api.pps.Pipeline">Pipeline</a>]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
 <dt id="pachyderm_sdk.api.pps.ApiStub"><code class="flex name class">
 <span>class <span class="ident">ApiStub</span></span>
 <span>(</span><span>channel: grpc.Channel)</span>
@@ -7104,6 +7668,7 @@ class CreatePipelineTransaction(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class ApiStub:
+
     def __init__(self, channel: &#34;grpc.Channel&#34;):
         self.__rpc_inspect_job = channel.unary_unary(
             &#34;/pps_v2.API/InspectJob&#34;,
@@ -7148,6 +7713,11 @@ class CreatePipelineTransaction(betterproto.Message):
         self.__rpc_list_datum = channel.unary_stream(
             &#34;/pps_v2.API/ListDatum&#34;,
             request_serializer=ListDatumRequest.SerializeToString,
+            response_deserializer=DatumInfo.FromString,
+        )
+        self.__rpc_create_datum = channel.stream_stream(
+            &#34;/pps_v2.API/CreateDatum&#34;,
+            request_serializer=CreateDatumRequest.SerializeToString,
             response_deserializer=DatumInfo.FromString,
         )
         self.__rpc_restart_datum = channel.unary_unary(
@@ -7209,6 +7779,11 @@ class CreatePipelineTransaction(betterproto.Message):
             &#34;/pps_v2.API/RunCron&#34;,
             request_serializer=RunCronRequest.SerializeToString,
             response_deserializer=betterproto_lib_google_protobuf.Empty.FromString,
+        )
+        self.__rpc_check_status = channel.unary_stream(
+            &#34;/pps_v2.API/CheckStatus&#34;,
+            request_serializer=CheckStatusRequest.SerializeToString,
+            response_deserializer=CheckStatusResponse.FromString,
         )
         self.__rpc_create_secret = channel.unary_unary(
             &#34;/pps_v2.API/CreateSecret&#34;,
@@ -7290,10 +7865,21 @@ class CreatePipelineTransaction(betterproto.Message):
             request_serializer=SetClusterDefaultsRequest.SerializeToString,
             response_deserializer=SetClusterDefaultsResponse.FromString,
         )
+        self.__rpc_get_project_defaults = channel.unary_unary(
+            &#34;/pps_v2.API/GetProjectDefaults&#34;,
+            request_serializer=GetProjectDefaultsRequest.SerializeToString,
+            response_deserializer=GetProjectDefaultsResponse.FromString,
+        )
+        self.__rpc_set_project_defaults = channel.unary_unary(
+            &#34;/pps_v2.API/SetProjectDefaults&#34;,
+            request_serializer=SetProjectDefaultsRequest.SerializeToString,
+            response_deserializer=SetProjectDefaultsResponse.FromString,
+        )
 
     def inspect_job(
         self, *, job: &#34;Job&#34; = None, wait: bool = False, details: bool = False
     ) -&gt; &#34;JobInfo&#34;:
+
         request = InspectJobRequest()
         if job is not None:
             request.job = job
@@ -7305,6 +7891,7 @@ class CreatePipelineTransaction(betterproto.Message):
     def inspect_job_set(
         self, *, job_set: &#34;JobSet&#34; = None, wait: bool = False, details: bool = False
     ) -&gt; Iterator[&#34;JobInfo&#34;]:
+
         request = InspectJobSetRequest()
         if job_set is not None:
             request.job_set = job_set
@@ -7376,6 +7963,7 @@ class CreatePipelineTransaction(betterproto.Message):
     def subscribe_job(
         self, *, pipeline: &#34;Pipeline&#34; = None, details: bool = False
     ) -&gt; Iterator[&#34;JobInfo&#34;]:
+
         request = SubscribeJobRequest()
         if pipeline is not None:
             request.pipeline = pipeline
@@ -7387,6 +7975,7 @@ class CreatePipelineTransaction(betterproto.Message):
     def delete_job(
         self, *, job: &#34;Job&#34; = None
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         request = DeleteJobRequest()
         if job is not None:
             request.job = job
@@ -7396,6 +7985,7 @@ class CreatePipelineTransaction(betterproto.Message):
     def stop_job(
         self, *, job: &#34;Job&#34; = None, reason: str = &#34;&#34;
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         request = StopJobRequest()
         if job is not None:
             request.job = job
@@ -7404,6 +7994,7 @@ class CreatePipelineTransaction(betterproto.Message):
         return self.__rpc_stop_job(request)
 
     def inspect_datum(self, *, datum: &#34;Datum&#34; = None) -&gt; &#34;DatumInfo&#34;:
+
         request = InspectDatumRequest()
         if datum is not None:
             request.datum = datum
@@ -7420,6 +8011,7 @@ class CreatePipelineTransaction(betterproto.Message):
         number: int = 0,
         reverse: bool = False
     ) -&gt; Iterator[&#34;DatumInfo&#34;]:
+
         request = ListDatumRequest()
         if job is not None:
             request.job = job
@@ -7432,6 +8024,16 @@ class CreatePipelineTransaction(betterproto.Message):
         request.reverse = reverse
 
         for response in self.__rpc_list_datum(request):
+            yield response
+
+    def create_datum(
+        self,
+        request_iterator: Union[
+            AsyncIterable[&#34;CreateDatumRequest&#34;], Iterable[&#34;CreateDatumRequest&#34;]
+        ],
+    ) -&gt; Iterator[&#34;DatumInfo&#34;]:
+
+        for response in self.__rpc_create_datum(request_iterator):
             yield response
 
     def restart_datum(
@@ -7449,6 +8051,7 @@ class CreatePipelineTransaction(betterproto.Message):
     def rerun_pipeline(
         self, *, pipeline: &#34;Pipeline&#34; = None, reprocess: bool = False
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         request = RerunPipelineRequest()
         if pipeline is not None:
             request.pipeline = pipeline
@@ -7490,7 +8093,8 @@ class CreatePipelineTransaction(betterproto.Message):
         tolerations: Optional[List[&#34;Toleration&#34;]] = None,
         sidecar_resource_requests: &#34;ResourceSpec&#34; = None,
         dry_run: bool = False,
-        determined: &#34;Determined&#34; = None
+        determined: &#34;Determined&#34; = None,
+        maximum_expected_uptime: timedelta = None
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
         tolerations = tolerations or []
 
@@ -7547,6 +8151,8 @@ class CreatePipelineTransaction(betterproto.Message):
         request.dry_run = dry_run
         if determined is not None:
             request.determined = determined
+        if maximum_expected_uptime is not None:
+            request.maximum_expected_uptime = maximum_expected_uptime
 
         return self.__rpc_create_pipeline(request)
 
@@ -7558,6 +8164,7 @@ class CreatePipelineTransaction(betterproto.Message):
         update: bool = False,
         reprocess: bool = False
     ) -&gt; &#34;CreatePipelineV2Response&#34;:
+
         request = CreatePipelineV2Request()
         request.create_pipeline_request_json = create_pipeline_request_json
         request.dry_run = dry_run
@@ -7569,6 +8176,7 @@ class CreatePipelineTransaction(betterproto.Message):
     def inspect_pipeline(
         self, *, pipeline: &#34;Pipeline&#34; = None, details: bool = False
     ) -&gt; &#34;PipelineInfo&#34;:
+
         request = InspectPipelineRequest()
         if pipeline is not None:
             request.pipeline = pipeline
@@ -7611,6 +8219,7 @@ class CreatePipelineTransaction(betterproto.Message):
         keep_repo: bool = False,
         must_exist: bool = False
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         request = DeletePipelineRequest()
         if pipeline is not None:
             request.pipeline = pipeline
@@ -7643,6 +8252,7 @@ class CreatePipelineTransaction(betterproto.Message):
     def start_pipeline(
         self, *, pipeline: &#34;Pipeline&#34; = None
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         request = StartPipelineRequest()
         if pipeline is not None:
             request.pipeline = pipeline
@@ -7652,6 +8262,7 @@ class CreatePipelineTransaction(betterproto.Message):
     def stop_pipeline(
         self, *, pipeline: &#34;Pipeline&#34; = None, must_exist: bool = False
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         request = StopPipelineRequest()
         if pipeline is not None:
             request.pipeline = pipeline
@@ -7680,15 +8291,29 @@ class CreatePipelineTransaction(betterproto.Message):
     def run_cron(
         self, *, pipeline: &#34;Pipeline&#34; = None
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         request = RunCronRequest()
         if pipeline is not None:
             request.pipeline = pipeline
 
         return self.__rpc_run_cron(request)
 
+    def check_status(
+        self, *, all: bool = False, project: &#34;_pfs__.Project&#34; = None
+    ) -&gt; Iterator[&#34;CheckStatusResponse&#34;]:
+
+        request = CheckStatusRequest()
+        request.all = all
+        if project is not None:
+            request.project = project
+
+        for response in self.__rpc_check_status(request):
+            yield response
+
     def create_secret(
         self, *, file: bytes = b&#34;&#34;
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         request = CreateSecretRequest()
         request.file = file
 
@@ -7697,6 +8322,7 @@ class CreatePipelineTransaction(betterproto.Message):
     def delete_secret(
         self, *, secret: &#34;Secret&#34; = None
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         request = DeleteSecretRequest()
         if secret is not None:
             request.secret = secret
@@ -7704,11 +8330,13 @@ class CreatePipelineTransaction(betterproto.Message):
         return self.__rpc_delete_secret(request)
 
     def list_secret(self) -&gt; &#34;SecretInfos&#34;:
+
         request = betterproto_lib_google_protobuf.Empty()
 
         return self.__rpc_list_secret(request)
 
     def inspect_secret(self, *, secret: &#34;Secret&#34; = None) -&gt; &#34;SecretInfo&#34;:
+
         request = InspectSecretRequest()
         if secret is not None:
             request.secret = secret
@@ -7716,6 +8344,7 @@ class CreatePipelineTransaction(betterproto.Message):
         return self.__rpc_inspect_secret(request)
 
     def delete_all(self) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         request = betterproto_lib_google_protobuf.Empty()
 
         return self.__rpc_delete_all(request)
@@ -7754,6 +8383,7 @@ class CreatePipelineTransaction(betterproto.Message):
             yield response
 
     def activate_auth(self) -&gt; &#34;ActivateAuthResponse&#34;:
+
         request = ActivateAuthRequest()
 
         return self.__rpc_activate_auth(request)
@@ -7772,6 +8402,7 @@ class CreatePipelineTransaction(betterproto.Message):
         data_total: int = 0,
         stats: &#34;ProcessStats&#34; = None
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         request = UpdateJobStateRequest()
         if job is not None:
             request.job = job
@@ -7798,6 +8429,7 @@ class CreatePipelineTransaction(betterproto.Message):
         pod_patch: str = &#34;&#34;,
         state_id: str = &#34;&#34;
     ) -&gt; &#34;RunLoadTestResponse&#34;:
+
         request = RunLoadTestRequest()
         request.dag_spec = dag_spec
         request.load_spec = load_spec
@@ -7809,6 +8441,7 @@ class CreatePipelineTransaction(betterproto.Message):
         return self.__rpc_run_load_test(request)
 
     def run_load_test_default(self) -&gt; &#34;RunLoadTestResponse&#34;:
+
         request = betterproto_lib_google_protobuf.Empty()
 
         return self.__rpc_run_load_test_default(request)
@@ -7816,6 +8449,7 @@ class CreatePipelineTransaction(betterproto.Message):
     def render_template(
         self, *, template: str = &#34;&#34;, args: Dict[str, str] = None
     ) -&gt; &#34;RenderTemplateResponse&#34;:
+
         request = RenderTemplateRequest()
         request.template = template
         request.args = args
@@ -7823,6 +8457,7 @@ class CreatePipelineTransaction(betterproto.Message):
         return self.__rpc_render_template(request)
 
     def list_task(self, *, group: &#34;Group&#34; = None) -&gt; Iterator[&#34;_taskapi__.TaskInfo&#34;]:
+
         request = _taskapi__.ListTaskRequest()
         if group is not None:
             request.group = group
@@ -7833,6 +8468,7 @@ class CreatePipelineTransaction(betterproto.Message):
     def get_kube_events(
         self, *, since: timedelta = None, query: str = &#34;&#34;
     ) -&gt; Iterator[&#34;LokiLogMessage&#34;]:
+
         request = LokiRequest()
         if since is not None:
             request.since = since
@@ -7844,6 +8480,7 @@ class CreatePipelineTransaction(betterproto.Message):
     def query_loki(
         self, *, since: timedelta = None, query: str = &#34;&#34;
     ) -&gt; Iterator[&#34;LokiLogMessage&#34;]:
+
         request = LokiRequest()
         if since is not None:
             request.since = since
@@ -7853,6 +8490,7 @@ class CreatePipelineTransaction(betterproto.Message):
             yield response
 
     def get_cluster_defaults(self) -&gt; &#34;GetClusterDefaultsResponse&#34;:
+
         request = GetClusterDefaultsRequest()
 
         return self.__rpc_get_cluster_defaults(request)
@@ -7865,13 +8503,44 @@ class CreatePipelineTransaction(betterproto.Message):
         dry_run: bool = False,
         cluster_defaults_json: str = &#34;&#34;
     ) -&gt; &#34;SetClusterDefaultsResponse&#34;:
+
         request = SetClusterDefaultsRequest()
         request.regenerate = regenerate
         request.reprocess = reprocess
         request.dry_run = dry_run
         request.cluster_defaults_json = cluster_defaults_json
 
-        return self.__rpc_set_cluster_defaults(request)</code></pre>
+        return self.__rpc_set_cluster_defaults(request)
+
+    def get_project_defaults(
+        self, *, project: &#34;_pfs__.Project&#34; = None
+    ) -&gt; &#34;GetProjectDefaultsResponse&#34;:
+
+        request = GetProjectDefaultsRequest()
+        if project is not None:
+            request.project = project
+
+        return self.__rpc_get_project_defaults(request)
+
+    def set_project_defaults(
+        self,
+        *,
+        project: &#34;_pfs__.Project&#34; = None,
+        regenerate: bool = False,
+        reprocess: bool = False,
+        dry_run: bool = False,
+        project_defaults_json: str = &#34;&#34;
+    ) -&gt; &#34;SetProjectDefaultsResponse&#34;:
+
+        request = SetProjectDefaultsRequest()
+        if project is not None:
+            request.project = project
+        request.regenerate = regenerate
+        request.reprocess = reprocess
+        request.dry_run = dry_run
+        request.project_defaults_json = project_defaults_json
+
+        return self.__rpc_set_project_defaults(request)</code></pre>
 </details>
 <h3>Subclasses</h3>
 <ul class="hlist">
@@ -7891,6 +8560,7 @@ class CreatePipelineTransaction(betterproto.Message):
 <pre><code class="python">def inspect_job(
     self, *, job: &#34;Job&#34; = None, wait: bool = False, details: bool = False
 ) -&gt; &#34;JobInfo&#34;:
+
     request = InspectJobRequest()
     if job is not None:
         request.job = job
@@ -7912,6 +8582,7 @@ class CreatePipelineTransaction(betterproto.Message):
 <pre><code class="python">def inspect_job_set(
     self, *, job_set: &#34;JobSet&#34; = None, wait: bool = False, details: bool = False
 ) -&gt; Iterator[&#34;JobInfo&#34;]:
+
     request = InspectJobSetRequest()
     if job_set is not None:
         request.job_set = job_set
@@ -8013,6 +8684,7 @@ class CreatePipelineTransaction(betterproto.Message):
 <pre><code class="python">def subscribe_job(
     self, *, pipeline: &#34;Pipeline&#34; = None, details: bool = False
 ) -&gt; Iterator[&#34;JobInfo&#34;]:
+
     request = SubscribeJobRequest()
     if pipeline is not None:
         request.pipeline = pipeline
@@ -8034,6 +8706,7 @@ class CreatePipelineTransaction(betterproto.Message):
 <pre><code class="python">def delete_job(
     self, *, job: &#34;Job&#34; = None
 ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
     request = DeleteJobRequest()
     if job is not None:
         request.job = job
@@ -8053,6 +8726,7 @@ class CreatePipelineTransaction(betterproto.Message):
 <pre><code class="python">def stop_job(
     self, *, job: &#34;Job&#34; = None, reason: str = &#34;&#34;
 ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
     request = StopJobRequest()
     if job is not None:
         request.job = job
@@ -8071,6 +8745,7 @@ class CreatePipelineTransaction(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def inspect_datum(self, *, datum: &#34;Datum&#34; = None) -&gt; &#34;DatumInfo&#34;:
+
     request = InspectDatumRequest()
     if datum is not None:
         request.datum = datum
@@ -8097,6 +8772,7 @@ class CreatePipelineTransaction(betterproto.Message):
     number: int = 0,
     reverse: bool = False
 ) -&gt; Iterator[&#34;DatumInfo&#34;]:
+
     request = ListDatumRequest()
     if job is not None:
         request.job = job
@@ -8109,6 +8785,26 @@ class CreatePipelineTransaction(betterproto.Message):
     request.reverse = reverse
 
     for response in self.__rpc_list_datum(request):
+        yield response</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.pps.ApiStub.create_datum"><code class="name flex">
+<span>def <span class="ident">create_datum</span></span>(<span>self, request_iterator: Union[AsyncIterable[ForwardRef('<a title="pachyderm_sdk.api.pps.CreateDatumRequest" href="#pachyderm_sdk.api.pps.CreateDatumRequest">CreateDatumRequest</a>')], Iterable[ForwardRef('<a title="pachyderm_sdk.api.pps.CreateDatumRequest" href="#pachyderm_sdk.api.pps.CreateDatumRequest">CreateDatumRequest</a>')]]) ‑> Iterator[<a title="pachyderm_sdk.api.pps.DatumInfo" href="#pachyderm_sdk.api.pps.DatumInfo">DatumInfo</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_datum(
+    self,
+    request_iterator: Union[
+        AsyncIterable[&#34;CreateDatumRequest&#34;], Iterable[&#34;CreateDatumRequest&#34;]
+    ],
+) -&gt; Iterator[&#34;DatumInfo&#34;]:
+
+    for response in self.__rpc_create_datum(request_iterator):
         yield response</code></pre>
 </details>
 </dd>
@@ -8146,6 +8842,7 @@ class CreatePipelineTransaction(betterproto.Message):
 <pre><code class="python">def rerun_pipeline(
     self, *, pipeline: &#34;Pipeline&#34; = None, reprocess: bool = False
 ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
     request = RerunPipelineRequest()
     if pipeline is not None:
         request.pipeline = pipeline
@@ -8155,7 +8852,7 @@ class CreatePipelineTransaction(betterproto.Message):
 </details>
 </dd>
 <dt id="pachyderm_sdk.api.pps.ApiStub.create_pipeline"><code class="name flex">
-<span>def <span class="ident">create_pipeline</span></span>(<span>self, *, pipeline: <a title="pachyderm_sdk.api.pps.Pipeline" href="#pachyderm_sdk.api.pps.Pipeline">Pipeline</a> = None, tf_job: <a title="pachyderm_sdk.api.pps.TfJob" href="#pachyderm_sdk.api.pps.TfJob">TfJob</a> = None, transform: <a title="pachyderm_sdk.api.pps.Transform" href="#pachyderm_sdk.api.pps.Transform">Transform</a> = None, parallelism_spec: <a title="pachyderm_sdk.api.pps.ParallelismSpec" href="#pachyderm_sdk.api.pps.ParallelismSpec">ParallelismSpec</a> = None, egress: <a title="pachyderm_sdk.api.pps.Egress" href="#pachyderm_sdk.api.pps.Egress">Egress</a> = None, update: bool = False, output_branch: str = '', s3_out: bool = False, resource_requests: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a> = None, resource_limits: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a> = None, sidecar_resource_limits: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a> = None, input: <a title="pachyderm_sdk.api.pps.Input" href="#pachyderm_sdk.api.pps.Input">Input</a> = None, description: str = '', reprocess: bool = False, service: <a title="pachyderm_sdk.api.pps.Service" href="#pachyderm_sdk.api.pps.Service">Service</a> = None, spout: <a title="pachyderm_sdk.api.pps.Spout" href="#pachyderm_sdk.api.pps.Spout">Spout</a> = None, datum_set_spec: <a title="pachyderm_sdk.api.pps.DatumSetSpec" href="#pachyderm_sdk.api.pps.DatumSetSpec">DatumSetSpec</a> = None, datum_timeout: datetime.timedelta = None, job_timeout: datetime.timedelta = None, salt: str = '', datum_tries: int = 0, scheduling_spec: <a title="pachyderm_sdk.api.pps.SchedulingSpec" href="#pachyderm_sdk.api.pps.SchedulingSpec">SchedulingSpec</a> = None, pod_spec: str = '', pod_patch: str = '', spec_commit: _pfs__.Commit = None, metadata: <a title="pachyderm_sdk.api.pps.Metadata" href="#pachyderm_sdk.api.pps.Metadata">Metadata</a> = None, reprocess_spec: str = '', autoscaling: bool = False, tolerations: Optional[List[ForwardRef('<a title="pachyderm_sdk.api.pps.Toleration" href="#pachyderm_sdk.api.pps.Toleration">Toleration</a>')]] = None, sidecar_resource_requests: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a> = None, dry_run: bool = False, determined: <a title="pachyderm_sdk.api.pps.Determined" href="#pachyderm_sdk.api.pps.Determined">Determined</a> = None) ‑> betterproto.lib.google.protobuf.Empty</span>
+<span>def <span class="ident">create_pipeline</span></span>(<span>self, *, pipeline: <a title="pachyderm_sdk.api.pps.Pipeline" href="#pachyderm_sdk.api.pps.Pipeline">Pipeline</a> = None, tf_job: <a title="pachyderm_sdk.api.pps.TfJob" href="#pachyderm_sdk.api.pps.TfJob">TfJob</a> = None, transform: <a title="pachyderm_sdk.api.pps.Transform" href="#pachyderm_sdk.api.pps.Transform">Transform</a> = None, parallelism_spec: <a title="pachyderm_sdk.api.pps.ParallelismSpec" href="#pachyderm_sdk.api.pps.ParallelismSpec">ParallelismSpec</a> = None, egress: <a title="pachyderm_sdk.api.pps.Egress" href="#pachyderm_sdk.api.pps.Egress">Egress</a> = None, update: bool = False, output_branch: str = '', s3_out: bool = False, resource_requests: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a> = None, resource_limits: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a> = None, sidecar_resource_limits: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a> = None, input: <a title="pachyderm_sdk.api.pps.Input" href="#pachyderm_sdk.api.pps.Input">Input</a> = None, description: str = '', reprocess: bool = False, service: <a title="pachyderm_sdk.api.pps.Service" href="#pachyderm_sdk.api.pps.Service">Service</a> = None, spout: <a title="pachyderm_sdk.api.pps.Spout" href="#pachyderm_sdk.api.pps.Spout">Spout</a> = None, datum_set_spec: <a title="pachyderm_sdk.api.pps.DatumSetSpec" href="#pachyderm_sdk.api.pps.DatumSetSpec">DatumSetSpec</a> = None, datum_timeout: datetime.timedelta = None, job_timeout: datetime.timedelta = None, salt: str = '', datum_tries: int = 0, scheduling_spec: <a title="pachyderm_sdk.api.pps.SchedulingSpec" href="#pachyderm_sdk.api.pps.SchedulingSpec">SchedulingSpec</a> = None, pod_spec: str = '', pod_patch: str = '', spec_commit: _pfs__.Commit = None, metadata: <a title="pachyderm_sdk.api.pps.Metadata" href="#pachyderm_sdk.api.pps.Metadata">Metadata</a> = None, reprocess_spec: str = '', autoscaling: bool = False, tolerations: Optional[List[ForwardRef('<a title="pachyderm_sdk.api.pps.Toleration" href="#pachyderm_sdk.api.pps.Toleration">Toleration</a>')]] = None, sidecar_resource_requests: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a> = None, dry_run: bool = False, determined: <a title="pachyderm_sdk.api.pps.Determined" href="#pachyderm_sdk.api.pps.Determined">Determined</a> = None, maximum_expected_uptime: datetime.timedelta = None) ‑> betterproto.lib.google.protobuf.Empty</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -8197,7 +8894,8 @@ class CreatePipelineTransaction(betterproto.Message):
     tolerations: Optional[List[&#34;Toleration&#34;]] = None,
     sidecar_resource_requests: &#34;ResourceSpec&#34; = None,
     dry_run: bool = False,
-    determined: &#34;Determined&#34; = None
+    determined: &#34;Determined&#34; = None,
+    maximum_expected_uptime: timedelta = None
 ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
     tolerations = tolerations or []
 
@@ -8254,6 +8952,8 @@ class CreatePipelineTransaction(betterproto.Message):
     request.dry_run = dry_run
     if determined is not None:
         request.determined = determined
+    if maximum_expected_uptime is not None:
+        request.maximum_expected_uptime = maximum_expected_uptime
 
     return self.__rpc_create_pipeline(request)</code></pre>
 </details>
@@ -8275,6 +8975,7 @@ class CreatePipelineTransaction(betterproto.Message):
     update: bool = False,
     reprocess: bool = False
 ) -&gt; &#34;CreatePipelineV2Response&#34;:
+
     request = CreatePipelineV2Request()
     request.create_pipeline_request_json = create_pipeline_request_json
     request.dry_run = dry_run
@@ -8296,6 +8997,7 @@ class CreatePipelineTransaction(betterproto.Message):
 <pre><code class="python">def inspect_pipeline(
     self, *, pipeline: &#34;Pipeline&#34; = None, details: bool = False
 ) -&gt; &#34;PipelineInfo&#34;:
+
     request = InspectPipelineRequest()
     if pipeline is not None:
         request.pipeline = pipeline
@@ -8358,6 +9060,7 @@ class CreatePipelineTransaction(betterproto.Message):
     keep_repo: bool = False,
     must_exist: bool = False
 ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
     request = DeletePipelineRequest()
     if pipeline is not None:
         request.pipeline = pipeline
@@ -8410,6 +9113,7 @@ class CreatePipelineTransaction(betterproto.Message):
 <pre><code class="python">def start_pipeline(
     self, *, pipeline: &#34;Pipeline&#34; = None
 ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
     request = StartPipelineRequest()
     if pipeline is not None:
         request.pipeline = pipeline
@@ -8429,6 +9133,7 @@ class CreatePipelineTransaction(betterproto.Message):
 <pre><code class="python">def stop_pipeline(
     self, *, pipeline: &#34;Pipeline&#34; = None, must_exist: bool = False
 ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
     request = StopPipelineRequest()
     if pipeline is not None:
         request.pipeline = pipeline
@@ -8477,11 +9182,34 @@ class CreatePipelineTransaction(betterproto.Message):
 <pre><code class="python">def run_cron(
     self, *, pipeline: &#34;Pipeline&#34; = None
 ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
     request = RunCronRequest()
     if pipeline is not None:
         request.pipeline = pipeline
 
     return self.__rpc_run_cron(request)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.pps.ApiStub.check_status"><code class="name flex">
+<span>def <span class="ident">check_status</span></span>(<span>self, *, all: bool = False, project: _pfs__.Project = None) ‑> Iterator[<a title="pachyderm_sdk.api.pps.CheckStatusResponse" href="#pachyderm_sdk.api.pps.CheckStatusResponse">CheckStatusResponse</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def check_status(
+    self, *, all: bool = False, project: &#34;_pfs__.Project&#34; = None
+) -&gt; Iterator[&#34;CheckStatusResponse&#34;]:
+
+    request = CheckStatusRequest()
+    request.all = all
+    if project is not None:
+        request.project = project
+
+    for response in self.__rpc_check_status(request):
+        yield response</code></pre>
 </details>
 </dd>
 <dt id="pachyderm_sdk.api.pps.ApiStub.create_secret"><code class="name flex">
@@ -8496,6 +9224,7 @@ class CreatePipelineTransaction(betterproto.Message):
 <pre><code class="python">def create_secret(
     self, *, file: bytes = b&#34;&#34;
 ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
     request = CreateSecretRequest()
     request.file = file
 
@@ -8514,6 +9243,7 @@ class CreatePipelineTransaction(betterproto.Message):
 <pre><code class="python">def delete_secret(
     self, *, secret: &#34;Secret&#34; = None
 ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
     request = DeleteSecretRequest()
     if secret is not None:
         request.secret = secret
@@ -8531,6 +9261,7 @@ class CreatePipelineTransaction(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def list_secret(self) -&gt; &#34;SecretInfos&#34;:
+
     request = betterproto_lib_google_protobuf.Empty()
 
     return self.__rpc_list_secret(request)</code></pre>
@@ -8546,6 +9277,7 @@ class CreatePipelineTransaction(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def inspect_secret(self, *, secret: &#34;Secret&#34; = None) -&gt; &#34;SecretInfo&#34;:
+
     request = InspectSecretRequest()
     if secret is not None:
         request.secret = secret
@@ -8563,6 +9295,7 @@ class CreatePipelineTransaction(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def delete_all(self) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
     request = betterproto_lib_google_protobuf.Empty()
 
     return self.__rpc_delete_all(request)</code></pre>
@@ -8621,6 +9354,7 @@ class CreatePipelineTransaction(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def activate_auth(self) -&gt; &#34;ActivateAuthResponse&#34;:
+
     request = ActivateAuthRequest()
 
     return self.__rpc_activate_auth(request)</code></pre>
@@ -8649,6 +9383,7 @@ class CreatePipelineTransaction(betterproto.Message):
     data_total: int = 0,
     stats: &#34;ProcessStats&#34; = None
 ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
     request = UpdateJobStateRequest()
     if job is not None:
         request.job = job
@@ -8685,6 +9420,7 @@ class CreatePipelineTransaction(betterproto.Message):
     pod_patch: str = &#34;&#34;,
     state_id: str = &#34;&#34;
 ) -&gt; &#34;RunLoadTestResponse&#34;:
+
     request = RunLoadTestRequest()
     request.dag_spec = dag_spec
     request.load_spec = load_spec
@@ -8706,6 +9442,7 @@ class CreatePipelineTransaction(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def run_load_test_default(self) -&gt; &#34;RunLoadTestResponse&#34;:
+
     request = betterproto_lib_google_protobuf.Empty()
 
     return self.__rpc_run_load_test_default(request)</code></pre>
@@ -8723,6 +9460,7 @@ class CreatePipelineTransaction(betterproto.Message):
 <pre><code class="python">def render_template(
     self, *, template: str = &#34;&#34;, args: Dict[str, str] = None
 ) -&gt; &#34;RenderTemplateResponse&#34;:
+
     request = RenderTemplateRequest()
     request.template = template
     request.args = args
@@ -8740,6 +9478,7 @@ class CreatePipelineTransaction(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def list_task(self, *, group: &#34;Group&#34; = None) -&gt; Iterator[&#34;_taskapi__.TaskInfo&#34;]:
+
     request = _taskapi__.ListTaskRequest()
     if group is not None:
         request.group = group
@@ -8760,6 +9499,7 @@ class CreatePipelineTransaction(betterproto.Message):
 <pre><code class="python">def get_kube_events(
     self, *, since: timedelta = None, query: str = &#34;&#34;
 ) -&gt; Iterator[&#34;LokiLogMessage&#34;]:
+
     request = LokiRequest()
     if since is not None:
         request.since = since
@@ -8781,6 +9521,7 @@ class CreatePipelineTransaction(betterproto.Message):
 <pre><code class="python">def query_loki(
     self, *, since: timedelta = None, query: str = &#34;&#34;
 ) -&gt; Iterator[&#34;LokiLogMessage&#34;]:
+
     request = LokiRequest()
     if since is not None:
         request.since = since
@@ -8800,6 +9541,7 @@ class CreatePipelineTransaction(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def get_cluster_defaults(self) -&gt; &#34;GetClusterDefaultsResponse&#34;:
+
     request = GetClusterDefaultsRequest()
 
     return self.__rpc_get_cluster_defaults(request)</code></pre>
@@ -8822,6 +9564,7 @@ class CreatePipelineTransaction(betterproto.Message):
     dry_run: bool = False,
     cluster_defaults_json: str = &#34;&#34;
 ) -&gt; &#34;SetClusterDefaultsResponse&#34;:
+
     request = SetClusterDefaultsRequest()
     request.regenerate = regenerate
     request.reprocess = reprocess
@@ -8829,6 +9572,56 @@ class CreatePipelineTransaction(betterproto.Message):
     request.cluster_defaults_json = cluster_defaults_json
 
     return self.__rpc_set_cluster_defaults(request)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.pps.ApiStub.get_project_defaults"><code class="name flex">
+<span>def <span class="ident">get_project_defaults</span></span>(<span>self, *, project: _pfs__.Project = None) ‑> <a title="pachyderm_sdk.api.pps.GetProjectDefaultsResponse" href="#pachyderm_sdk.api.pps.GetProjectDefaultsResponse">GetProjectDefaultsResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_project_defaults(
+    self, *, project: &#34;_pfs__.Project&#34; = None
+) -&gt; &#34;GetProjectDefaultsResponse&#34;:
+
+    request = GetProjectDefaultsRequest()
+    if project is not None:
+        request.project = project
+
+    return self.__rpc_get_project_defaults(request)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.pps.ApiStub.set_project_defaults"><code class="name flex">
+<span>def <span class="ident">set_project_defaults</span></span>(<span>self, *, project: _pfs__.Project = None, regenerate: bool = False, reprocess: bool = False, dry_run: bool = False, project_defaults_json: str = '') ‑> <a title="pachyderm_sdk.api.pps.SetProjectDefaultsResponse" href="#pachyderm_sdk.api.pps.SetProjectDefaultsResponse">SetProjectDefaultsResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_project_defaults(
+    self,
+    *,
+    project: &#34;_pfs__.Project&#34; = None,
+    regenerate: bool = False,
+    reprocess: bool = False,
+    dry_run: bool = False,
+    project_defaults_json: str = &#34;&#34;
+) -&gt; &#34;SetProjectDefaultsResponse&#34;:
+
+    request = SetProjectDefaultsRequest()
+    if project is not None:
+        request.project = project
+    request.regenerate = regenerate
+    request.reprocess = reprocess
+    request.dry_run = dry_run
+    request.project_defaults_json = project_defaults_json
+
+    return self.__rpc_set_project_defaults(request)</code></pre>
 </details>
 </dd>
 </dl>
@@ -8843,6 +9636,7 @@ class CreatePipelineTransaction(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class ApiBase:
+
     def inspect_job(
         self, job: &#34;Job&#34;, wait: bool, details: bool, context: &#34;grpc.ServicerContext&#34;
     ) -&gt; &#34;JobInfo&#34;:
@@ -8934,6 +9728,15 @@ class CreatePipelineTransaction(betterproto.Message):
         context.set_details(&#34;Method not implemented!&#34;)
         raise NotImplementedError(&#34;Method not implemented!&#34;)
 
+    def create_datum(
+        self,
+        request_iterator: Iterator[&#34;CreateDatumRequest&#34;],
+        context: &#34;grpc.ServicerContext&#34;,
+    ) -&gt; Iterator[&#34;DatumInfo&#34;]:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
     def restart_datum(
         self,
         job: &#34;Job&#34;,
@@ -8985,6 +9788,7 @@ class CreatePipelineTransaction(betterproto.Message):
         sidecar_resource_requests: &#34;ResourceSpec&#34;,
         dry_run: bool,
         determined: &#34;Determined&#34;,
+        maximum_expected_uptime: timedelta,
         context: &#34;grpc.ServicerContext&#34;,
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -9077,6 +9881,13 @@ class CreatePipelineTransaction(betterproto.Message):
     def run_cron(
         self, pipeline: &#34;Pipeline&#34;, context: &#34;grpc.ServicerContext&#34;
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def check_status(
+        self, all: bool, project: &#34;_pfs__.Project&#34;, context: &#34;grpc.ServicerContext&#34;
+    ) -&gt; Iterator[&#34;CheckStatusResponse&#34;]:
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details(&#34;Method not implemented!&#34;)
         raise NotImplementedError(&#34;Method not implemented!&#34;)
@@ -9222,6 +10033,26 @@ class CreatePipelineTransaction(betterproto.Message):
         context.set_details(&#34;Method not implemented!&#34;)
         raise NotImplementedError(&#34;Method not implemented!&#34;)
 
+    def get_project_defaults(
+        self, project: &#34;_pfs__.Project&#34;, context: &#34;grpc.ServicerContext&#34;
+    ) -&gt; &#34;GetProjectDefaultsResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
+    def set_project_defaults(
+        self,
+        project: &#34;_pfs__.Project&#34;,
+        regenerate: bool,
+        reprocess: bool,
+        dry_run: bool,
+        project_defaults_json: str,
+        context: &#34;grpc.ServicerContext&#34;,
+    ) -&gt; &#34;SetProjectDefaultsResponse&#34;:
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details(&#34;Method not implemented!&#34;)
+        raise NotImplementedError(&#34;Method not implemented!&#34;)
+
     __proto_path__ = &#34;pps_v2.API&#34;
 
     @property
@@ -9271,6 +10102,11 @@ class CreatePipelineTransaction(betterproto.Message):
                 self.list_datum,
                 request_deserializer=ListDatumRequest.FromString,
                 response_serializer=ListDatumRequest.SerializeToString,
+            ),
+            &#34;CreateDatum&#34;: grpc.stream_stream_rpc_method_handler(
+                self.create_datum,
+                request_deserializer=CreateDatumRequest.FromString,
+                response_serializer=CreateDatumRequest.SerializeToString,
             ),
             &#34;RestartDatum&#34;: grpc.unary_unary_rpc_method_handler(
                 self.restart_datum,
@@ -9331,6 +10167,11 @@ class CreatePipelineTransaction(betterproto.Message):
                 self.run_cron,
                 request_deserializer=RunCronRequest.FromString,
                 response_serializer=RunCronRequest.SerializeToString,
+            ),
+            &#34;CheckStatus&#34;: grpc.unary_stream_rpc_method_handler(
+                self.check_status,
+                request_deserializer=CheckStatusRequest.FromString,
+                response_serializer=CheckStatusRequest.SerializeToString,
             ),
             &#34;CreateSecret&#34;: grpc.unary_unary_rpc_method_handler(
                 self.create_secret,
@@ -9411,6 +10252,16 @@ class CreatePipelineTransaction(betterproto.Message):
                 self.set_cluster_defaults,
                 request_deserializer=SetClusterDefaultsRequest.FromString,
                 response_serializer=SetClusterDefaultsRequest.SerializeToString,
+            ),
+            &#34;GetProjectDefaults&#34;: grpc.unary_unary_rpc_method_handler(
+                self.get_project_defaults,
+                request_deserializer=GetProjectDefaultsRequest.FromString,
+                response_serializer=GetProjectDefaultsRequest.SerializeToString,
+            ),
+            &#34;SetProjectDefaults&#34;: grpc.unary_unary_rpc_method_handler(
+                self.set_project_defaults,
+                request_deserializer=SetProjectDefaultsRequest.FromString,
+                response_serializer=SetProjectDefaultsRequest.SerializeToString,
             ),
         }</code></pre>
 </details>
@@ -9597,6 +10448,25 @@ class CreatePipelineTransaction(betterproto.Message):
     raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
 </details>
 </dd>
+<dt id="pachyderm_sdk.api.pps.ApiBase.create_datum"><code class="name flex">
+<span>def <span class="ident">create_datum</span></span>(<span>self, request_iterator: Iterator[ForwardRef('<a title="pachyderm_sdk.api.pps.CreateDatumRequest" href="#pachyderm_sdk.api.pps.CreateDatumRequest">CreateDatumRequest</a>')], context: grpc.ServicerContext) ‑> Iterator[<a title="pachyderm_sdk.api.pps.DatumInfo" href="#pachyderm_sdk.api.pps.DatumInfo">DatumInfo</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_datum(
+    self,
+    request_iterator: Iterator[&#34;CreateDatumRequest&#34;],
+    context: &#34;grpc.ServicerContext&#34;,
+) -&gt; Iterator[&#34;DatumInfo&#34;]:
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details(&#34;Method not implemented!&#34;)
+    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
+</details>
+</dd>
 <dt id="pachyderm_sdk.api.pps.ApiBase.restart_datum"><code class="name flex">
 <span>def <span class="ident">restart_datum</span></span>(<span>self, job: <a title="pachyderm_sdk.api.pps.Job" href="#pachyderm_sdk.api.pps.Job">Job</a>, data_filters: Optional[List[str]], context: grpc.ServicerContext) ‑> betterproto.lib.google.protobuf.Empty</span>
 </code></dt>
@@ -9635,7 +10505,7 @@ class CreatePipelineTransaction(betterproto.Message):
 </details>
 </dd>
 <dt id="pachyderm_sdk.api.pps.ApiBase.create_pipeline"><code class="name flex">
-<span>def <span class="ident">create_pipeline</span></span>(<span>self, pipeline: <a title="pachyderm_sdk.api.pps.Pipeline" href="#pachyderm_sdk.api.pps.Pipeline">Pipeline</a>, tf_job: <a title="pachyderm_sdk.api.pps.TfJob" href="#pachyderm_sdk.api.pps.TfJob">TfJob</a>, transform: <a title="pachyderm_sdk.api.pps.Transform" href="#pachyderm_sdk.api.pps.Transform">Transform</a>, parallelism_spec: <a title="pachyderm_sdk.api.pps.ParallelismSpec" href="#pachyderm_sdk.api.pps.ParallelismSpec">ParallelismSpec</a>, egress: <a title="pachyderm_sdk.api.pps.Egress" href="#pachyderm_sdk.api.pps.Egress">Egress</a>, update: bool, output_branch: str, s3_out: bool, resource_requests: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a>, resource_limits: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a>, sidecar_resource_limits: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a>, input: <a title="pachyderm_sdk.api.pps.Input" href="#pachyderm_sdk.api.pps.Input">Input</a>, description: str, reprocess: bool, service: <a title="pachyderm_sdk.api.pps.Service" href="#pachyderm_sdk.api.pps.Service">Service</a>, spout: <a title="pachyderm_sdk.api.pps.Spout" href="#pachyderm_sdk.api.pps.Spout">Spout</a>, datum_set_spec: <a title="pachyderm_sdk.api.pps.DatumSetSpec" href="#pachyderm_sdk.api.pps.DatumSetSpec">DatumSetSpec</a>, datum_timeout: datetime.timedelta, job_timeout: datetime.timedelta, salt: str, datum_tries: int, scheduling_spec: <a title="pachyderm_sdk.api.pps.SchedulingSpec" href="#pachyderm_sdk.api.pps.SchedulingSpec">SchedulingSpec</a>, pod_spec: str, pod_patch: str, spec_commit: _pfs__.Commit, metadata: <a title="pachyderm_sdk.api.pps.Metadata" href="#pachyderm_sdk.api.pps.Metadata">Metadata</a>, reprocess_spec: str, autoscaling: bool, tolerations: Optional[List[ForwardRef('<a title="pachyderm_sdk.api.pps.Toleration" href="#pachyderm_sdk.api.pps.Toleration">Toleration</a>')]], sidecar_resource_requests: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a>, dry_run: bool, determined: <a title="pachyderm_sdk.api.pps.Determined" href="#pachyderm_sdk.api.pps.Determined">Determined</a>, context: grpc.ServicerContext) ‑> betterproto.lib.google.protobuf.Empty</span>
+<span>def <span class="ident">create_pipeline</span></span>(<span>self, pipeline: <a title="pachyderm_sdk.api.pps.Pipeline" href="#pachyderm_sdk.api.pps.Pipeline">Pipeline</a>, tf_job: <a title="pachyderm_sdk.api.pps.TfJob" href="#pachyderm_sdk.api.pps.TfJob">TfJob</a>, transform: <a title="pachyderm_sdk.api.pps.Transform" href="#pachyderm_sdk.api.pps.Transform">Transform</a>, parallelism_spec: <a title="pachyderm_sdk.api.pps.ParallelismSpec" href="#pachyderm_sdk.api.pps.ParallelismSpec">ParallelismSpec</a>, egress: <a title="pachyderm_sdk.api.pps.Egress" href="#pachyderm_sdk.api.pps.Egress">Egress</a>, update: bool, output_branch: str, s3_out: bool, resource_requests: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a>, resource_limits: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a>, sidecar_resource_limits: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a>, input: <a title="pachyderm_sdk.api.pps.Input" href="#pachyderm_sdk.api.pps.Input">Input</a>, description: str, reprocess: bool, service: <a title="pachyderm_sdk.api.pps.Service" href="#pachyderm_sdk.api.pps.Service">Service</a>, spout: <a title="pachyderm_sdk.api.pps.Spout" href="#pachyderm_sdk.api.pps.Spout">Spout</a>, datum_set_spec: <a title="pachyderm_sdk.api.pps.DatumSetSpec" href="#pachyderm_sdk.api.pps.DatumSetSpec">DatumSetSpec</a>, datum_timeout: datetime.timedelta, job_timeout: datetime.timedelta, salt: str, datum_tries: int, scheduling_spec: <a title="pachyderm_sdk.api.pps.SchedulingSpec" href="#pachyderm_sdk.api.pps.SchedulingSpec">SchedulingSpec</a>, pod_spec: str, pod_patch: str, spec_commit: _pfs__.Commit, metadata: <a title="pachyderm_sdk.api.pps.Metadata" href="#pachyderm_sdk.api.pps.Metadata">Metadata</a>, reprocess_spec: str, autoscaling: bool, tolerations: Optional[List[ForwardRef('<a title="pachyderm_sdk.api.pps.Toleration" href="#pachyderm_sdk.api.pps.Toleration">Toleration</a>')]], sidecar_resource_requests: <a title="pachyderm_sdk.api.pps.ResourceSpec" href="#pachyderm_sdk.api.pps.ResourceSpec">ResourceSpec</a>, dry_run: bool, determined: <a title="pachyderm_sdk.api.pps.Determined" href="#pachyderm_sdk.api.pps.Determined">Determined</a>, maximum_expected_uptime: datetime.timedelta, context: grpc.ServicerContext) ‑> betterproto.lib.google.protobuf.Empty</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -9677,6 +10547,7 @@ class CreatePipelineTransaction(betterproto.Message):
     sidecar_resource_requests: &#34;ResourceSpec&#34;,
     dry_run: bool,
     determined: &#34;Determined&#34;,
+    maximum_expected_uptime: timedelta,
     context: &#34;grpc.ServicerContext&#34;,
 ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -9859,6 +10730,23 @@ class CreatePipelineTransaction(betterproto.Message):
 <pre><code class="python">def run_cron(
     self, pipeline: &#34;Pipeline&#34;, context: &#34;grpc.ServicerContext&#34;
 ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details(&#34;Method not implemented!&#34;)
+    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.pps.ApiBase.check_status"><code class="name flex">
+<span>def <span class="ident">check_status</span></span>(<span>self, all: bool, project: _pfs__.Project, context: grpc.ServicerContext) ‑> Iterator[<a title="pachyderm_sdk.api.pps.CheckStatusResponse" href="#pachyderm_sdk.api.pps.CheckStatusResponse">CheckStatusResponse</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def check_status(
+    self, all: bool, project: &#34;_pfs__.Project&#34;, context: &#34;grpc.ServicerContext&#34;
+) -&gt; Iterator[&#34;CheckStatusResponse&#34;]:
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details(&#34;Method not implemented!&#34;)
     raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
@@ -10160,6 +11048,46 @@ class CreatePipelineTransaction(betterproto.Message):
     cluster_defaults_json: str,
     context: &#34;grpc.ServicerContext&#34;,
 ) -&gt; &#34;SetClusterDefaultsResponse&#34;:
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details(&#34;Method not implemented!&#34;)
+    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.pps.ApiBase.get_project_defaults"><code class="name flex">
+<span>def <span class="ident">get_project_defaults</span></span>(<span>self, project: _pfs__.Project, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.pps.GetProjectDefaultsResponse" href="#pachyderm_sdk.api.pps.GetProjectDefaultsResponse">GetProjectDefaultsResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_project_defaults(
+    self, project: &#34;_pfs__.Project&#34;, context: &#34;grpc.ServicerContext&#34;
+) -&gt; &#34;GetProjectDefaultsResponse&#34;:
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details(&#34;Method not implemented!&#34;)
+    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.pps.ApiBase.set_project_defaults"><code class="name flex">
+<span>def <span class="ident">set_project_defaults</span></span>(<span>self, project: _pfs__.Project, regenerate: bool, reprocess: bool, dry_run: bool, project_defaults_json: str, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.pps.SetProjectDefaultsResponse" href="#pachyderm_sdk.api.pps.SetProjectDefaultsResponse">SetProjectDefaultsResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_project_defaults(
+    self,
+    project: &#34;_pfs__.Project&#34;,
+    regenerate: bool,
+    reprocess: bool,
+    dry_run: bool,
+    project_defaults_json: str,
+    context: &#34;grpc.ServicerContext&#34;,
+) -&gt; &#34;SetProjectDefaultsResponse&#34;:
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details(&#34;Method not implemented!&#34;)
     raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
@@ -10619,6 +11547,8 @@ class CreatePipelineTransaction(betterproto.Message):
 <li><code><a title="pachyderm_sdk.api.pps.PipelineInfoDetails.tolerations" href="#pachyderm_sdk.api.pps.PipelineInfoDetails.tolerations">tolerations</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.PipelineInfoDetails.sidecar_resource_requests" href="#pachyderm_sdk.api.pps.PipelineInfoDetails.sidecar_resource_requests">sidecar_resource_requests</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.PipelineInfoDetails.determined" href="#pachyderm_sdk.api.pps.PipelineInfoDetails.determined">determined</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pps.PipelineInfoDetails.maximum_expected_uptime" href="#pachyderm_sdk.api.pps.PipelineInfoDetails.maximum_expected_uptime">maximum_expected_uptime</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pps.PipelineInfoDetails.workers_started_at" href="#pachyderm_sdk.api.pps.PipelineInfoDetails.workers_started_at">workers_started_at</a></code></li>
 </ul>
 </li>
 <li>
@@ -10769,6 +11699,13 @@ class CreatePipelineTransaction(betterproto.Message):
 </ul>
 </li>
 <li>
+<h4><code><a title="pachyderm_sdk.api.pps.CreateDatumRequest" href="#pachyderm_sdk.api.pps.CreateDatumRequest">CreateDatumRequest</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.pps.CreateDatumRequest.input" href="#pachyderm_sdk.api.pps.CreateDatumRequest.input">input</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pps.CreateDatumRequest.number" href="#pachyderm_sdk.api.pps.CreateDatumRequest.number">number</a></code></li>
+</ul>
+</li>
+<li>
 <h4><code><a title="pachyderm_sdk.api.pps.DatumSetSpec" href="#pachyderm_sdk.api.pps.DatumSetSpec">DatumSetSpec</a></code></h4>
 <ul class="">
 <li><code><a title="pachyderm_sdk.api.pps.DatumSetSpec.number" href="#pachyderm_sdk.api.pps.DatumSetSpec.number">number</a></code></li>
@@ -10825,6 +11762,7 @@ class CreatePipelineTransaction(betterproto.Message):
 <li><code><a title="pachyderm_sdk.api.pps.CreatePipelineRequest.sidecar_resource_requests" href="#pachyderm_sdk.api.pps.CreatePipelineRequest.sidecar_resource_requests">sidecar_resource_requests</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.CreatePipelineRequest.dry_run" href="#pachyderm_sdk.api.pps.CreatePipelineRequest.dry_run">dry_run</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.CreatePipelineRequest.determined" href="#pachyderm_sdk.api.pps.CreatePipelineRequest.determined">determined</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pps.CreatePipelineRequest.maximum_expected_uptime" href="#pachyderm_sdk.api.pps.CreatePipelineRequest.maximum_expected_uptime">maximum_expected_uptime</a></code></li>
 </ul>
 </li>
 <li>
@@ -10910,6 +11848,21 @@ class CreatePipelineTransaction(betterproto.Message):
 <h4><code><a title="pachyderm_sdk.api.pps.RunCronRequest" href="#pachyderm_sdk.api.pps.RunCronRequest">RunCronRequest</a></code></h4>
 <ul class="">
 <li><code><a title="pachyderm_sdk.api.pps.RunCronRequest.pipeline" href="#pachyderm_sdk.api.pps.RunCronRequest.pipeline">pipeline</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.pps.CheckStatusRequest" href="#pachyderm_sdk.api.pps.CheckStatusRequest">CheckStatusRequest</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.pps.CheckStatusRequest.all" href="#pachyderm_sdk.api.pps.CheckStatusRequest.all">all</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pps.CheckStatusRequest.project" href="#pachyderm_sdk.api.pps.CheckStatusRequest.project">project</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.pps.CheckStatusResponse" href="#pachyderm_sdk.api.pps.CheckStatusResponse">CheckStatusResponse</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.pps.CheckStatusResponse.project" href="#pachyderm_sdk.api.pps.CheckStatusResponse.project">project</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pps.CheckStatusResponse.pipeline" href="#pachyderm_sdk.api.pps.CheckStatusResponse.pipeline">pipeline</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pps.CheckStatusResponse.alerts" href="#pachyderm_sdk.api.pps.CheckStatusResponse.alerts">alerts</a></code></li>
 </ul>
 </li>
 <li>
@@ -11040,6 +11993,40 @@ class CreatePipelineTransaction(betterproto.Message):
 </ul>
 </li>
 <li>
+<h4><code><a title="pachyderm_sdk.api.pps.ProjectDefaults" href="#pachyderm_sdk.api.pps.ProjectDefaults">ProjectDefaults</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.pps.ProjectDefaults.create_pipeline_request" href="#pachyderm_sdk.api.pps.ProjectDefaults.create_pipeline_request">create_pipeline_request</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.pps.GetProjectDefaultsRequest" href="#pachyderm_sdk.api.pps.GetProjectDefaultsRequest">GetProjectDefaultsRequest</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.pps.GetProjectDefaultsRequest.project" href="#pachyderm_sdk.api.pps.GetProjectDefaultsRequest.project">project</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.pps.GetProjectDefaultsResponse" href="#pachyderm_sdk.api.pps.GetProjectDefaultsResponse">GetProjectDefaultsResponse</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.pps.GetProjectDefaultsResponse.project_defaults_json" href="#pachyderm_sdk.api.pps.GetProjectDefaultsResponse.project_defaults_json">project_defaults_json</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.pps.SetProjectDefaultsRequest" href="#pachyderm_sdk.api.pps.SetProjectDefaultsRequest">SetProjectDefaultsRequest</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.pps.SetProjectDefaultsRequest.project" href="#pachyderm_sdk.api.pps.SetProjectDefaultsRequest.project">project</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pps.SetProjectDefaultsRequest.regenerate" href="#pachyderm_sdk.api.pps.SetProjectDefaultsRequest.regenerate">regenerate</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pps.SetProjectDefaultsRequest.reprocess" href="#pachyderm_sdk.api.pps.SetProjectDefaultsRequest.reprocess">reprocess</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pps.SetProjectDefaultsRequest.dry_run" href="#pachyderm_sdk.api.pps.SetProjectDefaultsRequest.dry_run">dry_run</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pps.SetProjectDefaultsRequest.project_defaults_json" href="#pachyderm_sdk.api.pps.SetProjectDefaultsRequest.project_defaults_json">project_defaults_json</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.pps.SetProjectDefaultsResponse" href="#pachyderm_sdk.api.pps.SetProjectDefaultsResponse">SetProjectDefaultsResponse</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.pps.SetProjectDefaultsResponse.affected_pipelines" href="#pachyderm_sdk.api.pps.SetProjectDefaultsResponse.affected_pipelines">affected_pipelines</a></code></li>
+</ul>
+</li>
+<li>
 <h4><code><a title="pachyderm_sdk.api.pps.ApiStub" href="#pachyderm_sdk.api.pps.ApiStub">ApiStub</a></code></h4>
 <ul class="">
 <li><code><a title="pachyderm_sdk.api.pps.ApiStub.inspect_job" href="#pachyderm_sdk.api.pps.ApiStub.inspect_job">inspect_job</a></code></li>
@@ -11051,6 +12038,7 @@ class CreatePipelineTransaction(betterproto.Message):
 <li><code><a title="pachyderm_sdk.api.pps.ApiStub.stop_job" href="#pachyderm_sdk.api.pps.ApiStub.stop_job">stop_job</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.ApiStub.inspect_datum" href="#pachyderm_sdk.api.pps.ApiStub.inspect_datum">inspect_datum</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.ApiStub.list_datum" href="#pachyderm_sdk.api.pps.ApiStub.list_datum">list_datum</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pps.ApiStub.create_datum" href="#pachyderm_sdk.api.pps.ApiStub.create_datum">create_datum</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.ApiStub.restart_datum" href="#pachyderm_sdk.api.pps.ApiStub.restart_datum">restart_datum</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.ApiStub.rerun_pipeline" href="#pachyderm_sdk.api.pps.ApiStub.rerun_pipeline">rerun_pipeline</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.ApiStub.create_pipeline" href="#pachyderm_sdk.api.pps.ApiStub.create_pipeline">create_pipeline</a></code></li>
@@ -11063,6 +12051,7 @@ class CreatePipelineTransaction(betterproto.Message):
 <li><code><a title="pachyderm_sdk.api.pps.ApiStub.stop_pipeline" href="#pachyderm_sdk.api.pps.ApiStub.stop_pipeline">stop_pipeline</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.ApiStub.run_pipeline" href="#pachyderm_sdk.api.pps.ApiStub.run_pipeline">run_pipeline</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.ApiStub.run_cron" href="#pachyderm_sdk.api.pps.ApiStub.run_cron">run_cron</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pps.ApiStub.check_status" href="#pachyderm_sdk.api.pps.ApiStub.check_status">check_status</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.ApiStub.create_secret" href="#pachyderm_sdk.api.pps.ApiStub.create_secret">create_secret</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.ApiStub.delete_secret" href="#pachyderm_sdk.api.pps.ApiStub.delete_secret">delete_secret</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.ApiStub.list_secret" href="#pachyderm_sdk.api.pps.ApiStub.list_secret">list_secret</a></code></li>
@@ -11079,6 +12068,8 @@ class CreatePipelineTransaction(betterproto.Message):
 <li><code><a title="pachyderm_sdk.api.pps.ApiStub.query_loki" href="#pachyderm_sdk.api.pps.ApiStub.query_loki">query_loki</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.ApiStub.get_cluster_defaults" href="#pachyderm_sdk.api.pps.ApiStub.get_cluster_defaults">get_cluster_defaults</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.ApiStub.set_cluster_defaults" href="#pachyderm_sdk.api.pps.ApiStub.set_cluster_defaults">set_cluster_defaults</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pps.ApiStub.get_project_defaults" href="#pachyderm_sdk.api.pps.ApiStub.get_project_defaults">get_project_defaults</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pps.ApiStub.set_project_defaults" href="#pachyderm_sdk.api.pps.ApiStub.set_project_defaults">set_project_defaults</a></code></li>
 </ul>
 </li>
 <li>
@@ -11093,6 +12084,7 @@ class CreatePipelineTransaction(betterproto.Message):
 <li><code><a title="pachyderm_sdk.api.pps.ApiBase.stop_job" href="#pachyderm_sdk.api.pps.ApiBase.stop_job">stop_job</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.ApiBase.inspect_datum" href="#pachyderm_sdk.api.pps.ApiBase.inspect_datum">inspect_datum</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.ApiBase.list_datum" href="#pachyderm_sdk.api.pps.ApiBase.list_datum">list_datum</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pps.ApiBase.create_datum" href="#pachyderm_sdk.api.pps.ApiBase.create_datum">create_datum</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.ApiBase.restart_datum" href="#pachyderm_sdk.api.pps.ApiBase.restart_datum">restart_datum</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.ApiBase.rerun_pipeline" href="#pachyderm_sdk.api.pps.ApiBase.rerun_pipeline">rerun_pipeline</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.ApiBase.create_pipeline" href="#pachyderm_sdk.api.pps.ApiBase.create_pipeline">create_pipeline</a></code></li>
@@ -11105,6 +12097,7 @@ class CreatePipelineTransaction(betterproto.Message):
 <li><code><a title="pachyderm_sdk.api.pps.ApiBase.stop_pipeline" href="#pachyderm_sdk.api.pps.ApiBase.stop_pipeline">stop_pipeline</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.ApiBase.run_pipeline" href="#pachyderm_sdk.api.pps.ApiBase.run_pipeline">run_pipeline</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.ApiBase.run_cron" href="#pachyderm_sdk.api.pps.ApiBase.run_cron">run_cron</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pps.ApiBase.check_status" href="#pachyderm_sdk.api.pps.ApiBase.check_status">check_status</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.ApiBase.create_secret" href="#pachyderm_sdk.api.pps.ApiBase.create_secret">create_secret</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.ApiBase.delete_secret" href="#pachyderm_sdk.api.pps.ApiBase.delete_secret">delete_secret</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.ApiBase.list_secret" href="#pachyderm_sdk.api.pps.ApiBase.list_secret">list_secret</a></code></li>
@@ -11121,6 +12114,8 @@ class CreatePipelineTransaction(betterproto.Message):
 <li><code><a title="pachyderm_sdk.api.pps.ApiBase.query_loki" href="#pachyderm_sdk.api.pps.ApiBase.query_loki">query_loki</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.ApiBase.get_cluster_defaults" href="#pachyderm_sdk.api.pps.ApiBase.get_cluster_defaults">get_cluster_defaults</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pps.ApiBase.set_cluster_defaults" href="#pachyderm_sdk.api.pps.ApiBase.set_cluster_defaults">set_cluster_defaults</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pps.ApiBase.get_project_defaults" href="#pachyderm_sdk.api.pps.ApiBase.get_project_defaults">get_project_defaults</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pps.ApiBase.set_project_defaults" href="#pachyderm_sdk.api.pps.ApiBase.set_project_defaults">set_project_defaults</a></code></li>
 </ul>
 </li>
 </ul>

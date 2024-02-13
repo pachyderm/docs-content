@@ -1,5 +1,5 @@
 ---
-date: 2023-10-18T16:51:53-04:00
+date: 2024-02-13T16:12:03-05:00
 title: "pachctl"
 description: "Learn about the pachctl command"
 ---
@@ -33,6 +33,7 @@ Documentation: https://docs.pachyderm.com/latest/
 
 * [pachctl auth](../pachctl_auth)	 - Auth commands manage access to data in a Pachyderm cluster
 * [pachctl buildinfo](../pachctl_buildinfo)	 - Print go buildinfo.
+* [pachctl check](../pachctl_check)	 - Check the status of pipelines within a project.
 * [pachctl completion](../pachctl_completion)	 - Print or install terminal completion code.
 * [pachctl config](../pachctl_config)	 - Manages the pachyderm config.
 * [pachctl connect](../pachctl_connect)	 - Connect to a Pachyderm Cluster

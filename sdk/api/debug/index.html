@@ -257,6 +257,7 @@ class RunPfsLoadTestResponse(betterproto.Message):
 
 
 class DebugStub:
+
     def __init__(self, channel: &#34;grpc.Channel&#34;):
         self.__rpc_profile = channel.unary_stream(
             &#34;/debug_v2.Debug/Profile&#34;,
@@ -302,6 +303,7 @@ class DebugStub:
     def profile(
         self, *, profile: &#34;Profile&#34; = None, filter: &#34;Filter&#34; = None
     ) -&gt; Iterator[&#34;betterproto_lib_google_protobuf.BytesValue&#34;]:
+
         request = ProfileRequest()
         if profile is not None:
             request.profile = profile
@@ -314,6 +316,7 @@ class DebugStub:
     def binary(
         self, *, filter: &#34;Filter&#34; = None
     ) -&gt; Iterator[&#34;betterproto_lib_google_protobuf.BytesValue&#34;]:
+
         request = BinaryRequest()
         if filter is not None:
             request.filter = filter
@@ -324,6 +327,7 @@ class DebugStub:
     def dump(
         self, *, filter: &#34;Filter&#34; = None, limit: int = 0
     ) -&gt; Iterator[&#34;betterproto_lib_google_protobuf.BytesValue&#34;]:
+
         request = DumpRequest()
         if filter is not None:
             request.filter = filter
@@ -340,6 +344,7 @@ class DebugStub:
         duration: timedelta = None,
         recurse: bool = False
     ) -&gt; &#34;SetLogLevelResponse&#34;:
+
         request = SetLogLevelRequest()
         request.pachyderm = pachyderm
         request.grpc = grpc
@@ -396,6 +401,7 @@ class DebugStub:
         seed: int = 0,
         state_id: str = &#34;&#34;
     ) -&gt; &#34;RunPfsLoadTestResponse&#34;:
+
         request = RunPfsLoadTestRequest()
         request.spec = spec
         if branch is not None:
@@ -406,12 +412,14 @@ class DebugStub:
         return self.__rpc_run_pfs_load_test(request)
 
     def run_pfs_load_test_default(self) -&gt; &#34;RunPfsLoadTestResponse&#34;:
+
         request = betterproto_lib_google_protobuf.Empty()
 
         return self.__rpc_run_pfs_load_test_default(request)
 
 
 class DebugBase:
+
     def profile(
         self, profile: &#34;Profile&#34;, filter: &#34;Filter&#34;, context: &#34;grpc.ServicerContext&#34;
     ) -&gt; Iterator[&#34;betterproto_lib_google_protobuf.BytesValue&#34;]:
@@ -1484,6 +1492,7 @@ class RunPfsLoadTestResponse(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class DebugStub:
+
     def __init__(self, channel: &#34;grpc.Channel&#34;):
         self.__rpc_profile = channel.unary_stream(
             &#34;/debug_v2.Debug/Profile&#34;,
@@ -1529,6 +1538,7 @@ class RunPfsLoadTestResponse(betterproto.Message):
     def profile(
         self, *, profile: &#34;Profile&#34; = None, filter: &#34;Filter&#34; = None
     ) -&gt; Iterator[&#34;betterproto_lib_google_protobuf.BytesValue&#34;]:
+
         request = ProfileRequest()
         if profile is not None:
             request.profile = profile
@@ -1541,6 +1551,7 @@ class RunPfsLoadTestResponse(betterproto.Message):
     def binary(
         self, *, filter: &#34;Filter&#34; = None
     ) -&gt; Iterator[&#34;betterproto_lib_google_protobuf.BytesValue&#34;]:
+
         request = BinaryRequest()
         if filter is not None:
             request.filter = filter
@@ -1551,6 +1562,7 @@ class RunPfsLoadTestResponse(betterproto.Message):
     def dump(
         self, *, filter: &#34;Filter&#34; = None, limit: int = 0
     ) -&gt; Iterator[&#34;betterproto_lib_google_protobuf.BytesValue&#34;]:
+
         request = DumpRequest()
         if filter is not None:
             request.filter = filter
@@ -1567,6 +1579,7 @@ class RunPfsLoadTestResponse(betterproto.Message):
         duration: timedelta = None,
         recurse: bool = False
     ) -&gt; &#34;SetLogLevelResponse&#34;:
+
         request = SetLogLevelRequest()
         request.pachyderm = pachyderm
         request.grpc = grpc
@@ -1623,6 +1636,7 @@ class RunPfsLoadTestResponse(betterproto.Message):
         seed: int = 0,
         state_id: str = &#34;&#34;
     ) -&gt; &#34;RunPfsLoadTestResponse&#34;:
+
         request = RunPfsLoadTestRequest()
         request.spec = spec
         if branch is not None:
@@ -1633,6 +1647,7 @@ class RunPfsLoadTestResponse(betterproto.Message):
         return self.__rpc_run_pfs_load_test(request)
 
     def run_pfs_load_test_default(self) -&gt; &#34;RunPfsLoadTestResponse&#34;:
+
         request = betterproto_lib_google_protobuf.Empty()
 
         return self.__rpc_run_pfs_load_test_default(request)</code></pre>
@@ -1655,6 +1670,7 @@ class RunPfsLoadTestResponse(betterproto.Message):
 <pre><code class="python">def profile(
     self, *, profile: &#34;Profile&#34; = None, filter: &#34;Filter&#34; = None
 ) -&gt; Iterator[&#34;betterproto_lib_google_protobuf.BytesValue&#34;]:
+
     request = ProfileRequest()
     if profile is not None:
         request.profile = profile
@@ -1677,6 +1693,7 @@ class RunPfsLoadTestResponse(betterproto.Message):
 <pre><code class="python">def binary(
     self, *, filter: &#34;Filter&#34; = None
 ) -&gt; Iterator[&#34;betterproto_lib_google_protobuf.BytesValue&#34;]:
+
     request = BinaryRequest()
     if filter is not None:
         request.filter = filter
@@ -1697,6 +1714,7 @@ class RunPfsLoadTestResponse(betterproto.Message):
 <pre><code class="python">def dump(
     self, *, filter: &#34;Filter&#34; = None, limit: int = 0
 ) -&gt; Iterator[&#34;betterproto_lib_google_protobuf.BytesValue&#34;]:
+
     request = DumpRequest()
     if filter is not None:
         request.filter = filter
@@ -1723,6 +1741,7 @@ class RunPfsLoadTestResponse(betterproto.Message):
     duration: timedelta = None,
     recurse: bool = False
 ) -&gt; &#34;SetLogLevelResponse&#34;:
+
     request = SetLogLevelRequest()
     request.pachyderm = pachyderm
     request.grpc = grpc
@@ -1809,6 +1828,7 @@ class RunPfsLoadTestResponse(betterproto.Message):
     seed: int = 0,
     state_id: str = &#34;&#34;
 ) -&gt; &#34;RunPfsLoadTestResponse&#34;:
+
     request = RunPfsLoadTestRequest()
     request.spec = spec
     if branch is not None:
@@ -1829,6 +1849,7 @@ class RunPfsLoadTestResponse(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def run_pfs_load_test_default(self) -&gt; &#34;RunPfsLoadTestResponse&#34;:
+
     request = betterproto_lib_google_protobuf.Empty()
 
     return self.__rpc_run_pfs_load_test_default(request)</code></pre>
@@ -1846,6 +1867,7 @@ class RunPfsLoadTestResponse(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class DebugBase:
+
     def profile(
         self, profile: &#34;Profile&#34;, filter: &#34;Filter&#34;, context: &#34;grpc.ServicerContext&#34;
     ) -&gt; Iterator[&#34;betterproto_lib_google_protobuf.BytesValue&#34;]:

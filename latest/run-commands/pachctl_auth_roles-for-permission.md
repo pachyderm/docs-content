@@ -1,5 +1,5 @@
 ---
-date: 2023-10-18T16:51:53-04:00
+date: 2024-02-13T16:12:03-05:00
 title: "pachctl auth roles-for-permission"
 description: "Learn about the pachctl auth roles-for-permission command"
 ---
@@ -19,8 +19,7 @@ pachctl auth roles-for-permission <permission> [flags]
 ### Examples
 
 ```
- pachctl auth roles-for-permission repoOwner 
- pachctl auth roles-for-permission clusterAdmin
+ pachctl auth roles-for-permission repoOwner pachctl auth roles-for-permission clusterAdmin
 ```
 
 ### Options

@@ -1,5 +1,5 @@
 ---
-date: 2023-10-18T16:51:53-04:00
+date: 2024-02-13T16:12:03-05:00
 title: "pachctl auth set cluster"
 description: "Learn about the pachctl auth set cluster command"
 ---
@@ -19,8 +19,7 @@ pachctl auth set cluster [role1,role2 | none ] subject [flags]
 ### Examples
 
 ```
- pachctl auth set cluster clusterOwner user:alan.watts@domain.com 
- pachctl auth set cluster clusterWriter, clusterReader robot:my-robot
+ pachctl auth set cluster clusterOwner user:alan.watts@domain.com pachctl auth set cluster clusterWriter, clusterReader robot:my-robot
 ```
 
 ### Options

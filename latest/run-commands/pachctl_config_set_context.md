@@ -1,5 +1,5 @@
 ---
-date: 2023-10-18T16:51:53-04:00
+date: 2024-02-13T16:12:03-05:00
 title: "pachctl config set context"
 description: "Learn about the pachctl config set context command"
 ---
@@ -19,8 +19,7 @@ pachctl config set context <context> [flags]
 ### Examples
 
 ```
- pachctl config set context foo 
- pachctl config set context foo --overwrite
+ pachctl config set context foo pachctl config set context foo --overwrite
 ```
 
 ### Options

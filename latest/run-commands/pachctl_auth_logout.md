@@ -1,5 +1,5 @@
 ---
-date: 2023-10-18T16:51:53-04:00
+date: 2024-02-13T16:12:03-05:00
 title: "pachctl auth logout"
 description: "Learn about the pachctl auth logout command"
 ---
@@ -19,8 +19,7 @@ pachctl auth logout [flags]
 ### Examples
 
 ```
- pachctl auth logout 
- pachctl auth logout --enterprise
+ pachctl auth logout pachctl auth logout --enterprise
 ```
 
 ### Options

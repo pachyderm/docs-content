@@ -82,9 +82,7 @@ class ApiStub(_GeneratedApiStub):
         &gt;&gt;&gt; )
         &#34;&#34;&#34;
         if history:
-            response = self.list_pipeline(
-                pipeline=pipeline, history=history, details=details
-            )
+            response = self.list_pipeline(pipeline=pipeline, history=history)
             try:
                 return next(response)
             except StopIteration:
@@ -238,9 +236,7 @@ class ApiStub(_GeneratedApiStub):
         &gt;&gt;&gt; )
         &#34;&#34;&#34;
         if history:
-            response = self.list_pipeline(
-                pipeline=pipeline, history=history, details=details
-            )
+            response = self.list_pipeline(pipeline=pipeline, history=history)
             try:
                 return next(response)
             except StopIteration:
@@ -419,9 +415,7 @@ Semantics are:</p>
     &gt;&gt;&gt; )
     &#34;&#34;&#34;
     if history:
-        response = self.list_pipeline(
-            pipeline=pipeline, history=history, details=details
-        )
+        response = self.list_pipeline(pipeline=pipeline, history=history)
         try:
             return next(response)
         except StopIteration:

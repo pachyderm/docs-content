@@ -219,6 +219,7 @@ class ListUserClustersResponse(betterproto.Message):
 
 
 class ApiStub:
+
     def __init__(self, channel: &#34;grpc.Channel&#34;):
         self.__rpc_activate = channel.unary_unary(
             &#34;/license_v2.API/Activate&#34;,
@@ -269,6 +270,7 @@ class ApiStub:
     def activate(
         self, *, activation_code: str = &#34;&#34;, expires: datetime = None
     ) -&gt; &#34;ActivateResponse&#34;:
+
         request = ActivateRequest()
         request.activation_code = activation_code
         if expires is not None:
@@ -277,11 +279,13 @@ class ApiStub:
         return self.__rpc_activate(request)
 
     def get_activation_code(self) -&gt; &#34;GetActivationCodeResponse&#34;:
+
         request = GetActivationCodeRequest()
 
         return self.__rpc_get_activation_code(request)
 
     def delete_all(self) -&gt; &#34;DeleteAllResponse&#34;:
+
         request = DeleteAllRequest()
 
         return self.__rpc_delete_all(request)
@@ -296,6 +300,7 @@ class ApiStub:
         cluster_deployment_id: str = &#34;&#34;,
         enterprise_server: bool = False
     ) -&gt; &#34;AddClusterResponse&#34;:
+
         request = AddClusterRequest()
         request.id = id
         request.address = address
@@ -307,12 +312,14 @@ class ApiStub:
         return self.__rpc_add_cluster(request)
 
     def delete_cluster(self, *, id: str = &#34;&#34;) -&gt; &#34;DeleteClusterResponse&#34;:
+
         request = DeleteClusterRequest()
         request.id = id
 
         return self.__rpc_delete_cluster(request)
 
     def list_clusters(self) -&gt; &#34;ListClustersResponse&#34;:
+
         request = ListClustersRequest()
 
         return self.__rpc_list_clusters(request)
@@ -326,6 +333,7 @@ class ApiStub:
         cluster_deployment_id: str = &#34;&#34;,
         secret: str = &#34;&#34;
     ) -&gt; &#34;UpdateClusterResponse&#34;:
+
         request = UpdateClusterRequest()
         request.id = id
         request.address = address
@@ -344,6 +352,7 @@ class ApiStub:
         auth_enabled: bool = False,
         client_id: str = &#34;&#34;
     ) -&gt; &#34;HeartbeatResponse&#34;:
+
         request = HeartbeatRequest()
         request.id = id
         request.secret = secret
@@ -354,12 +363,14 @@ class ApiStub:
         return self.__rpc_heartbeat(request)
 
     def list_user_clusters(self) -&gt; &#34;ListUserClustersResponse&#34;:
+
         request = ListUserClustersRequest()
 
         return self.__rpc_list_user_clusters(request)
 
 
 class ApiBase:
+
     def activate(
         self, activation_code: str, expires: datetime, context: &#34;grpc.ServicerContext&#34;
     ) -&gt; &#34;ActivateResponse&#34;:
@@ -1198,6 +1209,7 @@ class ListUserClustersResponse(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class ApiStub:
+
     def __init__(self, channel: &#34;grpc.Channel&#34;):
         self.__rpc_activate = channel.unary_unary(
             &#34;/license_v2.API/Activate&#34;,
@@ -1248,6 +1260,7 @@ class ListUserClustersResponse(betterproto.Message):
     def activate(
         self, *, activation_code: str = &#34;&#34;, expires: datetime = None
     ) -&gt; &#34;ActivateResponse&#34;:
+
         request = ActivateRequest()
         request.activation_code = activation_code
         if expires is not None:
@@ -1256,11 +1269,13 @@ class ListUserClustersResponse(betterproto.Message):
         return self.__rpc_activate(request)
 
     def get_activation_code(self) -&gt; &#34;GetActivationCodeResponse&#34;:
+
         request = GetActivationCodeRequest()
 
         return self.__rpc_get_activation_code(request)
 
     def delete_all(self) -&gt; &#34;DeleteAllResponse&#34;:
+
         request = DeleteAllRequest()
 
         return self.__rpc_delete_all(request)
@@ -1275,6 +1290,7 @@ class ListUserClustersResponse(betterproto.Message):
         cluster_deployment_id: str = &#34;&#34;,
         enterprise_server: bool = False
     ) -&gt; &#34;AddClusterResponse&#34;:
+
         request = AddClusterRequest()
         request.id = id
         request.address = address
@@ -1286,12 +1302,14 @@ class ListUserClustersResponse(betterproto.Message):
         return self.__rpc_add_cluster(request)
 
     def delete_cluster(self, *, id: str = &#34;&#34;) -&gt; &#34;DeleteClusterResponse&#34;:
+
         request = DeleteClusterRequest()
         request.id = id
 
         return self.__rpc_delete_cluster(request)
 
     def list_clusters(self) -&gt; &#34;ListClustersResponse&#34;:
+
         request = ListClustersRequest()
 
         return self.__rpc_list_clusters(request)
@@ -1305,6 +1323,7 @@ class ListUserClustersResponse(betterproto.Message):
         cluster_deployment_id: str = &#34;&#34;,
         secret: str = &#34;&#34;
     ) -&gt; &#34;UpdateClusterResponse&#34;:
+
         request = UpdateClusterRequest()
         request.id = id
         request.address = address
@@ -1323,6 +1342,7 @@ class ListUserClustersResponse(betterproto.Message):
         auth_enabled: bool = False,
         client_id: str = &#34;&#34;
     ) -&gt; &#34;HeartbeatResponse&#34;:
+
         request = HeartbeatRequest()
         request.id = id
         request.secret = secret
@@ -1333,6 +1353,7 @@ class ListUserClustersResponse(betterproto.Message):
         return self.__rpc_heartbeat(request)
 
     def list_user_clusters(self) -&gt; &#34;ListUserClustersResponse&#34;:
+
         request = ListUserClustersRequest()
 
         return self.__rpc_list_user_clusters(request)</code></pre>
@@ -1351,6 +1372,7 @@ class ListUserClustersResponse(betterproto.Message):
 <pre><code class="python">def activate(
     self, *, activation_code: str = &#34;&#34;, expires: datetime = None
 ) -&gt; &#34;ActivateResponse&#34;:
+
     request = ActivateRequest()
     request.activation_code = activation_code
     if expires is not None:
@@ -1369,6 +1391,7 @@ class ListUserClustersResponse(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def get_activation_code(self) -&gt; &#34;GetActivationCodeResponse&#34;:
+
     request = GetActivationCodeRequest()
 
     return self.__rpc_get_activation_code(request)</code></pre>
@@ -1384,6 +1407,7 @@ class ListUserClustersResponse(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def delete_all(self) -&gt; &#34;DeleteAllResponse&#34;:
+
     request = DeleteAllRequest()
 
     return self.__rpc_delete_all(request)</code></pre>
@@ -1408,6 +1432,7 @@ class ListUserClustersResponse(betterproto.Message):
     cluster_deployment_id: str = &#34;&#34;,
     enterprise_server: bool = False
 ) -&gt; &#34;AddClusterResponse&#34;:
+
     request = AddClusterRequest()
     request.id = id
     request.address = address
@@ -1429,6 +1454,7 @@ class ListUserClustersResponse(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def delete_cluster(self, *, id: str = &#34;&#34;) -&gt; &#34;DeleteClusterResponse&#34;:
+
     request = DeleteClusterRequest()
     request.id = id
 
@@ -1445,6 +1471,7 @@ class ListUserClustersResponse(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def list_clusters(self) -&gt; &#34;ListClustersResponse&#34;:
+
     request = ListClustersRequest()
 
     return self.__rpc_list_clusters(request)</code></pre>
@@ -1468,6 +1495,7 @@ class ListUserClustersResponse(betterproto.Message):
     cluster_deployment_id: str = &#34;&#34;,
     secret: str = &#34;&#34;
 ) -&gt; &#34;UpdateClusterResponse&#34;:
+
     request = UpdateClusterRequest()
     request.id = id
     request.address = address
@@ -1496,6 +1524,7 @@ class ListUserClustersResponse(betterproto.Message):
     auth_enabled: bool = False,
     client_id: str = &#34;&#34;
 ) -&gt; &#34;HeartbeatResponse&#34;:
+
     request = HeartbeatRequest()
     request.id = id
     request.secret = secret
@@ -1516,6 +1545,7 @@ class ListUserClustersResponse(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def list_user_clusters(self) -&gt; &#34;ListUserClustersResponse&#34;:
+
     request = ListUserClustersRequest()
 
     return self.__rpc_list_user_clusters(request)</code></pre>
@@ -1533,6 +1563,7 @@ class ListUserClustersResponse(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class ApiBase:
+
     def activate(
         self, activation_code: str, expires: datetime, context: &#34;grpc.ServicerContext&#34;
     ) -&gt; &#34;ActivateResponse&#34;:

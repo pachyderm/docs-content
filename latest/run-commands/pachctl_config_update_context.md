@@ -1,5 +1,5 @@
 ---
-date: 2023-10-18T16:51:53-04:00
+date: 2024-02-13T16:12:03-05:00
 title: "pachctl config update context"
 description: "Learn about the pachctl config update context command"
 ---
@@ -19,14 +19,7 @@ pachctl config update context [<context>] [flags]
 ### Examples
 
 ```
- pachctl config update context foo 
- pachctl config update context foo --pachd-address localhost:30650 
- pachctl config update context foo --cluster-name my-cluster 
- pachctl config update context foo --auth-info my-auth-info 
- pachctl config update context foo --server-cas /path/to/ca.crt 
- pachctl config update context foo --namespace my-namespace 
- pachctl config update context foo --project my-project 
- pachctl config update context foo --remove-cluster-deployment-id
+ pachctl config update context foo pachctl config update context foo --pachd-address localhost:30650 pachctl config update context foo --cluster-name my-cluster pachctl config update context foo --auth-info my-auth-info pachctl config update context foo --server-cas /path/to/ca.crt pachctl config update context foo --namespace my-namespace pachctl config update context foo --project my-project pachctl config update context foo --remove-cluster-deployment-id
 ```
 
 ### Options

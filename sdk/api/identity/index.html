@@ -243,6 +243,7 @@ class DeleteAllResponse(betterproto.Message):
 
 
 class ApiStub:
+
     def __init__(self, channel: &#34;grpc.Channel&#34;):
         self.__rpc_set_identity_server_config = channel.unary_unary(
             &#34;/identity_v2.API/SetIdentityServerConfig&#34;,
@@ -313,6 +314,7 @@ class ApiStub:
     def set_identity_server_config(
         self, *, config: &#34;IdentityServerConfig&#34; = None
     ) -&gt; &#34;SetIdentityServerConfigResponse&#34;:
+
         request = SetIdentityServerConfigRequest()
         if config is not None:
             request.config = config
@@ -320,6 +322,7 @@ class ApiStub:
         return self.__rpc_set_identity_server_config(request)
 
     def get_identity_server_config(self) -&gt; &#34;GetIdentityServerConfigResponse&#34;:
+
         request = GetIdentityServerConfigRequest()
 
         return self.__rpc_get_identity_server_config(request)
@@ -327,6 +330,7 @@ class ApiStub:
     def create_idp_connector(
         self, *, connector: &#34;IdpConnector&#34; = None
     ) -&gt; &#34;CreateIdpConnectorResponse&#34;:
+
         request = CreateIdpConnectorRequest()
         if connector is not None:
             request.connector = connector
@@ -336,6 +340,7 @@ class ApiStub:
     def update_idp_connector(
         self, *, connector: &#34;IdpConnector&#34; = None
     ) -&gt; &#34;UpdateIdpConnectorResponse&#34;:
+
         request = UpdateIdpConnectorRequest()
         if connector is not None:
             request.connector = connector
@@ -343,17 +348,20 @@ class ApiStub:
         return self.__rpc_update_idp_connector(request)
 
     def list_idp_connectors(self) -&gt; &#34;ListIdpConnectorsResponse&#34;:
+
         request = ListIdpConnectorsRequest()
 
         return self.__rpc_list_idp_connectors(request)
 
     def get_idp_connector(self, *, id: str = &#34;&#34;) -&gt; &#34;GetIdpConnectorResponse&#34;:
+
         request = GetIdpConnectorRequest()
         request.id = id
 
         return self.__rpc_get_idp_connector(request)
 
     def delete_idp_connector(self, *, id: str = &#34;&#34;) -&gt; &#34;DeleteIdpConnectorResponse&#34;:
+
         request = DeleteIdpConnectorRequest()
         request.id = id
 
@@ -362,6 +370,7 @@ class ApiStub:
     def create_oidc_client(
         self, *, client: &#34;OidcClient&#34; = None
     ) -&gt; &#34;CreateOidcClientResponse&#34;:
+
         request = CreateOidcClientRequest()
         if client is not None:
             request.client = client
@@ -371,6 +380,7 @@ class ApiStub:
     def update_oidc_client(
         self, *, client: &#34;OidcClient&#34; = None
     ) -&gt; &#34;UpdateOidcClientResponse&#34;:
+
         request = UpdateOidcClientRequest()
         if client is not None:
             request.client = client
@@ -378,29 +388,34 @@ class ApiStub:
         return self.__rpc_update_oidc_client(request)
 
     def get_oidc_client(self, *, id: str = &#34;&#34;) -&gt; &#34;GetOidcClientResponse&#34;:
+
         request = GetOidcClientRequest()
         request.id = id
 
         return self.__rpc_get_oidc_client(request)
 
     def list_oidc_clients(self) -&gt; &#34;ListOidcClientsResponse&#34;:
+
         request = ListOidcClientsRequest()
 
         return self.__rpc_list_oidc_clients(request)
 
     def delete_oidc_client(self, *, id: str = &#34;&#34;) -&gt; &#34;DeleteOidcClientResponse&#34;:
+
         request = DeleteOidcClientRequest()
         request.id = id
 
         return self.__rpc_delete_oidc_client(request)
 
     def delete_all(self) -&gt; &#34;DeleteAllResponse&#34;:
+
         request = DeleteAllRequest()
 
         return self.__rpc_delete_all(request)
 
 
 class ApiBase:
+
     def set_identity_server_config(
         self, config: &#34;IdentityServerConfig&#34;, context: &#34;grpc.ServicerContext&#34;
     ) -&gt; &#34;SetIdentityServerConfigResponse&#34;:
@@ -1402,6 +1417,7 @@ class DeleteAllResponse(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class ApiStub:
+
     def __init__(self, channel: &#34;grpc.Channel&#34;):
         self.__rpc_set_identity_server_config = channel.unary_unary(
             &#34;/identity_v2.API/SetIdentityServerConfig&#34;,
@@ -1472,6 +1488,7 @@ class DeleteAllResponse(betterproto.Message):
     def set_identity_server_config(
         self, *, config: &#34;IdentityServerConfig&#34; = None
     ) -&gt; &#34;SetIdentityServerConfigResponse&#34;:
+
         request = SetIdentityServerConfigRequest()
         if config is not None:
             request.config = config
@@ -1479,6 +1496,7 @@ class DeleteAllResponse(betterproto.Message):
         return self.__rpc_set_identity_server_config(request)
 
     def get_identity_server_config(self) -&gt; &#34;GetIdentityServerConfigResponse&#34;:
+
         request = GetIdentityServerConfigRequest()
 
         return self.__rpc_get_identity_server_config(request)
@@ -1486,6 +1504,7 @@ class DeleteAllResponse(betterproto.Message):
     def create_idp_connector(
         self, *, connector: &#34;IdpConnector&#34; = None
     ) -&gt; &#34;CreateIdpConnectorResponse&#34;:
+
         request = CreateIdpConnectorRequest()
         if connector is not None:
             request.connector = connector
@@ -1495,6 +1514,7 @@ class DeleteAllResponse(betterproto.Message):
     def update_idp_connector(
         self, *, connector: &#34;IdpConnector&#34; = None
     ) -&gt; &#34;UpdateIdpConnectorResponse&#34;:
+
         request = UpdateIdpConnectorRequest()
         if connector is not None:
             request.connector = connector
@@ -1502,17 +1522,20 @@ class DeleteAllResponse(betterproto.Message):
         return self.__rpc_update_idp_connector(request)
 
     def list_idp_connectors(self) -&gt; &#34;ListIdpConnectorsResponse&#34;:
+
         request = ListIdpConnectorsRequest()
 
         return self.__rpc_list_idp_connectors(request)
 
     def get_idp_connector(self, *, id: str = &#34;&#34;) -&gt; &#34;GetIdpConnectorResponse&#34;:
+
         request = GetIdpConnectorRequest()
         request.id = id
 
         return self.__rpc_get_idp_connector(request)
 
     def delete_idp_connector(self, *, id: str = &#34;&#34;) -&gt; &#34;DeleteIdpConnectorResponse&#34;:
+
         request = DeleteIdpConnectorRequest()
         request.id = id
 
@@ -1521,6 +1544,7 @@ class DeleteAllResponse(betterproto.Message):
     def create_oidc_client(
         self, *, client: &#34;OidcClient&#34; = None
     ) -&gt; &#34;CreateOidcClientResponse&#34;:
+
         request = CreateOidcClientRequest()
         if client is not None:
             request.client = client
@@ -1530,6 +1554,7 @@ class DeleteAllResponse(betterproto.Message):
     def update_oidc_client(
         self, *, client: &#34;OidcClient&#34; = None
     ) -&gt; &#34;UpdateOidcClientResponse&#34;:
+
         request = UpdateOidcClientRequest()
         if client is not None:
             request.client = client
@@ -1537,23 +1562,27 @@ class DeleteAllResponse(betterproto.Message):
         return self.__rpc_update_oidc_client(request)
 
     def get_oidc_client(self, *, id: str = &#34;&#34;) -&gt; &#34;GetOidcClientResponse&#34;:
+
         request = GetOidcClientRequest()
         request.id = id
 
         return self.__rpc_get_oidc_client(request)
 
     def list_oidc_clients(self) -&gt; &#34;ListOidcClientsResponse&#34;:
+
         request = ListOidcClientsRequest()
 
         return self.__rpc_list_oidc_clients(request)
 
     def delete_oidc_client(self, *, id: str = &#34;&#34;) -&gt; &#34;DeleteOidcClientResponse&#34;:
+
         request = DeleteOidcClientRequest()
         request.id = id
 
         return self.__rpc_delete_oidc_client(request)
 
     def delete_all(self) -&gt; &#34;DeleteAllResponse&#34;:
+
         request = DeleteAllRequest()
 
         return self.__rpc_delete_all(request)</code></pre>
@@ -1572,6 +1601,7 @@ class DeleteAllResponse(betterproto.Message):
 <pre><code class="python">def set_identity_server_config(
     self, *, config: &#34;IdentityServerConfig&#34; = None
 ) -&gt; &#34;SetIdentityServerConfigResponse&#34;:
+
     request = SetIdentityServerConfigRequest()
     if config is not None:
         request.config = config
@@ -1589,6 +1619,7 @@ class DeleteAllResponse(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def get_identity_server_config(self) -&gt; &#34;GetIdentityServerConfigResponse&#34;:
+
     request = GetIdentityServerConfigRequest()
 
     return self.__rpc_get_identity_server_config(request)</code></pre>
@@ -1606,6 +1637,7 @@ class DeleteAllResponse(betterproto.Message):
 <pre><code class="python">def create_idp_connector(
     self, *, connector: &#34;IdpConnector&#34; = None
 ) -&gt; &#34;CreateIdpConnectorResponse&#34;:
+
     request = CreateIdpConnectorRequest()
     if connector is not None:
         request.connector = connector
@@ -1625,6 +1657,7 @@ class DeleteAllResponse(betterproto.Message):
 <pre><code class="python">def update_idp_connector(
     self, *, connector: &#34;IdpConnector&#34; = None
 ) -&gt; &#34;UpdateIdpConnectorResponse&#34;:
+
     request = UpdateIdpConnectorRequest()
     if connector is not None:
         request.connector = connector
@@ -1642,6 +1675,7 @@ class DeleteAllResponse(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def list_idp_connectors(self) -&gt; &#34;ListIdpConnectorsResponse&#34;:
+
     request = ListIdpConnectorsRequest()
 
     return self.__rpc_list_idp_connectors(request)</code></pre>
@@ -1657,6 +1691,7 @@ class DeleteAllResponse(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def get_idp_connector(self, *, id: str = &#34;&#34;) -&gt; &#34;GetIdpConnectorResponse&#34;:
+
     request = GetIdpConnectorRequest()
     request.id = id
 
@@ -1673,6 +1708,7 @@ class DeleteAllResponse(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def delete_idp_connector(self, *, id: str = &#34;&#34;) -&gt; &#34;DeleteIdpConnectorResponse&#34;:
+
     request = DeleteIdpConnectorRequest()
     request.id = id
 
@@ -1691,6 +1727,7 @@ class DeleteAllResponse(betterproto.Message):
 <pre><code class="python">def create_oidc_client(
     self, *, client: &#34;OidcClient&#34; = None
 ) -&gt; &#34;CreateOidcClientResponse&#34;:
+
     request = CreateOidcClientRequest()
     if client is not None:
         request.client = client
@@ -1710,6 +1747,7 @@ class DeleteAllResponse(betterproto.Message):
 <pre><code class="python">def update_oidc_client(
     self, *, client: &#34;OidcClient&#34; = None
 ) -&gt; &#34;UpdateOidcClientResponse&#34;:
+
     request = UpdateOidcClientRequest()
     if client is not None:
         request.client = client
@@ -1727,6 +1765,7 @@ class DeleteAllResponse(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def get_oidc_client(self, *, id: str = &#34;&#34;) -&gt; &#34;GetOidcClientResponse&#34;:
+
     request = GetOidcClientRequest()
     request.id = id
 
@@ -1743,6 +1782,7 @@ class DeleteAllResponse(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def list_oidc_clients(self) -&gt; &#34;ListOidcClientsResponse&#34;:
+
     request = ListOidcClientsRequest()
 
     return self.__rpc_list_oidc_clients(request)</code></pre>
@@ -1758,6 +1798,7 @@ class DeleteAllResponse(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def delete_oidc_client(self, *, id: str = &#34;&#34;) -&gt; &#34;DeleteOidcClientResponse&#34;:
+
     request = DeleteOidcClientRequest()
     request.id = id
 
@@ -1774,6 +1815,7 @@ class DeleteAllResponse(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def delete_all(self) -&gt; &#34;DeleteAllResponse&#34;:
+
     request = DeleteAllRequest()
 
     return self.__rpc_delete_all(request)</code></pre>
@@ -1791,6 +1833,7 @@ class DeleteAllResponse(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class ApiBase:
+
     def set_identity_server_config(
         self, config: &#34;IdentityServerConfig&#34;, context: &#34;grpc.ServicerContext&#34;
     ) -&gt; &#34;SetIdentityServerConfigResponse&#34;:

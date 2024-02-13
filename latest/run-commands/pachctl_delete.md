@@ -1,5 +1,5 @@
 ---
-date: 2023-10-18T16:51:53-04:00
+date: 2024-02-13T16:12:03-05:00
 title: "pachctl delete"
 description: "Learn about the pachctl delete command"
 ---
@@ -31,6 +31,7 @@ Delete an existing Pachyderm resource.
 * [pachctl delete all](../pachctl_delete_all)	 - Delete everything.
 * [pachctl delete branch](../pachctl_delete_branch)	 - Delete a branch
 * [pachctl delete commit](../pachctl_delete_commit)	 - Delete the sub-commits of a commit.
+* [pachctl delete commitV2](../pachctl_delete_commitv2)	 - Delete a commit.
 * [pachctl delete defaults](../pachctl_delete_defaults)	 - Delete defaults.
 * [pachctl delete file](../pachctl_delete_file)	 - Delete a file.
 * [pachctl delete job](../pachctl_delete_job)	 - Delete a job.

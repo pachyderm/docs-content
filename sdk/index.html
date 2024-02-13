@@ -49,7 +49,7 @@ __all__ = [
 <dl>
 <dt><code class="name"><a title="pachyderm_sdk.api" href="api/index.html">pachyderm_sdk.api</a></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Python bindings and API stubs for the Pachyderm public API.</p></div>
 </dd>
 <dt><code class="name"><a title="pachyderm_sdk.client" href="client.html">pachyderm_sdk.client</a></code></dt>
 <dd>
@@ -386,7 +386,7 @@ used. Otherwise, we use the certs provided by certifi.</dd>
         )
 
     @classmethod
-    def from_config(cls, config_file: Union[Path, str] = CONFIG_PATH_LOCAL) -&gt; &#34;Client&#34;:
+    def from_config(cls, config_file: Union[Path, str] = DEFAULT_CONFIG) -&gt; &#34;Client&#34;:
         &#34;&#34;&#34;Creates a Pachyderm client from a config file.
 
         Parameters
@@ -400,7 +400,7 @@ used. Otherwise, we use the certs provided by certifi.</dd>
         Client
             A properly configured Client.
         &#34;&#34;&#34;
-        config = ConfigFile(config_file)
+        config = ConfigFile.from_path(config_file)
         active_context = config.active_context
         client = cls.from_pachd_address(
             active_context.active_pachd_address,
@@ -642,7 +642,7 @@ config_file defaults to the local config.</dd>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@classmethod
-def from_config(cls, config_file: Union[Path, str] = CONFIG_PATH_LOCAL) -&gt; &#34;Client&#34;:
+def from_config(cls, config_file: Union[Path, str] = DEFAULT_CONFIG) -&gt; &#34;Client&#34;:
     &#34;&#34;&#34;Creates a Pachyderm client from a config file.
 
     Parameters
@@ -656,7 +656,7 @@ def from_config(cls, config_file: Union[Path, str] = CONFIG_PATH_LOCAL) -&gt; &#
     Client
         A properly configured Client.
     &#34;&#34;&#34;
-    config = ConfigFile(config_file)
+    config = ConfigFile.from_path(config_file)
     active_context = config.active_context
     client = cls.from_pachd_address(
         active_context.active_pachd_address,

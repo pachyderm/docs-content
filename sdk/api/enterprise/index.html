@@ -228,6 +228,7 @@ class PauseStatusResponse(betterproto.Message):
 
 
 class ApiStub:
+
     def __init__(self, channel: &#34;grpc.Channel&#34;):
         self.__rpc_activate = channel.unary_unary(
             &#34;/enterprise_v2.API/Activate&#34;,
@@ -273,6 +274,7 @@ class ApiStub:
     def activate(
         self, *, license_server: str = &#34;&#34;, id: str = &#34;&#34;, secret: str = &#34;&#34;
     ) -&gt; &#34;ActivateResponse&#34;:
+
         request = ActivateRequest()
         request.license_server = license_server
         request.id = id
@@ -281,42 +283,50 @@ class ApiStub:
         return self.__rpc_activate(request)
 
     def get_state(self) -&gt; &#34;GetStateResponse&#34;:
+
         request = GetStateRequest()
 
         return self.__rpc_get_state(request)
 
     def get_activation_code(self) -&gt; &#34;GetActivationCodeResponse&#34;:
+
         request = GetActivationCodeRequest()
 
         return self.__rpc_get_activation_code(request)
 
     def heartbeat(self) -&gt; &#34;HeartbeatResponse&#34;:
+
         request = HeartbeatRequest()
 
         return self.__rpc_heartbeat(request)
 
     def deactivate(self) -&gt; &#34;DeactivateResponse&#34;:
+
         request = DeactivateRequest()
 
         return self.__rpc_deactivate(request)
 
     def pause(self) -&gt; &#34;PauseResponse&#34;:
+
         request = PauseRequest()
 
         return self.__rpc_pause(request)
 
     def unpause(self) -&gt; &#34;UnpauseResponse&#34;:
+
         request = UnpauseRequest()
 
         return self.__rpc_unpause(request)
 
     def pause_status(self) -&gt; &#34;PauseStatusResponse&#34;:
+
         request = PauseStatusRequest()
 
         return self.__rpc_pause_status(request)
 
 
 class ApiBase:
+
     def activate(
         self, license_server: str, id: str, secret: str, context: &#34;grpc.ServicerContext&#34;
     ) -&gt; &#34;ActivateResponse&#34;:
@@ -1081,6 +1091,7 @@ class PauseStatusResponse(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class ApiStub:
+
     def __init__(self, channel: &#34;grpc.Channel&#34;):
         self.__rpc_activate = channel.unary_unary(
             &#34;/enterprise_v2.API/Activate&#34;,
@@ -1126,6 +1137,7 @@ class PauseStatusResponse(betterproto.Message):
     def activate(
         self, *, license_server: str = &#34;&#34;, id: str = &#34;&#34;, secret: str = &#34;&#34;
     ) -&gt; &#34;ActivateResponse&#34;:
+
         request = ActivateRequest()
         request.license_server = license_server
         request.id = id
@@ -1134,36 +1146,43 @@ class PauseStatusResponse(betterproto.Message):
         return self.__rpc_activate(request)
 
     def get_state(self) -&gt; &#34;GetStateResponse&#34;:
+
         request = GetStateRequest()
 
         return self.__rpc_get_state(request)
 
     def get_activation_code(self) -&gt; &#34;GetActivationCodeResponse&#34;:
+
         request = GetActivationCodeRequest()
 
         return self.__rpc_get_activation_code(request)
 
     def heartbeat(self) -&gt; &#34;HeartbeatResponse&#34;:
+
         request = HeartbeatRequest()
 
         return self.__rpc_heartbeat(request)
 
     def deactivate(self) -&gt; &#34;DeactivateResponse&#34;:
+
         request = DeactivateRequest()
 
         return self.__rpc_deactivate(request)
 
     def pause(self) -&gt; &#34;PauseResponse&#34;:
+
         request = PauseRequest()
 
         return self.__rpc_pause(request)
 
     def unpause(self) -&gt; &#34;UnpauseResponse&#34;:
+
         request = UnpauseRequest()
 
         return self.__rpc_unpause(request)
 
     def pause_status(self) -&gt; &#34;PauseStatusResponse&#34;:
+
         request = PauseStatusRequest()
 
         return self.__rpc_pause_status(request)</code></pre>
@@ -1182,6 +1201,7 @@ class PauseStatusResponse(betterproto.Message):
 <pre><code class="python">def activate(
     self, *, license_server: str = &#34;&#34;, id: str = &#34;&#34;, secret: str = &#34;&#34;
 ) -&gt; &#34;ActivateResponse&#34;:
+
     request = ActivateRequest()
     request.license_server = license_server
     request.id = id
@@ -1200,6 +1220,7 @@ class PauseStatusResponse(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def get_state(self) -&gt; &#34;GetStateResponse&#34;:
+
     request = GetStateRequest()
 
     return self.__rpc_get_state(request)</code></pre>
@@ -1215,6 +1236,7 @@ class PauseStatusResponse(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def get_activation_code(self) -&gt; &#34;GetActivationCodeResponse&#34;:
+
     request = GetActivationCodeRequest()
 
     return self.__rpc_get_activation_code(request)</code></pre>
@@ -1230,6 +1252,7 @@ class PauseStatusResponse(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def heartbeat(self) -&gt; &#34;HeartbeatResponse&#34;:
+
     request = HeartbeatRequest()
 
     return self.__rpc_heartbeat(request)</code></pre>
@@ -1245,6 +1268,7 @@ class PauseStatusResponse(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def deactivate(self) -&gt; &#34;DeactivateResponse&#34;:
+
     request = DeactivateRequest()
 
     return self.__rpc_deactivate(request)</code></pre>
@@ -1260,6 +1284,7 @@ class PauseStatusResponse(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def pause(self) -&gt; &#34;PauseResponse&#34;:
+
     request = PauseRequest()
 
     return self.__rpc_pause(request)</code></pre>
@@ -1275,6 +1300,7 @@ class PauseStatusResponse(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def unpause(self) -&gt; &#34;UnpauseResponse&#34;:
+
     request = UnpauseRequest()
 
     return self.__rpc_unpause(request)</code></pre>
@@ -1290,6 +1316,7 @@ class PauseStatusResponse(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def pause_status(self) -&gt; &#34;PauseStatusResponse&#34;:
+
     request = PauseStatusRequest()
 
     return self.__rpc_pause_status(request)</code></pre>
@@ -1307,6 +1334,7 @@ class PauseStatusResponse(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class ApiBase:
+
     def activate(
         self, license_server: str, id: str, secret: str, context: &#34;grpc.ServicerContext&#34;
     ) -&gt; &#34;ActivateResponse&#34;:

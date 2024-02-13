@@ -1,0 +1,2108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>pachyderm_sdk.api.pjs API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>pachyderm_sdk.api.pjs</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python"># Generated by the protocol buffer compiler.  DO NOT EDIT!
+# sources: api/pjs/pjs.proto
+# plugin: python-betterproto
+# This file has been @generated
+from dataclasses import dataclass
+from typing import (
+    TYPE_CHECKING,
+    AsyncIterable,
+    AsyncIterator,
+    Dict,
+    Iterable,
+    Iterator,
+    List,
+    Optional,
+    Union,
+)
+
+import betterproto
+import betterproto.lib.google.protobuf as betterproto_lib_google_protobuf
+import grpc
+
+
+if TYPE_CHECKING:
+    import grpc
+
+
+class JobState(betterproto.Enum):
+    JobState_UNSPECIFIED = 0
+    &#34;&#34;&#34;UNSPECIFIED means the job state is unspecified.&#34;&#34;&#34;
+
+    QUEUED = 1
+    &#34;&#34;&#34;
+    QUEUED means the job is currently in a queue. A QUEUED job will not have
+    any descendants.
+    &#34;&#34;&#34;
+
+    PROCESSING = 2
+    &#34;&#34;&#34;PROCESSING means the job is currently being processed by a worker.&#34;&#34;&#34;
+
+    DONE = 3
+    &#34;&#34;&#34;DONE means the job, and all of its descendants, are done.&#34;&#34;&#34;
+
+
+class JobErrorCode(betterproto.Enum):
+    JobErrorCode_UNSPECIFIED = 0
+    &#34;&#34;&#34;UNSPECIFIED means the job error code is unspecified.&#34;&#34;&#34;
+
+    FAILED = 1
+    &#34;&#34;&#34;
+    FAILED means that the worker processing the job indicated that it failed.
+    &#34;&#34;&#34;
+
+    DISCONNECTED = 2
+    &#34;&#34;&#34;DISCONNECTED means the worker processing the job disconnected.&#34;&#34;&#34;
+
+    CANCELED = 3
+    &#34;&#34;&#34;CANCELED means the job was canceled.&#34;&#34;&#34;
+
+
+@dataclass(eq=False, repr=False)
+class Job(betterproto.Message):
+    &#34;&#34;&#34;
+    Job uniquely identifies a Job Job will be nil to indicate no Job, or an
+    unset Job.
+    &#34;&#34;&#34;
+
+    id: int = betterproto.int64_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class JobInfo(betterproto.Message):
+    &#34;&#34;&#34;JobInfo describes a Job&#34;&#34;&#34;
+
+    job: &#34;Job&#34; = betterproto.message_field(1)
+    &#34;&#34;&#34;Job is the Job&#39;s identity&#34;&#34;&#34;
+
+    parent_job: &#34;Job&#34; = betterproto.message_field(2)
+    &#34;&#34;&#34;parent_job is the Job&#39;s parent if it exists.&#34;&#34;&#34;
+
+    state: &#34;JobState&#34; = betterproto.enum_field(3)
+    &#34;&#34;&#34;
+    state is the Job&#39;s state. See JobState for a description of the possible
+    states.
+    &#34;&#34;&#34;
+
+    spec: &#34;betterproto_lib_google_protobuf.Any&#34; = betterproto.message_field(4)
+    &#34;&#34;&#34;spec is the code specification for the Job.&#34;&#34;&#34;
+
+    input: &#34;QueueElement&#34; = betterproto.message_field(5)
+    &#34;&#34;&#34;input is the input data for the Job.&#34;&#34;&#34;
+
+    output: &#34;QueueElement&#34; = betterproto.message_field(6, group=&#34;result&#34;)
+    &#34;&#34;&#34;output is produced by a successfully completing Job&#34;&#34;&#34;
+
+    error: &#34;JobErrorCode&#34; = betterproto.enum_field(7, group=&#34;result&#34;)
+    &#34;&#34;&#34;error is set when the Job is unable to complete successfully&#34;&#34;&#34;
+
+
+@dataclass(eq=False, repr=False)
+class JobInfoDetails(betterproto.Message):
+    &#34;&#34;&#34;
+    JobInfoDetails is more detailed information about a Job. It contains a
+    superset of the information in JobInfo
+    &#34;&#34;&#34;
+
+    job_info: &#34;JobInfo&#34; = betterproto.message_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class Queue(betterproto.Message):
+    &#34;&#34;&#34;
+    Queue uniquely identifies a Queue Queue will be nil to identify no Queue,
+    or to indicate unset.
+    &#34;&#34;&#34;
+
+    id: bytes = betterproto.bytes_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class QueueInfo(betterproto.Message):
+    &#34;&#34;&#34;QueueInfo describes a Queue&#34;&#34;&#34;
+
+    queue: &#34;Queue&#34; = betterproto.message_field(1)
+    &#34;&#34;&#34;queue is the Queue&#39;s identity&#34;&#34;&#34;
+
+    spec: &#34;betterproto_lib_google_protobuf.Any&#34; = betterproto.message_field(2)
+    &#34;&#34;&#34;spec specifies the code to be run to process the Queue.&#34;&#34;&#34;
+
+
+@dataclass(eq=False, repr=False)
+class QueueInfoDetails(betterproto.Message):
+    &#34;&#34;&#34;
+    QueueInfoDetails contains detailed information about a Queue, which may be
+    more expensive to get. It contains a superset of the information in
+    QueueInfo.
+    &#34;&#34;&#34;
+
+    queue_info: &#34;QueueInfo&#34; = betterproto.message_field(1)
+    size: int = betterproto.int64_field(2)
+    &#34;&#34;&#34;size is the number of elements queued.&#34;&#34;&#34;
+
+
+@dataclass(eq=False, repr=False)
+class QueueElement(betterproto.Message):
+    &#34;&#34;&#34;QueueElement is a single element in a Queue.&#34;&#34;&#34;
+
+    data: bytes = betterproto.bytes_field(1)
+    &#34;&#34;&#34;data is opaque data used as the input and output of Jobs&#34;&#34;&#34;
+
+    filesets: List[str] = betterproto.string_field(2)
+    &#34;&#34;&#34;
+    filesets is a list of Fileset handles, used to associate Filesets with the
+    input and output of Jobs. Any of the filesets referenced here will be
+    persisted for as long as this element is in a Queue. New handles, pointing
+    to equivalent Filesets, are minted whenever they cross the API boundary.
+    &#34;&#34;&#34;
+
+
+@dataclass(eq=False, repr=False)
+class CreateJobRequest(betterproto.Message):
+    context: str = betterproto.string_field(1)
+    &#34;&#34;&#34;
+    context is a bearer token used when calling from within a running Job.
+    &#34;&#34;&#34;
+
+    spec: &#34;betterproto_lib_google_protobuf.Any&#34; = betterproto.message_field(2)
+    input: &#34;QueueElement&#34; = betterproto.message_field(3)
+    cache_read: bool = betterproto.bool_field(4)
+    cache_write: bool = betterproto.bool_field(5)
+
+
+@dataclass(eq=False, repr=False)
+class CreateJobResponse(betterproto.Message):
+    id: &#34;Job&#34; = betterproto.message_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class CancelJobRequest(betterproto.Message):
+    context: str = betterproto.string_field(1)
+    &#34;&#34;&#34;
+    context is a bearer token used when calling from within a running Job.
+    &#34;&#34;&#34;
+
+    job: &#34;Job&#34; = betterproto.message_field(2)
+
+
+@dataclass(eq=False, repr=False)
+class CancelJobResponse(betterproto.Message):
+    pass
+
+
+@dataclass(eq=False, repr=False)
+class DeleteJobRequest(betterproto.Message):
+    context: str = betterproto.string_field(1)
+    &#34;&#34;&#34;
+    context is a bearer token used when calling from within a running Job.
+    &#34;&#34;&#34;
+
+    job: &#34;Job&#34; = betterproto.message_field(2)
+
+
+@dataclass(eq=False, repr=False)
+class DeleteJobResponse(betterproto.Message):
+    pass
+
+
+@dataclass(eq=False, repr=False)
+class ListJobRequest(betterproto.Message):
+    &#34;&#34;&#34;TODO: - Filter - Paginate&#34;&#34;&#34;
+
+    context: str = betterproto.string_field(1)
+    &#34;&#34;&#34;
+    context is a bearer token used when calling from within a running Job.
+    &#34;&#34;&#34;
+
+    job: &#34;Job&#34; = betterproto.message_field(2)
+    &#34;&#34;&#34;
+    job is the job to start listing at. If nil, then the listing starts at the
+    first job in the natural ordering.
+    &#34;&#34;&#34;
+
+
+@dataclass(eq=False, repr=False)
+class ListJobResponse(betterproto.Message):
+    &#34;&#34;&#34;
+    ListJobResponse lists information about Jobs ID will always be set. Info
+    and Details may not be set depending on how much information was requested.
+    &#34;&#34;&#34;
+
+    id: &#34;Job&#34; = betterproto.message_field(1)
+    info: &#34;JobInfo&#34; = betterproto.message_field(2)
+    details: &#34;JobInfoDetails&#34; = betterproto.message_field(3)
+
+
+@dataclass(eq=False, repr=False)
+class WalkJobRequest(betterproto.Message):
+    context: str = betterproto.string_field(1)
+    &#34;&#34;&#34;
+    context is a bearer token used when calling from within a running Job.
+    &#34;&#34;&#34;
+
+    job: &#34;Job&#34; = betterproto.message_field(2)
+    &#34;&#34;&#34;
+    job is the job to start walking from.  If unset, the context Job is
+    assumed.
+    &#34;&#34;&#34;
+
+
+@dataclass(eq=False, repr=False)
+class InspectJobRequest(betterproto.Message):
+    context: str = betterproto.string_field(1)
+    &#34;&#34;&#34;
+    context is a bearer token used when calling from within a running Job.
+    &#34;&#34;&#34;
+
+    job: &#34;Job&#34; = betterproto.message_field(2)
+    &#34;&#34;&#34;
+    job is the job to start walking from.  If unset the context Job is assumed.
+    &#34;&#34;&#34;
+
+
+@dataclass(eq=False, repr=False)
+class InspectJobResponse(betterproto.Message):
+    details: &#34;JobInfoDetails&#34; = betterproto.message_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class ProcessQueueRequest(betterproto.Message):
+    &#34;&#34;&#34;
+    Queue Messages ProcessQueueRequest is the client -&gt; server message for the
+    bi-di ProcessQueue RPC.
+    &#34;&#34;&#34;
+
+    queue: &#34;Queue&#34; = betterproto.message_field(1)
+    &#34;&#34;&#34;queue is set to start processing from a Queue.&#34;&#34;&#34;
+
+    output: &#34;QueueElement&#34; = betterproto.message_field(2, group=&#34;result&#34;)
+    &#34;&#34;&#34;output is set by the client to complete the Job successfully.&#34;&#34;&#34;
+
+    failed: bool = betterproto.bool_field(3, group=&#34;result&#34;)
+    &#34;&#34;&#34;
+    failed is set by the client to fail the Job. The Job will transition to
+    state DONE with code FAILED.
+    &#34;&#34;&#34;
+
+
+@dataclass(eq=False, repr=False)
+class ProcessQueueResponse(betterproto.Message):
+    &#34;&#34;&#34;
+    ProcessQueueResposne is the server -&gt; client message for the bi-di
+    ProcessQueue RPC.
+    &#34;&#34;&#34;
+
+    context: str = betterproto.string_field(1)
+    &#34;&#34;&#34;
+    context is a bearer token used to act on behalf of the Job in other RPCs.
+    The server issues this token to the client, and the client should use it
+    when performing Job RPCs.
+    &#34;&#34;&#34;
+
+    input: &#34;QueueElement&#34; = betterproto.message_field(2)
+    &#34;&#34;&#34;
+    input is the input data for a Job. The server sends this to ask the client
+    to compute the output.
+    &#34;&#34;&#34;
+
+
+@dataclass(eq=False, repr=False)
+class ListQueueRequest(betterproto.Message):
+    &#34;&#34;&#34;TODO: - Filter - Paginate&#34;&#34;&#34;
+
+    pass
+
+
+@dataclass(eq=False, repr=False)
+class ListQueueResponse(betterproto.Message):
+    id: &#34;Queue&#34; = betterproto.message_field(1)
+    info: &#34;QueueInfo&#34; = betterproto.message_field(2)
+    details: &#34;QueueInfoDetails&#34; = betterproto.message_field(3)
+
+
+@dataclass(eq=False, repr=False)
+class InspectQueueRequest(betterproto.Message):
+    queue: &#34;Queue&#34; = betterproto.message_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class InspectQueueResponse(betterproto.Message):
+    details: &#34;QueueInfoDetails&#34; = betterproto.message_field(1)
+
+
+class ApiStub:
+
+    def __init__(self, channel: &#34;grpc.Channel&#34;):
+        self.__rpc_create_job = channel.unary_unary(
+            &#34;/pjs.API/CreateJob&#34;,
+            request_serializer=CreateJobRequest.SerializeToString,
+            response_deserializer=CreateJobResponse.FromString,
+        )
+        self.__rpc_cancel_job = channel.unary_unary(
+            &#34;/pjs.API/CancelJob&#34;,
+            request_serializer=CancelJobRequest.SerializeToString,
+            response_deserializer=CancelJobResponse.FromString,
+        )
+        self.__rpc_delete_job = channel.unary_unary(
+            &#34;/pjs.API/DeleteJob&#34;,
+            request_serializer=DeleteJobRequest.SerializeToString,
+            response_deserializer=DeleteJobResponse.FromString,
+        )
+        self.__rpc_list_job = channel.unary_stream(
+            &#34;/pjs.API/ListJob&#34;,
+            request_serializer=ListJobRequest.SerializeToString,
+            response_deserializer=ListJobResponse.FromString,
+        )
+        self.__rpc_walk_job = channel.unary_stream(
+            &#34;/pjs.API/WalkJob&#34;,
+            request_serializer=WalkJobRequest.SerializeToString,
+            response_deserializer=ListJobResponse.FromString,
+        )
+        self.__rpc_inspect_job = channel.unary_unary(
+            &#34;/pjs.API/InspectJob&#34;,
+            request_serializer=InspectJobRequest.SerializeToString,
+            response_deserializer=InspectJobResponse.FromString,
+        )
+        self.__rpc_process_queue = channel.stream_stream(
+            &#34;/pjs.API/ProcessQueue&#34;,
+            request_serializer=ProcessQueueRequest.SerializeToString,
+            response_deserializer=ProcessQueueResponse.FromString,
+        )
+        self.__rpc_list_queue = channel.unary_stream(
+            &#34;/pjs.API/ListQueue&#34;,
+            request_serializer=ListQueueRequest.SerializeToString,
+            response_deserializer=ListQueueResponse.FromString,
+        )
+        self.__rpc_inspect_queue = channel.unary_unary(
+            &#34;/pjs.API/InspectQueue&#34;,
+            request_serializer=InspectQueueRequest.SerializeToString,
+            response_deserializer=InspectQueueResponse.FromString,
+        )
+
+    def create_job(
+        self,
+        *,
+        context: str = &#34;&#34;,
+        spec: &#34;betterproto_lib_google_protobuf.Any&#34; = None,
+        input: &#34;QueueElement&#34; = None,
+        cache_read: bool = False,
+        cache_write: bool = False
+    ) -&gt; &#34;CreateJobResponse&#34;:
+
+        request = CreateJobRequest()
+        request.context = context
+        if spec is not None:
+            request.spec = spec
+        if input is not None:
+            request.input = input
+        request.cache_read = cache_read
+        request.cache_write = cache_write
+
+        return self.__rpc_create_job(request)
+
+    def cancel_job(
+        self, *, context: str = &#34;&#34;, job: &#34;Job&#34; = None
+    ) -&gt; &#34;CancelJobResponse&#34;:
+
+        request = CancelJobRequest()
+        request.context = context
+        if job is not None:
+            request.job = job
+
+        return self.__rpc_cancel_job(request)
+
+    def delete_job(
+        self, *, context: str = &#34;&#34;, job: &#34;Job&#34; = None
+    ) -&gt; &#34;DeleteJobResponse&#34;:
+
+        request = DeleteJobRequest()
+        request.context = context
+        if job is not None:
+            request.job = job
+
+        return self.__rpc_delete_job(request)
+
+    def list_job(
+        self, *, context: str = &#34;&#34;, job: &#34;Job&#34; = None
+    ) -&gt; Iterator[&#34;ListJobResponse&#34;]:
+
+        request = ListJobRequest()
+        request.context = context
+        if job is not None:
+            request.job = job
+
+        for response in self.__rpc_list_job(request):
+            yield response
+
+    def walk_job(
+        self, *, context: str = &#34;&#34;, job: &#34;Job&#34; = None
+    ) -&gt; Iterator[&#34;ListJobResponse&#34;]:
+
+        request = WalkJobRequest()
+        request.context = context
+        if job is not None:
+            request.job = job
+
+        for response in self.__rpc_walk_job(request):
+            yield response
+
+    def inspect_job(
+        self, *, context: str = &#34;&#34;, job: &#34;Job&#34; = None
+    ) -&gt; &#34;InspectJobResponse&#34;:
+
+        request = InspectJobRequest()
+        request.context = context
+        if job is not None:
+            request.job = job
+
+        return self.__rpc_inspect_job(request)
+
+    def process_queue(
+        self,
+        request_iterator: Union[
+            AsyncIterable[&#34;ProcessQueueRequest&#34;], Iterable[&#34;ProcessQueueRequest&#34;]
+        ],
+    ) -&gt; Iterator[&#34;ProcessQueueResponse&#34;]:
+
+        for response in self.__rpc_process_queue(request_iterator):
+            yield response
+
+    def list_queue(self) -&gt; Iterator[&#34;ListQueueResponse&#34;]:
+
+        request = ListQueueRequest()
+
+        for response in self.__rpc_list_queue(request):
+            yield response
+
+    def inspect_queue(self, *, queue: &#34;Queue&#34; = None) -&gt; &#34;InspectQueueResponse&#34;:
+
+        request = InspectQueueRequest()
+        if queue is not None:
+            request.queue = queue
+
+        return self.__rpc_inspect_queue(request)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="pachyderm_sdk.api.pjs.JobState"><code class="flex name class">
+<span>class <span class="ident">JobState</span></span>
+<span>(</span><span>*args, **kwds)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>The base class for protobuf enumerations, all generated enumerations will inherit
+from this. Bases :class:<code>enum.IntEnum</code>.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class JobState(betterproto.Enum):
+    JobState_UNSPECIFIED = 0
+    &#34;&#34;&#34;UNSPECIFIED means the job state is unspecified.&#34;&#34;&#34;
+
+    QUEUED = 1
+    &#34;&#34;&#34;
+    QUEUED means the job is currently in a queue. A QUEUED job will not have
+    any descendants.
+    &#34;&#34;&#34;
+
+    PROCESSING = 2
+    &#34;&#34;&#34;PROCESSING means the job is currently being processed by a worker.&#34;&#34;&#34;
+
+    DONE = 3
+    &#34;&#34;&#34;DONE means the job, and all of its descendants, are done.&#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Enum</li>
+<li>enum.IntEnum</li>
+<li>builtins.int</li>
+<li>enum.ReprEnum</li>
+<li>enum.Enum</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.pjs.JobState.JobState_UNSPECIFIED"><code class="name">var <span class="ident">JobState_UNSPECIFIED</span></code></dt>
+<dd>
+<div class="desc"><p>UNSPECIFIED means the job state is unspecified.</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.JobState.QUEUED"><code class="name">var <span class="ident">QUEUED</span></code></dt>
+<dd>
+<div class="desc"><p>QUEUED means the job is currently in a queue. A QUEUED job will not have
+any descendants.</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.JobState.PROCESSING"><code class="name">var <span class="ident">PROCESSING</span></code></dt>
+<dd>
+<div class="desc"><p>PROCESSING means the job is currently being processed by a worker.</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.JobState.DONE"><code class="name">var <span class="ident">DONE</span></code></dt>
+<dd>
+<div class="desc"><p>DONE means the job, and all of its descendants, are done.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.JobErrorCode"><code class="flex name class">
+<span>class <span class="ident">JobErrorCode</span></span>
+<span>(</span><span>*args, **kwds)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>The base class for protobuf enumerations, all generated enumerations will inherit
+from this. Bases :class:<code>enum.IntEnum</code>.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class JobErrorCode(betterproto.Enum):
+    JobErrorCode_UNSPECIFIED = 0
+    &#34;&#34;&#34;UNSPECIFIED means the job error code is unspecified.&#34;&#34;&#34;
+
+    FAILED = 1
+    &#34;&#34;&#34;
+    FAILED means that the worker processing the job indicated that it failed.
+    &#34;&#34;&#34;
+
+    DISCONNECTED = 2
+    &#34;&#34;&#34;DISCONNECTED means the worker processing the job disconnected.&#34;&#34;&#34;
+
+    CANCELED = 3
+    &#34;&#34;&#34;CANCELED means the job was canceled.&#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Enum</li>
+<li>enum.IntEnum</li>
+<li>builtins.int</li>
+<li>enum.ReprEnum</li>
+<li>enum.Enum</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.pjs.JobErrorCode.JobErrorCode_UNSPECIFIED"><code class="name">var <span class="ident">JobErrorCode_UNSPECIFIED</span></code></dt>
+<dd>
+<div class="desc"><p>UNSPECIFIED means the job error code is unspecified.</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.JobErrorCode.FAILED"><code class="name">var <span class="ident">FAILED</span></code></dt>
+<dd>
+<div class="desc"><p>FAILED means that the worker processing the job indicated that it failed.</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.JobErrorCode.DISCONNECTED"><code class="name">var <span class="ident">DISCONNECTED</span></code></dt>
+<dd>
+<div class="desc"><p>DISCONNECTED means the worker processing the job disconnected.</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.JobErrorCode.CANCELED"><code class="name">var <span class="ident">CANCELED</span></code></dt>
+<dd>
+<div class="desc"><p>CANCELED means the job was canceled.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.Job"><code class="flex name class">
+<span>class <span class="ident">Job</span></span>
+<span>(</span><span>id: int = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Job uniquely identifies a Job Job will be nil to indicate no Job, or an
+unset Job.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class Job(betterproto.Message):
+    &#34;&#34;&#34;
+    Job uniquely identifies a Job Job will be nil to indicate no Job, or an
+    unset Job.
+    &#34;&#34;&#34;
+
+    id: int = betterproto.int64_field(1)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.pjs.Job.id"><code class="name">var <span class="ident">id</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.JobInfo"><code class="flex name class">
+<span>class <span class="ident">JobInfo</span></span>
+<span>(</span><span>job: <a title="pachyderm_sdk.api.pjs.Job" href="#pachyderm_sdk.api.pjs.Job">Job</a> = None, parent_job: <a title="pachyderm_sdk.api.pjs.Job" href="#pachyderm_sdk.api.pjs.Job">Job</a> = None, state: <a title="pachyderm_sdk.api.pjs.JobState" href="#pachyderm_sdk.api.pjs.JobState">JobState</a> = None, spec: betterproto_lib_google_protobuf.Any = None, input: <a title="pachyderm_sdk.api.pjs.QueueElement" href="#pachyderm_sdk.api.pjs.QueueElement">QueueElement</a> = None, output: <a title="pachyderm_sdk.api.pjs.QueueElement" href="#pachyderm_sdk.api.pjs.QueueElement">QueueElement</a> = None, error: <a title="pachyderm_sdk.api.pjs.JobErrorCode" href="#pachyderm_sdk.api.pjs.JobErrorCode">JobErrorCode</a> = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>JobInfo describes a Job</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class JobInfo(betterproto.Message):
+    &#34;&#34;&#34;JobInfo describes a Job&#34;&#34;&#34;
+
+    job: &#34;Job&#34; = betterproto.message_field(1)
+    &#34;&#34;&#34;Job is the Job&#39;s identity&#34;&#34;&#34;
+
+    parent_job: &#34;Job&#34; = betterproto.message_field(2)
+    &#34;&#34;&#34;parent_job is the Job&#39;s parent if it exists.&#34;&#34;&#34;
+
+    state: &#34;JobState&#34; = betterproto.enum_field(3)
+    &#34;&#34;&#34;
+    state is the Job&#39;s state. See JobState for a description of the possible
+    states.
+    &#34;&#34;&#34;
+
+    spec: &#34;betterproto_lib_google_protobuf.Any&#34; = betterproto.message_field(4)
+    &#34;&#34;&#34;spec is the code specification for the Job.&#34;&#34;&#34;
+
+    input: &#34;QueueElement&#34; = betterproto.message_field(5)
+    &#34;&#34;&#34;input is the input data for the Job.&#34;&#34;&#34;
+
+    output: &#34;QueueElement&#34; = betterproto.message_field(6, group=&#34;result&#34;)
+    &#34;&#34;&#34;output is produced by a successfully completing Job&#34;&#34;&#34;
+
+    error: &#34;JobErrorCode&#34; = betterproto.enum_field(7, group=&#34;result&#34;)
+    &#34;&#34;&#34;error is set when the Job is unable to complete successfully&#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.pjs.JobInfo.job"><code class="name">var <span class="ident">job</span> : <a title="pachyderm_sdk.api.pjs.Job" href="#pachyderm_sdk.api.pjs.Job">Job</a></code></dt>
+<dd>
+<div class="desc"><p>Job is the Job's identity</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.JobInfo.parent_job"><code class="name">var <span class="ident">parent_job</span> : <a title="pachyderm_sdk.api.pjs.Job" href="#pachyderm_sdk.api.pjs.Job">Job</a></code></dt>
+<dd>
+<div class="desc"><p>parent_job is the Job's parent if it exists.</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.JobInfo.state"><code class="name">var <span class="ident">state</span> : <a title="pachyderm_sdk.api.pjs.JobState" href="#pachyderm_sdk.api.pjs.JobState">JobState</a></code></dt>
+<dd>
+<div class="desc"><p>state is the Job's state. See JobState for a description of the possible
+states.</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.JobInfo.spec"><code class="name">var <span class="ident">spec</span> : betterproto.lib.google.protobuf.Any</code></dt>
+<dd>
+<div class="desc"><p>spec is the code specification for the Job.</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.JobInfo.input"><code class="name">var <span class="ident">input</span> : <a title="pachyderm_sdk.api.pjs.QueueElement" href="#pachyderm_sdk.api.pjs.QueueElement">QueueElement</a></code></dt>
+<dd>
+<div class="desc"><p>input is the input data for the Job.</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.JobInfo.output"><code class="name">var <span class="ident">output</span> : <a title="pachyderm_sdk.api.pjs.QueueElement" href="#pachyderm_sdk.api.pjs.QueueElement">QueueElement</a></code></dt>
+<dd>
+<div class="desc"><p>output is produced by a successfully completing Job</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.JobInfo.error"><code class="name">var <span class="ident">error</span> : <a title="pachyderm_sdk.api.pjs.JobErrorCode" href="#pachyderm_sdk.api.pjs.JobErrorCode">JobErrorCode</a></code></dt>
+<dd>
+<div class="desc"><p>error is set when the Job is unable to complete successfully</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.JobInfoDetails"><code class="flex name class">
+<span>class <span class="ident">JobInfoDetails</span></span>
+<span>(</span><span>job_info: <a title="pachyderm_sdk.api.pjs.JobInfo" href="#pachyderm_sdk.api.pjs.JobInfo">JobInfo</a> = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>JobInfoDetails is more detailed information about a Job. It contains a
+superset of the information in JobInfo</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class JobInfoDetails(betterproto.Message):
+    &#34;&#34;&#34;
+    JobInfoDetails is more detailed information about a Job. It contains a
+    superset of the information in JobInfo
+    &#34;&#34;&#34;
+
+    job_info: &#34;JobInfo&#34; = betterproto.message_field(1)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.pjs.JobInfoDetails.job_info"><code class="name">var <span class="ident">job_info</span> : <a title="pachyderm_sdk.api.pjs.JobInfo" href="#pachyderm_sdk.api.pjs.JobInfo">JobInfo</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.Queue"><code class="flex name class">
+<span>class <span class="ident">Queue</span></span>
+<span>(</span><span>id: bytes = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Queue uniquely identifies a Queue Queue will be nil to identify no Queue,
+or to indicate unset.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class Queue(betterproto.Message):
+    &#34;&#34;&#34;
+    Queue uniquely identifies a Queue Queue will be nil to identify no Queue,
+    or to indicate unset.
+    &#34;&#34;&#34;
+
+    id: bytes = betterproto.bytes_field(1)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.pjs.Queue.id"><code class="name">var <span class="ident">id</span> : bytes</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.QueueInfo"><code class="flex name class">
+<span>class <span class="ident">QueueInfo</span></span>
+<span>(</span><span>queue: <a title="pachyderm_sdk.api.pjs.Queue" href="#pachyderm_sdk.api.pjs.Queue">Queue</a> = None, spec: betterproto_lib_google_protobuf.Any = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>QueueInfo describes a Queue</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class QueueInfo(betterproto.Message):
+    &#34;&#34;&#34;QueueInfo describes a Queue&#34;&#34;&#34;
+
+    queue: &#34;Queue&#34; = betterproto.message_field(1)
+    &#34;&#34;&#34;queue is the Queue&#39;s identity&#34;&#34;&#34;
+
+    spec: &#34;betterproto_lib_google_protobuf.Any&#34; = betterproto.message_field(2)
+    &#34;&#34;&#34;spec specifies the code to be run to process the Queue.&#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.pjs.QueueInfo.queue"><code class="name">var <span class="ident">queue</span> : <a title="pachyderm_sdk.api.pjs.Queue" href="#pachyderm_sdk.api.pjs.Queue">Queue</a></code></dt>
+<dd>
+<div class="desc"><p>queue is the Queue's identity</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.QueueInfo.spec"><code class="name">var <span class="ident">spec</span> : betterproto.lib.google.protobuf.Any</code></dt>
+<dd>
+<div class="desc"><p>spec specifies the code to be run to process the Queue.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.QueueInfoDetails"><code class="flex name class">
+<span>class <span class="ident">QueueInfoDetails</span></span>
+<span>(</span><span>queue_info: <a title="pachyderm_sdk.api.pjs.QueueInfo" href="#pachyderm_sdk.api.pjs.QueueInfo">QueueInfo</a> = None, size: int = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>QueueInfoDetails contains detailed information about a Queue, which may be
+more expensive to get. It contains a superset of the information in
+QueueInfo.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class QueueInfoDetails(betterproto.Message):
+    &#34;&#34;&#34;
+    QueueInfoDetails contains detailed information about a Queue, which may be
+    more expensive to get. It contains a superset of the information in
+    QueueInfo.
+    &#34;&#34;&#34;
+
+    queue_info: &#34;QueueInfo&#34; = betterproto.message_field(1)
+    size: int = betterproto.int64_field(2)
+    &#34;&#34;&#34;size is the number of elements queued.&#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.pjs.QueueInfoDetails.queue_info"><code class="name">var <span class="ident">queue_info</span> : <a title="pachyderm_sdk.api.pjs.QueueInfo" href="#pachyderm_sdk.api.pjs.QueueInfo">QueueInfo</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.QueueInfoDetails.size"><code class="name">var <span class="ident">size</span> : int</code></dt>
+<dd>
+<div class="desc"><p>size is the number of elements queued.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.QueueElement"><code class="flex name class">
+<span>class <span class="ident">QueueElement</span></span>
+<span>(</span><span>data: bytes = None, filesets: List[str] = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>QueueElement is a single element in a Queue.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class QueueElement(betterproto.Message):
+    &#34;&#34;&#34;QueueElement is a single element in a Queue.&#34;&#34;&#34;
+
+    data: bytes = betterproto.bytes_field(1)
+    &#34;&#34;&#34;data is opaque data used as the input and output of Jobs&#34;&#34;&#34;
+
+    filesets: List[str] = betterproto.string_field(2)
+    &#34;&#34;&#34;
+    filesets is a list of Fileset handles, used to associate Filesets with the
+    input and output of Jobs. Any of the filesets referenced here will be
+    persisted for as long as this element is in a Queue. New handles, pointing
+    to equivalent Filesets, are minted whenever they cross the API boundary.
+    &#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.pjs.QueueElement.data"><code class="name">var <span class="ident">data</span> : bytes</code></dt>
+<dd>
+<div class="desc"><p>data is opaque data used as the input and output of Jobs</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.QueueElement.filesets"><code class="name">var <span class="ident">filesets</span> : List[str]</code></dt>
+<dd>
+<div class="desc"><p>filesets is a list of Fileset handles, used to associate Filesets with the
+input and output of Jobs. Any of the filesets referenced here will be
+persisted for as long as this element is in a Queue. New handles, pointing
+to equivalent Filesets, are minted whenever they cross the API boundary.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.CreateJobRequest"><code class="flex name class">
+<span>class <span class="ident">CreateJobRequest</span></span>
+<span>(</span><span>context: str = None, spec: betterproto_lib_google_protobuf.Any = None, input: <a title="pachyderm_sdk.api.pjs.QueueElement" href="#pachyderm_sdk.api.pjs.QueueElement">QueueElement</a> = None, cache_read: bool = None, cache_write: bool = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>CreateJobRequest(context: str = None, spec: 'betterproto_lib_google_protobuf.Any' = None, input: 'QueueElement' = None, cache_read: bool = None, cache_write: bool = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class CreateJobRequest(betterproto.Message):
+    context: str = betterproto.string_field(1)
+    &#34;&#34;&#34;
+    context is a bearer token used when calling from within a running Job.
+    &#34;&#34;&#34;
+
+    spec: &#34;betterproto_lib_google_protobuf.Any&#34; = betterproto.message_field(2)
+    input: &#34;QueueElement&#34; = betterproto.message_field(3)
+    cache_read: bool = betterproto.bool_field(4)
+    cache_write: bool = betterproto.bool_field(5)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.pjs.CreateJobRequest.context"><code class="name">var <span class="ident">context</span> : str</code></dt>
+<dd>
+<div class="desc"><p>context is a bearer token used when calling from within a running Job.</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.CreateJobRequest.spec"><code class="name">var <span class="ident">spec</span> : betterproto.lib.google.protobuf.Any</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.CreateJobRequest.input"><code class="name">var <span class="ident">input</span> : <a title="pachyderm_sdk.api.pjs.QueueElement" href="#pachyderm_sdk.api.pjs.QueueElement">QueueElement</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.CreateJobRequest.cache_read"><code class="name">var <span class="ident">cache_read</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.CreateJobRequest.cache_write"><code class="name">var <span class="ident">cache_write</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.CreateJobResponse"><code class="flex name class">
+<span>class <span class="ident">CreateJobResponse</span></span>
+<span>(</span><span>id: <a title="pachyderm_sdk.api.pjs.Job" href="#pachyderm_sdk.api.pjs.Job">Job</a> = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>CreateJobResponse(id: 'Job' = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class CreateJobResponse(betterproto.Message):
+    id: &#34;Job&#34; = betterproto.message_field(1)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.pjs.CreateJobResponse.id"><code class="name">var <span class="ident">id</span> : <a title="pachyderm_sdk.api.pjs.Job" href="#pachyderm_sdk.api.pjs.Job">Job</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.CancelJobRequest"><code class="flex name class">
+<span>class <span class="ident">CancelJobRequest</span></span>
+<span>(</span><span>context: str = None, job: <a title="pachyderm_sdk.api.pjs.Job" href="#pachyderm_sdk.api.pjs.Job">Job</a> = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>CancelJobRequest(context: str = None, job: 'Job' = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class CancelJobRequest(betterproto.Message):
+    context: str = betterproto.string_field(1)
+    &#34;&#34;&#34;
+    context is a bearer token used when calling from within a running Job.
+    &#34;&#34;&#34;
+
+    job: &#34;Job&#34; = betterproto.message_field(2)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.pjs.CancelJobRequest.context"><code class="name">var <span class="ident">context</span> : str</code></dt>
+<dd>
+<div class="desc"><p>context is a bearer token used when calling from within a running Job.</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.CancelJobRequest.job"><code class="name">var <span class="ident">job</span> : <a title="pachyderm_sdk.api.pjs.Job" href="#pachyderm_sdk.api.pjs.Job">Job</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.CancelJobResponse"><code class="flex name class">
+<span>class <span class="ident">CancelJobResponse</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>CancelJobResponse()</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class CancelJobResponse(betterproto.Message):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.DeleteJobRequest"><code class="flex name class">
+<span>class <span class="ident">DeleteJobRequest</span></span>
+<span>(</span><span>context: str = None, job: <a title="pachyderm_sdk.api.pjs.Job" href="#pachyderm_sdk.api.pjs.Job">Job</a> = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>DeleteJobRequest(context: str = None, job: 'Job' = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class DeleteJobRequest(betterproto.Message):
+    context: str = betterproto.string_field(1)
+    &#34;&#34;&#34;
+    context is a bearer token used when calling from within a running Job.
+    &#34;&#34;&#34;
+
+    job: &#34;Job&#34; = betterproto.message_field(2)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.pjs.DeleteJobRequest.context"><code class="name">var <span class="ident">context</span> : str</code></dt>
+<dd>
+<div class="desc"><p>context is a bearer token used when calling from within a running Job.</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.DeleteJobRequest.job"><code class="name">var <span class="ident">job</span> : <a title="pachyderm_sdk.api.pjs.Job" href="#pachyderm_sdk.api.pjs.Job">Job</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.DeleteJobResponse"><code class="flex name class">
+<span>class <span class="ident">DeleteJobResponse</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>DeleteJobResponse()</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class DeleteJobResponse(betterproto.Message):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.ListJobRequest"><code class="flex name class">
+<span>class <span class="ident">ListJobRequest</span></span>
+<span>(</span><span>context: str = None, job: <a title="pachyderm_sdk.api.pjs.Job" href="#pachyderm_sdk.api.pjs.Job">Job</a> = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO: - Filter - Paginate</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class ListJobRequest(betterproto.Message):
+    &#34;&#34;&#34;TODO: - Filter - Paginate&#34;&#34;&#34;
+
+    context: str = betterproto.string_field(1)
+    &#34;&#34;&#34;
+    context is a bearer token used when calling from within a running Job.
+    &#34;&#34;&#34;
+
+    job: &#34;Job&#34; = betterproto.message_field(2)
+    &#34;&#34;&#34;
+    job is the job to start listing at. If nil, then the listing starts at the
+    first job in the natural ordering.
+    &#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.pjs.ListJobRequest.context"><code class="name">var <span class="ident">context</span> : str</code></dt>
+<dd>
+<div class="desc"><p>context is a bearer token used when calling from within a running Job.</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.ListJobRequest.job"><code class="name">var <span class="ident">job</span> : <a title="pachyderm_sdk.api.pjs.Job" href="#pachyderm_sdk.api.pjs.Job">Job</a></code></dt>
+<dd>
+<div class="desc"><p>job is the job to start listing at. If nil, then the listing starts at the
+first job in the natural ordering.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.ListJobResponse"><code class="flex name class">
+<span>class <span class="ident">ListJobResponse</span></span>
+<span>(</span><span>id: <a title="pachyderm_sdk.api.pjs.Job" href="#pachyderm_sdk.api.pjs.Job">Job</a> = None, info: <a title="pachyderm_sdk.api.pjs.JobInfo" href="#pachyderm_sdk.api.pjs.JobInfo">JobInfo</a> = None, details: <a title="pachyderm_sdk.api.pjs.JobInfoDetails" href="#pachyderm_sdk.api.pjs.JobInfoDetails">JobInfoDetails</a> = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>ListJobResponse lists information about Jobs ID will always be set. Info
+and Details may not be set depending on how much information was requested.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class ListJobResponse(betterproto.Message):
+    &#34;&#34;&#34;
+    ListJobResponse lists information about Jobs ID will always be set. Info
+    and Details may not be set depending on how much information was requested.
+    &#34;&#34;&#34;
+
+    id: &#34;Job&#34; = betterproto.message_field(1)
+    info: &#34;JobInfo&#34; = betterproto.message_field(2)
+    details: &#34;JobInfoDetails&#34; = betterproto.message_field(3)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.pjs.ListJobResponse.id"><code class="name">var <span class="ident">id</span> : <a title="pachyderm_sdk.api.pjs.Job" href="#pachyderm_sdk.api.pjs.Job">Job</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.ListJobResponse.info"><code class="name">var <span class="ident">info</span> : <a title="pachyderm_sdk.api.pjs.JobInfo" href="#pachyderm_sdk.api.pjs.JobInfo">JobInfo</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.ListJobResponse.details"><code class="name">var <span class="ident">details</span> : <a title="pachyderm_sdk.api.pjs.JobInfoDetails" href="#pachyderm_sdk.api.pjs.JobInfoDetails">JobInfoDetails</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.WalkJobRequest"><code class="flex name class">
+<span>class <span class="ident">WalkJobRequest</span></span>
+<span>(</span><span>context: str = None, job: <a title="pachyderm_sdk.api.pjs.Job" href="#pachyderm_sdk.api.pjs.Job">Job</a> = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>WalkJobRequest(context: str = None, job: 'Job' = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class WalkJobRequest(betterproto.Message):
+    context: str = betterproto.string_field(1)
+    &#34;&#34;&#34;
+    context is a bearer token used when calling from within a running Job.
+    &#34;&#34;&#34;
+
+    job: &#34;Job&#34; = betterproto.message_field(2)
+    &#34;&#34;&#34;
+    job is the job to start walking from.  If unset, the context Job is
+    assumed.
+    &#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.pjs.WalkJobRequest.context"><code class="name">var <span class="ident">context</span> : str</code></dt>
+<dd>
+<div class="desc"><p>context is a bearer token used when calling from within a running Job.</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.WalkJobRequest.job"><code class="name">var <span class="ident">job</span> : <a title="pachyderm_sdk.api.pjs.Job" href="#pachyderm_sdk.api.pjs.Job">Job</a></code></dt>
+<dd>
+<div class="desc"><p>job is the job to start walking from.
+If unset, the context Job is
+assumed.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.InspectJobRequest"><code class="flex name class">
+<span>class <span class="ident">InspectJobRequest</span></span>
+<span>(</span><span>context: str = None, job: <a title="pachyderm_sdk.api.pjs.Job" href="#pachyderm_sdk.api.pjs.Job">Job</a> = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>InspectJobRequest(context: str = None, job: 'Job' = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class InspectJobRequest(betterproto.Message):
+    context: str = betterproto.string_field(1)
+    &#34;&#34;&#34;
+    context is a bearer token used when calling from within a running Job.
+    &#34;&#34;&#34;
+
+    job: &#34;Job&#34; = betterproto.message_field(2)
+    &#34;&#34;&#34;
+    job is the job to start walking from.  If unset the context Job is assumed.
+    &#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.pjs.InspectJobRequest.context"><code class="name">var <span class="ident">context</span> : str</code></dt>
+<dd>
+<div class="desc"><p>context is a bearer token used when calling from within a running Job.</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.InspectJobRequest.job"><code class="name">var <span class="ident">job</span> : <a title="pachyderm_sdk.api.pjs.Job" href="#pachyderm_sdk.api.pjs.Job">Job</a></code></dt>
+<dd>
+<div class="desc"><p>job is the job to start walking from.
+If unset the context Job is assumed.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.InspectJobResponse"><code class="flex name class">
+<span>class <span class="ident">InspectJobResponse</span></span>
+<span>(</span><span>details: <a title="pachyderm_sdk.api.pjs.JobInfoDetails" href="#pachyderm_sdk.api.pjs.JobInfoDetails">JobInfoDetails</a> = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>InspectJobResponse(details: 'JobInfoDetails' = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class InspectJobResponse(betterproto.Message):
+    details: &#34;JobInfoDetails&#34; = betterproto.message_field(1)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.pjs.InspectJobResponse.details"><code class="name">var <span class="ident">details</span> : <a title="pachyderm_sdk.api.pjs.JobInfoDetails" href="#pachyderm_sdk.api.pjs.JobInfoDetails">JobInfoDetails</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.ProcessQueueRequest"><code class="flex name class">
+<span>class <span class="ident">ProcessQueueRequest</span></span>
+<span>(</span><span>queue: <a title="pachyderm_sdk.api.pjs.Queue" href="#pachyderm_sdk.api.pjs.Queue">Queue</a> = None, output: <a title="pachyderm_sdk.api.pjs.QueueElement" href="#pachyderm_sdk.api.pjs.QueueElement">QueueElement</a> = None, failed: bool = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Queue Messages ProcessQueueRequest is the client -&gt; server message for the
+bi-di ProcessQueue RPC.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class ProcessQueueRequest(betterproto.Message):
+    &#34;&#34;&#34;
+    Queue Messages ProcessQueueRequest is the client -&gt; server message for the
+    bi-di ProcessQueue RPC.
+    &#34;&#34;&#34;
+
+    queue: &#34;Queue&#34; = betterproto.message_field(1)
+    &#34;&#34;&#34;queue is set to start processing from a Queue.&#34;&#34;&#34;
+
+    output: &#34;QueueElement&#34; = betterproto.message_field(2, group=&#34;result&#34;)
+    &#34;&#34;&#34;output is set by the client to complete the Job successfully.&#34;&#34;&#34;
+
+    failed: bool = betterproto.bool_field(3, group=&#34;result&#34;)
+    &#34;&#34;&#34;
+    failed is set by the client to fail the Job. The Job will transition to
+    state DONE with code FAILED.
+    &#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.pjs.ProcessQueueRequest.queue"><code class="name">var <span class="ident">queue</span> : <a title="pachyderm_sdk.api.pjs.Queue" href="#pachyderm_sdk.api.pjs.Queue">Queue</a></code></dt>
+<dd>
+<div class="desc"><p>queue is set to start processing from a Queue.</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.ProcessQueueRequest.output"><code class="name">var <span class="ident">output</span> : <a title="pachyderm_sdk.api.pjs.QueueElement" href="#pachyderm_sdk.api.pjs.QueueElement">QueueElement</a></code></dt>
+<dd>
+<div class="desc"><p>output is set by the client to complete the Job successfully.</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.ProcessQueueRequest.failed"><code class="name">var <span class="ident">failed</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>failed is set by the client to fail the Job. The Job will transition to
+state DONE with code FAILED.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.ProcessQueueResponse"><code class="flex name class">
+<span>class <span class="ident">ProcessQueueResponse</span></span>
+<span>(</span><span>context: str = None, input: <a title="pachyderm_sdk.api.pjs.QueueElement" href="#pachyderm_sdk.api.pjs.QueueElement">QueueElement</a> = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>ProcessQueueResposne is the server -&gt; client message for the bi-di
+ProcessQueue RPC.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class ProcessQueueResponse(betterproto.Message):
+    &#34;&#34;&#34;
+    ProcessQueueResposne is the server -&gt; client message for the bi-di
+    ProcessQueue RPC.
+    &#34;&#34;&#34;
+
+    context: str = betterproto.string_field(1)
+    &#34;&#34;&#34;
+    context is a bearer token used to act on behalf of the Job in other RPCs.
+    The server issues this token to the client, and the client should use it
+    when performing Job RPCs.
+    &#34;&#34;&#34;
+
+    input: &#34;QueueElement&#34; = betterproto.message_field(2)
+    &#34;&#34;&#34;
+    input is the input data for a Job. The server sends this to ask the client
+    to compute the output.
+    &#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.pjs.ProcessQueueResponse.context"><code class="name">var <span class="ident">context</span> : str</code></dt>
+<dd>
+<div class="desc"><p>context is a bearer token used to act on behalf of the Job in other RPCs.
+The server issues this token to the client, and the client should use it
+when performing Job RPCs.</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.ProcessQueueResponse.input"><code class="name">var <span class="ident">input</span> : <a title="pachyderm_sdk.api.pjs.QueueElement" href="#pachyderm_sdk.api.pjs.QueueElement">QueueElement</a></code></dt>
+<dd>
+<div class="desc"><p>input is the input data for a Job. The server sends this to ask the client
+to compute the output.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.ListQueueRequest"><code class="flex name class">
+<span>class <span class="ident">ListQueueRequest</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO: - Filter - Paginate</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class ListQueueRequest(betterproto.Message):
+    &#34;&#34;&#34;TODO: - Filter - Paginate&#34;&#34;&#34;
+
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.ListQueueResponse"><code class="flex name class">
+<span>class <span class="ident">ListQueueResponse</span></span>
+<span>(</span><span>id: <a title="pachyderm_sdk.api.pjs.Queue" href="#pachyderm_sdk.api.pjs.Queue">Queue</a> = None, info: <a title="pachyderm_sdk.api.pjs.QueueInfo" href="#pachyderm_sdk.api.pjs.QueueInfo">QueueInfo</a> = None, details: <a title="pachyderm_sdk.api.pjs.QueueInfoDetails" href="#pachyderm_sdk.api.pjs.QueueInfoDetails">QueueInfoDetails</a> = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>ListQueueResponse(id: 'Queue' = None, info: 'QueueInfo' = None, details: 'QueueInfoDetails' = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class ListQueueResponse(betterproto.Message):
+    id: &#34;Queue&#34; = betterproto.message_field(1)
+    info: &#34;QueueInfo&#34; = betterproto.message_field(2)
+    details: &#34;QueueInfoDetails&#34; = betterproto.message_field(3)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.pjs.ListQueueResponse.id"><code class="name">var <span class="ident">id</span> : <a title="pachyderm_sdk.api.pjs.Queue" href="#pachyderm_sdk.api.pjs.Queue">Queue</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.ListQueueResponse.info"><code class="name">var <span class="ident">info</span> : <a title="pachyderm_sdk.api.pjs.QueueInfo" href="#pachyderm_sdk.api.pjs.QueueInfo">QueueInfo</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.ListQueueResponse.details"><code class="name">var <span class="ident">details</span> : <a title="pachyderm_sdk.api.pjs.QueueInfoDetails" href="#pachyderm_sdk.api.pjs.QueueInfoDetails">QueueInfoDetails</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.InspectQueueRequest"><code class="flex name class">
+<span>class <span class="ident">InspectQueueRequest</span></span>
+<span>(</span><span>queue: <a title="pachyderm_sdk.api.pjs.Queue" href="#pachyderm_sdk.api.pjs.Queue">Queue</a> = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>InspectQueueRequest(queue: 'Queue' = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class InspectQueueRequest(betterproto.Message):
+    queue: &#34;Queue&#34; = betterproto.message_field(1)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.pjs.InspectQueueRequest.queue"><code class="name">var <span class="ident">queue</span> : <a title="pachyderm_sdk.api.pjs.Queue" href="#pachyderm_sdk.api.pjs.Queue">Queue</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.InspectQueueResponse"><code class="flex name class">
+<span>class <span class="ident">InspectQueueResponse</span></span>
+<span>(</span><span>details: <a title="pachyderm_sdk.api.pjs.QueueInfoDetails" href="#pachyderm_sdk.api.pjs.QueueInfoDetails">QueueInfoDetails</a> = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>InspectQueueResponse(details: 'QueueInfoDetails' = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class InspectQueueResponse(betterproto.Message):
+    details: &#34;QueueInfoDetails&#34; = betterproto.message_field(1)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.pjs.InspectQueueResponse.details"><code class="name">var <span class="ident">details</span> : <a title="pachyderm_sdk.api.pjs.QueueInfoDetails" href="#pachyderm_sdk.api.pjs.QueueInfoDetails">QueueInfoDetails</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.ApiStub"><code class="flex name class">
+<span>class <span class="ident">ApiStub</span></span>
+<span>(</span><span>channel: grpc.Channel)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ApiStub:
+
+    def __init__(self, channel: &#34;grpc.Channel&#34;):
+        self.__rpc_create_job = channel.unary_unary(
+            &#34;/pjs.API/CreateJob&#34;,
+            request_serializer=CreateJobRequest.SerializeToString,
+            response_deserializer=CreateJobResponse.FromString,
+        )
+        self.__rpc_cancel_job = channel.unary_unary(
+            &#34;/pjs.API/CancelJob&#34;,
+            request_serializer=CancelJobRequest.SerializeToString,
+            response_deserializer=CancelJobResponse.FromString,
+        )
+        self.__rpc_delete_job = channel.unary_unary(
+            &#34;/pjs.API/DeleteJob&#34;,
+            request_serializer=DeleteJobRequest.SerializeToString,
+            response_deserializer=DeleteJobResponse.FromString,
+        )
+        self.__rpc_list_job = channel.unary_stream(
+            &#34;/pjs.API/ListJob&#34;,
+            request_serializer=ListJobRequest.SerializeToString,
+            response_deserializer=ListJobResponse.FromString,
+        )
+        self.__rpc_walk_job = channel.unary_stream(
+            &#34;/pjs.API/WalkJob&#34;,
+            request_serializer=WalkJobRequest.SerializeToString,
+            response_deserializer=ListJobResponse.FromString,
+        )
+        self.__rpc_inspect_job = channel.unary_unary(
+            &#34;/pjs.API/InspectJob&#34;,
+            request_serializer=InspectJobRequest.SerializeToString,
+            response_deserializer=InspectJobResponse.FromString,
+        )
+        self.__rpc_process_queue = channel.stream_stream(
+            &#34;/pjs.API/ProcessQueue&#34;,
+            request_serializer=ProcessQueueRequest.SerializeToString,
+            response_deserializer=ProcessQueueResponse.FromString,
+        )
+        self.__rpc_list_queue = channel.unary_stream(
+            &#34;/pjs.API/ListQueue&#34;,
+            request_serializer=ListQueueRequest.SerializeToString,
+            response_deserializer=ListQueueResponse.FromString,
+        )
+        self.__rpc_inspect_queue = channel.unary_unary(
+            &#34;/pjs.API/InspectQueue&#34;,
+            request_serializer=InspectQueueRequest.SerializeToString,
+            response_deserializer=InspectQueueResponse.FromString,
+        )
+
+    def create_job(
+        self,
+        *,
+        context: str = &#34;&#34;,
+        spec: &#34;betterproto_lib_google_protobuf.Any&#34; = None,
+        input: &#34;QueueElement&#34; = None,
+        cache_read: bool = False,
+        cache_write: bool = False
+    ) -&gt; &#34;CreateJobResponse&#34;:
+
+        request = CreateJobRequest()
+        request.context = context
+        if spec is not None:
+            request.spec = spec
+        if input is not None:
+            request.input = input
+        request.cache_read = cache_read
+        request.cache_write = cache_write
+
+        return self.__rpc_create_job(request)
+
+    def cancel_job(
+        self, *, context: str = &#34;&#34;, job: &#34;Job&#34; = None
+    ) -&gt; &#34;CancelJobResponse&#34;:
+
+        request = CancelJobRequest()
+        request.context = context
+        if job is not None:
+            request.job = job
+
+        return self.__rpc_cancel_job(request)
+
+    def delete_job(
+        self, *, context: str = &#34;&#34;, job: &#34;Job&#34; = None
+    ) -&gt; &#34;DeleteJobResponse&#34;:
+
+        request = DeleteJobRequest()
+        request.context = context
+        if job is not None:
+            request.job = job
+
+        return self.__rpc_delete_job(request)
+
+    def list_job(
+        self, *, context: str = &#34;&#34;, job: &#34;Job&#34; = None
+    ) -&gt; Iterator[&#34;ListJobResponse&#34;]:
+
+        request = ListJobRequest()
+        request.context = context
+        if job is not None:
+            request.job = job
+
+        for response in self.__rpc_list_job(request):
+            yield response
+
+    def walk_job(
+        self, *, context: str = &#34;&#34;, job: &#34;Job&#34; = None
+    ) -&gt; Iterator[&#34;ListJobResponse&#34;]:
+
+        request = WalkJobRequest()
+        request.context = context
+        if job is not None:
+            request.job = job
+
+        for response in self.__rpc_walk_job(request):
+            yield response
+
+    def inspect_job(
+        self, *, context: str = &#34;&#34;, job: &#34;Job&#34; = None
+    ) -&gt; &#34;InspectJobResponse&#34;:
+
+        request = InspectJobRequest()
+        request.context = context
+        if job is not None:
+            request.job = job
+
+        return self.__rpc_inspect_job(request)
+
+    def process_queue(
+        self,
+        request_iterator: Union[
+            AsyncIterable[&#34;ProcessQueueRequest&#34;], Iterable[&#34;ProcessQueueRequest&#34;]
+        ],
+    ) -&gt; Iterator[&#34;ProcessQueueResponse&#34;]:
+
+        for response in self.__rpc_process_queue(request_iterator):
+            yield response
+
+    def list_queue(self) -&gt; Iterator[&#34;ListQueueResponse&#34;]:
+
+        request = ListQueueRequest()
+
+        for response in self.__rpc_list_queue(request):
+            yield response
+
+    def inspect_queue(self, *, queue: &#34;Queue&#34; = None) -&gt; &#34;InspectQueueResponse&#34;:
+
+        request = InspectQueueRequest()
+        if queue is not None:
+            request.queue = queue
+
+        return self.__rpc_inspect_queue(request)</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pachyderm_sdk.api.pjs.ApiStub.create_job"><code class="name flex">
+<span>def <span class="ident">create_job</span></span>(<span>self, *, context: str = '', spec: betterproto_lib_google_protobuf.Any = None, input: <a title="pachyderm_sdk.api.pjs.QueueElement" href="#pachyderm_sdk.api.pjs.QueueElement">QueueElement</a> = None, cache_read: bool = False, cache_write: bool = False) ‑> <a title="pachyderm_sdk.api.pjs.CreateJobResponse" href="#pachyderm_sdk.api.pjs.CreateJobResponse">CreateJobResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_job(
+    self,
+    *,
+    context: str = &#34;&#34;,
+    spec: &#34;betterproto_lib_google_protobuf.Any&#34; = None,
+    input: &#34;QueueElement&#34; = None,
+    cache_read: bool = False,
+    cache_write: bool = False
+) -&gt; &#34;CreateJobResponse&#34;:
+
+    request = CreateJobRequest()
+    request.context = context
+    if spec is not None:
+        request.spec = spec
+    if input is not None:
+        request.input = input
+    request.cache_read = cache_read
+    request.cache_write = cache_write
+
+    return self.__rpc_create_job(request)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.ApiStub.cancel_job"><code class="name flex">
+<span>def <span class="ident">cancel_job</span></span>(<span>self, *, context: str = '', job: <a title="pachyderm_sdk.api.pjs.Job" href="#pachyderm_sdk.api.pjs.Job">Job</a> = None) ‑> <a title="pachyderm_sdk.api.pjs.CancelJobResponse" href="#pachyderm_sdk.api.pjs.CancelJobResponse">CancelJobResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def cancel_job(
+    self, *, context: str = &#34;&#34;, job: &#34;Job&#34; = None
+) -&gt; &#34;CancelJobResponse&#34;:
+
+    request = CancelJobRequest()
+    request.context = context
+    if job is not None:
+        request.job = job
+
+    return self.__rpc_cancel_job(request)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.ApiStub.delete_job"><code class="name flex">
+<span>def <span class="ident">delete_job</span></span>(<span>self, *, context: str = '', job: <a title="pachyderm_sdk.api.pjs.Job" href="#pachyderm_sdk.api.pjs.Job">Job</a> = None) ‑> <a title="pachyderm_sdk.api.pjs.DeleteJobResponse" href="#pachyderm_sdk.api.pjs.DeleteJobResponse">DeleteJobResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def delete_job(
+    self, *, context: str = &#34;&#34;, job: &#34;Job&#34; = None
+) -&gt; &#34;DeleteJobResponse&#34;:
+
+    request = DeleteJobRequest()
+    request.context = context
+    if job is not None:
+        request.job = job
+
+    return self.__rpc_delete_job(request)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.ApiStub.list_job"><code class="name flex">
+<span>def <span class="ident">list_job</span></span>(<span>self, *, context: str = '', job: <a title="pachyderm_sdk.api.pjs.Job" href="#pachyderm_sdk.api.pjs.Job">Job</a> = None) ‑> Iterator[<a title="pachyderm_sdk.api.pjs.ListJobResponse" href="#pachyderm_sdk.api.pjs.ListJobResponse">ListJobResponse</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def list_job(
+    self, *, context: str = &#34;&#34;, job: &#34;Job&#34; = None
+) -&gt; Iterator[&#34;ListJobResponse&#34;]:
+
+    request = ListJobRequest()
+    request.context = context
+    if job is not None:
+        request.job = job
+
+    for response in self.__rpc_list_job(request):
+        yield response</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.ApiStub.walk_job"><code class="name flex">
+<span>def <span class="ident">walk_job</span></span>(<span>self, *, context: str = '', job: <a title="pachyderm_sdk.api.pjs.Job" href="#pachyderm_sdk.api.pjs.Job">Job</a> = None) ‑> Iterator[<a title="pachyderm_sdk.api.pjs.ListJobResponse" href="#pachyderm_sdk.api.pjs.ListJobResponse">ListJobResponse</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def walk_job(
+    self, *, context: str = &#34;&#34;, job: &#34;Job&#34; = None
+) -&gt; Iterator[&#34;ListJobResponse&#34;]:
+
+    request = WalkJobRequest()
+    request.context = context
+    if job is not None:
+        request.job = job
+
+    for response in self.__rpc_walk_job(request):
+        yield response</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.ApiStub.inspect_job"><code class="name flex">
+<span>def <span class="ident">inspect_job</span></span>(<span>self, *, context: str = '', job: <a title="pachyderm_sdk.api.pjs.Job" href="#pachyderm_sdk.api.pjs.Job">Job</a> = None) ‑> <a title="pachyderm_sdk.api.pjs.InspectJobResponse" href="#pachyderm_sdk.api.pjs.InspectJobResponse">InspectJobResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def inspect_job(
+    self, *, context: str = &#34;&#34;, job: &#34;Job&#34; = None
+) -&gt; &#34;InspectJobResponse&#34;:
+
+    request = InspectJobRequest()
+    request.context = context
+    if job is not None:
+        request.job = job
+
+    return self.__rpc_inspect_job(request)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.ApiStub.process_queue"><code class="name flex">
+<span>def <span class="ident">process_queue</span></span>(<span>self, request_iterator: Union[AsyncIterable[ForwardRef('<a title="pachyderm_sdk.api.pjs.ProcessQueueRequest" href="#pachyderm_sdk.api.pjs.ProcessQueueRequest">ProcessQueueRequest</a>')], Iterable[ForwardRef('<a title="pachyderm_sdk.api.pjs.ProcessQueueRequest" href="#pachyderm_sdk.api.pjs.ProcessQueueRequest">ProcessQueueRequest</a>')]]) ‑> Iterator[<a title="pachyderm_sdk.api.pjs.ProcessQueueResponse" href="#pachyderm_sdk.api.pjs.ProcessQueueResponse">ProcessQueueResponse</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def process_queue(
+    self,
+    request_iterator: Union[
+        AsyncIterable[&#34;ProcessQueueRequest&#34;], Iterable[&#34;ProcessQueueRequest&#34;]
+    ],
+) -&gt; Iterator[&#34;ProcessQueueResponse&#34;]:
+
+    for response in self.__rpc_process_queue(request_iterator):
+        yield response</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.ApiStub.list_queue"><code class="name flex">
+<span>def <span class="ident">list_queue</span></span>(<span>self) ‑> Iterator[<a title="pachyderm_sdk.api.pjs.ListQueueResponse" href="#pachyderm_sdk.api.pjs.ListQueueResponse">ListQueueResponse</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def list_queue(self) -&gt; Iterator[&#34;ListQueueResponse&#34;]:
+
+    request = ListQueueRequest()
+
+    for response in self.__rpc_list_queue(request):
+        yield response</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.pjs.ApiStub.inspect_queue"><code class="name flex">
+<span>def <span class="ident">inspect_queue</span></span>(<span>self, *, queue: <a title="pachyderm_sdk.api.pjs.Queue" href="#pachyderm_sdk.api.pjs.Queue">Queue</a> = None) ‑> <a title="pachyderm_sdk.api.pjs.InspectQueueResponse" href="#pachyderm_sdk.api.pjs.InspectQueueResponse">InspectQueueResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def inspect_queue(self, *, queue: &#34;Queue&#34; = None) -&gt; &#34;InspectQueueResponse&#34;:
+
+    request = InspectQueueRequest()
+    if queue is not None:
+        request.queue = queue
+
+    return self.__rpc_inspect_queue(request)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<header>
+<style> img { max-width: 50%; } </style>
+<img src="https://raw.githubusercontent.com/pachyderm/pachyderm/master/Pachyderm_Icon-01.svg" alt="">
+</header>
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="pachyderm_sdk.api" href="../index.html">pachyderm_sdk.api</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="pachyderm_sdk.api.pjs.JobState" href="#pachyderm_sdk.api.pjs.JobState">JobState</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.pjs.JobState.JobState_UNSPECIFIED" href="#pachyderm_sdk.api.pjs.JobState.JobState_UNSPECIFIED">JobState_UNSPECIFIED</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pjs.JobState.QUEUED" href="#pachyderm_sdk.api.pjs.JobState.QUEUED">QUEUED</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pjs.JobState.PROCESSING" href="#pachyderm_sdk.api.pjs.JobState.PROCESSING">PROCESSING</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pjs.JobState.DONE" href="#pachyderm_sdk.api.pjs.JobState.DONE">DONE</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.pjs.JobErrorCode" href="#pachyderm_sdk.api.pjs.JobErrorCode">JobErrorCode</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.pjs.JobErrorCode.JobErrorCode_UNSPECIFIED" href="#pachyderm_sdk.api.pjs.JobErrorCode.JobErrorCode_UNSPECIFIED">JobErrorCode_UNSPECIFIED</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pjs.JobErrorCode.FAILED" href="#pachyderm_sdk.api.pjs.JobErrorCode.FAILED">FAILED</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pjs.JobErrorCode.DISCONNECTED" href="#pachyderm_sdk.api.pjs.JobErrorCode.DISCONNECTED">DISCONNECTED</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pjs.JobErrorCode.CANCELED" href="#pachyderm_sdk.api.pjs.JobErrorCode.CANCELED">CANCELED</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.pjs.Job" href="#pachyderm_sdk.api.pjs.Job">Job</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.pjs.Job.id" href="#pachyderm_sdk.api.pjs.Job.id">id</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.pjs.JobInfo" href="#pachyderm_sdk.api.pjs.JobInfo">JobInfo</a></code></h4>
+<ul class="two-column">
+<li><code><a title="pachyderm_sdk.api.pjs.JobInfo.job" href="#pachyderm_sdk.api.pjs.JobInfo.job">job</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pjs.JobInfo.parent_job" href="#pachyderm_sdk.api.pjs.JobInfo.parent_job">parent_job</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pjs.JobInfo.state" href="#pachyderm_sdk.api.pjs.JobInfo.state">state</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pjs.JobInfo.spec" href="#pachyderm_sdk.api.pjs.JobInfo.spec">spec</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pjs.JobInfo.input" href="#pachyderm_sdk.api.pjs.JobInfo.input">input</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pjs.JobInfo.output" href="#pachyderm_sdk.api.pjs.JobInfo.output">output</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pjs.JobInfo.error" href="#pachyderm_sdk.api.pjs.JobInfo.error">error</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.pjs.JobInfoDetails" href="#pachyderm_sdk.api.pjs.JobInfoDetails">JobInfoDetails</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.pjs.JobInfoDetails.job_info" href="#pachyderm_sdk.api.pjs.JobInfoDetails.job_info">job_info</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.pjs.Queue" href="#pachyderm_sdk.api.pjs.Queue">Queue</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.pjs.Queue.id" href="#pachyderm_sdk.api.pjs.Queue.id">id</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.pjs.QueueInfo" href="#pachyderm_sdk.api.pjs.QueueInfo">QueueInfo</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.pjs.QueueInfo.queue" href="#pachyderm_sdk.api.pjs.QueueInfo.queue">queue</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pjs.QueueInfo.spec" href="#pachyderm_sdk.api.pjs.QueueInfo.spec">spec</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.pjs.QueueInfoDetails" href="#pachyderm_sdk.api.pjs.QueueInfoDetails">QueueInfoDetails</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.pjs.QueueInfoDetails.queue_info" href="#pachyderm_sdk.api.pjs.QueueInfoDetails.queue_info">queue_info</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pjs.QueueInfoDetails.size" href="#pachyderm_sdk.api.pjs.QueueInfoDetails.size">size</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.pjs.QueueElement" href="#pachyderm_sdk.api.pjs.QueueElement">QueueElement</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.pjs.QueueElement.data" href="#pachyderm_sdk.api.pjs.QueueElement.data">data</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pjs.QueueElement.filesets" href="#pachyderm_sdk.api.pjs.QueueElement.filesets">filesets</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.pjs.CreateJobRequest" href="#pachyderm_sdk.api.pjs.CreateJobRequest">CreateJobRequest</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.pjs.CreateJobRequest.context" href="#pachyderm_sdk.api.pjs.CreateJobRequest.context">context</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pjs.CreateJobRequest.spec" href="#pachyderm_sdk.api.pjs.CreateJobRequest.spec">spec</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pjs.CreateJobRequest.input" href="#pachyderm_sdk.api.pjs.CreateJobRequest.input">input</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pjs.CreateJobRequest.cache_read" href="#pachyderm_sdk.api.pjs.CreateJobRequest.cache_read">cache_read</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pjs.CreateJobRequest.cache_write" href="#pachyderm_sdk.api.pjs.CreateJobRequest.cache_write">cache_write</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.pjs.CreateJobResponse" href="#pachyderm_sdk.api.pjs.CreateJobResponse">CreateJobResponse</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.pjs.CreateJobResponse.id" href="#pachyderm_sdk.api.pjs.CreateJobResponse.id">id</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.pjs.CancelJobRequest" href="#pachyderm_sdk.api.pjs.CancelJobRequest">CancelJobRequest</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.pjs.CancelJobRequest.context" href="#pachyderm_sdk.api.pjs.CancelJobRequest.context">context</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pjs.CancelJobRequest.job" href="#pachyderm_sdk.api.pjs.CancelJobRequest.job">job</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.pjs.CancelJobResponse" href="#pachyderm_sdk.api.pjs.CancelJobResponse">CancelJobResponse</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.pjs.DeleteJobRequest" href="#pachyderm_sdk.api.pjs.DeleteJobRequest">DeleteJobRequest</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.pjs.DeleteJobRequest.context" href="#pachyderm_sdk.api.pjs.DeleteJobRequest.context">context</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pjs.DeleteJobRequest.job" href="#pachyderm_sdk.api.pjs.DeleteJobRequest.job">job</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.pjs.DeleteJobResponse" href="#pachyderm_sdk.api.pjs.DeleteJobResponse">DeleteJobResponse</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.pjs.ListJobRequest" href="#pachyderm_sdk.api.pjs.ListJobRequest">ListJobRequest</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.pjs.ListJobRequest.context" href="#pachyderm_sdk.api.pjs.ListJobRequest.context">context</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pjs.ListJobRequest.job" href="#pachyderm_sdk.api.pjs.ListJobRequest.job">job</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.pjs.ListJobResponse" href="#pachyderm_sdk.api.pjs.ListJobResponse">ListJobResponse</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.pjs.ListJobResponse.id" href="#pachyderm_sdk.api.pjs.ListJobResponse.id">id</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pjs.ListJobResponse.info" href="#pachyderm_sdk.api.pjs.ListJobResponse.info">info</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pjs.ListJobResponse.details" href="#pachyderm_sdk.api.pjs.ListJobResponse.details">details</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.pjs.WalkJobRequest" href="#pachyderm_sdk.api.pjs.WalkJobRequest">WalkJobRequest</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.pjs.WalkJobRequest.context" href="#pachyderm_sdk.api.pjs.WalkJobRequest.context">context</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pjs.WalkJobRequest.job" href="#pachyderm_sdk.api.pjs.WalkJobRequest.job">job</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.pjs.InspectJobRequest" href="#pachyderm_sdk.api.pjs.InspectJobRequest">InspectJobRequest</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.pjs.InspectJobRequest.context" href="#pachyderm_sdk.api.pjs.InspectJobRequest.context">context</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pjs.InspectJobRequest.job" href="#pachyderm_sdk.api.pjs.InspectJobRequest.job">job</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.pjs.InspectJobResponse" href="#pachyderm_sdk.api.pjs.InspectJobResponse">InspectJobResponse</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.pjs.InspectJobResponse.details" href="#pachyderm_sdk.api.pjs.InspectJobResponse.details">details</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.pjs.ProcessQueueRequest" href="#pachyderm_sdk.api.pjs.ProcessQueueRequest">ProcessQueueRequest</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.pjs.ProcessQueueRequest.queue" href="#pachyderm_sdk.api.pjs.ProcessQueueRequest.queue">queue</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pjs.ProcessQueueRequest.output" href="#pachyderm_sdk.api.pjs.ProcessQueueRequest.output">output</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pjs.ProcessQueueRequest.failed" href="#pachyderm_sdk.api.pjs.ProcessQueueRequest.failed">failed</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.pjs.ProcessQueueResponse" href="#pachyderm_sdk.api.pjs.ProcessQueueResponse">ProcessQueueResponse</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.pjs.ProcessQueueResponse.context" href="#pachyderm_sdk.api.pjs.ProcessQueueResponse.context">context</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pjs.ProcessQueueResponse.input" href="#pachyderm_sdk.api.pjs.ProcessQueueResponse.input">input</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.pjs.ListQueueRequest" href="#pachyderm_sdk.api.pjs.ListQueueRequest">ListQueueRequest</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.pjs.ListQueueResponse" href="#pachyderm_sdk.api.pjs.ListQueueResponse">ListQueueResponse</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.pjs.ListQueueResponse.id" href="#pachyderm_sdk.api.pjs.ListQueueResponse.id">id</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pjs.ListQueueResponse.info" href="#pachyderm_sdk.api.pjs.ListQueueResponse.info">info</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pjs.ListQueueResponse.details" href="#pachyderm_sdk.api.pjs.ListQueueResponse.details">details</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.pjs.InspectQueueRequest" href="#pachyderm_sdk.api.pjs.InspectQueueRequest">InspectQueueRequest</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.pjs.InspectQueueRequest.queue" href="#pachyderm_sdk.api.pjs.InspectQueueRequest.queue">queue</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.pjs.InspectQueueResponse" href="#pachyderm_sdk.api.pjs.InspectQueueResponse">InspectQueueResponse</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.pjs.InspectQueueResponse.details" href="#pachyderm_sdk.api.pjs.InspectQueueResponse.details">details</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.pjs.ApiStub" href="#pachyderm_sdk.api.pjs.ApiStub">ApiStub</a></code></h4>
+<ul class="two-column">
+<li><code><a title="pachyderm_sdk.api.pjs.ApiStub.create_job" href="#pachyderm_sdk.api.pjs.ApiStub.create_job">create_job</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pjs.ApiStub.cancel_job" href="#pachyderm_sdk.api.pjs.ApiStub.cancel_job">cancel_job</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pjs.ApiStub.delete_job" href="#pachyderm_sdk.api.pjs.ApiStub.delete_job">delete_job</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pjs.ApiStub.list_job" href="#pachyderm_sdk.api.pjs.ApiStub.list_job">list_job</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pjs.ApiStub.walk_job" href="#pachyderm_sdk.api.pjs.ApiStub.walk_job">walk_job</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pjs.ApiStub.inspect_job" href="#pachyderm_sdk.api.pjs.ApiStub.inspect_job">inspect_job</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pjs.ApiStub.process_queue" href="#pachyderm_sdk.api.pjs.ApiStub.process_queue">process_queue</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pjs.ApiStub.list_queue" href="#pachyderm_sdk.api.pjs.ApiStub.list_queue">list_queue</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pjs.ApiStub.inspect_queue" href="#pachyderm_sdk.api.pjs.ApiStub.inspect_queue">inspect_queue</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>

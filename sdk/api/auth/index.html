@@ -123,6 +123,9 @@ class Permission(betterproto.Enum):
     CLUSTER_SET_DEFAULTS = 302
     &#34;&#34;&#34;CLUSTER_SET_DEFAULTS is part of PPS.&#34;&#34;&#34;
 
+    PROJECT_SET_DEFAULTS = 303
+    &#34;&#34;&#34;PROJECT_SET_DEFAULTS is part of PPS.&#34;&#34;&#34;
+
     PROJECT_CREATE = 400
     PROJECT_DELETE = 401
     PROJECT_LIST_REPO = 402
@@ -628,6 +631,7 @@ class DeleteExpiredAuthTokensResponse(betterproto.Message):
 
 
 class ApiStub:
+
     def __init__(self, channel: &#34;grpc.Channel&#34;):
         self.__rpc_activate = channel.unary_unary(
             &#34;/auth_v2.API/Activate&#34;,
@@ -756,17 +760,20 @@ class ApiStub:
         )
 
     def activate(self, *, root_token: str = &#34;&#34;) -&gt; &#34;ActivateResponse&#34;:
+
         request = ActivateRequest()
         request.root_token = root_token
 
         return self.__rpc_activate(request)
 
     def deactivate(self) -&gt; &#34;DeactivateResponse&#34;:
+
         request = DeactivateRequest()
 
         return self.__rpc_deactivate(request)
 
     def get_configuration(self) -&gt; &#34;GetConfigurationResponse&#34;:
+
         request = GetConfigurationRequest()
 
         return self.__rpc_get_configuration(request)
@@ -774,6 +781,7 @@ class ApiStub:
     def set_configuration(
         self, *, configuration: &#34;OidcConfig&#34; = None
     ) -&gt; &#34;SetConfigurationResponse&#34;:
+
         request = SetConfigurationRequest()
         if configuration is not None:
             request.configuration = configuration
@@ -783,6 +791,7 @@ class ApiStub:
     def authenticate(
         self, *, oidc_state: str = &#34;&#34;, id_token: str = &#34;&#34;
     ) -&gt; &#34;AuthenticateResponse&#34;:
+
         request = AuthenticateRequest()
         request.oidc_state = oidc_state
         request.id_token = id_token
@@ -807,6 +816,7 @@ class ApiStub:
     def get_permissions(
         self, *, resource: &#34;Resource&#34; = None
     ) -&gt; &#34;GetPermissionsResponse&#34;:
+
         request = GetPermissionsRequest()
         if resource is not None:
             request.resource = resource
@@ -816,6 +826,7 @@ class ApiStub:
     def get_permissions_for_principal(
         self, *, resource: &#34;Resource&#34; = None, principal: str = &#34;&#34;
     ) -&gt; &#34;GetPermissionsResponse&#34;:
+
         request = GetPermissionsForPrincipalRequest()
         if resource is not None:
             request.resource = resource
@@ -824,6 +835,7 @@ class ApiStub:
         return self.__rpc_get_permissions_for_principal(request)
 
     def who_am_i(self) -&gt; &#34;WhoAmIResponse&#34;:
+
         request = WhoAmIRequest()
 
         return self.__rpc_who_am_i(request)
@@ -831,6 +843,7 @@ class ApiStub:
     def get_roles_for_permission(
         self, *, permission: &#34;Permission&#34; = None
     ) -&gt; &#34;GetRolesForPermissionResponse&#34;:
+
         request = GetRolesForPermissionRequest()
         request.permission = permission
 
@@ -856,6 +869,7 @@ class ApiStub:
     def get_role_binding(
         self, *, resource: &#34;Resource&#34; = None
     ) -&gt; &#34;GetRoleBindingResponse&#34;:
+
         request = GetRoleBindingRequest()
         if resource is not None:
             request.resource = resource
@@ -863,6 +877,7 @@ class ApiStub:
         return self.__rpc_get_role_binding(request)
 
     def get_oidc_login(self) -&gt; &#34;GetOidcLoginResponse&#34;:
+
         request = GetOidcLoginRequest()
 
         return self.__rpc_get_oidc_login(request)
@@ -870,6 +885,7 @@ class ApiStub:
     def get_robot_token(
         self, *, robot: str = &#34;&#34;, ttl: int = 0
     ) -&gt; &#34;GetRobotTokenResponse&#34;:
+
         request = GetRobotTokenRequest()
         request.robot = robot
         request.ttl = ttl
@@ -877,6 +893,7 @@ class ApiStub:
         return self.__rpc_get_robot_token(request)
 
     def revoke_auth_token(self, *, token: str = &#34;&#34;) -&gt; &#34;RevokeAuthTokenResponse&#34;:
+
         request = RevokeAuthTokenRequest()
         request.token = token
 
@@ -885,6 +902,7 @@ class ApiStub:
     def revoke_auth_tokens_for_user(
         self, *, username: str = &#34;&#34;
     ) -&gt; &#34;RevokeAuthTokensForUserResponse&#34;:
+
         request = RevokeAuthTokensForUserRequest()
         request.username = username
 
@@ -919,23 +937,27 @@ class ApiStub:
         return self.__rpc_modify_members(request)
 
     def get_groups(self) -&gt; &#34;GetGroupsResponse&#34;:
+
         request = GetGroupsRequest()
 
         return self.__rpc_get_groups(request)
 
     def get_groups_for_principal(self, *, principal: str = &#34;&#34;) -&gt; &#34;GetGroupsResponse&#34;:
+
         request = GetGroupsForPrincipalRequest()
         request.principal = principal
 
         return self.__rpc_get_groups_for_principal(request)
 
     def get_users(self, *, group: str = &#34;&#34;) -&gt; &#34;GetUsersResponse&#34;:
+
         request = GetUsersRequest()
         request.group = group
 
         return self.__rpc_get_users(request)
 
     def extract_auth_tokens(self) -&gt; &#34;ExtractAuthTokensResponse&#34;:
+
         request = ExtractAuthTokensRequest()
 
         return self.__rpc_extract_auth_tokens(request)
@@ -943,6 +965,7 @@ class ApiStub:
     def restore_auth_token(
         self, *, token: &#34;TokenInfo&#34; = None
     ) -&gt; &#34;RestoreAuthTokenResponse&#34;:
+
         request = RestoreAuthTokenRequest()
         if token is not None:
             request.token = token
@@ -950,11 +973,13 @@ class ApiStub:
         return self.__rpc_restore_auth_token(request)
 
     def delete_expired_auth_tokens(self) -&gt; &#34;DeleteExpiredAuthTokensResponse&#34;:
+
         request = DeleteExpiredAuthTokensRequest()
 
         return self.__rpc_delete_expired_auth_tokens(request)
 
     def rotate_root_token(self, *, root_token: str = &#34;&#34;) -&gt; &#34;RotateRootTokenResponse&#34;:
+
         request = RotateRootTokenRequest()
         request.root_token = root_token
 
@@ -962,6 +987,7 @@ class ApiStub:
 
 
 class ApiBase:
+
     def activate(
         self, root_token: str, context: &#34;grpc.ServicerContext&#34;
     ) -&gt; &#34;ActivateResponse&#34;:
@@ -1371,6 +1397,9 @@ Resource</p></div>
     CLUSTER_SET_DEFAULTS = 302
     &#34;&#34;&#34;CLUSTER_SET_DEFAULTS is part of PPS.&#34;&#34;&#34;
 
+    PROJECT_SET_DEFAULTS = 303
+    &#34;&#34;&#34;PROJECT_SET_DEFAULTS is part of PPS.&#34;&#34;&#34;
+
     PROJECT_CREATE = 400
     PROJECT_DELETE = 401
     PROJECT_LIST_REPO = 402
@@ -1646,6 +1675,10 @@ Resource</p></div>
 <dt id="pachyderm_sdk.api.auth.Permission.CLUSTER_SET_DEFAULTS"><code class="name">var <span class="ident">CLUSTER_SET_DEFAULTS</span></code></dt>
 <dd>
 <div class="desc"><p>CLUSTER_SET_DEFAULTS is part of PPS.</p></div>
+</dd>
+<dt id="pachyderm_sdk.api.auth.Permission.PROJECT_SET_DEFAULTS"><code class="name">var <span class="ident">PROJECT_SET_DEFAULTS</span></code></dt>
+<dd>
+<div class="desc"><p>PROJECT_SET_DEFAULTS is part of PPS.</p></div>
 </dd>
 <dt id="pachyderm_sdk.api.auth.Permission.PROJECT_CREATE"><code class="name">var <span class="ident">PROJECT_CREATE</span></code></dt>
 <dd>
@@ -3530,6 +3563,7 @@ class DeleteExpiredAuthTokensResponse(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class ApiStub:
+
     def __init__(self, channel: &#34;grpc.Channel&#34;):
         self.__rpc_activate = channel.unary_unary(
             &#34;/auth_v2.API/Activate&#34;,
@@ -3658,17 +3692,20 @@ class DeleteExpiredAuthTokensResponse(betterproto.Message):
         )
 
     def activate(self, *, root_token: str = &#34;&#34;) -&gt; &#34;ActivateResponse&#34;:
+
         request = ActivateRequest()
         request.root_token = root_token
 
         return self.__rpc_activate(request)
 
     def deactivate(self) -&gt; &#34;DeactivateResponse&#34;:
+
         request = DeactivateRequest()
 
         return self.__rpc_deactivate(request)
 
     def get_configuration(self) -&gt; &#34;GetConfigurationResponse&#34;:
+
         request = GetConfigurationRequest()
 
         return self.__rpc_get_configuration(request)
@@ -3676,6 +3713,7 @@ class DeleteExpiredAuthTokensResponse(betterproto.Message):
     def set_configuration(
         self, *, configuration: &#34;OidcConfig&#34; = None
     ) -&gt; &#34;SetConfigurationResponse&#34;:
+
         request = SetConfigurationRequest()
         if configuration is not None:
             request.configuration = configuration
@@ -3685,6 +3723,7 @@ class DeleteExpiredAuthTokensResponse(betterproto.Message):
     def authenticate(
         self, *, oidc_state: str = &#34;&#34;, id_token: str = &#34;&#34;
     ) -&gt; &#34;AuthenticateResponse&#34;:
+
         request = AuthenticateRequest()
         request.oidc_state = oidc_state
         request.id_token = id_token
@@ -3709,6 +3748,7 @@ class DeleteExpiredAuthTokensResponse(betterproto.Message):
     def get_permissions(
         self, *, resource: &#34;Resource&#34; = None
     ) -&gt; &#34;GetPermissionsResponse&#34;:
+
         request = GetPermissionsRequest()
         if resource is not None:
             request.resource = resource
@@ -3718,6 +3758,7 @@ class DeleteExpiredAuthTokensResponse(betterproto.Message):
     def get_permissions_for_principal(
         self, *, resource: &#34;Resource&#34; = None, principal: str = &#34;&#34;
     ) -&gt; &#34;GetPermissionsResponse&#34;:
+
         request = GetPermissionsForPrincipalRequest()
         if resource is not None:
             request.resource = resource
@@ -3726,6 +3767,7 @@ class DeleteExpiredAuthTokensResponse(betterproto.Message):
         return self.__rpc_get_permissions_for_principal(request)
 
     def who_am_i(self) -&gt; &#34;WhoAmIResponse&#34;:
+
         request = WhoAmIRequest()
 
         return self.__rpc_who_am_i(request)
@@ -3733,6 +3775,7 @@ class DeleteExpiredAuthTokensResponse(betterproto.Message):
     def get_roles_for_permission(
         self, *, permission: &#34;Permission&#34; = None
     ) -&gt; &#34;GetRolesForPermissionResponse&#34;:
+
         request = GetRolesForPermissionRequest()
         request.permission = permission
 
@@ -3758,6 +3801,7 @@ class DeleteExpiredAuthTokensResponse(betterproto.Message):
     def get_role_binding(
         self, *, resource: &#34;Resource&#34; = None
     ) -&gt; &#34;GetRoleBindingResponse&#34;:
+
         request = GetRoleBindingRequest()
         if resource is not None:
             request.resource = resource
@@ -3765,6 +3809,7 @@ class DeleteExpiredAuthTokensResponse(betterproto.Message):
         return self.__rpc_get_role_binding(request)
 
     def get_oidc_login(self) -&gt; &#34;GetOidcLoginResponse&#34;:
+
         request = GetOidcLoginRequest()
 
         return self.__rpc_get_oidc_login(request)
@@ -3772,6 +3817,7 @@ class DeleteExpiredAuthTokensResponse(betterproto.Message):
     def get_robot_token(
         self, *, robot: str = &#34;&#34;, ttl: int = 0
     ) -&gt; &#34;GetRobotTokenResponse&#34;:
+
         request = GetRobotTokenRequest()
         request.robot = robot
         request.ttl = ttl
@@ -3779,6 +3825,7 @@ class DeleteExpiredAuthTokensResponse(betterproto.Message):
         return self.__rpc_get_robot_token(request)
 
     def revoke_auth_token(self, *, token: str = &#34;&#34;) -&gt; &#34;RevokeAuthTokenResponse&#34;:
+
         request = RevokeAuthTokenRequest()
         request.token = token
 
@@ -3787,6 +3834,7 @@ class DeleteExpiredAuthTokensResponse(betterproto.Message):
     def revoke_auth_tokens_for_user(
         self, *, username: str = &#34;&#34;
     ) -&gt; &#34;RevokeAuthTokensForUserResponse&#34;:
+
         request = RevokeAuthTokensForUserRequest()
         request.username = username
 
@@ -3821,23 +3869,27 @@ class DeleteExpiredAuthTokensResponse(betterproto.Message):
         return self.__rpc_modify_members(request)
 
     def get_groups(self) -&gt; &#34;GetGroupsResponse&#34;:
+
         request = GetGroupsRequest()
 
         return self.__rpc_get_groups(request)
 
     def get_groups_for_principal(self, *, principal: str = &#34;&#34;) -&gt; &#34;GetGroupsResponse&#34;:
+
         request = GetGroupsForPrincipalRequest()
         request.principal = principal
 
         return self.__rpc_get_groups_for_principal(request)
 
     def get_users(self, *, group: str = &#34;&#34;) -&gt; &#34;GetUsersResponse&#34;:
+
         request = GetUsersRequest()
         request.group = group
 
         return self.__rpc_get_users(request)
 
     def extract_auth_tokens(self) -&gt; &#34;ExtractAuthTokensResponse&#34;:
+
         request = ExtractAuthTokensRequest()
 
         return self.__rpc_extract_auth_tokens(request)
@@ -3845,6 +3897,7 @@ class DeleteExpiredAuthTokensResponse(betterproto.Message):
     def restore_auth_token(
         self, *, token: &#34;TokenInfo&#34; = None
     ) -&gt; &#34;RestoreAuthTokenResponse&#34;:
+
         request = RestoreAuthTokenRequest()
         if token is not None:
             request.token = token
@@ -3852,11 +3905,13 @@ class DeleteExpiredAuthTokensResponse(betterproto.Message):
         return self.__rpc_restore_auth_token(request)
 
     def delete_expired_auth_tokens(self) -&gt; &#34;DeleteExpiredAuthTokensResponse&#34;:
+
         request = DeleteExpiredAuthTokensRequest()
 
         return self.__rpc_delete_expired_auth_tokens(request)
 
     def rotate_root_token(self, *, root_token: str = &#34;&#34;) -&gt; &#34;RotateRootTokenResponse&#34;:
+
         request = RotateRootTokenRequest()
         request.root_token = root_token
 
@@ -3874,6 +3929,7 @@ class DeleteExpiredAuthTokensResponse(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def activate(self, *, root_token: str = &#34;&#34;) -&gt; &#34;ActivateResponse&#34;:
+
     request = ActivateRequest()
     request.root_token = root_token
 
@@ -3890,6 +3946,7 @@ class DeleteExpiredAuthTokensResponse(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def deactivate(self) -&gt; &#34;DeactivateResponse&#34;:
+
     request = DeactivateRequest()
 
     return self.__rpc_deactivate(request)</code></pre>
@@ -3905,6 +3962,7 @@ class DeleteExpiredAuthTokensResponse(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def get_configuration(self) -&gt; &#34;GetConfigurationResponse&#34;:
+
     request = GetConfigurationRequest()
 
     return self.__rpc_get_configuration(request)</code></pre>
@@ -3922,6 +3980,7 @@ class DeleteExpiredAuthTokensResponse(betterproto.Message):
 <pre><code class="python">def set_configuration(
     self, *, configuration: &#34;OidcConfig&#34; = None
 ) -&gt; &#34;SetConfigurationResponse&#34;:
+
     request = SetConfigurationRequest()
     if configuration is not None:
         request.configuration = configuration
@@ -3941,6 +4000,7 @@ class DeleteExpiredAuthTokensResponse(betterproto.Message):
 <pre><code class="python">def authenticate(
     self, *, oidc_state: str = &#34;&#34;, id_token: str = &#34;&#34;
 ) -&gt; &#34;AuthenticateResponse&#34;:
+
     request = AuthenticateRequest()
     request.oidc_state = oidc_state
     request.id_token = id_token
@@ -3985,6 +4045,7 @@ class DeleteExpiredAuthTokensResponse(betterproto.Message):
 <pre><code class="python">def get_permissions(
     self, *, resource: &#34;Resource&#34; = None
 ) -&gt; &#34;GetPermissionsResponse&#34;:
+
     request = GetPermissionsRequest()
     if resource is not None:
         request.resource = resource
@@ -4004,6 +4065,7 @@ class DeleteExpiredAuthTokensResponse(betterproto.Message):
 <pre><code class="python">def get_permissions_for_principal(
     self, *, resource: &#34;Resource&#34; = None, principal: str = &#34;&#34;
 ) -&gt; &#34;GetPermissionsResponse&#34;:
+
     request = GetPermissionsForPrincipalRequest()
     if resource is not None:
         request.resource = resource
@@ -4022,6 +4084,7 @@ class DeleteExpiredAuthTokensResponse(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def who_am_i(self) -&gt; &#34;WhoAmIResponse&#34;:
+
     request = WhoAmIRequest()
 
     return self.__rpc_who_am_i(request)</code></pre>
@@ -4039,6 +4102,7 @@ class DeleteExpiredAuthTokensResponse(betterproto.Message):
 <pre><code class="python">def get_roles_for_permission(
     self, *, permission: &#34;Permission&#34; = None
 ) -&gt; &#34;GetRolesForPermissionResponse&#34;:
+
     request = GetRolesForPermissionRequest()
     request.permission = permission
 
@@ -4084,6 +4148,7 @@ class DeleteExpiredAuthTokensResponse(betterproto.Message):
 <pre><code class="python">def get_role_binding(
     self, *, resource: &#34;Resource&#34; = None
 ) -&gt; &#34;GetRoleBindingResponse&#34;:
+
     request = GetRoleBindingRequest()
     if resource is not None:
         request.resource = resource
@@ -4101,6 +4166,7 @@ class DeleteExpiredAuthTokensResponse(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def get_oidc_login(self) -&gt; &#34;GetOidcLoginResponse&#34;:
+
     request = GetOidcLoginRequest()
 
     return self.__rpc_get_oidc_login(request)</code></pre>
@@ -4118,6 +4184,7 @@ class DeleteExpiredAuthTokensResponse(betterproto.Message):
 <pre><code class="python">def get_robot_token(
     self, *, robot: str = &#34;&#34;, ttl: int = 0
 ) -&gt; &#34;GetRobotTokenResponse&#34;:
+
     request = GetRobotTokenRequest()
     request.robot = robot
     request.ttl = ttl
@@ -4135,6 +4202,7 @@ class DeleteExpiredAuthTokensResponse(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def revoke_auth_token(self, *, token: str = &#34;&#34;) -&gt; &#34;RevokeAuthTokenResponse&#34;:
+
     request = RevokeAuthTokenRequest()
     request.token = token
 
@@ -4153,6 +4221,7 @@ class DeleteExpiredAuthTokensResponse(betterproto.Message):
 <pre><code class="python">def revoke_auth_tokens_for_user(
     self, *, username: str = &#34;&#34;
 ) -&gt; &#34;RevokeAuthTokensForUserResponse&#34;:
+
     request = RevokeAuthTokensForUserRequest()
     request.username = username
 
@@ -4217,6 +4286,7 @@ class DeleteExpiredAuthTokensResponse(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def get_groups(self) -&gt; &#34;GetGroupsResponse&#34;:
+
     request = GetGroupsRequest()
 
     return self.__rpc_get_groups(request)</code></pre>
@@ -4232,6 +4302,7 @@ class DeleteExpiredAuthTokensResponse(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def get_groups_for_principal(self, *, principal: str = &#34;&#34;) -&gt; &#34;GetGroupsResponse&#34;:
+
     request = GetGroupsForPrincipalRequest()
     request.principal = principal
 
@@ -4248,6 +4319,7 @@ class DeleteExpiredAuthTokensResponse(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def get_users(self, *, group: str = &#34;&#34;) -&gt; &#34;GetUsersResponse&#34;:
+
     request = GetUsersRequest()
     request.group = group
 
@@ -4264,6 +4336,7 @@ class DeleteExpiredAuthTokensResponse(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def extract_auth_tokens(self) -&gt; &#34;ExtractAuthTokensResponse&#34;:
+
     request = ExtractAuthTokensRequest()
 
     return self.__rpc_extract_auth_tokens(request)</code></pre>
@@ -4281,6 +4354,7 @@ class DeleteExpiredAuthTokensResponse(betterproto.Message):
 <pre><code class="python">def restore_auth_token(
     self, *, token: &#34;TokenInfo&#34; = None
 ) -&gt; &#34;RestoreAuthTokenResponse&#34;:
+
     request = RestoreAuthTokenRequest()
     if token is not None:
         request.token = token
@@ -4298,6 +4372,7 @@ class DeleteExpiredAuthTokensResponse(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def delete_expired_auth_tokens(self) -&gt; &#34;DeleteExpiredAuthTokensResponse&#34;:
+
     request = DeleteExpiredAuthTokensRequest()
 
     return self.__rpc_delete_expired_auth_tokens(request)</code></pre>
@@ -4313,6 +4388,7 @@ class DeleteExpiredAuthTokensResponse(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def rotate_root_token(self, *, root_token: str = &#34;&#34;) -&gt; &#34;RotateRootTokenResponse&#34;:
+
     request = RotateRootTokenRequest()
     request.root_token = root_token
 
@@ -4331,6 +4407,7 @@ class DeleteExpiredAuthTokensResponse(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class ApiBase:
+
     def activate(
         self, root_token: str, context: &#34;grpc.ServicerContext&#34;
     ) -&gt; &#34;ActivateResponse&#34;:
@@ -5167,6 +5244,7 @@ class DeleteExpiredAuthTokensResponse(betterproto.Message):
 <li><code><a title="pachyderm_sdk.api.auth.Permission.REPO_ADD_PIPELINE_WRITER" href="#pachyderm_sdk.api.auth.Permission.REPO_ADD_PIPELINE_WRITER">REPO_ADD_PIPELINE_WRITER</a></code></li>
 <li><code><a title="pachyderm_sdk.api.auth.Permission.PIPELINE_LIST_JOB" href="#pachyderm_sdk.api.auth.Permission.PIPELINE_LIST_JOB">PIPELINE_LIST_JOB</a></code></li>
 <li><code><a title="pachyderm_sdk.api.auth.Permission.CLUSTER_SET_DEFAULTS" href="#pachyderm_sdk.api.auth.Permission.CLUSTER_SET_DEFAULTS">CLUSTER_SET_DEFAULTS</a></code></li>
+<li><code><a title="pachyderm_sdk.api.auth.Permission.PROJECT_SET_DEFAULTS" href="#pachyderm_sdk.api.auth.Permission.PROJECT_SET_DEFAULTS">PROJECT_SET_DEFAULTS</a></code></li>
 <li><code><a title="pachyderm_sdk.api.auth.Permission.PROJECT_CREATE" href="#pachyderm_sdk.api.auth.Permission.PROJECT_CREATE">PROJECT_CREATE</a></code></li>
 <li><code><a title="pachyderm_sdk.api.auth.Permission.PROJECT_DELETE" href="#pachyderm_sdk.api.auth.Permission.PROJECT_DELETE">PROJECT_DELETE</a></code></li>
 <li><code><a title="pachyderm_sdk.api.auth.Permission.PROJECT_LIST_REPO" href="#pachyderm_sdk.api.auth.Permission.PROJECT_LIST_REPO">PROJECT_LIST_REPO</a></code></li>

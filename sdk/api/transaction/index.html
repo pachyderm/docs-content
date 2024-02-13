@@ -134,6 +134,7 @@ class FinishTransactionRequest(betterproto.Message):
 
 
 class ApiStub:
+
     def __init__(self, channel: &#34;grpc.Channel&#34;):
         self.__rpc_batch_transaction = channel.unary_unary(
             &#34;/transaction_v2.API/BatchTransaction&#34;,
@@ -183,6 +184,7 @@ class ApiStub:
         return self.__rpc_batch_transaction(request)
 
     def start_transaction(self) -&gt; &#34;Transaction&#34;:
+
         request = StartTransactionRequest()
 
         return self.__rpc_start_transaction(request)
@@ -190,6 +192,7 @@ class ApiStub:
     def inspect_transaction(
         self, *, transaction: &#34;Transaction&#34; = None
     ) -&gt; &#34;TransactionInfo&#34;:
+
         request = InspectTransactionRequest()
         if transaction is not None:
             request.transaction = transaction
@@ -199,6 +202,7 @@ class ApiStub:
     def delete_transaction(
         self, *, transaction: &#34;Transaction&#34; = None
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         request = DeleteTransactionRequest()
         if transaction is not None:
             request.transaction = transaction
@@ -206,6 +210,7 @@ class ApiStub:
         return self.__rpc_delete_transaction(request)
 
     def list_transaction(self) -&gt; &#34;TransactionInfos&#34;:
+
         request = ListTransactionRequest()
 
         return self.__rpc_list_transaction(request)
@@ -213,6 +218,7 @@ class ApiStub:
     def finish_transaction(
         self, *, transaction: &#34;Transaction&#34; = None
     ) -&gt; &#34;TransactionInfo&#34;:
+
         request = FinishTransactionRequest()
         if transaction is not None:
             request.transaction = transaction
@@ -220,12 +226,14 @@ class ApiStub:
         return self.__rpc_finish_transaction(request)
 
     def delete_all(self) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         request = DeleteAllRequest()
 
         return self.__rpc_delete_all(request)
 
 
 class ApiBase:
+
     def batch_transaction(
         self,
         requests: Optional[List[&#34;TransactionRequest&#34;]],
@@ -715,6 +723,7 @@ class FinishTransactionRequest(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class ApiStub:
+
     def __init__(self, channel: &#34;grpc.Channel&#34;):
         self.__rpc_batch_transaction = channel.unary_unary(
             &#34;/transaction_v2.API/BatchTransaction&#34;,
@@ -764,6 +773,7 @@ class FinishTransactionRequest(betterproto.Message):
         return self.__rpc_batch_transaction(request)
 
     def start_transaction(self) -&gt; &#34;Transaction&#34;:
+
         request = StartTransactionRequest()
 
         return self.__rpc_start_transaction(request)
@@ -771,6 +781,7 @@ class FinishTransactionRequest(betterproto.Message):
     def inspect_transaction(
         self, *, transaction: &#34;Transaction&#34; = None
     ) -&gt; &#34;TransactionInfo&#34;:
+
         request = InspectTransactionRequest()
         if transaction is not None:
             request.transaction = transaction
@@ -780,6 +791,7 @@ class FinishTransactionRequest(betterproto.Message):
     def delete_transaction(
         self, *, transaction: &#34;Transaction&#34; = None
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         request = DeleteTransactionRequest()
         if transaction is not None:
             request.transaction = transaction
@@ -787,6 +799,7 @@ class FinishTransactionRequest(betterproto.Message):
         return self.__rpc_delete_transaction(request)
 
     def list_transaction(self) -&gt; &#34;TransactionInfos&#34;:
+
         request = ListTransactionRequest()
 
         return self.__rpc_list_transaction(request)
@@ -794,6 +807,7 @@ class FinishTransactionRequest(betterproto.Message):
     def finish_transaction(
         self, *, transaction: &#34;Transaction&#34; = None
     ) -&gt; &#34;TransactionInfo&#34;:
+
         request = FinishTransactionRequest()
         if transaction is not None:
             request.transaction = transaction
@@ -801,6 +815,7 @@ class FinishTransactionRequest(betterproto.Message):
         return self.__rpc_finish_transaction(request)
 
     def delete_all(self) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         request = DeleteAllRequest()
 
         return self.__rpc_delete_all(request)</code></pre>
@@ -842,6 +857,7 @@ class FinishTransactionRequest(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def start_transaction(self) -&gt; &#34;Transaction&#34;:
+
     request = StartTransactionRequest()
 
     return self.__rpc_start_transaction(request)</code></pre>
@@ -859,6 +875,7 @@ class FinishTransactionRequest(betterproto.Message):
 <pre><code class="python">def inspect_transaction(
     self, *, transaction: &#34;Transaction&#34; = None
 ) -&gt; &#34;TransactionInfo&#34;:
+
     request = InspectTransactionRequest()
     if transaction is not None:
         request.transaction = transaction
@@ -878,6 +895,7 @@ class FinishTransactionRequest(betterproto.Message):
 <pre><code class="python">def delete_transaction(
     self, *, transaction: &#34;Transaction&#34; = None
 ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
     request = DeleteTransactionRequest()
     if transaction is not None:
         request.transaction = transaction
@@ -895,6 +913,7 @@ class FinishTransactionRequest(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def list_transaction(self) -&gt; &#34;TransactionInfos&#34;:
+
     request = ListTransactionRequest()
 
     return self.__rpc_list_transaction(request)</code></pre>
@@ -912,6 +931,7 @@ class FinishTransactionRequest(betterproto.Message):
 <pre><code class="python">def finish_transaction(
     self, *, transaction: &#34;Transaction&#34; = None
 ) -&gt; &#34;TransactionInfo&#34;:
+
     request = FinishTransactionRequest()
     if transaction is not None:
         request.transaction = transaction
@@ -929,6 +949,7 @@ class FinishTransactionRequest(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def delete_all(self) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
     request = DeleteAllRequest()
 
     return self.__rpc_delete_all(request)</code></pre>
@@ -946,6 +967,7 @@ class FinishTransactionRequest(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class ApiBase:
+
     def batch_transaction(
         self,
         requests: Optional[List[&#34;TransactionRequest&#34;]],

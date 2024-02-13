@@ -1,5 +1,5 @@
 ---
-date: 2023-10-18T16:51:53-04:00
+date: 2024-02-13T16:12:03-05:00
 title: "pachctl auth activate"
 description: "Learn about the pachctl auth activate command"
 ---
@@ -21,10 +21,7 @@ pachctl auth activate [flags]
 ### Examples
 
 ```
-pachctl auth activate 
-pachctl auth activate --supply-root-token 
-pachctl auth activate --enterprise 
-pachctl auth activate --issuer http://pachd:1658/ --redirect http://localhost:30657/authorization-code/callback --client-id pachd
+ pachctl auth activate pachctl auth activate --supply-root-token pachctl auth activate --enterprise pachctl auth activate --issuer http://pachd:1658/ --redirect http://localhost:30657/authorization-code/callback --client-id pachd
 ```
 
 ### Options

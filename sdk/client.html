@@ -49,8 +49,8 @@ from .api.worker.extension import WorkerStub as _WorkerStub
 from .config import ConfigFile
 from .constants import (
     AUTH_TOKEN_ENV,
-    CONFIG_PATH_LOCAL,
     CONFIG_PATH_SPOUT,
+    DEFAULT_CONFIG,
     DEFAULT_HOST,
     DEFAULT_PORT,
     GRPC_CHANNEL_OPTIONS,
@@ -251,7 +251,7 @@ class Client:
         )
 
     @classmethod
-    def from_config(cls, config_file: Union[Path, str] = CONFIG_PATH_LOCAL) -&gt; &#34;Client&#34;:
+    def from_config(cls, config_file: Union[Path, str] = DEFAULT_CONFIG) -&gt; &#34;Client&#34;:
         &#34;&#34;&#34;Creates a Pachyderm client from a config file.
 
         Parameters
@@ -265,7 +265,7 @@ class Client:
         Client
             A properly configured Client.
         &#34;&#34;&#34;
-        config = ConfigFile(config_file)
+        config = ConfigFile.from_path(config_file)
         active_context = config.active_context
         client = cls.from_pachd_address(
             active_context.active_pachd_address,
@@ -596,7 +596,7 @@ used. Otherwise, we use the certs provided by certifi.</dd>
         )
 
     @classmethod
-    def from_config(cls, config_file: Union[Path, str] = CONFIG_PATH_LOCAL) -&gt; &#34;Client&#34;:
+    def from_config(cls, config_file: Union[Path, str] = DEFAULT_CONFIG) -&gt; &#34;Client&#34;:
         &#34;&#34;&#34;Creates a Pachyderm client from a config file.
 
         Parameters
@@ -610,7 +610,7 @@ used. Otherwise, we use the certs provided by certifi.</dd>
         Client
             A properly configured Client.
         &#34;&#34;&#34;
-        config = ConfigFile(config_file)
+        config = ConfigFile.from_path(config_file)
         active_context = config.active_context
         client = cls.from_pachd_address(
             active_context.active_pachd_address,
@@ -852,7 +852,7 @@ config_file defaults to the local config.</dd>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@classmethod
-def from_config(cls, config_file: Union[Path, str] = CONFIG_PATH_LOCAL) -&gt; &#34;Client&#34;:
+def from_config(cls, config_file: Union[Path, str] = DEFAULT_CONFIG) -&gt; &#34;Client&#34;:
     &#34;&#34;&#34;Creates a Pachyderm client from a config file.
 
     Parameters
@@ -866,7 +866,7 @@ def from_config(cls, config_file: Union[Path, str] = CONFIG_PATH_LOCAL) -&gt; &#
     Client
         A properly configured Client.
     &#34;&#34;&#34;
-    config = ConfigFile(config_file)
+    config = ConfigFile.from_path(config_file)
     active_context = config.active_context
     client = cls.from_pachd_address(
         active_context.active_pachd_address,

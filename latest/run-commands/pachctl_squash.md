@@ -1,5 +1,5 @@
 ---
-date: 2023-10-18T16:51:53-04:00
+date: 2024-02-13T16:12:03-05:00
 title: "pachctl squash"
 description: "Learn about the pachctl squash command"
 ---
@@ -29,4 +29,5 @@ Squash an existing Pachyderm resource.
 
 * [pachctl](../pachctl)	 - 
 * [pachctl squash commit](../pachctl_squash_commit)	 - Squash the sub-commits of a commit.
+* [pachctl squash commitV2](../pachctl_squash_commitv2)	 - Squash a commit.
 

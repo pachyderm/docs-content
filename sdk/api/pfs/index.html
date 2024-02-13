@@ -98,6 +98,11 @@ class Delimiter(betterproto.Enum):
     CSV = 4
 
 
+class GetFileSetRequestFileSetType(betterproto.Enum):
+    TOTAL = 0
+    DIFF = 1
+
+
 class SqlDatabaseEgressFileFormatType(betterproto.Enum):
     UNKNOWN = 0
     CSV = 1
@@ -465,6 +470,38 @@ class ClearCommitRequest(betterproto.Message):
 
 
 @dataclass(eq=False, repr=False)
+class SquashCommitRequest(betterproto.Message):
+    commit: &#34;Commit&#34; = betterproto.message_field(1)
+    recursive: bool = betterproto.bool_field(2)
+    &#34;&#34;&#34;
+    Setting recursive to true indicates that the squash should be applied
+    recursively to subvenant commits. If recursive is set to false and the
+    provided commit has subvenant commits, the squash will fail.
+    &#34;&#34;&#34;
+
+
+@dataclass(eq=False, repr=False)
+class SquashCommitResponse(betterproto.Message):
+    pass
+
+
+@dataclass(eq=False, repr=False)
+class DropCommitRequest(betterproto.Message):
+    commit: &#34;Commit&#34; = betterproto.message_field(1)
+    recursive: bool = betterproto.bool_field(2)
+    &#34;&#34;&#34;
+    Setting recursive to true indicates that the drop should be applied
+    recursively to subvenant commits. If recursive is set to false and the
+    provided commit has subvenant commits, the drop will fail.
+    &#34;&#34;&#34;
+
+
+@dataclass(eq=False, repr=False)
+class DropCommitResponse(betterproto.Message):
+    pass
+
+
+@dataclass(eq=False, repr=False)
 class CreateBranchRequest(betterproto.Message):
     head: &#34;Commit&#34; = betterproto.message_field(1)
     branch: &#34;Branch&#34; = betterproto.message_field(2)
@@ -514,6 +551,17 @@ class CreateProjectRequest(betterproto.Message):
 @dataclass(eq=False, repr=False)
 class InspectProjectRequest(betterproto.Message):
     project: &#34;Project&#34; = betterproto.message_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class InspectProjectV2Request(betterproto.Message):
+    project: &#34;Project&#34; = betterproto.message_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class InspectProjectV2Response(betterproto.Message):
+    info: &#34;ProjectInfo&#34; = betterproto.message_field(1)
+    defaults_json: str = betterproto.string_field(2)
 
 
 @dataclass(eq=False, repr=False)
@@ -667,6 +715,7 @@ class CreateFileSetResponse(betterproto.Message):
 @dataclass(eq=False, repr=False)
 class GetFileSetRequest(betterproto.Message):
     commit: &#34;Commit&#34; = betterproto.message_field(1)
+    type: &#34;GetFileSetRequestFileSetType&#34; = betterproto.enum_field(2)
 
 
 @dataclass(eq=False, repr=False)
@@ -690,7 +739,15 @@ class ComposeFileSetRequest(betterproto.Message):
 
 @dataclass(eq=False, repr=False)
 class ShardFileSetRequest(betterproto.Message):
+    &#34;&#34;&#34;
+    If both num_files and size_bytes are set, shards are created based on
+    whichever threshold is surpassed first. If a shard configuration field
+    (num_files, size_bytes) is unset, the storage&#39;s default value is used.
+    &#34;&#34;&#34;
+
     file_set_id: str = betterproto.string_field(1)
+    num_files: int = betterproto.int64_field(2)
+    size_bytes: int = betterproto.int64_field(3)
 
 
 @dataclass(eq=False, repr=False)
@@ -803,6 +860,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 
 
 class ApiStub:
+
     def __init__(self, channel: &#34;grpc.Channel&#34;):
         self.__rpc_create_repo = channel.unary_unary(
             &#34;/pfs_v2.API/CreateRepo&#34;,
@@ -858,6 +916,16 @@ class ApiStub:
             &#34;/pfs_v2.API/SubscribeCommit&#34;,
             request_serializer=SubscribeCommitRequest.SerializeToString,
             response_deserializer=CommitInfo.FromString,
+        )
+        self.__rpc_squash_commit = channel.unary_unary(
+            &#34;/pfs_v2.API/SquashCommit&#34;,
+            request_serializer=SquashCommitRequest.SerializeToString,
+            response_deserializer=SquashCommitResponse.FromString,
+        )
+        self.__rpc_drop_commit = channel.unary_unary(
+            &#34;/pfs_v2.API/DropCommit&#34;,
+            request_serializer=DropCommitRequest.SerializeToString,
+            response_deserializer=DropCommitResponse.FromString,
         )
         self.__rpc_inspect_commit_set = channel.unary_stream(
             &#34;/pfs_v2.API/InspectCommitSet&#34;,
@@ -1029,6 +1097,11 @@ class ApiStub:
             request_serializer=InspectProjectRequest.SerializeToString,
             response_deserializer=ProjectInfo.FromString,
         )
+        self.__rpc_inspect_project_v2 = channel.unary_unary(
+            &#34;/pfs_v2.API/InspectProjectV2&#34;,
+            request_serializer=InspectProjectV2Request.SerializeToString,
+            response_deserializer=InspectProjectV2Response.FromString,
+        )
         self.__rpc_list_project = channel.unary_stream(
             &#34;/pfs_v2.API/ListProject&#34;,
             request_serializer=ListProjectRequest.SerializeToString,
@@ -1043,6 +1116,7 @@ class ApiStub:
     def create_repo(
         self, *, repo: &#34;Repo&#34; = None, description: str = &#34;&#34;, update: bool = False
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         request = CreateRepoRequest()
         if repo is not None:
             request.repo = repo
@@ -1052,6 +1126,7 @@ class ApiStub:
         return self.__rpc_create_repo(request)
 
     def inspect_repo(self, *, repo: &#34;Repo&#34; = None) -&gt; &#34;RepoInfo&#34;:
+
         request = InspectRepoRequest()
         if repo is not None:
             request.repo = repo
@@ -1074,6 +1149,7 @@ class ApiStub:
     def delete_repo(
         self, *, repo: &#34;Repo&#34; = None, force: bool = False
     ) -&gt; &#34;DeleteRepoResponse&#34;:
+
         request = DeleteRepoRequest()
         if repo is not None:
             request.repo = repo
@@ -1101,6 +1177,7 @@ class ApiStub:
     def start_commit(
         self, *, parent: &#34;Commit&#34; = None, description: str = &#34;&#34;, branch: &#34;Branch&#34; = None
     ) -&gt; &#34;Commit&#34;:
+
         request = StartCommitRequest()
         if parent is not None:
             request.parent = parent
@@ -1118,6 +1195,7 @@ class ApiStub:
         error: str = &#34;&#34;,
         force: bool = False
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         request = FinishCommitRequest()
         if commit is not None:
             request.commit = commit
@@ -1130,6 +1208,7 @@ class ApiStub:
     def clear_commit(
         self, *, commit: &#34;Commit&#34; = None
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         request = ClearCommitRequest()
         if commit is not None:
             request.commit = commit
@@ -1139,6 +1218,7 @@ class ApiStub:
     def inspect_commit(
         self, *, commit: &#34;Commit&#34; = None, wait: &#34;CommitState&#34; = None
     ) -&gt; &#34;CommitInfo&#34;:
+
         request = InspectCommitRequest()
         if commit is not None:
             request.commit = commit
@@ -1158,6 +1238,7 @@ class ApiStub:
         origin_kind: &#34;OriginKind&#34; = None,
         started_time: datetime = None
     ) -&gt; Iterator[&#34;CommitInfo&#34;]:
+
         request = ListCommitRequest()
         if repo is not None:
             request.repo = repo
@@ -1185,6 +1266,7 @@ class ApiStub:
         all: bool = False,
         origin_kind: &#34;OriginKind&#34; = None
     ) -&gt; Iterator[&#34;CommitInfo&#34;]:
+
         request = SubscribeCommitRequest()
         if repo is not None:
             request.repo = repo
@@ -1198,9 +1280,32 @@ class ApiStub:
         for response in self.__rpc_subscribe_commit(request):
             yield response
 
+    def squash_commit(
+        self, *, commit: &#34;Commit&#34; = None, recursive: bool = False
+    ) -&gt; &#34;SquashCommitResponse&#34;:
+
+        request = SquashCommitRequest()
+        if commit is not None:
+            request.commit = commit
+        request.recursive = recursive
+
+        return self.__rpc_squash_commit(request)
+
+    def drop_commit(
+        self, *, commit: &#34;Commit&#34; = None, recursive: bool = False
+    ) -&gt; &#34;DropCommitResponse&#34;:
+
+        request = DropCommitRequest()
+        if commit is not None:
+            request.commit = commit
+        request.recursive = recursive
+
+        return self.__rpc_drop_commit(request)
+
     def inspect_commit_set(
         self, *, commit_set: &#34;CommitSet&#34; = None, wait: bool = False
     ) -&gt; Iterator[&#34;CommitInfo&#34;]:
+
         request = InspectCommitSetRequest()
         if commit_set is not None:
             request.commit_set = commit_set
@@ -1212,6 +1317,7 @@ class ApiStub:
     def list_commit_set(
         self, *, project: &#34;Project&#34; = None
     ) -&gt; Iterator[&#34;CommitSetInfo&#34;]:
+
         request = ListCommitSetRequest()
         if project is not None:
             request.project = project
@@ -1222,6 +1328,7 @@ class ApiStub:
     def squash_commit_set(
         self, *, commit_set: &#34;CommitSet&#34; = None
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         request = SquashCommitSetRequest()
         if commit_set is not None:
             request.commit_set = commit_set
@@ -1231,6 +1338,7 @@ class ApiStub:
     def drop_commit_set(
         self, *, commit_set: &#34;CommitSet&#34; = None
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         request = DropCommitSetRequest()
         if commit_set is not None:
             request.commit_set = commit_set
@@ -1240,6 +1348,7 @@ class ApiStub:
     def find_commits(
         self, *, start: &#34;Commit&#34; = None, file_path: str = &#34;&#34;, limit: int = 0
     ) -&gt; Iterator[&#34;FindCommitsResponse&#34;]:
+
         request = FindCommitsRequest()
         if start is not None:
             request.start = start
@@ -1274,6 +1383,7 @@ class ApiStub:
         return self.__rpc_create_branch(request)
 
     def inspect_branch(self, *, branch: &#34;Branch&#34; = None) -&gt; &#34;BranchInfo&#34;:
+
         request = InspectBranchRequest()
         if branch is not None:
             request.branch = branch
@@ -1283,6 +1393,7 @@ class ApiStub:
     def list_branch(
         self, *, repo: &#34;Repo&#34; = None, reverse: bool = False
     ) -&gt; Iterator[&#34;BranchInfo&#34;]:
+
         request = ListBranchRequest()
         if repo is not None:
             request.repo = repo
@@ -1294,6 +1405,7 @@ class ApiStub:
     def delete_branch(
         self, *, branch: &#34;Branch&#34; = None, force: bool = False
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         request = DeleteBranchRequest()
         if branch is not None:
             request.branch = branch
@@ -1307,6 +1419,7 @@ class ApiStub:
             AsyncIterable[&#34;ModifyFileRequest&#34;], Iterable[&#34;ModifyFileRequest&#34;]
         ],
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         return self.__rpc_modify_file(request_iterator)
 
     def get_file(
@@ -1317,6 +1430,7 @@ class ApiStub:
         offset: int = 0,
         path_range: &#34;PathRange&#34; = None
     ) -&gt; Iterator[&#34;betterproto_lib_google_protobuf.BytesValue&#34;]:
+
         request = GetFileRequest()
         if file is not None:
             request.file = file
@@ -1336,6 +1450,7 @@ class ApiStub:
         offset: int = 0,
         path_range: &#34;PathRange&#34; = None
     ) -&gt; Iterator[&#34;betterproto_lib_google_protobuf.BytesValue&#34;]:
+
         request = GetFileRequest()
         if file is not None:
             request.file = file
@@ -1348,6 +1463,7 @@ class ApiStub:
             yield response
 
     def inspect_file(self, *, file: &#34;File&#34; = None) -&gt; &#34;FileInfo&#34;:
+
         request = InspectFileRequest()
         if file is not None:
             request.file = file
@@ -1362,6 +1478,7 @@ class ApiStub:
         number: int = 0,
         reverse: bool = False
     ) -&gt; Iterator[&#34;FileInfo&#34;]:
+
         request = ListFileRequest()
         if file is not None:
             request.file = file
@@ -1381,6 +1498,7 @@ class ApiStub:
         number: int = 0,
         reverse: bool = False
     ) -&gt; Iterator[&#34;FileInfo&#34;]:
+
         request = WalkFileRequest()
         if file is not None:
             request.file = file
@@ -1399,6 +1517,7 @@ class ApiStub:
         pattern: str = &#34;&#34;,
         path_range: &#34;PathRange&#34; = None
     ) -&gt; Iterator[&#34;FileInfo&#34;]:
+
         request = GlobFileRequest()
         if commit is not None:
             request.commit = commit
@@ -1412,6 +1531,7 @@ class ApiStub:
     def diff_file(
         self, *, new_file: &#34;File&#34; = None, old_file: &#34;File&#34; = None, shallow: bool = False
     ) -&gt; Iterator[&#34;DiffFileResponse&#34;]:
+
         request = DiffFileRequest()
         if new_file is not None:
             request.new_file = new_file
@@ -1423,11 +1543,13 @@ class ApiStub:
             yield response
 
     def activate_auth(self) -&gt; &#34;ActivateAuthResponse&#34;:
+
         request = ActivateAuthRequest()
 
         return self.__rpc_activate_auth(request)
 
     def delete_all(self) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         request = betterproto_lib_google_protobuf.Empty()
 
         return self.__rpc_delete_all(request)
@@ -1439,6 +1561,7 @@ class ApiStub:
         zombie_target: &#34;Commit&#34; = None,
         zombie_all: bool = False
     ) -&gt; Iterator[&#34;FsckResponse&#34;]:
+
         request = FsckRequest()
         request.fix = fix
         if zombie_target is not None:
@@ -1454,18 +1577,24 @@ class ApiStub:
             AsyncIterable[&#34;ModifyFileRequest&#34;], Iterable[&#34;ModifyFileRequest&#34;]
         ],
     ) -&gt; &#34;CreateFileSetResponse&#34;:
+
         return self.__rpc_create_file_set(request_iterator)
 
-    def get_file_set(self, *, commit: &#34;Commit&#34; = None) -&gt; &#34;CreateFileSetResponse&#34;:
+    def get_file_set(
+        self, *, commit: &#34;Commit&#34; = None, type: &#34;GetFileSetRequestFileSetType&#34; = None
+    ) -&gt; &#34;CreateFileSetResponse&#34;:
+
         request = GetFileSetRequest()
         if commit is not None:
             request.commit = commit
+        request.type = type
 
         return self.__rpc_get_file_set(request)
 
     def add_file_set(
         self, *, commit: &#34;Commit&#34; = None, file_set_id: str = &#34;&#34;
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         request = AddFileSetRequest()
         if commit is not None:
             request.commit = commit
@@ -1476,6 +1605,7 @@ class ApiStub:
     def renew_file_set(
         self, *, file_set_id: str = &#34;&#34;, ttl_seconds: int = 0
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         request = RenewFileSetRequest()
         request.file_set_id = file_set_id
         request.ttl_seconds = ttl_seconds
@@ -1498,9 +1628,14 @@ class ApiStub:
 
         return self.__rpc_compose_file_set(request)
 
-    def shard_file_set(self, *, file_set_id: str = &#34;&#34;) -&gt; &#34;ShardFileSetResponse&#34;:
+    def shard_file_set(
+        self, *, file_set_id: str = &#34;&#34;, num_files: int = 0, size_bytes: int = 0
+    ) -&gt; &#34;ShardFileSetResponse&#34;:
+
         request = ShardFileSetRequest()
         request.file_set_id = file_set_id
+        request.num_files = num_files
+        request.size_bytes = size_bytes
 
         return self.__rpc_shard_file_set(request)
 
@@ -1511,6 +1646,7 @@ class ApiStub:
         chunk_begin: bytes = b&#34;&#34;,
         chunk_end: bytes = b&#34;&#34;
     ) -&gt; &#34;CheckStorageResponse&#34;:
+
         request = CheckStorageRequest()
         request.read_chunk_data = read_chunk_data
         request.chunk_begin = chunk_begin
@@ -1538,6 +1674,7 @@ class ApiStub:
         return self.__rpc_put_cache(request)
 
     def get_cache(self, *, key: str = &#34;&#34;) -&gt; &#34;GetCacheResponse&#34;:
+
         request = GetCacheRequest()
         request.key = key
 
@@ -1546,12 +1683,14 @@ class ApiStub:
     def clear_cache(
         self, *, tag_prefix: str = &#34;&#34;
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         request = ClearCacheRequest()
         request.tag_prefix = tag_prefix
 
         return self.__rpc_clear_cache(request)
 
     def list_task(self, *, group: &#34;Group&#34; = None) -&gt; Iterator[&#34;_taskapi__.TaskInfo&#34;]:
+
         request = _taskapi__.ListTaskRequest()
         if group is not None:
             request.group = group
@@ -1566,6 +1705,7 @@ class ApiStub:
         object_storage: &#34;ObjectStorageEgress&#34; = None,
         sql_database: &#34;SqlDatabaseEgress&#34; = None
     ) -&gt; &#34;EgressResponse&#34;:
+
         request = EgressRequest()
         if commit is not None:
             request.commit = commit
@@ -1579,6 +1719,7 @@ class ApiStub:
     def create_project(
         self, *, project: &#34;Project&#34; = None, description: str = &#34;&#34;, update: bool = False
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         request = CreateProjectRequest()
         if project is not None:
             request.project = project
@@ -1588,13 +1729,25 @@ class ApiStub:
         return self.__rpc_create_project(request)
 
     def inspect_project(self, *, project: &#34;Project&#34; = None) -&gt; &#34;ProjectInfo&#34;:
+
         request = InspectProjectRequest()
         if project is not None:
             request.project = project
 
         return self.__rpc_inspect_project(request)
 
+    def inspect_project_v2(
+        self, *, project: &#34;Project&#34; = None
+    ) -&gt; &#34;InspectProjectV2Response&#34;:
+
+        request = InspectProjectV2Request()
+        if project is not None:
+            request.project = project
+
+        return self.__rpc_inspect_project_v2(request)
+
     def list_project(self) -&gt; Iterator[&#34;ProjectInfo&#34;]:
+
         request = ListProjectRequest()
 
         for response in self.__rpc_list_project(request):
@@ -1603,680 +1756,13 @@ class ApiStub:
     def delete_project(
         self, *, project: &#34;Project&#34; = None, force: bool = False
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         request = DeleteProjectRequest()
         if project is not None:
             request.project = project
         request.force = force
 
-        return self.__rpc_delete_project(request)
-
-
-class ApiBase:
-    def create_repo(
-        self,
-        repo: &#34;Repo&#34;,
-        description: str,
-        update: bool,
-        context: &#34;grpc.ServicerContext&#34;,
-    ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def inspect_repo(self, repo: &#34;Repo&#34;, context: &#34;grpc.ServicerContext&#34;) -&gt; &#34;RepoInfo&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def list_repo(
-        self,
-        type: str,
-        projects: Optional[List[&#34;Project&#34;]],
-        context: &#34;grpc.ServicerContext&#34;,
-    ) -&gt; Iterator[&#34;RepoInfo&#34;]:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def delete_repo(
-        self, repo: &#34;Repo&#34;, force: bool, context: &#34;grpc.ServicerContext&#34;
-    ) -&gt; &#34;DeleteRepoResponse&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def delete_repos(
-        self,
-        projects: Optional[List[&#34;Project&#34;]],
-        force: bool,
-        all: bool,
-        context: &#34;grpc.ServicerContext&#34;,
-    ) -&gt; &#34;DeleteReposResponse&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def start_commit(
-        self,
-        parent: &#34;Commit&#34;,
-        description: str,
-        branch: &#34;Branch&#34;,
-        context: &#34;grpc.ServicerContext&#34;,
-    ) -&gt; &#34;Commit&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def finish_commit(
-        self,
-        commit: &#34;Commit&#34;,
-        description: str,
-        error: str,
-        force: bool,
-        context: &#34;grpc.ServicerContext&#34;,
-    ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def clear_commit(
-        self, commit: &#34;Commit&#34;, context: &#34;grpc.ServicerContext&#34;
-    ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def inspect_commit(
-        self, commit: &#34;Commit&#34;, wait: &#34;CommitState&#34;, context: &#34;grpc.ServicerContext&#34;
-    ) -&gt; &#34;CommitInfo&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def list_commit(
-        self,
-        repo: &#34;Repo&#34;,
-        from_: &#34;Commit&#34;,
-        to: &#34;Commit&#34;,
-        number: int,
-        reverse: bool,
-        all: bool,
-        origin_kind: &#34;OriginKind&#34;,
-        started_time: datetime,
-        context: &#34;grpc.ServicerContext&#34;,
-    ) -&gt; Iterator[&#34;CommitInfo&#34;]:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def subscribe_commit(
-        self,
-        repo: &#34;Repo&#34;,
-        branch: str,
-        from_: &#34;Commit&#34;,
-        state: &#34;CommitState&#34;,
-        all: bool,
-        origin_kind: &#34;OriginKind&#34;,
-        context: &#34;grpc.ServicerContext&#34;,
-    ) -&gt; Iterator[&#34;CommitInfo&#34;]:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def inspect_commit_set(
-        self, commit_set: &#34;CommitSet&#34;, wait: bool, context: &#34;grpc.ServicerContext&#34;
-    ) -&gt; Iterator[&#34;CommitInfo&#34;]:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def list_commit_set(
-        self, project: &#34;Project&#34;, context: &#34;grpc.ServicerContext&#34;
-    ) -&gt; Iterator[&#34;CommitSetInfo&#34;]:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def squash_commit_set(
-        self, commit_set: &#34;CommitSet&#34;, context: &#34;grpc.ServicerContext&#34;
-    ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def drop_commit_set(
-        self, commit_set: &#34;CommitSet&#34;, context: &#34;grpc.ServicerContext&#34;
-    ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def find_commits(
-        self,
-        start: &#34;Commit&#34;,
-        file_path: str,
-        limit: int,
-        context: &#34;grpc.ServicerContext&#34;,
-    ) -&gt; Iterator[&#34;FindCommitsResponse&#34;]:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def create_branch(
-        self,
-        head: &#34;Commit&#34;,
-        branch: &#34;Branch&#34;,
-        provenance: Optional[List[&#34;Branch&#34;]],
-        trigger: &#34;Trigger&#34;,
-        new_commit_set: bool,
-        context: &#34;grpc.ServicerContext&#34;,
-    ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def inspect_branch(
-        self, branch: &#34;Branch&#34;, context: &#34;grpc.ServicerContext&#34;
-    ) -&gt; &#34;BranchInfo&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def list_branch(
-        self, repo: &#34;Repo&#34;, reverse: bool, context: &#34;grpc.ServicerContext&#34;
-    ) -&gt; Iterator[&#34;BranchInfo&#34;]:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def delete_branch(
-        self, branch: &#34;Branch&#34;, force: bool, context: &#34;grpc.ServicerContext&#34;
-    ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def modify_file(
-        self,
-        request_iterator: Iterator[&#34;ModifyFileRequest&#34;],
-        context: &#34;grpc.ServicerContext&#34;,
-    ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def get_file(
-        self,
-        file: &#34;File&#34;,
-        url: str,
-        offset: int,
-        path_range: &#34;PathRange&#34;,
-        context: &#34;grpc.ServicerContext&#34;,
-    ) -&gt; Iterator[&#34;betterproto_lib_google_protobuf.BytesValue&#34;]:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def get_file_tar(
-        self,
-        file: &#34;File&#34;,
-        url: str,
-        offset: int,
-        path_range: &#34;PathRange&#34;,
-        context: &#34;grpc.ServicerContext&#34;,
-    ) -&gt; Iterator[&#34;betterproto_lib_google_protobuf.BytesValue&#34;]:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def inspect_file(self, file: &#34;File&#34;, context: &#34;grpc.ServicerContext&#34;) -&gt; &#34;FileInfo&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def list_file(
-        self,
-        file: &#34;File&#34;,
-        pagination_marker: &#34;File&#34;,
-        number: int,
-        reverse: bool,
-        context: &#34;grpc.ServicerContext&#34;,
-    ) -&gt; Iterator[&#34;FileInfo&#34;]:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def walk_file(
-        self,
-        file: &#34;File&#34;,
-        pagination_marker: &#34;File&#34;,
-        number: int,
-        reverse: bool,
-        context: &#34;grpc.ServicerContext&#34;,
-    ) -&gt; Iterator[&#34;FileInfo&#34;]:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def glob_file(
-        self,
-        commit: &#34;Commit&#34;,
-        pattern: str,
-        path_range: &#34;PathRange&#34;,
-        context: &#34;grpc.ServicerContext&#34;,
-    ) -&gt; Iterator[&#34;FileInfo&#34;]:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def diff_file(
-        self,
-        new_file: &#34;File&#34;,
-        old_file: &#34;File&#34;,
-        shallow: bool,
-        context: &#34;grpc.ServicerContext&#34;,
-    ) -&gt; Iterator[&#34;DiffFileResponse&#34;]:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def activate_auth(self, context: &#34;grpc.ServicerContext&#34;) -&gt; &#34;ActivateAuthResponse&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def delete_all(
-        self, context: &#34;grpc.ServicerContext&#34;
-    ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def fsck(
-        self,
-        fix: bool,
-        zombie_target: &#34;Commit&#34;,
-        zombie_all: bool,
-        context: &#34;grpc.ServicerContext&#34;,
-    ) -&gt; Iterator[&#34;FsckResponse&#34;]:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def create_file_set(
-        self,
-        request_iterator: Iterator[&#34;ModifyFileRequest&#34;],
-        context: &#34;grpc.ServicerContext&#34;,
-    ) -&gt; &#34;CreateFileSetResponse&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def get_file_set(
-        self, commit: &#34;Commit&#34;, context: &#34;grpc.ServicerContext&#34;
-    ) -&gt; &#34;CreateFileSetResponse&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def add_file_set(
-        self, commit: &#34;Commit&#34;, file_set_id: str, context: &#34;grpc.ServicerContext&#34;
-    ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def renew_file_set(
-        self, file_set_id: str, ttl_seconds: int, context: &#34;grpc.ServicerContext&#34;
-    ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def compose_file_set(
-        self,
-        file_set_ids: Optional[List[str]],
-        ttl_seconds: int,
-        compact: bool,
-        context: &#34;grpc.ServicerContext&#34;,
-    ) -&gt; &#34;CreateFileSetResponse&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def shard_file_set(
-        self, file_set_id: str, context: &#34;grpc.ServicerContext&#34;
-    ) -&gt; &#34;ShardFileSetResponse&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def check_storage(
-        self,
-        read_chunk_data: bool,
-        chunk_begin: bytes,
-        chunk_end: bytes,
-        context: &#34;grpc.ServicerContext&#34;,
-    ) -&gt; &#34;CheckStorageResponse&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def put_cache(
-        self,
-        key: str,
-        value: &#34;betterproto_lib_google_protobuf.Any&#34;,
-        file_set_ids: Optional[List[str]],
-        tag: str,
-        context: &#34;grpc.ServicerContext&#34;,
-    ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def get_cache(
-        self, key: str, context: &#34;grpc.ServicerContext&#34;
-    ) -&gt; &#34;GetCacheResponse&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def clear_cache(
-        self, tag_prefix: str, context: &#34;grpc.ServicerContext&#34;
-    ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def list_task(
-        self, group: &#34;Group&#34;, context: &#34;grpc.ServicerContext&#34;
-    ) -&gt; Iterator[&#34;_taskapi__.TaskInfo&#34;]:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def egress(
-        self,
-        commit: &#34;Commit&#34;,
-        object_storage: &#34;ObjectStorageEgress&#34;,
-        sql_database: &#34;SqlDatabaseEgress&#34;,
-        context: &#34;grpc.ServicerContext&#34;,
-    ) -&gt; &#34;EgressResponse&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def create_project(
-        self,
-        project: &#34;Project&#34;,
-        description: str,
-        update: bool,
-        context: &#34;grpc.ServicerContext&#34;,
-    ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def inspect_project(
-        self, project: &#34;Project&#34;, context: &#34;grpc.ServicerContext&#34;
-    ) -&gt; &#34;ProjectInfo&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def list_project(self, context: &#34;grpc.ServicerContext&#34;) -&gt; Iterator[&#34;ProjectInfo&#34;]:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def delete_project(
-        self, project: &#34;Project&#34;, force: bool, context: &#34;grpc.ServicerContext&#34;
-    ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    __proto_path__ = &#34;pfs_v2.API&#34;
-
-    @property
-    def __rpc_methods__(self):
-        return {
-            &#34;CreateRepo&#34;: grpc.unary_unary_rpc_method_handler(
-                self.create_repo,
-                request_deserializer=CreateRepoRequest.FromString,
-                response_serializer=CreateRepoRequest.SerializeToString,
-            ),
-            &#34;InspectRepo&#34;: grpc.unary_unary_rpc_method_handler(
-                self.inspect_repo,
-                request_deserializer=InspectRepoRequest.FromString,
-                response_serializer=InspectRepoRequest.SerializeToString,
-            ),
-            &#34;ListRepo&#34;: grpc.unary_stream_rpc_method_handler(
-                self.list_repo,
-                request_deserializer=ListRepoRequest.FromString,
-                response_serializer=ListRepoRequest.SerializeToString,
-            ),
-            &#34;DeleteRepo&#34;: grpc.unary_unary_rpc_method_handler(
-                self.delete_repo,
-                request_deserializer=DeleteRepoRequest.FromString,
-                response_serializer=DeleteRepoRequest.SerializeToString,
-            ),
-            &#34;DeleteRepos&#34;: grpc.unary_unary_rpc_method_handler(
-                self.delete_repos,
-                request_deserializer=DeleteReposRequest.FromString,
-                response_serializer=DeleteReposRequest.SerializeToString,
-            ),
-            &#34;StartCommit&#34;: grpc.unary_unary_rpc_method_handler(
-                self.start_commit,
-                request_deserializer=StartCommitRequest.FromString,
-                response_serializer=StartCommitRequest.SerializeToString,
-            ),
-            &#34;FinishCommit&#34;: grpc.unary_unary_rpc_method_handler(
-                self.finish_commit,
-                request_deserializer=FinishCommitRequest.FromString,
-                response_serializer=FinishCommitRequest.SerializeToString,
-            ),
-            &#34;ClearCommit&#34;: grpc.unary_unary_rpc_method_handler(
-                self.clear_commit,
-                request_deserializer=ClearCommitRequest.FromString,
-                response_serializer=ClearCommitRequest.SerializeToString,
-            ),
-            &#34;InspectCommit&#34;: grpc.unary_unary_rpc_method_handler(
-                self.inspect_commit,
-                request_deserializer=InspectCommitRequest.FromString,
-                response_serializer=InspectCommitRequest.SerializeToString,
-            ),
-            &#34;ListCommit&#34;: grpc.unary_stream_rpc_method_handler(
-                self.list_commit,
-                request_deserializer=ListCommitRequest.FromString,
-                response_serializer=ListCommitRequest.SerializeToString,
-            ),
-            &#34;SubscribeCommit&#34;: grpc.unary_stream_rpc_method_handler(
-                self.subscribe_commit,
-                request_deserializer=SubscribeCommitRequest.FromString,
-                response_serializer=SubscribeCommitRequest.SerializeToString,
-            ),
-            &#34;InspectCommitSet&#34;: grpc.unary_stream_rpc_method_handler(
-                self.inspect_commit_set,
-                request_deserializer=InspectCommitSetRequest.FromString,
-                response_serializer=InspectCommitSetRequest.SerializeToString,
-            ),
-            &#34;ListCommitSet&#34;: grpc.unary_stream_rpc_method_handler(
-                self.list_commit_set,
-                request_deserializer=ListCommitSetRequest.FromString,
-                response_serializer=ListCommitSetRequest.SerializeToString,
-            ),
-            &#34;SquashCommitSet&#34;: grpc.unary_unary_rpc_method_handler(
-                self.squash_commit_set,
-                request_deserializer=SquashCommitSetRequest.FromString,
-                response_serializer=SquashCommitSetRequest.SerializeToString,
-            ),
-            &#34;DropCommitSet&#34;: grpc.unary_unary_rpc_method_handler(
-                self.drop_commit_set,
-                request_deserializer=DropCommitSetRequest.FromString,
-                response_serializer=DropCommitSetRequest.SerializeToString,
-            ),
-            &#34;FindCommits&#34;: grpc.unary_stream_rpc_method_handler(
-                self.find_commits,
-                request_deserializer=FindCommitsRequest.FromString,
-                response_serializer=FindCommitsRequest.SerializeToString,
-            ),
-            &#34;CreateBranch&#34;: grpc.unary_unary_rpc_method_handler(
-                self.create_branch,
-                request_deserializer=CreateBranchRequest.FromString,
-                response_serializer=CreateBranchRequest.SerializeToString,
-            ),
-            &#34;InspectBranch&#34;: grpc.unary_unary_rpc_method_handler(
-                self.inspect_branch,
-                request_deserializer=InspectBranchRequest.FromString,
-                response_serializer=InspectBranchRequest.SerializeToString,
-            ),
-            &#34;ListBranch&#34;: grpc.unary_stream_rpc_method_handler(
-                self.list_branch,
-                request_deserializer=ListBranchRequest.FromString,
-                response_serializer=ListBranchRequest.SerializeToString,
-            ),
-            &#34;DeleteBranch&#34;: grpc.unary_unary_rpc_method_handler(
-                self.delete_branch,
-                request_deserializer=DeleteBranchRequest.FromString,
-                response_serializer=DeleteBranchRequest.SerializeToString,
-            ),
-            &#34;ModifyFile&#34;: grpc.stream_unary_rpc_method_handler(
-                self.modify_file,
-                request_deserializer=ModifyFileRequest.FromString,
-                response_serializer=ModifyFileRequest.SerializeToString,
-            ),
-            &#34;GetFile&#34;: grpc.unary_stream_rpc_method_handler(
-                self.get_file,
-                request_deserializer=GetFileRequest.FromString,
-                response_serializer=GetFileRequest.SerializeToString,
-            ),
-            &#34;GetFileTAR&#34;: grpc.unary_stream_rpc_method_handler(
-                self.get_file_tar,
-                request_deserializer=GetFileRequest.FromString,
-                response_serializer=GetFileRequest.SerializeToString,
-            ),
-            &#34;InspectFile&#34;: grpc.unary_unary_rpc_method_handler(
-                self.inspect_file,
-                request_deserializer=InspectFileRequest.FromString,
-                response_serializer=InspectFileRequest.SerializeToString,
-            ),
-            &#34;ListFile&#34;: grpc.unary_stream_rpc_method_handler(
-                self.list_file,
-                request_deserializer=ListFileRequest.FromString,
-                response_serializer=ListFileRequest.SerializeToString,
-            ),
-            &#34;WalkFile&#34;: grpc.unary_stream_rpc_method_handler(
-                self.walk_file,
-                request_deserializer=WalkFileRequest.FromString,
-                response_serializer=WalkFileRequest.SerializeToString,
-            ),
-            &#34;GlobFile&#34;: grpc.unary_stream_rpc_method_handler(
-                self.glob_file,
-                request_deserializer=GlobFileRequest.FromString,
-                response_serializer=GlobFileRequest.SerializeToString,
-            ),
-            &#34;DiffFile&#34;: grpc.unary_stream_rpc_method_handler(
-                self.diff_file,
-                request_deserializer=DiffFileRequest.FromString,
-                response_serializer=DiffFileRequest.SerializeToString,
-            ),
-            &#34;ActivateAuth&#34;: grpc.unary_unary_rpc_method_handler(
-                self.activate_auth,
-                request_deserializer=ActivateAuthRequest.FromString,
-                response_serializer=ActivateAuthRequest.SerializeToString,
-            ),
-            &#34;DeleteAll&#34;: grpc.unary_unary_rpc_method_handler(
-                self.delete_all,
-                request_deserializer=betterproto_lib_google_protobuf.Empty.FromString,
-                response_serializer=betterproto_lib_google_protobuf.Empty.SerializeToString,
-            ),
-            &#34;Fsck&#34;: grpc.unary_stream_rpc_method_handler(
-                self.fsck,
-                request_deserializer=FsckRequest.FromString,
-                response_serializer=FsckRequest.SerializeToString,
-            ),
-            &#34;CreateFileSet&#34;: grpc.stream_unary_rpc_method_handler(
-                self.create_file_set,
-                request_deserializer=ModifyFileRequest.FromString,
-                response_serializer=ModifyFileRequest.SerializeToString,
-            ),
-            &#34;GetFileSet&#34;: grpc.unary_unary_rpc_method_handler(
-                self.get_file_set,
-                request_deserializer=GetFileSetRequest.FromString,
-                response_serializer=GetFileSetRequest.SerializeToString,
-            ),
-            &#34;AddFileSet&#34;: grpc.unary_unary_rpc_method_handler(
-                self.add_file_set,
-                request_deserializer=AddFileSetRequest.FromString,
-                response_serializer=AddFileSetRequest.SerializeToString,
-            ),
-            &#34;RenewFileSet&#34;: grpc.unary_unary_rpc_method_handler(
-                self.renew_file_set,
-                request_deserializer=RenewFileSetRequest.FromString,
-                response_serializer=RenewFileSetRequest.SerializeToString,
-            ),
-            &#34;ComposeFileSet&#34;: grpc.unary_unary_rpc_method_handler(
-                self.compose_file_set,
-                request_deserializer=ComposeFileSetRequest.FromString,
-                response_serializer=ComposeFileSetRequest.SerializeToString,
-            ),
-            &#34;ShardFileSet&#34;: grpc.unary_unary_rpc_method_handler(
-                self.shard_file_set,
-                request_deserializer=ShardFileSetRequest.FromString,
-                response_serializer=ShardFileSetRequest.SerializeToString,
-            ),
-            &#34;CheckStorage&#34;: grpc.unary_unary_rpc_method_handler(
-                self.check_storage,
-                request_deserializer=CheckStorageRequest.FromString,
-                response_serializer=CheckStorageRequest.SerializeToString,
-            ),
-            &#34;PutCache&#34;: grpc.unary_unary_rpc_method_handler(
-                self.put_cache,
-                request_deserializer=PutCacheRequest.FromString,
-                response_serializer=PutCacheRequest.SerializeToString,
-            ),
-            &#34;GetCache&#34;: grpc.unary_unary_rpc_method_handler(
-                self.get_cache,
-                request_deserializer=GetCacheRequest.FromString,
-                response_serializer=GetCacheRequest.SerializeToString,
-            ),
-            &#34;ClearCache&#34;: grpc.unary_unary_rpc_method_handler(
-                self.clear_cache,
-                request_deserializer=ClearCacheRequest.FromString,
-                response_serializer=ClearCacheRequest.SerializeToString,
-            ),
-            &#34;ListTask&#34;: grpc.unary_stream_rpc_method_handler(
-                self.list_task,
-                request_deserializer=_taskapi__.ListTaskRequest.FromString,
-                response_serializer=_taskapi__.ListTaskRequest.SerializeToString,
-            ),
-            &#34;Egress&#34;: grpc.unary_unary_rpc_method_handler(
-                self.egress,
-                request_deserializer=EgressRequest.FromString,
-                response_serializer=EgressRequest.SerializeToString,
-            ),
-            &#34;CreateProject&#34;: grpc.unary_unary_rpc_method_handler(
-                self.create_project,
-                request_deserializer=CreateProjectRequest.FromString,
-                response_serializer=CreateProjectRequest.SerializeToString,
-            ),
-            &#34;InspectProject&#34;: grpc.unary_unary_rpc_method_handler(
-                self.inspect_project,
-                request_deserializer=InspectProjectRequest.FromString,
-                response_serializer=InspectProjectRequest.SerializeToString,
-            ),
-            &#34;ListProject&#34;: grpc.unary_stream_rpc_method_handler(
-                self.list_project,
-                request_deserializer=ListProjectRequest.FromString,
-                response_serializer=ListProjectRequest.SerializeToString,
-            ),
-            &#34;DeleteProject&#34;: grpc.unary_unary_rpc_method_handler(
-                self.delete_project,
-                request_deserializer=DeleteProjectRequest.FromString,
-                response_serializer=DeleteProjectRequest.SerializeToString,
-            ),
-        }</code></pre>
+        return self.__rpc_delete_project(request)</code></pre>
 </details>
 </section>
 <section>
@@ -2487,6 +1973,41 @@ from this. Bases :class:<code>enum.IntEnum</code>.</p></div>
 <div class="desc"></div>
 </dd>
 <dt id="pachyderm_sdk.api.pfs.Delimiter.CSV"><code class="name">var <span class="ident">CSV</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.pfs.GetFileSetRequestFileSetType"><code class="flex name class">
+<span>class <span class="ident">GetFileSetRequestFileSetType</span></span>
+<span>(</span><span>*args, **kwds)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>The base class for protobuf enumerations, all generated enumerations will inherit
+from this. Bases :class:<code>enum.IntEnum</code>.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class GetFileSetRequestFileSetType(betterproto.Enum):
+    TOTAL = 0
+    DIFF = 1</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Enum</li>
+<li>enum.IntEnum</li>
+<li>builtins.int</li>
+<li>enum.ReprEnum</li>
+<li>enum.Enum</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.pfs.GetFileSetRequestFileSetType.TOTAL"><code class="name">var <span class="ident">TOTAL</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.pfs.GetFileSetRequestFileSetType.DIFF"><code class="name">var <span class="ident">DIFF</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -4222,6 +3743,122 @@ class ClearCommitRequest(betterproto.Message):
 </dd>
 </dl>
 </dd>
+<dt id="pachyderm_sdk.api.pfs.SquashCommitRequest"><code class="flex name class">
+<span>class <span class="ident">SquashCommitRequest</span></span>
+<span>(</span><span>commit: <a title="pachyderm_sdk.api.pfs.Commit" href="#pachyderm_sdk.api.pfs.Commit">Commit</a> = None, recursive: bool = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>SquashCommitRequest(commit: 'Commit' = None, recursive: bool = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class SquashCommitRequest(betterproto.Message):
+    commit: &#34;Commit&#34; = betterproto.message_field(1)
+    recursive: bool = betterproto.bool_field(2)
+    &#34;&#34;&#34;
+    Setting recursive to true indicates that the squash should be applied
+    recursively to subvenant commits. If recursive is set to false and the
+    provided commit has subvenant commits, the squash will fail.
+    &#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.pfs.SquashCommitRequest.commit"><code class="name">var <span class="ident">commit</span> : <a title="pachyderm_sdk.api.pfs.Commit" href="#pachyderm_sdk.api.pfs.Commit">Commit</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.pfs.SquashCommitRequest.recursive"><code class="name">var <span class="ident">recursive</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>Setting recursive to true indicates that the squash should be applied
+recursively to subvenant commits. If recursive is set to false and the
+provided commit has subvenant commits, the squash will fail.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.pfs.SquashCommitResponse"><code class="flex name class">
+<span>class <span class="ident">SquashCommitResponse</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>SquashCommitResponse()</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class SquashCommitResponse(betterproto.Message):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+</dd>
+<dt id="pachyderm_sdk.api.pfs.DropCommitRequest"><code class="flex name class">
+<span>class <span class="ident">DropCommitRequest</span></span>
+<span>(</span><span>commit: <a title="pachyderm_sdk.api.pfs.Commit" href="#pachyderm_sdk.api.pfs.Commit">Commit</a> = None, recursive: bool = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>DropCommitRequest(commit: 'Commit' = None, recursive: bool = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class DropCommitRequest(betterproto.Message):
+    commit: &#34;Commit&#34; = betterproto.message_field(1)
+    recursive: bool = betterproto.bool_field(2)
+    &#34;&#34;&#34;
+    Setting recursive to true indicates that the drop should be applied
+    recursively to subvenant commits. If recursive is set to false and the
+    provided commit has subvenant commits, the drop will fail.
+    &#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.pfs.DropCommitRequest.commit"><code class="name">var <span class="ident">commit</span> : <a title="pachyderm_sdk.api.pfs.Commit" href="#pachyderm_sdk.api.pfs.Commit">Commit</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.pfs.DropCommitRequest.recursive"><code class="name">var <span class="ident">recursive</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>Setting recursive to true indicates that the drop should be applied
+recursively to subvenant commits. If recursive is set to false and the
+provided commit has subvenant commits, the drop will fail.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.pfs.DropCommitResponse"><code class="flex name class">
+<span>class <span class="ident">DropCommitResponse</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>DropCommitResponse()</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class DropCommitResponse(betterproto.Message):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+</dd>
 <dt id="pachyderm_sdk.api.pfs.CreateBranchRequest"><code class="flex name class">
 <span>class <span class="ident">CreateBranchRequest</span></span>
 <span>(</span><span>head: <a title="pachyderm_sdk.api.pfs.Commit" href="#pachyderm_sdk.api.pfs.Commit">Commit</a> = None, branch: <a title="pachyderm_sdk.api.pfs.Branch" href="#pachyderm_sdk.api.pfs.Branch">Branch</a> = None, provenance: List[ForwardRef('<a title="pachyderm_sdk.api.pfs.Branch" href="#pachyderm_sdk.api.pfs.Branch">Branch</a>')] = None, trigger: <a title="pachyderm_sdk.api.pfs.Trigger" href="#pachyderm_sdk.api.pfs.Trigger">Trigger</a> = None, new_commit_set: bool = None)</span>
@@ -4493,6 +4130,65 @@ class InspectProjectRequest(betterproto.Message):
 <h3>Class variables</h3>
 <dl>
 <dt id="pachyderm_sdk.api.pfs.InspectProjectRequest.project"><code class="name">var <span class="ident">project</span> : <a title="pachyderm_sdk.api.pfs.Project" href="#pachyderm_sdk.api.pfs.Project">Project</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.pfs.InspectProjectV2Request"><code class="flex name class">
+<span>class <span class="ident">InspectProjectV2Request</span></span>
+<span>(</span><span>project: <a title="pachyderm_sdk.api.pfs.Project" href="#pachyderm_sdk.api.pfs.Project">Project</a> = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>InspectProjectV2Request(project: 'Project' = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class InspectProjectV2Request(betterproto.Message):
+    project: &#34;Project&#34; = betterproto.message_field(1)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.pfs.InspectProjectV2Request.project"><code class="name">var <span class="ident">project</span> : <a title="pachyderm_sdk.api.pfs.Project" href="#pachyderm_sdk.api.pfs.Project">Project</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pachyderm_sdk.api.pfs.InspectProjectV2Response"><code class="flex name class">
+<span>class <span class="ident">InspectProjectV2Response</span></span>
+<span>(</span><span>info: <a title="pachyderm_sdk.api.pfs.ProjectInfo" href="#pachyderm_sdk.api.pfs.ProjectInfo">ProjectInfo</a> = None, defaults_json: str = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>InspectProjectV2Response(info: 'ProjectInfo' = None, defaults_json: str = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=False, repr=False)
+class InspectProjectV2Response(betterproto.Message):
+    info: &#34;ProjectInfo&#34; = betterproto.message_field(1)
+    defaults_json: str = betterproto.string_field(2)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>betterproto.Message</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pachyderm_sdk.api.pfs.InspectProjectV2Response.info"><code class="name">var <span class="ident">info</span> : <a title="pachyderm_sdk.api.pfs.ProjectInfo" href="#pachyderm_sdk.api.pfs.ProjectInfo">ProjectInfo</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.pfs.InspectProjectV2Response.defaults_json"><code class="name">var <span class="ident">defaults_json</span> : str</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -5142,17 +4838,18 @@ class CreateFileSetResponse(betterproto.Message):
 </dd>
 <dt id="pachyderm_sdk.api.pfs.GetFileSetRequest"><code class="flex name class">
 <span>class <span class="ident">GetFileSetRequest</span></span>
-<span>(</span><span>commit: <a title="pachyderm_sdk.api.pfs.Commit" href="#pachyderm_sdk.api.pfs.Commit">Commit</a> = None)</span>
+<span>(</span><span>commit: <a title="pachyderm_sdk.api.pfs.Commit" href="#pachyderm_sdk.api.pfs.Commit">Commit</a> = None, type: <a title="pachyderm_sdk.api.pfs.GetFileSetRequestFileSetType" href="#pachyderm_sdk.api.pfs.GetFileSetRequestFileSetType">GetFileSetRequestFileSetType</a> = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>GetFileSetRequest(commit: 'Commit' = None)</p></div>
+<div class="desc"><p>GetFileSetRequest(commit: 'Commit' = None, type: 'GetFileSetRequestFileSetType' = None)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@dataclass(eq=False, repr=False)
 class GetFileSetRequest(betterproto.Message):
-    commit: &#34;Commit&#34; = betterproto.message_field(1)</code></pre>
+    commit: &#34;Commit&#34; = betterproto.message_field(1)
+    type: &#34;GetFileSetRequestFileSetType&#34; = betterproto.enum_field(2)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -5162,6 +4859,10 @@ class GetFileSetRequest(betterproto.Message):
 <h3>Class variables</h3>
 <dl>
 <dt id="pachyderm_sdk.api.pfs.GetFileSetRequest.commit"><code class="name">var <span class="ident">commit</span> : <a title="pachyderm_sdk.api.pfs.Commit" href="#pachyderm_sdk.api.pfs.Commit">Commit</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.pfs.GetFileSetRequest.type"><code class="name">var <span class="ident">type</span> : <a title="pachyderm_sdk.api.pfs.GetFileSetRequestFileSetType" href="#pachyderm_sdk.api.pfs.GetFileSetRequestFileSetType">GetFileSetRequestFileSetType</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -5270,17 +4971,27 @@ class ComposeFileSetRequest(betterproto.Message):
 </dd>
 <dt id="pachyderm_sdk.api.pfs.ShardFileSetRequest"><code class="flex name class">
 <span>class <span class="ident">ShardFileSetRequest</span></span>
-<span>(</span><span>file_set_id: str = None)</span>
+<span>(</span><span>file_set_id: str = None, num_files: int = None, size_bytes: int = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>ShardFileSetRequest(file_set_id: str = None)</p></div>
+<div class="desc"><p>If both num_files and size_bytes are set, shards are created based on
+whichever threshold is surpassed first. If a shard configuration field
+(num_files, size_bytes) is unset, the storage's default value is used.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@dataclass(eq=False, repr=False)
 class ShardFileSetRequest(betterproto.Message):
-    file_set_id: str = betterproto.string_field(1)</code></pre>
+    &#34;&#34;&#34;
+    If both num_files and size_bytes are set, shards are created based on
+    whichever threshold is surpassed first. If a shard configuration field
+    (num_files, size_bytes) is unset, the storage&#39;s default value is used.
+    &#34;&#34;&#34;
+
+    file_set_id: str = betterproto.string_field(1)
+    num_files: int = betterproto.int64_field(2)
+    size_bytes: int = betterproto.int64_field(3)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -5290,6 +5001,14 @@ class ShardFileSetRequest(betterproto.Message):
 <h3>Class variables</h3>
 <dl>
 <dt id="pachyderm_sdk.api.pfs.ShardFileSetRequest.file_set_id"><code class="name">var <span class="ident">file_set_id</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.pfs.ShardFileSetRequest.num_files"><code class="name">var <span class="ident">num_files</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pachyderm_sdk.api.pfs.ShardFileSetRequest.size_bytes"><code class="name">var <span class="ident">size_bytes</span> : int</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -5847,6 +5566,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class ApiStub:
+
     def __init__(self, channel: &#34;grpc.Channel&#34;):
         self.__rpc_create_repo = channel.unary_unary(
             &#34;/pfs_v2.API/CreateRepo&#34;,
@@ -5902,6 +5622,16 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
             &#34;/pfs_v2.API/SubscribeCommit&#34;,
             request_serializer=SubscribeCommitRequest.SerializeToString,
             response_deserializer=CommitInfo.FromString,
+        )
+        self.__rpc_squash_commit = channel.unary_unary(
+            &#34;/pfs_v2.API/SquashCommit&#34;,
+            request_serializer=SquashCommitRequest.SerializeToString,
+            response_deserializer=SquashCommitResponse.FromString,
+        )
+        self.__rpc_drop_commit = channel.unary_unary(
+            &#34;/pfs_v2.API/DropCommit&#34;,
+            request_serializer=DropCommitRequest.SerializeToString,
+            response_deserializer=DropCommitResponse.FromString,
         )
         self.__rpc_inspect_commit_set = channel.unary_stream(
             &#34;/pfs_v2.API/InspectCommitSet&#34;,
@@ -6073,6 +5803,11 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
             request_serializer=InspectProjectRequest.SerializeToString,
             response_deserializer=ProjectInfo.FromString,
         )
+        self.__rpc_inspect_project_v2 = channel.unary_unary(
+            &#34;/pfs_v2.API/InspectProjectV2&#34;,
+            request_serializer=InspectProjectV2Request.SerializeToString,
+            response_deserializer=InspectProjectV2Response.FromString,
+        )
         self.__rpc_list_project = channel.unary_stream(
             &#34;/pfs_v2.API/ListProject&#34;,
             request_serializer=ListProjectRequest.SerializeToString,
@@ -6087,6 +5822,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
     def create_repo(
         self, *, repo: &#34;Repo&#34; = None, description: str = &#34;&#34;, update: bool = False
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         request = CreateRepoRequest()
         if repo is not None:
             request.repo = repo
@@ -6096,6 +5832,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
         return self.__rpc_create_repo(request)
 
     def inspect_repo(self, *, repo: &#34;Repo&#34; = None) -&gt; &#34;RepoInfo&#34;:
+
         request = InspectRepoRequest()
         if repo is not None:
             request.repo = repo
@@ -6118,6 +5855,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
     def delete_repo(
         self, *, repo: &#34;Repo&#34; = None, force: bool = False
     ) -&gt; &#34;DeleteRepoResponse&#34;:
+
         request = DeleteRepoRequest()
         if repo is not None:
             request.repo = repo
@@ -6145,6 +5883,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
     def start_commit(
         self, *, parent: &#34;Commit&#34; = None, description: str = &#34;&#34;, branch: &#34;Branch&#34; = None
     ) -&gt; &#34;Commit&#34;:
+
         request = StartCommitRequest()
         if parent is not None:
             request.parent = parent
@@ -6162,6 +5901,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
         error: str = &#34;&#34;,
         force: bool = False
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         request = FinishCommitRequest()
         if commit is not None:
             request.commit = commit
@@ -6174,6 +5914,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
     def clear_commit(
         self, *, commit: &#34;Commit&#34; = None
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         request = ClearCommitRequest()
         if commit is not None:
             request.commit = commit
@@ -6183,6 +5924,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
     def inspect_commit(
         self, *, commit: &#34;Commit&#34; = None, wait: &#34;CommitState&#34; = None
     ) -&gt; &#34;CommitInfo&#34;:
+
         request = InspectCommitRequest()
         if commit is not None:
             request.commit = commit
@@ -6202,6 +5944,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
         origin_kind: &#34;OriginKind&#34; = None,
         started_time: datetime = None
     ) -&gt; Iterator[&#34;CommitInfo&#34;]:
+
         request = ListCommitRequest()
         if repo is not None:
             request.repo = repo
@@ -6229,6 +5972,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
         all: bool = False,
         origin_kind: &#34;OriginKind&#34; = None
     ) -&gt; Iterator[&#34;CommitInfo&#34;]:
+
         request = SubscribeCommitRequest()
         if repo is not None:
             request.repo = repo
@@ -6242,9 +5986,32 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
         for response in self.__rpc_subscribe_commit(request):
             yield response
 
+    def squash_commit(
+        self, *, commit: &#34;Commit&#34; = None, recursive: bool = False
+    ) -&gt; &#34;SquashCommitResponse&#34;:
+
+        request = SquashCommitRequest()
+        if commit is not None:
+            request.commit = commit
+        request.recursive = recursive
+
+        return self.__rpc_squash_commit(request)
+
+    def drop_commit(
+        self, *, commit: &#34;Commit&#34; = None, recursive: bool = False
+    ) -&gt; &#34;DropCommitResponse&#34;:
+
+        request = DropCommitRequest()
+        if commit is not None:
+            request.commit = commit
+        request.recursive = recursive
+
+        return self.__rpc_drop_commit(request)
+
     def inspect_commit_set(
         self, *, commit_set: &#34;CommitSet&#34; = None, wait: bool = False
     ) -&gt; Iterator[&#34;CommitInfo&#34;]:
+
         request = InspectCommitSetRequest()
         if commit_set is not None:
             request.commit_set = commit_set
@@ -6256,6 +6023,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
     def list_commit_set(
         self, *, project: &#34;Project&#34; = None
     ) -&gt; Iterator[&#34;CommitSetInfo&#34;]:
+
         request = ListCommitSetRequest()
         if project is not None:
             request.project = project
@@ -6266,6 +6034,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
     def squash_commit_set(
         self, *, commit_set: &#34;CommitSet&#34; = None
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         request = SquashCommitSetRequest()
         if commit_set is not None:
             request.commit_set = commit_set
@@ -6275,6 +6044,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
     def drop_commit_set(
         self, *, commit_set: &#34;CommitSet&#34; = None
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         request = DropCommitSetRequest()
         if commit_set is not None:
             request.commit_set = commit_set
@@ -6284,6 +6054,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
     def find_commits(
         self, *, start: &#34;Commit&#34; = None, file_path: str = &#34;&#34;, limit: int = 0
     ) -&gt; Iterator[&#34;FindCommitsResponse&#34;]:
+
         request = FindCommitsRequest()
         if start is not None:
             request.start = start
@@ -6318,6 +6089,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
         return self.__rpc_create_branch(request)
 
     def inspect_branch(self, *, branch: &#34;Branch&#34; = None) -&gt; &#34;BranchInfo&#34;:
+
         request = InspectBranchRequest()
         if branch is not None:
             request.branch = branch
@@ -6327,6 +6099,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
     def list_branch(
         self, *, repo: &#34;Repo&#34; = None, reverse: bool = False
     ) -&gt; Iterator[&#34;BranchInfo&#34;]:
+
         request = ListBranchRequest()
         if repo is not None:
             request.repo = repo
@@ -6338,6 +6111,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
     def delete_branch(
         self, *, branch: &#34;Branch&#34; = None, force: bool = False
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         request = DeleteBranchRequest()
         if branch is not None:
             request.branch = branch
@@ -6351,6 +6125,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
             AsyncIterable[&#34;ModifyFileRequest&#34;], Iterable[&#34;ModifyFileRequest&#34;]
         ],
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         return self.__rpc_modify_file(request_iterator)
 
     def get_file(
@@ -6361,6 +6136,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
         offset: int = 0,
         path_range: &#34;PathRange&#34; = None
     ) -&gt; Iterator[&#34;betterproto_lib_google_protobuf.BytesValue&#34;]:
+
         request = GetFileRequest()
         if file is not None:
             request.file = file
@@ -6380,6 +6156,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
         offset: int = 0,
         path_range: &#34;PathRange&#34; = None
     ) -&gt; Iterator[&#34;betterproto_lib_google_protobuf.BytesValue&#34;]:
+
         request = GetFileRequest()
         if file is not None:
             request.file = file
@@ -6392,6 +6169,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
             yield response
 
     def inspect_file(self, *, file: &#34;File&#34; = None) -&gt; &#34;FileInfo&#34;:
+
         request = InspectFileRequest()
         if file is not None:
             request.file = file
@@ -6406,6 +6184,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
         number: int = 0,
         reverse: bool = False
     ) -&gt; Iterator[&#34;FileInfo&#34;]:
+
         request = ListFileRequest()
         if file is not None:
             request.file = file
@@ -6425,6 +6204,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
         number: int = 0,
         reverse: bool = False
     ) -&gt; Iterator[&#34;FileInfo&#34;]:
+
         request = WalkFileRequest()
         if file is not None:
             request.file = file
@@ -6443,6 +6223,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
         pattern: str = &#34;&#34;,
         path_range: &#34;PathRange&#34; = None
     ) -&gt; Iterator[&#34;FileInfo&#34;]:
+
         request = GlobFileRequest()
         if commit is not None:
             request.commit = commit
@@ -6456,6 +6237,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
     def diff_file(
         self, *, new_file: &#34;File&#34; = None, old_file: &#34;File&#34; = None, shallow: bool = False
     ) -&gt; Iterator[&#34;DiffFileResponse&#34;]:
+
         request = DiffFileRequest()
         if new_file is not None:
             request.new_file = new_file
@@ -6467,11 +6249,13 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
             yield response
 
     def activate_auth(self) -&gt; &#34;ActivateAuthResponse&#34;:
+
         request = ActivateAuthRequest()
 
         return self.__rpc_activate_auth(request)
 
     def delete_all(self) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         request = betterproto_lib_google_protobuf.Empty()
 
         return self.__rpc_delete_all(request)
@@ -6483,6 +6267,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
         zombie_target: &#34;Commit&#34; = None,
         zombie_all: bool = False
     ) -&gt; Iterator[&#34;FsckResponse&#34;]:
+
         request = FsckRequest()
         request.fix = fix
         if zombie_target is not None:
@@ -6498,18 +6283,24 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
             AsyncIterable[&#34;ModifyFileRequest&#34;], Iterable[&#34;ModifyFileRequest&#34;]
         ],
     ) -&gt; &#34;CreateFileSetResponse&#34;:
+
         return self.__rpc_create_file_set(request_iterator)
 
-    def get_file_set(self, *, commit: &#34;Commit&#34; = None) -&gt; &#34;CreateFileSetResponse&#34;:
+    def get_file_set(
+        self, *, commit: &#34;Commit&#34; = None, type: &#34;GetFileSetRequestFileSetType&#34; = None
+    ) -&gt; &#34;CreateFileSetResponse&#34;:
+
         request = GetFileSetRequest()
         if commit is not None:
             request.commit = commit
+        request.type = type
 
         return self.__rpc_get_file_set(request)
 
     def add_file_set(
         self, *, commit: &#34;Commit&#34; = None, file_set_id: str = &#34;&#34;
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         request = AddFileSetRequest()
         if commit is not None:
             request.commit = commit
@@ -6520,6 +6311,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
     def renew_file_set(
         self, *, file_set_id: str = &#34;&#34;, ttl_seconds: int = 0
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         request = RenewFileSetRequest()
         request.file_set_id = file_set_id
         request.ttl_seconds = ttl_seconds
@@ -6542,9 +6334,14 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 
         return self.__rpc_compose_file_set(request)
 
-    def shard_file_set(self, *, file_set_id: str = &#34;&#34;) -&gt; &#34;ShardFileSetResponse&#34;:
+    def shard_file_set(
+        self, *, file_set_id: str = &#34;&#34;, num_files: int = 0, size_bytes: int = 0
+    ) -&gt; &#34;ShardFileSetResponse&#34;:
+
         request = ShardFileSetRequest()
         request.file_set_id = file_set_id
+        request.num_files = num_files
+        request.size_bytes = size_bytes
 
         return self.__rpc_shard_file_set(request)
 
@@ -6555,6 +6352,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
         chunk_begin: bytes = b&#34;&#34;,
         chunk_end: bytes = b&#34;&#34;
     ) -&gt; &#34;CheckStorageResponse&#34;:
+
         request = CheckStorageRequest()
         request.read_chunk_data = read_chunk_data
         request.chunk_begin = chunk_begin
@@ -6582,6 +6380,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
         return self.__rpc_put_cache(request)
 
     def get_cache(self, *, key: str = &#34;&#34;) -&gt; &#34;GetCacheResponse&#34;:
+
         request = GetCacheRequest()
         request.key = key
 
@@ -6590,12 +6389,14 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
     def clear_cache(
         self, *, tag_prefix: str = &#34;&#34;
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         request = ClearCacheRequest()
         request.tag_prefix = tag_prefix
 
         return self.__rpc_clear_cache(request)
 
     def list_task(self, *, group: &#34;Group&#34; = None) -&gt; Iterator[&#34;_taskapi__.TaskInfo&#34;]:
+
         request = _taskapi__.ListTaskRequest()
         if group is not None:
             request.group = group
@@ -6610,6 +6411,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
         object_storage: &#34;ObjectStorageEgress&#34; = None,
         sql_database: &#34;SqlDatabaseEgress&#34; = None
     ) -&gt; &#34;EgressResponse&#34;:
+
         request = EgressRequest()
         if commit is not None:
             request.commit = commit
@@ -6623,6 +6425,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
     def create_project(
         self, *, project: &#34;Project&#34; = None, description: str = &#34;&#34;, update: bool = False
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         request = CreateProjectRequest()
         if project is not None:
             request.project = project
@@ -6632,13 +6435,25 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
         return self.__rpc_create_project(request)
 
     def inspect_project(self, *, project: &#34;Project&#34; = None) -&gt; &#34;ProjectInfo&#34;:
+
         request = InspectProjectRequest()
         if project is not None:
             request.project = project
 
         return self.__rpc_inspect_project(request)
 
+    def inspect_project_v2(
+        self, *, project: &#34;Project&#34; = None
+    ) -&gt; &#34;InspectProjectV2Response&#34;:
+
+        request = InspectProjectV2Request()
+        if project is not None:
+            request.project = project
+
+        return self.__rpc_inspect_project_v2(request)
+
     def list_project(self) -&gt; Iterator[&#34;ProjectInfo&#34;]:
+
         request = ListProjectRequest()
 
         for response in self.__rpc_list_project(request):
@@ -6647,6 +6462,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
     def delete_project(
         self, *, project: &#34;Project&#34; = None, force: bool = False
     ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
         request = DeleteProjectRequest()
         if project is not None:
             request.project = project
@@ -6672,6 +6488,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 <pre><code class="python">def create_repo(
     self, *, repo: &#34;Repo&#34; = None, description: str = &#34;&#34;, update: bool = False
 ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
     request = CreateRepoRequest()
     if repo is not None:
         request.repo = repo
@@ -6691,6 +6508,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def inspect_repo(self, *, repo: &#34;Repo&#34; = None) -&gt; &#34;RepoInfo&#34;:
+
     request = InspectRepoRequest()
     if repo is not None:
         request.repo = repo
@@ -6733,6 +6551,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 <pre><code class="python">def delete_repo(
     self, *, repo: &#34;Repo&#34; = None, force: bool = False
 ) -&gt; &#34;DeleteRepoResponse&#34;:
+
     request = DeleteRepoRequest()
     if repo is not None:
         request.repo = repo
@@ -6780,6 +6599,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 <pre><code class="python">def start_commit(
     self, *, parent: &#34;Commit&#34; = None, description: str = &#34;&#34;, branch: &#34;Branch&#34; = None
 ) -&gt; &#34;Commit&#34;:
+
     request = StartCommitRequest()
     if parent is not None:
         request.parent = parent
@@ -6807,6 +6627,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
     error: str = &#34;&#34;,
     force: bool = False
 ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
     request = FinishCommitRequest()
     if commit is not None:
         request.commit = commit
@@ -6829,6 +6650,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 <pre><code class="python">def clear_commit(
     self, *, commit: &#34;Commit&#34; = None
 ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
     request = ClearCommitRequest()
     if commit is not None:
         request.commit = commit
@@ -6848,6 +6670,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 <pre><code class="python">def inspect_commit(
     self, *, commit: &#34;Commit&#34; = None, wait: &#34;CommitState&#34; = None
 ) -&gt; &#34;CommitInfo&#34;:
+
     request = InspectCommitRequest()
     if commit is not None:
         request.commit = commit
@@ -6877,6 +6700,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
     origin_kind: &#34;OriginKind&#34; = None,
     started_time: datetime = None
 ) -&gt; Iterator[&#34;CommitInfo&#34;]:
+
     request = ListCommitRequest()
     if repo is not None:
         request.repo = repo
@@ -6914,6 +6738,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
     all: bool = False,
     origin_kind: &#34;OriginKind&#34; = None
 ) -&gt; Iterator[&#34;CommitInfo&#34;]:
+
     request = SubscribeCommitRequest()
     if repo is not None:
         request.repo = repo
@@ -6928,6 +6753,48 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
         yield response</code></pre>
 </details>
 </dd>
+<dt id="pachyderm_sdk.api.pfs.ApiStub.squash_commit"><code class="name flex">
+<span>def <span class="ident">squash_commit</span></span>(<span>self, *, commit: <a title="pachyderm_sdk.api.pfs.Commit" href="#pachyderm_sdk.api.pfs.Commit">Commit</a> = None, recursive: bool = False) ‑> <a title="pachyderm_sdk.api.pfs.SquashCommitResponse" href="#pachyderm_sdk.api.pfs.SquashCommitResponse">SquashCommitResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def squash_commit(
+    self, *, commit: &#34;Commit&#34; = None, recursive: bool = False
+) -&gt; &#34;SquashCommitResponse&#34;:
+
+    request = SquashCommitRequest()
+    if commit is not None:
+        request.commit = commit
+    request.recursive = recursive
+
+    return self.__rpc_squash_commit(request)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.pfs.ApiStub.drop_commit"><code class="name flex">
+<span>def <span class="ident">drop_commit</span></span>(<span>self, *, commit: <a title="pachyderm_sdk.api.pfs.Commit" href="#pachyderm_sdk.api.pfs.Commit">Commit</a> = None, recursive: bool = False) ‑> <a title="pachyderm_sdk.api.pfs.DropCommitResponse" href="#pachyderm_sdk.api.pfs.DropCommitResponse">DropCommitResponse</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def drop_commit(
+    self, *, commit: &#34;Commit&#34; = None, recursive: bool = False
+) -&gt; &#34;DropCommitResponse&#34;:
+
+    request = DropCommitRequest()
+    if commit is not None:
+        request.commit = commit
+    request.recursive = recursive
+
+    return self.__rpc_drop_commit(request)</code></pre>
+</details>
+</dd>
 <dt id="pachyderm_sdk.api.pfs.ApiStub.inspect_commit_set"><code class="name flex">
 <span>def <span class="ident">inspect_commit_set</span></span>(<span>self, *, commit_set: <a title="pachyderm_sdk.api.pfs.CommitSet" href="#pachyderm_sdk.api.pfs.CommitSet">CommitSet</a> = None, wait: bool = False) ‑> Iterator[<a title="pachyderm_sdk.api.pfs.CommitInfo" href="#pachyderm_sdk.api.pfs.CommitInfo">CommitInfo</a>]</span>
 </code></dt>
@@ -6940,6 +6807,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 <pre><code class="python">def inspect_commit_set(
     self, *, commit_set: &#34;CommitSet&#34; = None, wait: bool = False
 ) -&gt; Iterator[&#34;CommitInfo&#34;]:
+
     request = InspectCommitSetRequest()
     if commit_set is not None:
         request.commit_set = commit_set
@@ -6961,6 +6829,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 <pre><code class="python">def list_commit_set(
     self, *, project: &#34;Project&#34; = None
 ) -&gt; Iterator[&#34;CommitSetInfo&#34;]:
+
     request = ListCommitSetRequest()
     if project is not None:
         request.project = project
@@ -6981,6 +6850,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 <pre><code class="python">def squash_commit_set(
     self, *, commit_set: &#34;CommitSet&#34; = None
 ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
     request = SquashCommitSetRequest()
     if commit_set is not None:
         request.commit_set = commit_set
@@ -7000,6 +6870,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 <pre><code class="python">def drop_commit_set(
     self, *, commit_set: &#34;CommitSet&#34; = None
 ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
     request = DropCommitSetRequest()
     if commit_set is not None:
         request.commit_set = commit_set
@@ -7019,6 +6890,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 <pre><code class="python">def find_commits(
     self, *, start: &#34;Commit&#34; = None, file_path: str = &#34;&#34;, limit: int = 0
 ) -&gt; Iterator[&#34;FindCommitsResponse&#34;]:
+
     request = FindCommitsRequest()
     if start is not None:
         request.start = start
@@ -7073,6 +6945,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def inspect_branch(self, *, branch: &#34;Branch&#34; = None) -&gt; &#34;BranchInfo&#34;:
+
     request = InspectBranchRequest()
     if branch is not None:
         request.branch = branch
@@ -7092,6 +6965,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 <pre><code class="python">def list_branch(
     self, *, repo: &#34;Repo&#34; = None, reverse: bool = False
 ) -&gt; Iterator[&#34;BranchInfo&#34;]:
+
     request = ListBranchRequest()
     if repo is not None:
         request.repo = repo
@@ -7113,6 +6987,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 <pre><code class="python">def delete_branch(
     self, *, branch: &#34;Branch&#34; = None, force: bool = False
 ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
     request = DeleteBranchRequest()
     if branch is not None:
         request.branch = branch
@@ -7136,6 +7011,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
         AsyncIterable[&#34;ModifyFileRequest&#34;], Iterable[&#34;ModifyFileRequest&#34;]
     ],
 ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
     return self.__rpc_modify_file(request_iterator)</code></pre>
 </details>
 </dd>
@@ -7156,6 +7032,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
     offset: int = 0,
     path_range: &#34;PathRange&#34; = None
 ) -&gt; Iterator[&#34;betterproto_lib_google_protobuf.BytesValue&#34;]:
+
     request = GetFileRequest()
     if file is not None:
         request.file = file
@@ -7185,6 +7062,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
     offset: int = 0,
     path_range: &#34;PathRange&#34; = None
 ) -&gt; Iterator[&#34;betterproto_lib_google_protobuf.BytesValue&#34;]:
+
     request = GetFileRequest()
     if file is not None:
         request.file = file
@@ -7207,6 +7085,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def inspect_file(self, *, file: &#34;File&#34; = None) -&gt; &#34;FileInfo&#34;:
+
     request = InspectFileRequest()
     if file is not None:
         request.file = file
@@ -7231,6 +7110,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
     number: int = 0,
     reverse: bool = False
 ) -&gt; Iterator[&#34;FileInfo&#34;]:
+
     request = ListFileRequest()
     if file is not None:
         request.file = file
@@ -7260,6 +7140,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
     number: int = 0,
     reverse: bool = False
 ) -&gt; Iterator[&#34;FileInfo&#34;]:
+
     request = WalkFileRequest()
     if file is not None:
         request.file = file
@@ -7288,6 +7169,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
     pattern: str = &#34;&#34;,
     path_range: &#34;PathRange&#34; = None
 ) -&gt; Iterator[&#34;FileInfo&#34;]:
+
     request = GlobFileRequest()
     if commit is not None:
         request.commit = commit
@@ -7311,6 +7193,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 <pre><code class="python">def diff_file(
     self, *, new_file: &#34;File&#34; = None, old_file: &#34;File&#34; = None, shallow: bool = False
 ) -&gt; Iterator[&#34;DiffFileResponse&#34;]:
+
     request = DiffFileRequest()
     if new_file is not None:
         request.new_file = new_file
@@ -7332,6 +7215,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def activate_auth(self) -&gt; &#34;ActivateAuthResponse&#34;:
+
     request = ActivateAuthRequest()
 
     return self.__rpc_activate_auth(request)</code></pre>
@@ -7347,6 +7231,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def delete_all(self) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
     request = betterproto_lib_google_protobuf.Empty()
 
     return self.__rpc_delete_all(request)</code></pre>
@@ -7368,6 +7253,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
     zombie_target: &#34;Commit&#34; = None,
     zombie_all: bool = False
 ) -&gt; Iterator[&#34;FsckResponse&#34;]:
+
     request = FsckRequest()
     request.fix = fix
     if zombie_target is not None:
@@ -7393,11 +7279,12 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
         AsyncIterable[&#34;ModifyFileRequest&#34;], Iterable[&#34;ModifyFileRequest&#34;]
     ],
 ) -&gt; &#34;CreateFileSetResponse&#34;:
+
     return self.__rpc_create_file_set(request_iterator)</code></pre>
 </details>
 </dd>
 <dt id="pachyderm_sdk.api.pfs.ApiStub.get_file_set"><code class="name flex">
-<span>def <span class="ident">get_file_set</span></span>(<span>self, *, commit: <a title="pachyderm_sdk.api.pfs.Commit" href="#pachyderm_sdk.api.pfs.Commit">Commit</a> = None) ‑> <a title="pachyderm_sdk.api.pfs.CreateFileSetResponse" href="#pachyderm_sdk.api.pfs.CreateFileSetResponse">CreateFileSetResponse</a></span>
+<span>def <span class="ident">get_file_set</span></span>(<span>self, *, commit: <a title="pachyderm_sdk.api.pfs.Commit" href="#pachyderm_sdk.api.pfs.Commit">Commit</a> = None, type: <a title="pachyderm_sdk.api.pfs.GetFileSetRequestFileSetType" href="#pachyderm_sdk.api.pfs.GetFileSetRequestFileSetType">GetFileSetRequestFileSetType</a> = None) ‑> <a title="pachyderm_sdk.api.pfs.CreateFileSetResponse" href="#pachyderm_sdk.api.pfs.CreateFileSetResponse">CreateFileSetResponse</a></span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -7405,10 +7292,14 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def get_file_set(self, *, commit: &#34;Commit&#34; = None) -&gt; &#34;CreateFileSetResponse&#34;:
+<pre><code class="python">def get_file_set(
+    self, *, commit: &#34;Commit&#34; = None, type: &#34;GetFileSetRequestFileSetType&#34; = None
+) -&gt; &#34;CreateFileSetResponse&#34;:
+
     request = GetFileSetRequest()
     if commit is not None:
         request.commit = commit
+    request.type = type
 
     return self.__rpc_get_file_set(request)</code></pre>
 </details>
@@ -7425,6 +7316,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 <pre><code class="python">def add_file_set(
     self, *, commit: &#34;Commit&#34; = None, file_set_id: str = &#34;&#34;
 ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
     request = AddFileSetRequest()
     if commit is not None:
         request.commit = commit
@@ -7445,6 +7337,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 <pre><code class="python">def renew_file_set(
     self, *, file_set_id: str = &#34;&#34;, ttl_seconds: int = 0
 ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
     request = RenewFileSetRequest()
     request.file_set_id = file_set_id
     request.ttl_seconds = ttl_seconds
@@ -7479,7 +7372,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 </details>
 </dd>
 <dt id="pachyderm_sdk.api.pfs.ApiStub.shard_file_set"><code class="name flex">
-<span>def <span class="ident">shard_file_set</span></span>(<span>self, *, file_set_id: str = '') ‑> <a title="pachyderm_sdk.api.pfs.ShardFileSetResponse" href="#pachyderm_sdk.api.pfs.ShardFileSetResponse">ShardFileSetResponse</a></span>
+<span>def <span class="ident">shard_file_set</span></span>(<span>self, *, file_set_id: str = '', num_files: int = 0, size_bytes: int = 0) ‑> <a title="pachyderm_sdk.api.pfs.ShardFileSetResponse" href="#pachyderm_sdk.api.pfs.ShardFileSetResponse">ShardFileSetResponse</a></span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -7487,9 +7380,14 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def shard_file_set(self, *, file_set_id: str = &#34;&#34;) -&gt; &#34;ShardFileSetResponse&#34;:
+<pre><code class="python">def shard_file_set(
+    self, *, file_set_id: str = &#34;&#34;, num_files: int = 0, size_bytes: int = 0
+) -&gt; &#34;ShardFileSetResponse&#34;:
+
     request = ShardFileSetRequest()
     request.file_set_id = file_set_id
+    request.num_files = num_files
+    request.size_bytes = size_bytes
 
     return self.__rpc_shard_file_set(request)</code></pre>
 </details>
@@ -7510,6 +7408,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
     chunk_begin: bytes = b&#34;&#34;,
     chunk_end: bytes = b&#34;&#34;
 ) -&gt; &#34;CheckStorageResponse&#34;:
+
     request = CheckStorageRequest()
     request.read_chunk_data = read_chunk_data
     request.chunk_begin = chunk_begin
@@ -7557,6 +7456,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def get_cache(self, *, key: str = &#34;&#34;) -&gt; &#34;GetCacheResponse&#34;:
+
     request = GetCacheRequest()
     request.key = key
 
@@ -7575,6 +7475,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 <pre><code class="python">def clear_cache(
     self, *, tag_prefix: str = &#34;&#34;
 ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
     request = ClearCacheRequest()
     request.tag_prefix = tag_prefix
 
@@ -7591,6 +7492,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def list_task(self, *, group: &#34;Group&#34; = None) -&gt; Iterator[&#34;_taskapi__.TaskInfo&#34;]:
+
     request = _taskapi__.ListTaskRequest()
     if group is not None:
         request.group = group
@@ -7615,6 +7517,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
     object_storage: &#34;ObjectStorageEgress&#34; = None,
     sql_database: &#34;SqlDatabaseEgress&#34; = None
 ) -&gt; &#34;EgressResponse&#34;:
+
     request = EgressRequest()
     if commit is not None:
         request.commit = commit
@@ -7638,6 +7541,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 <pre><code class="python">def create_project(
     self, *, project: &#34;Project&#34; = None, description: str = &#34;&#34;, update: bool = False
 ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
     request = CreateProjectRequest()
     if project is not None:
         request.project = project
@@ -7657,11 +7561,32 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def inspect_project(self, *, project: &#34;Project&#34; = None) -&gt; &#34;ProjectInfo&#34;:
+
     request = InspectProjectRequest()
     if project is not None:
         request.project = project
 
     return self.__rpc_inspect_project(request)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.api.pfs.ApiStub.inspect_project_v2"><code class="name flex">
+<span>def <span class="ident">inspect_project_v2</span></span>(<span>self, *, project: <a title="pachyderm_sdk.api.pfs.Project" href="#pachyderm_sdk.api.pfs.Project">Project</a> = None) ‑> <a title="pachyderm_sdk.api.pfs.InspectProjectV2Response" href="#pachyderm_sdk.api.pfs.InspectProjectV2Response">InspectProjectV2Response</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def inspect_project_v2(
+    self, *, project: &#34;Project&#34; = None
+) -&gt; &#34;InspectProjectV2Response&#34;:
+
+    request = InspectProjectV2Request()
+    if project is not None:
+        request.project = project
+
+    return self.__rpc_inspect_project_v2(request)</code></pre>
 </details>
 </dd>
 <dt id="pachyderm_sdk.api.pfs.ApiStub.list_project"><code class="name flex">
@@ -7674,6 +7599,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def list_project(self) -&gt; Iterator[&#34;ProjectInfo&#34;]:
+
     request = ListProjectRequest()
 
     for response in self.__rpc_list_project(request):
@@ -7692,1586 +7618,13 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 <pre><code class="python">def delete_project(
     self, *, project: &#34;Project&#34; = None, force: bool = False
 ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
+
     request = DeleteProjectRequest()
     if project is not None:
         request.project = project
     request.force = force
 
     return self.__rpc_delete_project(request)</code></pre>
-</details>
-</dd>
-</dl>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.ApiBase"><code class="flex name class">
-<span>class <span class="ident">ApiBase</span></span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">class ApiBase:
-    def create_repo(
-        self,
-        repo: &#34;Repo&#34;,
-        description: str,
-        update: bool,
-        context: &#34;grpc.ServicerContext&#34;,
-    ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def inspect_repo(self, repo: &#34;Repo&#34;, context: &#34;grpc.ServicerContext&#34;) -&gt; &#34;RepoInfo&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def list_repo(
-        self,
-        type: str,
-        projects: Optional[List[&#34;Project&#34;]],
-        context: &#34;grpc.ServicerContext&#34;,
-    ) -&gt; Iterator[&#34;RepoInfo&#34;]:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def delete_repo(
-        self, repo: &#34;Repo&#34;, force: bool, context: &#34;grpc.ServicerContext&#34;
-    ) -&gt; &#34;DeleteRepoResponse&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def delete_repos(
-        self,
-        projects: Optional[List[&#34;Project&#34;]],
-        force: bool,
-        all: bool,
-        context: &#34;grpc.ServicerContext&#34;,
-    ) -&gt; &#34;DeleteReposResponse&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def start_commit(
-        self,
-        parent: &#34;Commit&#34;,
-        description: str,
-        branch: &#34;Branch&#34;,
-        context: &#34;grpc.ServicerContext&#34;,
-    ) -&gt; &#34;Commit&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def finish_commit(
-        self,
-        commit: &#34;Commit&#34;,
-        description: str,
-        error: str,
-        force: bool,
-        context: &#34;grpc.ServicerContext&#34;,
-    ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def clear_commit(
-        self, commit: &#34;Commit&#34;, context: &#34;grpc.ServicerContext&#34;
-    ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def inspect_commit(
-        self, commit: &#34;Commit&#34;, wait: &#34;CommitState&#34;, context: &#34;grpc.ServicerContext&#34;
-    ) -&gt; &#34;CommitInfo&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def list_commit(
-        self,
-        repo: &#34;Repo&#34;,
-        from_: &#34;Commit&#34;,
-        to: &#34;Commit&#34;,
-        number: int,
-        reverse: bool,
-        all: bool,
-        origin_kind: &#34;OriginKind&#34;,
-        started_time: datetime,
-        context: &#34;grpc.ServicerContext&#34;,
-    ) -&gt; Iterator[&#34;CommitInfo&#34;]:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def subscribe_commit(
-        self,
-        repo: &#34;Repo&#34;,
-        branch: str,
-        from_: &#34;Commit&#34;,
-        state: &#34;CommitState&#34;,
-        all: bool,
-        origin_kind: &#34;OriginKind&#34;,
-        context: &#34;grpc.ServicerContext&#34;,
-    ) -&gt; Iterator[&#34;CommitInfo&#34;]:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def inspect_commit_set(
-        self, commit_set: &#34;CommitSet&#34;, wait: bool, context: &#34;grpc.ServicerContext&#34;
-    ) -&gt; Iterator[&#34;CommitInfo&#34;]:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def list_commit_set(
-        self, project: &#34;Project&#34;, context: &#34;grpc.ServicerContext&#34;
-    ) -&gt; Iterator[&#34;CommitSetInfo&#34;]:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def squash_commit_set(
-        self, commit_set: &#34;CommitSet&#34;, context: &#34;grpc.ServicerContext&#34;
-    ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def drop_commit_set(
-        self, commit_set: &#34;CommitSet&#34;, context: &#34;grpc.ServicerContext&#34;
-    ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def find_commits(
-        self,
-        start: &#34;Commit&#34;,
-        file_path: str,
-        limit: int,
-        context: &#34;grpc.ServicerContext&#34;,
-    ) -&gt; Iterator[&#34;FindCommitsResponse&#34;]:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def create_branch(
-        self,
-        head: &#34;Commit&#34;,
-        branch: &#34;Branch&#34;,
-        provenance: Optional[List[&#34;Branch&#34;]],
-        trigger: &#34;Trigger&#34;,
-        new_commit_set: bool,
-        context: &#34;grpc.ServicerContext&#34;,
-    ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def inspect_branch(
-        self, branch: &#34;Branch&#34;, context: &#34;grpc.ServicerContext&#34;
-    ) -&gt; &#34;BranchInfo&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def list_branch(
-        self, repo: &#34;Repo&#34;, reverse: bool, context: &#34;grpc.ServicerContext&#34;
-    ) -&gt; Iterator[&#34;BranchInfo&#34;]:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def delete_branch(
-        self, branch: &#34;Branch&#34;, force: bool, context: &#34;grpc.ServicerContext&#34;
-    ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def modify_file(
-        self,
-        request_iterator: Iterator[&#34;ModifyFileRequest&#34;],
-        context: &#34;grpc.ServicerContext&#34;,
-    ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def get_file(
-        self,
-        file: &#34;File&#34;,
-        url: str,
-        offset: int,
-        path_range: &#34;PathRange&#34;,
-        context: &#34;grpc.ServicerContext&#34;,
-    ) -&gt; Iterator[&#34;betterproto_lib_google_protobuf.BytesValue&#34;]:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def get_file_tar(
-        self,
-        file: &#34;File&#34;,
-        url: str,
-        offset: int,
-        path_range: &#34;PathRange&#34;,
-        context: &#34;grpc.ServicerContext&#34;,
-    ) -&gt; Iterator[&#34;betterproto_lib_google_protobuf.BytesValue&#34;]:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def inspect_file(self, file: &#34;File&#34;, context: &#34;grpc.ServicerContext&#34;) -&gt; &#34;FileInfo&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def list_file(
-        self,
-        file: &#34;File&#34;,
-        pagination_marker: &#34;File&#34;,
-        number: int,
-        reverse: bool,
-        context: &#34;grpc.ServicerContext&#34;,
-    ) -&gt; Iterator[&#34;FileInfo&#34;]:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def walk_file(
-        self,
-        file: &#34;File&#34;,
-        pagination_marker: &#34;File&#34;,
-        number: int,
-        reverse: bool,
-        context: &#34;grpc.ServicerContext&#34;,
-    ) -&gt; Iterator[&#34;FileInfo&#34;]:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def glob_file(
-        self,
-        commit: &#34;Commit&#34;,
-        pattern: str,
-        path_range: &#34;PathRange&#34;,
-        context: &#34;grpc.ServicerContext&#34;,
-    ) -&gt; Iterator[&#34;FileInfo&#34;]:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def diff_file(
-        self,
-        new_file: &#34;File&#34;,
-        old_file: &#34;File&#34;,
-        shallow: bool,
-        context: &#34;grpc.ServicerContext&#34;,
-    ) -&gt; Iterator[&#34;DiffFileResponse&#34;]:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def activate_auth(self, context: &#34;grpc.ServicerContext&#34;) -&gt; &#34;ActivateAuthResponse&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def delete_all(
-        self, context: &#34;grpc.ServicerContext&#34;
-    ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def fsck(
-        self,
-        fix: bool,
-        zombie_target: &#34;Commit&#34;,
-        zombie_all: bool,
-        context: &#34;grpc.ServicerContext&#34;,
-    ) -&gt; Iterator[&#34;FsckResponse&#34;]:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def create_file_set(
-        self,
-        request_iterator: Iterator[&#34;ModifyFileRequest&#34;],
-        context: &#34;grpc.ServicerContext&#34;,
-    ) -&gt; &#34;CreateFileSetResponse&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def get_file_set(
-        self, commit: &#34;Commit&#34;, context: &#34;grpc.ServicerContext&#34;
-    ) -&gt; &#34;CreateFileSetResponse&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def add_file_set(
-        self, commit: &#34;Commit&#34;, file_set_id: str, context: &#34;grpc.ServicerContext&#34;
-    ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def renew_file_set(
-        self, file_set_id: str, ttl_seconds: int, context: &#34;grpc.ServicerContext&#34;
-    ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def compose_file_set(
-        self,
-        file_set_ids: Optional[List[str]],
-        ttl_seconds: int,
-        compact: bool,
-        context: &#34;grpc.ServicerContext&#34;,
-    ) -&gt; &#34;CreateFileSetResponse&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def shard_file_set(
-        self, file_set_id: str, context: &#34;grpc.ServicerContext&#34;
-    ) -&gt; &#34;ShardFileSetResponse&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def check_storage(
-        self,
-        read_chunk_data: bool,
-        chunk_begin: bytes,
-        chunk_end: bytes,
-        context: &#34;grpc.ServicerContext&#34;,
-    ) -&gt; &#34;CheckStorageResponse&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def put_cache(
-        self,
-        key: str,
-        value: &#34;betterproto_lib_google_protobuf.Any&#34;,
-        file_set_ids: Optional[List[str]],
-        tag: str,
-        context: &#34;grpc.ServicerContext&#34;,
-    ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def get_cache(
-        self, key: str, context: &#34;grpc.ServicerContext&#34;
-    ) -&gt; &#34;GetCacheResponse&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def clear_cache(
-        self, tag_prefix: str, context: &#34;grpc.ServicerContext&#34;
-    ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def list_task(
-        self, group: &#34;Group&#34;, context: &#34;grpc.ServicerContext&#34;
-    ) -&gt; Iterator[&#34;_taskapi__.TaskInfo&#34;]:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def egress(
-        self,
-        commit: &#34;Commit&#34;,
-        object_storage: &#34;ObjectStorageEgress&#34;,
-        sql_database: &#34;SqlDatabaseEgress&#34;,
-        context: &#34;grpc.ServicerContext&#34;,
-    ) -&gt; &#34;EgressResponse&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def create_project(
-        self,
-        project: &#34;Project&#34;,
-        description: str,
-        update: bool,
-        context: &#34;grpc.ServicerContext&#34;,
-    ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def inspect_project(
-        self, project: &#34;Project&#34;, context: &#34;grpc.ServicerContext&#34;
-    ) -&gt; &#34;ProjectInfo&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def list_project(self, context: &#34;grpc.ServicerContext&#34;) -&gt; Iterator[&#34;ProjectInfo&#34;]:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    def delete_project(
-        self, project: &#34;Project&#34;, force: bool, context: &#34;grpc.ServicerContext&#34;
-    ) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details(&#34;Method not implemented!&#34;)
-        raise NotImplementedError(&#34;Method not implemented!&#34;)
-
-    __proto_path__ = &#34;pfs_v2.API&#34;
-
-    @property
-    def __rpc_methods__(self):
-        return {
-            &#34;CreateRepo&#34;: grpc.unary_unary_rpc_method_handler(
-                self.create_repo,
-                request_deserializer=CreateRepoRequest.FromString,
-                response_serializer=CreateRepoRequest.SerializeToString,
-            ),
-            &#34;InspectRepo&#34;: grpc.unary_unary_rpc_method_handler(
-                self.inspect_repo,
-                request_deserializer=InspectRepoRequest.FromString,
-                response_serializer=InspectRepoRequest.SerializeToString,
-            ),
-            &#34;ListRepo&#34;: grpc.unary_stream_rpc_method_handler(
-                self.list_repo,
-                request_deserializer=ListRepoRequest.FromString,
-                response_serializer=ListRepoRequest.SerializeToString,
-            ),
-            &#34;DeleteRepo&#34;: grpc.unary_unary_rpc_method_handler(
-                self.delete_repo,
-                request_deserializer=DeleteRepoRequest.FromString,
-                response_serializer=DeleteRepoRequest.SerializeToString,
-            ),
-            &#34;DeleteRepos&#34;: grpc.unary_unary_rpc_method_handler(
-                self.delete_repos,
-                request_deserializer=DeleteReposRequest.FromString,
-                response_serializer=DeleteReposRequest.SerializeToString,
-            ),
-            &#34;StartCommit&#34;: grpc.unary_unary_rpc_method_handler(
-                self.start_commit,
-                request_deserializer=StartCommitRequest.FromString,
-                response_serializer=StartCommitRequest.SerializeToString,
-            ),
-            &#34;FinishCommit&#34;: grpc.unary_unary_rpc_method_handler(
-                self.finish_commit,
-                request_deserializer=FinishCommitRequest.FromString,
-                response_serializer=FinishCommitRequest.SerializeToString,
-            ),
-            &#34;ClearCommit&#34;: grpc.unary_unary_rpc_method_handler(
-                self.clear_commit,
-                request_deserializer=ClearCommitRequest.FromString,
-                response_serializer=ClearCommitRequest.SerializeToString,
-            ),
-            &#34;InspectCommit&#34;: grpc.unary_unary_rpc_method_handler(
-                self.inspect_commit,
-                request_deserializer=InspectCommitRequest.FromString,
-                response_serializer=InspectCommitRequest.SerializeToString,
-            ),
-            &#34;ListCommit&#34;: grpc.unary_stream_rpc_method_handler(
-                self.list_commit,
-                request_deserializer=ListCommitRequest.FromString,
-                response_serializer=ListCommitRequest.SerializeToString,
-            ),
-            &#34;SubscribeCommit&#34;: grpc.unary_stream_rpc_method_handler(
-                self.subscribe_commit,
-                request_deserializer=SubscribeCommitRequest.FromString,
-                response_serializer=SubscribeCommitRequest.SerializeToString,
-            ),
-            &#34;InspectCommitSet&#34;: grpc.unary_stream_rpc_method_handler(
-                self.inspect_commit_set,
-                request_deserializer=InspectCommitSetRequest.FromString,
-                response_serializer=InspectCommitSetRequest.SerializeToString,
-            ),
-            &#34;ListCommitSet&#34;: grpc.unary_stream_rpc_method_handler(
-                self.list_commit_set,
-                request_deserializer=ListCommitSetRequest.FromString,
-                response_serializer=ListCommitSetRequest.SerializeToString,
-            ),
-            &#34;SquashCommitSet&#34;: grpc.unary_unary_rpc_method_handler(
-                self.squash_commit_set,
-                request_deserializer=SquashCommitSetRequest.FromString,
-                response_serializer=SquashCommitSetRequest.SerializeToString,
-            ),
-            &#34;DropCommitSet&#34;: grpc.unary_unary_rpc_method_handler(
-                self.drop_commit_set,
-                request_deserializer=DropCommitSetRequest.FromString,
-                response_serializer=DropCommitSetRequest.SerializeToString,
-            ),
-            &#34;FindCommits&#34;: grpc.unary_stream_rpc_method_handler(
-                self.find_commits,
-                request_deserializer=FindCommitsRequest.FromString,
-                response_serializer=FindCommitsRequest.SerializeToString,
-            ),
-            &#34;CreateBranch&#34;: grpc.unary_unary_rpc_method_handler(
-                self.create_branch,
-                request_deserializer=CreateBranchRequest.FromString,
-                response_serializer=CreateBranchRequest.SerializeToString,
-            ),
-            &#34;InspectBranch&#34;: grpc.unary_unary_rpc_method_handler(
-                self.inspect_branch,
-                request_deserializer=InspectBranchRequest.FromString,
-                response_serializer=InspectBranchRequest.SerializeToString,
-            ),
-            &#34;ListBranch&#34;: grpc.unary_stream_rpc_method_handler(
-                self.list_branch,
-                request_deserializer=ListBranchRequest.FromString,
-                response_serializer=ListBranchRequest.SerializeToString,
-            ),
-            &#34;DeleteBranch&#34;: grpc.unary_unary_rpc_method_handler(
-                self.delete_branch,
-                request_deserializer=DeleteBranchRequest.FromString,
-                response_serializer=DeleteBranchRequest.SerializeToString,
-            ),
-            &#34;ModifyFile&#34;: grpc.stream_unary_rpc_method_handler(
-                self.modify_file,
-                request_deserializer=ModifyFileRequest.FromString,
-                response_serializer=ModifyFileRequest.SerializeToString,
-            ),
-            &#34;GetFile&#34;: grpc.unary_stream_rpc_method_handler(
-                self.get_file,
-                request_deserializer=GetFileRequest.FromString,
-                response_serializer=GetFileRequest.SerializeToString,
-            ),
-            &#34;GetFileTAR&#34;: grpc.unary_stream_rpc_method_handler(
-                self.get_file_tar,
-                request_deserializer=GetFileRequest.FromString,
-                response_serializer=GetFileRequest.SerializeToString,
-            ),
-            &#34;InspectFile&#34;: grpc.unary_unary_rpc_method_handler(
-                self.inspect_file,
-                request_deserializer=InspectFileRequest.FromString,
-                response_serializer=InspectFileRequest.SerializeToString,
-            ),
-            &#34;ListFile&#34;: grpc.unary_stream_rpc_method_handler(
-                self.list_file,
-                request_deserializer=ListFileRequest.FromString,
-                response_serializer=ListFileRequest.SerializeToString,
-            ),
-            &#34;WalkFile&#34;: grpc.unary_stream_rpc_method_handler(
-                self.walk_file,
-                request_deserializer=WalkFileRequest.FromString,
-                response_serializer=WalkFileRequest.SerializeToString,
-            ),
-            &#34;GlobFile&#34;: grpc.unary_stream_rpc_method_handler(
-                self.glob_file,
-                request_deserializer=GlobFileRequest.FromString,
-                response_serializer=GlobFileRequest.SerializeToString,
-            ),
-            &#34;DiffFile&#34;: grpc.unary_stream_rpc_method_handler(
-                self.diff_file,
-                request_deserializer=DiffFileRequest.FromString,
-                response_serializer=DiffFileRequest.SerializeToString,
-            ),
-            &#34;ActivateAuth&#34;: grpc.unary_unary_rpc_method_handler(
-                self.activate_auth,
-                request_deserializer=ActivateAuthRequest.FromString,
-                response_serializer=ActivateAuthRequest.SerializeToString,
-            ),
-            &#34;DeleteAll&#34;: grpc.unary_unary_rpc_method_handler(
-                self.delete_all,
-                request_deserializer=betterproto_lib_google_protobuf.Empty.FromString,
-                response_serializer=betterproto_lib_google_protobuf.Empty.SerializeToString,
-            ),
-            &#34;Fsck&#34;: grpc.unary_stream_rpc_method_handler(
-                self.fsck,
-                request_deserializer=FsckRequest.FromString,
-                response_serializer=FsckRequest.SerializeToString,
-            ),
-            &#34;CreateFileSet&#34;: grpc.stream_unary_rpc_method_handler(
-                self.create_file_set,
-                request_deserializer=ModifyFileRequest.FromString,
-                response_serializer=ModifyFileRequest.SerializeToString,
-            ),
-            &#34;GetFileSet&#34;: grpc.unary_unary_rpc_method_handler(
-                self.get_file_set,
-                request_deserializer=GetFileSetRequest.FromString,
-                response_serializer=GetFileSetRequest.SerializeToString,
-            ),
-            &#34;AddFileSet&#34;: grpc.unary_unary_rpc_method_handler(
-                self.add_file_set,
-                request_deserializer=AddFileSetRequest.FromString,
-                response_serializer=AddFileSetRequest.SerializeToString,
-            ),
-            &#34;RenewFileSet&#34;: grpc.unary_unary_rpc_method_handler(
-                self.renew_file_set,
-                request_deserializer=RenewFileSetRequest.FromString,
-                response_serializer=RenewFileSetRequest.SerializeToString,
-            ),
-            &#34;ComposeFileSet&#34;: grpc.unary_unary_rpc_method_handler(
-                self.compose_file_set,
-                request_deserializer=ComposeFileSetRequest.FromString,
-                response_serializer=ComposeFileSetRequest.SerializeToString,
-            ),
-            &#34;ShardFileSet&#34;: grpc.unary_unary_rpc_method_handler(
-                self.shard_file_set,
-                request_deserializer=ShardFileSetRequest.FromString,
-                response_serializer=ShardFileSetRequest.SerializeToString,
-            ),
-            &#34;CheckStorage&#34;: grpc.unary_unary_rpc_method_handler(
-                self.check_storage,
-                request_deserializer=CheckStorageRequest.FromString,
-                response_serializer=CheckStorageRequest.SerializeToString,
-            ),
-            &#34;PutCache&#34;: grpc.unary_unary_rpc_method_handler(
-                self.put_cache,
-                request_deserializer=PutCacheRequest.FromString,
-                response_serializer=PutCacheRequest.SerializeToString,
-            ),
-            &#34;GetCache&#34;: grpc.unary_unary_rpc_method_handler(
-                self.get_cache,
-                request_deserializer=GetCacheRequest.FromString,
-                response_serializer=GetCacheRequest.SerializeToString,
-            ),
-            &#34;ClearCache&#34;: grpc.unary_unary_rpc_method_handler(
-                self.clear_cache,
-                request_deserializer=ClearCacheRequest.FromString,
-                response_serializer=ClearCacheRequest.SerializeToString,
-            ),
-            &#34;ListTask&#34;: grpc.unary_stream_rpc_method_handler(
-                self.list_task,
-                request_deserializer=_taskapi__.ListTaskRequest.FromString,
-                response_serializer=_taskapi__.ListTaskRequest.SerializeToString,
-            ),
-            &#34;Egress&#34;: grpc.unary_unary_rpc_method_handler(
-                self.egress,
-                request_deserializer=EgressRequest.FromString,
-                response_serializer=EgressRequest.SerializeToString,
-            ),
-            &#34;CreateProject&#34;: grpc.unary_unary_rpc_method_handler(
-                self.create_project,
-                request_deserializer=CreateProjectRequest.FromString,
-                response_serializer=CreateProjectRequest.SerializeToString,
-            ),
-            &#34;InspectProject&#34;: grpc.unary_unary_rpc_method_handler(
-                self.inspect_project,
-                request_deserializer=InspectProjectRequest.FromString,
-                response_serializer=InspectProjectRequest.SerializeToString,
-            ),
-            &#34;ListProject&#34;: grpc.unary_stream_rpc_method_handler(
-                self.list_project,
-                request_deserializer=ListProjectRequest.FromString,
-                response_serializer=ListProjectRequest.SerializeToString,
-            ),
-            &#34;DeleteProject&#34;: grpc.unary_unary_rpc_method_handler(
-                self.delete_project,
-                request_deserializer=DeleteProjectRequest.FromString,
-                response_serializer=DeleteProjectRequest.SerializeToString,
-            ),
-        }</code></pre>
-</details>
-<h3>Methods</h3>
-<dl>
-<dt id="pachyderm_sdk.api.pfs.ApiBase.create_repo"><code class="name flex">
-<span>def <span class="ident">create_repo</span></span>(<span>self, repo: <a title="pachyderm_sdk.api.pfs.Repo" href="#pachyderm_sdk.api.pfs.Repo">Repo</a>, description: str, update: bool, context: grpc.ServicerContext) ‑> betterproto.lib.google.protobuf.Empty</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def create_repo(
-    self,
-    repo: &#34;Repo&#34;,
-    description: str,
-    update: bool,
-    context: &#34;grpc.ServicerContext&#34;,
-) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details(&#34;Method not implemented!&#34;)
-    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.ApiBase.inspect_repo"><code class="name flex">
-<span>def <span class="ident">inspect_repo</span></span>(<span>self, repo: <a title="pachyderm_sdk.api.pfs.Repo" href="#pachyderm_sdk.api.pfs.Repo">Repo</a>, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.pfs.RepoInfo" href="#pachyderm_sdk.api.pfs.RepoInfo">RepoInfo</a></span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def inspect_repo(self, repo: &#34;Repo&#34;, context: &#34;grpc.ServicerContext&#34;) -&gt; &#34;RepoInfo&#34;:
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details(&#34;Method not implemented!&#34;)
-    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.ApiBase.list_repo"><code class="name flex">
-<span>def <span class="ident">list_repo</span></span>(<span>self, type: str, projects: Optional[List[ForwardRef('<a title="pachyderm_sdk.api.pfs.Project" href="#pachyderm_sdk.api.pfs.Project">Project</a>')]], context: grpc.ServicerContext) ‑> Iterator[<a title="pachyderm_sdk.api.pfs.RepoInfo" href="#pachyderm_sdk.api.pfs.RepoInfo">RepoInfo</a>]</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def list_repo(
-    self,
-    type: str,
-    projects: Optional[List[&#34;Project&#34;]],
-    context: &#34;grpc.ServicerContext&#34;,
-) -&gt; Iterator[&#34;RepoInfo&#34;]:
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details(&#34;Method not implemented!&#34;)
-    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.ApiBase.delete_repo"><code class="name flex">
-<span>def <span class="ident">delete_repo</span></span>(<span>self, repo: <a title="pachyderm_sdk.api.pfs.Repo" href="#pachyderm_sdk.api.pfs.Repo">Repo</a>, force: bool, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.pfs.DeleteRepoResponse" href="#pachyderm_sdk.api.pfs.DeleteRepoResponse">DeleteRepoResponse</a></span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def delete_repo(
-    self, repo: &#34;Repo&#34;, force: bool, context: &#34;grpc.ServicerContext&#34;
-) -&gt; &#34;DeleteRepoResponse&#34;:
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details(&#34;Method not implemented!&#34;)
-    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.ApiBase.delete_repos"><code class="name flex">
-<span>def <span class="ident">delete_repos</span></span>(<span>self, projects: Optional[List[ForwardRef('<a title="pachyderm_sdk.api.pfs.Project" href="#pachyderm_sdk.api.pfs.Project">Project</a>')]], force: bool, all: bool, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.pfs.DeleteReposResponse" href="#pachyderm_sdk.api.pfs.DeleteReposResponse">DeleteReposResponse</a></span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def delete_repos(
-    self,
-    projects: Optional[List[&#34;Project&#34;]],
-    force: bool,
-    all: bool,
-    context: &#34;grpc.ServicerContext&#34;,
-) -&gt; &#34;DeleteReposResponse&#34;:
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details(&#34;Method not implemented!&#34;)
-    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.ApiBase.start_commit"><code class="name flex">
-<span>def <span class="ident">start_commit</span></span>(<span>self, parent: <a title="pachyderm_sdk.api.pfs.Commit" href="#pachyderm_sdk.api.pfs.Commit">Commit</a>, description: str, branch: <a title="pachyderm_sdk.api.pfs.Branch" href="#pachyderm_sdk.api.pfs.Branch">Branch</a>, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.pfs.Commit" href="#pachyderm_sdk.api.pfs.Commit">Commit</a></span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def start_commit(
-    self,
-    parent: &#34;Commit&#34;,
-    description: str,
-    branch: &#34;Branch&#34;,
-    context: &#34;grpc.ServicerContext&#34;,
-) -&gt; &#34;Commit&#34;:
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details(&#34;Method not implemented!&#34;)
-    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.ApiBase.finish_commit"><code class="name flex">
-<span>def <span class="ident">finish_commit</span></span>(<span>self, commit: <a title="pachyderm_sdk.api.pfs.Commit" href="#pachyderm_sdk.api.pfs.Commit">Commit</a>, description: str, error: str, force: bool, context: grpc.ServicerContext) ‑> betterproto.lib.google.protobuf.Empty</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def finish_commit(
-    self,
-    commit: &#34;Commit&#34;,
-    description: str,
-    error: str,
-    force: bool,
-    context: &#34;grpc.ServicerContext&#34;,
-) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details(&#34;Method not implemented!&#34;)
-    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.ApiBase.clear_commit"><code class="name flex">
-<span>def <span class="ident">clear_commit</span></span>(<span>self, commit: <a title="pachyderm_sdk.api.pfs.Commit" href="#pachyderm_sdk.api.pfs.Commit">Commit</a>, context: grpc.ServicerContext) ‑> betterproto.lib.google.protobuf.Empty</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def clear_commit(
-    self, commit: &#34;Commit&#34;, context: &#34;grpc.ServicerContext&#34;
-) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details(&#34;Method not implemented!&#34;)
-    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.ApiBase.inspect_commit"><code class="name flex">
-<span>def <span class="ident">inspect_commit</span></span>(<span>self, commit: <a title="pachyderm_sdk.api.pfs.Commit" href="#pachyderm_sdk.api.pfs.Commit">Commit</a>, wait: <a title="pachyderm_sdk.api.pfs.CommitState" href="#pachyderm_sdk.api.pfs.CommitState">CommitState</a>, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.pfs.CommitInfo" href="#pachyderm_sdk.api.pfs.CommitInfo">CommitInfo</a></span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def inspect_commit(
-    self, commit: &#34;Commit&#34;, wait: &#34;CommitState&#34;, context: &#34;grpc.ServicerContext&#34;
-) -&gt; &#34;CommitInfo&#34;:
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details(&#34;Method not implemented!&#34;)
-    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.ApiBase.list_commit"><code class="name flex">
-<span>def <span class="ident">list_commit</span></span>(<span>self, repo: <a title="pachyderm_sdk.api.pfs.Repo" href="#pachyderm_sdk.api.pfs.Repo">Repo</a>, from_: <a title="pachyderm_sdk.api.pfs.Commit" href="#pachyderm_sdk.api.pfs.Commit">Commit</a>, to: <a title="pachyderm_sdk.api.pfs.Commit" href="#pachyderm_sdk.api.pfs.Commit">Commit</a>, number: int, reverse: bool, all: bool, origin_kind: <a title="pachyderm_sdk.api.pfs.OriginKind" href="#pachyderm_sdk.api.pfs.OriginKind">OriginKind</a>, started_time: datetime.datetime, context: grpc.ServicerContext) ‑> Iterator[<a title="pachyderm_sdk.api.pfs.CommitInfo" href="#pachyderm_sdk.api.pfs.CommitInfo">CommitInfo</a>]</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def list_commit(
-    self,
-    repo: &#34;Repo&#34;,
-    from_: &#34;Commit&#34;,
-    to: &#34;Commit&#34;,
-    number: int,
-    reverse: bool,
-    all: bool,
-    origin_kind: &#34;OriginKind&#34;,
-    started_time: datetime,
-    context: &#34;grpc.ServicerContext&#34;,
-) -&gt; Iterator[&#34;CommitInfo&#34;]:
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details(&#34;Method not implemented!&#34;)
-    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.ApiBase.subscribe_commit"><code class="name flex">
-<span>def <span class="ident">subscribe_commit</span></span>(<span>self, repo: <a title="pachyderm_sdk.api.pfs.Repo" href="#pachyderm_sdk.api.pfs.Repo">Repo</a>, branch: str, from_: <a title="pachyderm_sdk.api.pfs.Commit" href="#pachyderm_sdk.api.pfs.Commit">Commit</a>, state: <a title="pachyderm_sdk.api.pfs.CommitState" href="#pachyderm_sdk.api.pfs.CommitState">CommitState</a>, all: bool, origin_kind: <a title="pachyderm_sdk.api.pfs.OriginKind" href="#pachyderm_sdk.api.pfs.OriginKind">OriginKind</a>, context: grpc.ServicerContext) ‑> Iterator[<a title="pachyderm_sdk.api.pfs.CommitInfo" href="#pachyderm_sdk.api.pfs.CommitInfo">CommitInfo</a>]</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def subscribe_commit(
-    self,
-    repo: &#34;Repo&#34;,
-    branch: str,
-    from_: &#34;Commit&#34;,
-    state: &#34;CommitState&#34;,
-    all: bool,
-    origin_kind: &#34;OriginKind&#34;,
-    context: &#34;grpc.ServicerContext&#34;,
-) -&gt; Iterator[&#34;CommitInfo&#34;]:
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details(&#34;Method not implemented!&#34;)
-    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.ApiBase.inspect_commit_set"><code class="name flex">
-<span>def <span class="ident">inspect_commit_set</span></span>(<span>self, commit_set: <a title="pachyderm_sdk.api.pfs.CommitSet" href="#pachyderm_sdk.api.pfs.CommitSet">CommitSet</a>, wait: bool, context: grpc.ServicerContext) ‑> Iterator[<a title="pachyderm_sdk.api.pfs.CommitInfo" href="#pachyderm_sdk.api.pfs.CommitInfo">CommitInfo</a>]</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def inspect_commit_set(
-    self, commit_set: &#34;CommitSet&#34;, wait: bool, context: &#34;grpc.ServicerContext&#34;
-) -&gt; Iterator[&#34;CommitInfo&#34;]:
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details(&#34;Method not implemented!&#34;)
-    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.ApiBase.list_commit_set"><code class="name flex">
-<span>def <span class="ident">list_commit_set</span></span>(<span>self, project: <a title="pachyderm_sdk.api.pfs.Project" href="#pachyderm_sdk.api.pfs.Project">Project</a>, context: grpc.ServicerContext) ‑> Iterator[<a title="pachyderm_sdk.api.pfs.CommitSetInfo" href="#pachyderm_sdk.api.pfs.CommitSetInfo">CommitSetInfo</a>]</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def list_commit_set(
-    self, project: &#34;Project&#34;, context: &#34;grpc.ServicerContext&#34;
-) -&gt; Iterator[&#34;CommitSetInfo&#34;]:
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details(&#34;Method not implemented!&#34;)
-    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.ApiBase.squash_commit_set"><code class="name flex">
-<span>def <span class="ident">squash_commit_set</span></span>(<span>self, commit_set: <a title="pachyderm_sdk.api.pfs.CommitSet" href="#pachyderm_sdk.api.pfs.CommitSet">CommitSet</a>, context: grpc.ServicerContext) ‑> betterproto.lib.google.protobuf.Empty</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def squash_commit_set(
-    self, commit_set: &#34;CommitSet&#34;, context: &#34;grpc.ServicerContext&#34;
-) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details(&#34;Method not implemented!&#34;)
-    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.ApiBase.drop_commit_set"><code class="name flex">
-<span>def <span class="ident">drop_commit_set</span></span>(<span>self, commit_set: <a title="pachyderm_sdk.api.pfs.CommitSet" href="#pachyderm_sdk.api.pfs.CommitSet">CommitSet</a>, context: grpc.ServicerContext) ‑> betterproto.lib.google.protobuf.Empty</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def drop_commit_set(
-    self, commit_set: &#34;CommitSet&#34;, context: &#34;grpc.ServicerContext&#34;
-) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details(&#34;Method not implemented!&#34;)
-    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.ApiBase.find_commits"><code class="name flex">
-<span>def <span class="ident">find_commits</span></span>(<span>self, start: <a title="pachyderm_sdk.api.pfs.Commit" href="#pachyderm_sdk.api.pfs.Commit">Commit</a>, file_path: str, limit: int, context: grpc.ServicerContext) ‑> Iterator[<a title="pachyderm_sdk.api.pfs.FindCommitsResponse" href="#pachyderm_sdk.api.pfs.FindCommitsResponse">FindCommitsResponse</a>]</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def find_commits(
-    self,
-    start: &#34;Commit&#34;,
-    file_path: str,
-    limit: int,
-    context: &#34;grpc.ServicerContext&#34;,
-) -&gt; Iterator[&#34;FindCommitsResponse&#34;]:
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details(&#34;Method not implemented!&#34;)
-    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.ApiBase.create_branch"><code class="name flex">
-<span>def <span class="ident">create_branch</span></span>(<span>self, head: <a title="pachyderm_sdk.api.pfs.Commit" href="#pachyderm_sdk.api.pfs.Commit">Commit</a>, branch: <a title="pachyderm_sdk.api.pfs.Branch" href="#pachyderm_sdk.api.pfs.Branch">Branch</a>, provenance: Optional[List[ForwardRef('<a title="pachyderm_sdk.api.pfs.Branch" href="#pachyderm_sdk.api.pfs.Branch">Branch</a>')]], trigger: <a title="pachyderm_sdk.api.pfs.Trigger" href="#pachyderm_sdk.api.pfs.Trigger">Trigger</a>, new_commit_set: bool, context: grpc.ServicerContext) ‑> betterproto.lib.google.protobuf.Empty</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def create_branch(
-    self,
-    head: &#34;Commit&#34;,
-    branch: &#34;Branch&#34;,
-    provenance: Optional[List[&#34;Branch&#34;]],
-    trigger: &#34;Trigger&#34;,
-    new_commit_set: bool,
-    context: &#34;grpc.ServicerContext&#34;,
-) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details(&#34;Method not implemented!&#34;)
-    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.ApiBase.inspect_branch"><code class="name flex">
-<span>def <span class="ident">inspect_branch</span></span>(<span>self, branch: <a title="pachyderm_sdk.api.pfs.Branch" href="#pachyderm_sdk.api.pfs.Branch">Branch</a>, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.pfs.BranchInfo" href="#pachyderm_sdk.api.pfs.BranchInfo">BranchInfo</a></span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def inspect_branch(
-    self, branch: &#34;Branch&#34;, context: &#34;grpc.ServicerContext&#34;
-) -&gt; &#34;BranchInfo&#34;:
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details(&#34;Method not implemented!&#34;)
-    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.ApiBase.list_branch"><code class="name flex">
-<span>def <span class="ident">list_branch</span></span>(<span>self, repo: <a title="pachyderm_sdk.api.pfs.Repo" href="#pachyderm_sdk.api.pfs.Repo">Repo</a>, reverse: bool, context: grpc.ServicerContext) ‑> Iterator[<a title="pachyderm_sdk.api.pfs.BranchInfo" href="#pachyderm_sdk.api.pfs.BranchInfo">BranchInfo</a>]</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def list_branch(
-    self, repo: &#34;Repo&#34;, reverse: bool, context: &#34;grpc.ServicerContext&#34;
-) -&gt; Iterator[&#34;BranchInfo&#34;]:
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details(&#34;Method not implemented!&#34;)
-    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.ApiBase.delete_branch"><code class="name flex">
-<span>def <span class="ident">delete_branch</span></span>(<span>self, branch: <a title="pachyderm_sdk.api.pfs.Branch" href="#pachyderm_sdk.api.pfs.Branch">Branch</a>, force: bool, context: grpc.ServicerContext) ‑> betterproto.lib.google.protobuf.Empty</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def delete_branch(
-    self, branch: &#34;Branch&#34;, force: bool, context: &#34;grpc.ServicerContext&#34;
-) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details(&#34;Method not implemented!&#34;)
-    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.ApiBase.modify_file"><code class="name flex">
-<span>def <span class="ident">modify_file</span></span>(<span>self, request_iterator: Iterator[ForwardRef('<a title="pachyderm_sdk.api.pfs.ModifyFileRequest" href="#pachyderm_sdk.api.pfs.ModifyFileRequest">ModifyFileRequest</a>')], context: grpc.ServicerContext) ‑> betterproto.lib.google.protobuf.Empty</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def modify_file(
-    self,
-    request_iterator: Iterator[&#34;ModifyFileRequest&#34;],
-    context: &#34;grpc.ServicerContext&#34;,
-) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details(&#34;Method not implemented!&#34;)
-    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.ApiBase.get_file"><code class="name flex">
-<span>def <span class="ident">get_file</span></span>(<span>self, file: <a title="pachyderm_sdk.api.pfs.File" href="#pachyderm_sdk.api.pfs.File">File</a>, url: str, offset: int, path_range: <a title="pachyderm_sdk.api.pfs.PathRange" href="#pachyderm_sdk.api.pfs.PathRange">PathRange</a>, context: grpc.ServicerContext) ‑> Iterator[betterproto.lib.google.protobuf.BytesValue]</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def get_file(
-    self,
-    file: &#34;File&#34;,
-    url: str,
-    offset: int,
-    path_range: &#34;PathRange&#34;,
-    context: &#34;grpc.ServicerContext&#34;,
-) -&gt; Iterator[&#34;betterproto_lib_google_protobuf.BytesValue&#34;]:
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details(&#34;Method not implemented!&#34;)
-    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.ApiBase.get_file_tar"><code class="name flex">
-<span>def <span class="ident">get_file_tar</span></span>(<span>self, file: <a title="pachyderm_sdk.api.pfs.File" href="#pachyderm_sdk.api.pfs.File">File</a>, url: str, offset: int, path_range: <a title="pachyderm_sdk.api.pfs.PathRange" href="#pachyderm_sdk.api.pfs.PathRange">PathRange</a>, context: grpc.ServicerContext) ‑> Iterator[betterproto.lib.google.protobuf.BytesValue]</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def get_file_tar(
-    self,
-    file: &#34;File&#34;,
-    url: str,
-    offset: int,
-    path_range: &#34;PathRange&#34;,
-    context: &#34;grpc.ServicerContext&#34;,
-) -&gt; Iterator[&#34;betterproto_lib_google_protobuf.BytesValue&#34;]:
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details(&#34;Method not implemented!&#34;)
-    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.ApiBase.inspect_file"><code class="name flex">
-<span>def <span class="ident">inspect_file</span></span>(<span>self, file: <a title="pachyderm_sdk.api.pfs.File" href="#pachyderm_sdk.api.pfs.File">File</a>, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.pfs.FileInfo" href="#pachyderm_sdk.api.pfs.FileInfo">FileInfo</a></span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def inspect_file(self, file: &#34;File&#34;, context: &#34;grpc.ServicerContext&#34;) -&gt; &#34;FileInfo&#34;:
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details(&#34;Method not implemented!&#34;)
-    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.ApiBase.list_file"><code class="name flex">
-<span>def <span class="ident">list_file</span></span>(<span>self, file: <a title="pachyderm_sdk.api.pfs.File" href="#pachyderm_sdk.api.pfs.File">File</a>, pagination_marker: <a title="pachyderm_sdk.api.pfs.File" href="#pachyderm_sdk.api.pfs.File">File</a>, number: int, reverse: bool, context: grpc.ServicerContext) ‑> Iterator[<a title="pachyderm_sdk.api.pfs.FileInfo" href="#pachyderm_sdk.api.pfs.FileInfo">FileInfo</a>]</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def list_file(
-    self,
-    file: &#34;File&#34;,
-    pagination_marker: &#34;File&#34;,
-    number: int,
-    reverse: bool,
-    context: &#34;grpc.ServicerContext&#34;,
-) -&gt; Iterator[&#34;FileInfo&#34;]:
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details(&#34;Method not implemented!&#34;)
-    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.ApiBase.walk_file"><code class="name flex">
-<span>def <span class="ident">walk_file</span></span>(<span>self, file: <a title="pachyderm_sdk.api.pfs.File" href="#pachyderm_sdk.api.pfs.File">File</a>, pagination_marker: <a title="pachyderm_sdk.api.pfs.File" href="#pachyderm_sdk.api.pfs.File">File</a>, number: int, reverse: bool, context: grpc.ServicerContext) ‑> Iterator[<a title="pachyderm_sdk.api.pfs.FileInfo" href="#pachyderm_sdk.api.pfs.FileInfo">FileInfo</a>]</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def walk_file(
-    self,
-    file: &#34;File&#34;,
-    pagination_marker: &#34;File&#34;,
-    number: int,
-    reverse: bool,
-    context: &#34;grpc.ServicerContext&#34;,
-) -&gt; Iterator[&#34;FileInfo&#34;]:
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details(&#34;Method not implemented!&#34;)
-    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.ApiBase.glob_file"><code class="name flex">
-<span>def <span class="ident">glob_file</span></span>(<span>self, commit: <a title="pachyderm_sdk.api.pfs.Commit" href="#pachyderm_sdk.api.pfs.Commit">Commit</a>, pattern: str, path_range: <a title="pachyderm_sdk.api.pfs.PathRange" href="#pachyderm_sdk.api.pfs.PathRange">PathRange</a>, context: grpc.ServicerContext) ‑> Iterator[<a title="pachyderm_sdk.api.pfs.FileInfo" href="#pachyderm_sdk.api.pfs.FileInfo">FileInfo</a>]</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def glob_file(
-    self,
-    commit: &#34;Commit&#34;,
-    pattern: str,
-    path_range: &#34;PathRange&#34;,
-    context: &#34;grpc.ServicerContext&#34;,
-) -&gt; Iterator[&#34;FileInfo&#34;]:
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details(&#34;Method not implemented!&#34;)
-    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.ApiBase.diff_file"><code class="name flex">
-<span>def <span class="ident">diff_file</span></span>(<span>self, new_file: <a title="pachyderm_sdk.api.pfs.File" href="#pachyderm_sdk.api.pfs.File">File</a>, old_file: <a title="pachyderm_sdk.api.pfs.File" href="#pachyderm_sdk.api.pfs.File">File</a>, shallow: bool, context: grpc.ServicerContext) ‑> Iterator[<a title="pachyderm_sdk.api.pfs.DiffFileResponse" href="#pachyderm_sdk.api.pfs.DiffFileResponse">DiffFileResponse</a>]</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def diff_file(
-    self,
-    new_file: &#34;File&#34;,
-    old_file: &#34;File&#34;,
-    shallow: bool,
-    context: &#34;grpc.ServicerContext&#34;,
-) -&gt; Iterator[&#34;DiffFileResponse&#34;]:
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details(&#34;Method not implemented!&#34;)
-    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.ApiBase.activate_auth"><code class="name flex">
-<span>def <span class="ident">activate_auth</span></span>(<span>self, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.pfs.ActivateAuthResponse" href="#pachyderm_sdk.api.pfs.ActivateAuthResponse">ActivateAuthResponse</a></span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def activate_auth(self, context: &#34;grpc.ServicerContext&#34;) -&gt; &#34;ActivateAuthResponse&#34;:
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details(&#34;Method not implemented!&#34;)
-    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.ApiBase.delete_all"><code class="name flex">
-<span>def <span class="ident">delete_all</span></span>(<span>self, context: grpc.ServicerContext) ‑> betterproto.lib.google.protobuf.Empty</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def delete_all(
-    self, context: &#34;grpc.ServicerContext&#34;
-) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details(&#34;Method not implemented!&#34;)
-    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.ApiBase.fsck"><code class="name flex">
-<span>def <span class="ident">fsck</span></span>(<span>self, fix: bool, zombie_target: <a title="pachyderm_sdk.api.pfs.Commit" href="#pachyderm_sdk.api.pfs.Commit">Commit</a>, zombie_all: bool, context: grpc.ServicerContext) ‑> Iterator[<a title="pachyderm_sdk.api.pfs.FsckResponse" href="#pachyderm_sdk.api.pfs.FsckResponse">FsckResponse</a>]</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def fsck(
-    self,
-    fix: bool,
-    zombie_target: &#34;Commit&#34;,
-    zombie_all: bool,
-    context: &#34;grpc.ServicerContext&#34;,
-) -&gt; Iterator[&#34;FsckResponse&#34;]:
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details(&#34;Method not implemented!&#34;)
-    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.ApiBase.create_file_set"><code class="name flex">
-<span>def <span class="ident">create_file_set</span></span>(<span>self, request_iterator: Iterator[ForwardRef('<a title="pachyderm_sdk.api.pfs.ModifyFileRequest" href="#pachyderm_sdk.api.pfs.ModifyFileRequest">ModifyFileRequest</a>')], context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.pfs.CreateFileSetResponse" href="#pachyderm_sdk.api.pfs.CreateFileSetResponse">CreateFileSetResponse</a></span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def create_file_set(
-    self,
-    request_iterator: Iterator[&#34;ModifyFileRequest&#34;],
-    context: &#34;grpc.ServicerContext&#34;,
-) -&gt; &#34;CreateFileSetResponse&#34;:
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details(&#34;Method not implemented!&#34;)
-    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.ApiBase.get_file_set"><code class="name flex">
-<span>def <span class="ident">get_file_set</span></span>(<span>self, commit: <a title="pachyderm_sdk.api.pfs.Commit" href="#pachyderm_sdk.api.pfs.Commit">Commit</a>, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.pfs.CreateFileSetResponse" href="#pachyderm_sdk.api.pfs.CreateFileSetResponse">CreateFileSetResponse</a></span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def get_file_set(
-    self, commit: &#34;Commit&#34;, context: &#34;grpc.ServicerContext&#34;
-) -&gt; &#34;CreateFileSetResponse&#34;:
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details(&#34;Method not implemented!&#34;)
-    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.ApiBase.add_file_set"><code class="name flex">
-<span>def <span class="ident">add_file_set</span></span>(<span>self, commit: <a title="pachyderm_sdk.api.pfs.Commit" href="#pachyderm_sdk.api.pfs.Commit">Commit</a>, file_set_id: str, context: grpc.ServicerContext) ‑> betterproto.lib.google.protobuf.Empty</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def add_file_set(
-    self, commit: &#34;Commit&#34;, file_set_id: str, context: &#34;grpc.ServicerContext&#34;
-) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details(&#34;Method not implemented!&#34;)
-    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.ApiBase.renew_file_set"><code class="name flex">
-<span>def <span class="ident">renew_file_set</span></span>(<span>self, file_set_id: str, ttl_seconds: int, context: grpc.ServicerContext) ‑> betterproto.lib.google.protobuf.Empty</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def renew_file_set(
-    self, file_set_id: str, ttl_seconds: int, context: &#34;grpc.ServicerContext&#34;
-) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details(&#34;Method not implemented!&#34;)
-    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.ApiBase.compose_file_set"><code class="name flex">
-<span>def <span class="ident">compose_file_set</span></span>(<span>self, file_set_ids: Optional[List[str]], ttl_seconds: int, compact: bool, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.pfs.CreateFileSetResponse" href="#pachyderm_sdk.api.pfs.CreateFileSetResponse">CreateFileSetResponse</a></span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def compose_file_set(
-    self,
-    file_set_ids: Optional[List[str]],
-    ttl_seconds: int,
-    compact: bool,
-    context: &#34;grpc.ServicerContext&#34;,
-) -&gt; &#34;CreateFileSetResponse&#34;:
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details(&#34;Method not implemented!&#34;)
-    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.ApiBase.shard_file_set"><code class="name flex">
-<span>def <span class="ident">shard_file_set</span></span>(<span>self, file_set_id: str, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.pfs.ShardFileSetResponse" href="#pachyderm_sdk.api.pfs.ShardFileSetResponse">ShardFileSetResponse</a></span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def shard_file_set(
-    self, file_set_id: str, context: &#34;grpc.ServicerContext&#34;
-) -&gt; &#34;ShardFileSetResponse&#34;:
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details(&#34;Method not implemented!&#34;)
-    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.ApiBase.check_storage"><code class="name flex">
-<span>def <span class="ident">check_storage</span></span>(<span>self, read_chunk_data: bool, chunk_begin: bytes, chunk_end: bytes, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.pfs.CheckStorageResponse" href="#pachyderm_sdk.api.pfs.CheckStorageResponse">CheckStorageResponse</a></span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def check_storage(
-    self,
-    read_chunk_data: bool,
-    chunk_begin: bytes,
-    chunk_end: bytes,
-    context: &#34;grpc.ServicerContext&#34;,
-) -&gt; &#34;CheckStorageResponse&#34;:
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details(&#34;Method not implemented!&#34;)
-    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.ApiBase.put_cache"><code class="name flex">
-<span>def <span class="ident">put_cache</span></span>(<span>self, key: str, value: betterproto_lib_google_protobuf.Any, file_set_ids: Optional[List[str]], tag: str, context: grpc.ServicerContext) ‑> betterproto.lib.google.protobuf.Empty</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def put_cache(
-    self,
-    key: str,
-    value: &#34;betterproto_lib_google_protobuf.Any&#34;,
-    file_set_ids: Optional[List[str]],
-    tag: str,
-    context: &#34;grpc.ServicerContext&#34;,
-) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details(&#34;Method not implemented!&#34;)
-    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.ApiBase.get_cache"><code class="name flex">
-<span>def <span class="ident">get_cache</span></span>(<span>self, key: str, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.pfs.GetCacheResponse" href="#pachyderm_sdk.api.pfs.GetCacheResponse">GetCacheResponse</a></span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def get_cache(
-    self, key: str, context: &#34;grpc.ServicerContext&#34;
-) -&gt; &#34;GetCacheResponse&#34;:
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details(&#34;Method not implemented!&#34;)
-    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.ApiBase.clear_cache"><code class="name flex">
-<span>def <span class="ident">clear_cache</span></span>(<span>self, tag_prefix: str, context: grpc.ServicerContext) ‑> betterproto.lib.google.protobuf.Empty</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def clear_cache(
-    self, tag_prefix: str, context: &#34;grpc.ServicerContext&#34;
-) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details(&#34;Method not implemented!&#34;)
-    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.ApiBase.list_task"><code class="name flex">
-<span>def <span class="ident">list_task</span></span>(<span>self, group: Group, context: grpc.ServicerContext) ‑> Iterator[_taskapi__.TaskInfo]</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def list_task(
-    self, group: &#34;Group&#34;, context: &#34;grpc.ServicerContext&#34;
-) -&gt; Iterator[&#34;_taskapi__.TaskInfo&#34;]:
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details(&#34;Method not implemented!&#34;)
-    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.ApiBase.egress"><code class="name flex">
-<span>def <span class="ident">egress</span></span>(<span>self, commit: <a title="pachyderm_sdk.api.pfs.Commit" href="#pachyderm_sdk.api.pfs.Commit">Commit</a>, object_storage: <a title="pachyderm_sdk.api.pfs.ObjectStorageEgress" href="#pachyderm_sdk.api.pfs.ObjectStorageEgress">ObjectStorageEgress</a>, sql_database: <a title="pachyderm_sdk.api.pfs.SqlDatabaseEgress" href="#pachyderm_sdk.api.pfs.SqlDatabaseEgress">SqlDatabaseEgress</a>, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.pfs.EgressResponse" href="#pachyderm_sdk.api.pfs.EgressResponse">EgressResponse</a></span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def egress(
-    self,
-    commit: &#34;Commit&#34;,
-    object_storage: &#34;ObjectStorageEgress&#34;,
-    sql_database: &#34;SqlDatabaseEgress&#34;,
-    context: &#34;grpc.ServicerContext&#34;,
-) -&gt; &#34;EgressResponse&#34;:
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details(&#34;Method not implemented!&#34;)
-    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.ApiBase.create_project"><code class="name flex">
-<span>def <span class="ident">create_project</span></span>(<span>self, project: <a title="pachyderm_sdk.api.pfs.Project" href="#pachyderm_sdk.api.pfs.Project">Project</a>, description: str, update: bool, context: grpc.ServicerContext) ‑> betterproto.lib.google.protobuf.Empty</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def create_project(
-    self,
-    project: &#34;Project&#34;,
-    description: str,
-    update: bool,
-    context: &#34;grpc.ServicerContext&#34;,
-) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details(&#34;Method not implemented!&#34;)
-    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.ApiBase.inspect_project"><code class="name flex">
-<span>def <span class="ident">inspect_project</span></span>(<span>self, project: <a title="pachyderm_sdk.api.pfs.Project" href="#pachyderm_sdk.api.pfs.Project">Project</a>, context: grpc.ServicerContext) ‑> <a title="pachyderm_sdk.api.pfs.ProjectInfo" href="#pachyderm_sdk.api.pfs.ProjectInfo">ProjectInfo</a></span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def inspect_project(
-    self, project: &#34;Project&#34;, context: &#34;grpc.ServicerContext&#34;
-) -&gt; &#34;ProjectInfo&#34;:
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details(&#34;Method not implemented!&#34;)
-    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.ApiBase.list_project"><code class="name flex">
-<span>def <span class="ident">list_project</span></span>(<span>self, context: grpc.ServicerContext) ‑> Iterator[<a title="pachyderm_sdk.api.pfs.ProjectInfo" href="#pachyderm_sdk.api.pfs.ProjectInfo">ProjectInfo</a>]</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def list_project(self, context: &#34;grpc.ServicerContext&#34;) -&gt; Iterator[&#34;ProjectInfo&#34;]:
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details(&#34;Method not implemented!&#34;)
-    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
-</details>
-</dd>
-<dt id="pachyderm_sdk.api.pfs.ApiBase.delete_project"><code class="name flex">
-<span>def <span class="ident">delete_project</span></span>(<span>self, project: <a title="pachyderm_sdk.api.pfs.Project" href="#pachyderm_sdk.api.pfs.Project">Project</a>, force: bool, context: grpc.ServicerContext) ‑> betterproto.lib.google.protobuf.Empty</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def delete_project(
-    self, project: &#34;Project&#34;, force: bool, context: &#34;grpc.ServicerContext&#34;
-) -&gt; &#34;betterproto_lib_google_protobuf.Empty&#34;:
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details(&#34;Method not implemented!&#34;)
-    raise NotImplementedError(&#34;Method not implemented!&#34;)</code></pre>
 </details>
 </dd>
 </dl>
@@ -9337,6 +7690,13 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 <li><code><a title="pachyderm_sdk.api.pfs.Delimiter.LINE" href="#pachyderm_sdk.api.pfs.Delimiter.LINE">LINE</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pfs.Delimiter.SQL" href="#pachyderm_sdk.api.pfs.Delimiter.SQL">SQL</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pfs.Delimiter.CSV" href="#pachyderm_sdk.api.pfs.Delimiter.CSV">CSV</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.pfs.GetFileSetRequestFileSetType" href="#pachyderm_sdk.api.pfs.GetFileSetRequestFileSetType">GetFileSetRequestFileSetType</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.pfs.GetFileSetRequestFileSetType.TOTAL" href="#pachyderm_sdk.api.pfs.GetFileSetRequestFileSetType.TOTAL">TOTAL</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pfs.GetFileSetRequestFileSetType.DIFF" href="#pachyderm_sdk.api.pfs.GetFileSetRequestFileSetType.DIFF">DIFF</a></code></li>
 </ul>
 </li>
 <li>
@@ -9631,6 +7991,26 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 </ul>
 </li>
 <li>
+<h4><code><a title="pachyderm_sdk.api.pfs.SquashCommitRequest" href="#pachyderm_sdk.api.pfs.SquashCommitRequest">SquashCommitRequest</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.pfs.SquashCommitRequest.commit" href="#pachyderm_sdk.api.pfs.SquashCommitRequest.commit">commit</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pfs.SquashCommitRequest.recursive" href="#pachyderm_sdk.api.pfs.SquashCommitRequest.recursive">recursive</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.pfs.SquashCommitResponse" href="#pachyderm_sdk.api.pfs.SquashCommitResponse">SquashCommitResponse</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.pfs.DropCommitRequest" href="#pachyderm_sdk.api.pfs.DropCommitRequest">DropCommitRequest</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.pfs.DropCommitRequest.commit" href="#pachyderm_sdk.api.pfs.DropCommitRequest.commit">commit</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pfs.DropCommitRequest.recursive" href="#pachyderm_sdk.api.pfs.DropCommitRequest.recursive">recursive</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.pfs.DropCommitResponse" href="#pachyderm_sdk.api.pfs.DropCommitResponse">DropCommitResponse</a></code></h4>
+</li>
+<li>
 <h4><code><a title="pachyderm_sdk.api.pfs.CreateBranchRequest" href="#pachyderm_sdk.api.pfs.CreateBranchRequest">CreateBranchRequest</a></code></h4>
 <ul class="">
 <li><code><a title="pachyderm_sdk.api.pfs.CreateBranchRequest.head" href="#pachyderm_sdk.api.pfs.CreateBranchRequest.head">head</a></code></li>
@@ -9688,6 +8068,19 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 <h4><code><a title="pachyderm_sdk.api.pfs.InspectProjectRequest" href="#pachyderm_sdk.api.pfs.InspectProjectRequest">InspectProjectRequest</a></code></h4>
 <ul class="">
 <li><code><a title="pachyderm_sdk.api.pfs.InspectProjectRequest.project" href="#pachyderm_sdk.api.pfs.InspectProjectRequest.project">project</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.pfs.InspectProjectV2Request" href="#pachyderm_sdk.api.pfs.InspectProjectV2Request">InspectProjectV2Request</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.pfs.InspectProjectV2Request.project" href="#pachyderm_sdk.api.pfs.InspectProjectV2Request.project">project</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pachyderm_sdk.api.pfs.InspectProjectV2Response" href="#pachyderm_sdk.api.pfs.InspectProjectV2Response">InspectProjectV2Response</a></code></h4>
+<ul class="">
+<li><code><a title="pachyderm_sdk.api.pfs.InspectProjectV2Response.info" href="#pachyderm_sdk.api.pfs.InspectProjectV2Response.info">info</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pfs.InspectProjectV2Response.defaults_json" href="#pachyderm_sdk.api.pfs.InspectProjectV2Response.defaults_json">defaults_json</a></code></li>
 </ul>
 </li>
 <li>
@@ -9823,6 +8216,7 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 <h4><code><a title="pachyderm_sdk.api.pfs.GetFileSetRequest" href="#pachyderm_sdk.api.pfs.GetFileSetRequest">GetFileSetRequest</a></code></h4>
 <ul class="">
 <li><code><a title="pachyderm_sdk.api.pfs.GetFileSetRequest.commit" href="#pachyderm_sdk.api.pfs.GetFileSetRequest.commit">commit</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pfs.GetFileSetRequest.type" href="#pachyderm_sdk.api.pfs.GetFileSetRequest.type">type</a></code></li>
 </ul>
 </li>
 <li>
@@ -9851,6 +8245,8 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 <h4><code><a title="pachyderm_sdk.api.pfs.ShardFileSetRequest" href="#pachyderm_sdk.api.pfs.ShardFileSetRequest">ShardFileSetRequest</a></code></h4>
 <ul class="">
 <li><code><a title="pachyderm_sdk.api.pfs.ShardFileSetRequest.file_set_id" href="#pachyderm_sdk.api.pfs.ShardFileSetRequest.file_set_id">file_set_id</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pfs.ShardFileSetRequest.num_files" href="#pachyderm_sdk.api.pfs.ShardFileSetRequest.num_files">num_files</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pfs.ShardFileSetRequest.size_bytes" href="#pachyderm_sdk.api.pfs.ShardFileSetRequest.size_bytes">size_bytes</a></code></li>
 </ul>
 </li>
 <li>
@@ -9982,6 +8378,8 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 <li><code><a title="pachyderm_sdk.api.pfs.ApiStub.inspect_commit" href="#pachyderm_sdk.api.pfs.ApiStub.inspect_commit">inspect_commit</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pfs.ApiStub.list_commit" href="#pachyderm_sdk.api.pfs.ApiStub.list_commit">list_commit</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pfs.ApiStub.subscribe_commit" href="#pachyderm_sdk.api.pfs.ApiStub.subscribe_commit">subscribe_commit</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pfs.ApiStub.squash_commit" href="#pachyderm_sdk.api.pfs.ApiStub.squash_commit">squash_commit</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pfs.ApiStub.drop_commit" href="#pachyderm_sdk.api.pfs.ApiStub.drop_commit">drop_commit</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pfs.ApiStub.inspect_commit_set" href="#pachyderm_sdk.api.pfs.ApiStub.inspect_commit_set">inspect_commit_set</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pfs.ApiStub.list_commit_set" href="#pachyderm_sdk.api.pfs.ApiStub.list_commit_set">list_commit_set</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pfs.ApiStub.squash_commit_set" href="#pachyderm_sdk.api.pfs.ApiStub.squash_commit_set">squash_commit_set</a></code></li>
@@ -10016,60 +8414,9 @@ class EgressResponseSqlDatabaseResult(betterproto.Message):
 <li><code><a title="pachyderm_sdk.api.pfs.ApiStub.egress" href="#pachyderm_sdk.api.pfs.ApiStub.egress">egress</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pfs.ApiStub.create_project" href="#pachyderm_sdk.api.pfs.ApiStub.create_project">create_project</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pfs.ApiStub.inspect_project" href="#pachyderm_sdk.api.pfs.ApiStub.inspect_project">inspect_project</a></code></li>
+<li><code><a title="pachyderm_sdk.api.pfs.ApiStub.inspect_project_v2" href="#pachyderm_sdk.api.pfs.ApiStub.inspect_project_v2">inspect_project_v2</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pfs.ApiStub.list_project" href="#pachyderm_sdk.api.pfs.ApiStub.list_project">list_project</a></code></li>
 <li><code><a title="pachyderm_sdk.api.pfs.ApiStub.delete_project" href="#pachyderm_sdk.api.pfs.ApiStub.delete_project">delete_project</a></code></li>
-</ul>
-</li>
-<li>
-<h4><code><a title="pachyderm_sdk.api.pfs.ApiBase" href="#pachyderm_sdk.api.pfs.ApiBase">ApiBase</a></code></h4>
-<ul class="two-column">
-<li><code><a title="pachyderm_sdk.api.pfs.ApiBase.create_repo" href="#pachyderm_sdk.api.pfs.ApiBase.create_repo">create_repo</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.ApiBase.inspect_repo" href="#pachyderm_sdk.api.pfs.ApiBase.inspect_repo">inspect_repo</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.ApiBase.list_repo" href="#pachyderm_sdk.api.pfs.ApiBase.list_repo">list_repo</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.ApiBase.delete_repo" href="#pachyderm_sdk.api.pfs.ApiBase.delete_repo">delete_repo</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.ApiBase.delete_repos" href="#pachyderm_sdk.api.pfs.ApiBase.delete_repos">delete_repos</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.ApiBase.start_commit" href="#pachyderm_sdk.api.pfs.ApiBase.start_commit">start_commit</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.ApiBase.finish_commit" href="#pachyderm_sdk.api.pfs.ApiBase.finish_commit">finish_commit</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.ApiBase.clear_commit" href="#pachyderm_sdk.api.pfs.ApiBase.clear_commit">clear_commit</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.ApiBase.inspect_commit" href="#pachyderm_sdk.api.pfs.ApiBase.inspect_commit">inspect_commit</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.ApiBase.list_commit" href="#pachyderm_sdk.api.pfs.ApiBase.list_commit">list_commit</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.ApiBase.subscribe_commit" href="#pachyderm_sdk.api.pfs.ApiBase.subscribe_commit">subscribe_commit</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.ApiBase.inspect_commit_set" href="#pachyderm_sdk.api.pfs.ApiBase.inspect_commit_set">inspect_commit_set</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.ApiBase.list_commit_set" href="#pachyderm_sdk.api.pfs.ApiBase.list_commit_set">list_commit_set</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.ApiBase.squash_commit_set" href="#pachyderm_sdk.api.pfs.ApiBase.squash_commit_set">squash_commit_set</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.ApiBase.drop_commit_set" href="#pachyderm_sdk.api.pfs.ApiBase.drop_commit_set">drop_commit_set</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.ApiBase.find_commits" href="#pachyderm_sdk.api.pfs.ApiBase.find_commits">find_commits</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.ApiBase.create_branch" href="#pachyderm_sdk.api.pfs.ApiBase.create_branch">create_branch</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.ApiBase.inspect_branch" href="#pachyderm_sdk.api.pfs.ApiBase.inspect_branch">inspect_branch</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.ApiBase.list_branch" href="#pachyderm_sdk.api.pfs.ApiBase.list_branch">list_branch</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.ApiBase.delete_branch" href="#pachyderm_sdk.api.pfs.ApiBase.delete_branch">delete_branch</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.ApiBase.modify_file" href="#pachyderm_sdk.api.pfs.ApiBase.modify_file">modify_file</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.ApiBase.get_file" href="#pachyderm_sdk.api.pfs.ApiBase.get_file">get_file</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.ApiBase.get_file_tar" href="#pachyderm_sdk.api.pfs.ApiBase.get_file_tar">get_file_tar</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.ApiBase.inspect_file" href="#pachyderm_sdk.api.pfs.ApiBase.inspect_file">inspect_file</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.ApiBase.list_file" href="#pachyderm_sdk.api.pfs.ApiBase.list_file">list_file</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.ApiBase.walk_file" href="#pachyderm_sdk.api.pfs.ApiBase.walk_file">walk_file</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.ApiBase.glob_file" href="#pachyderm_sdk.api.pfs.ApiBase.glob_file">glob_file</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.ApiBase.diff_file" href="#pachyderm_sdk.api.pfs.ApiBase.diff_file">diff_file</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.ApiBase.activate_auth" href="#pachyderm_sdk.api.pfs.ApiBase.activate_auth">activate_auth</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.ApiBase.delete_all" href="#pachyderm_sdk.api.pfs.ApiBase.delete_all">delete_all</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.ApiBase.fsck" href="#pachyderm_sdk.api.pfs.ApiBase.fsck">fsck</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.ApiBase.create_file_set" href="#pachyderm_sdk.api.pfs.ApiBase.create_file_set">create_file_set</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.ApiBase.get_file_set" href="#pachyderm_sdk.api.pfs.ApiBase.get_file_set">get_file_set</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.ApiBase.add_file_set" href="#pachyderm_sdk.api.pfs.ApiBase.add_file_set">add_file_set</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.ApiBase.renew_file_set" href="#pachyderm_sdk.api.pfs.ApiBase.renew_file_set">renew_file_set</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.ApiBase.compose_file_set" href="#pachyderm_sdk.api.pfs.ApiBase.compose_file_set">compose_file_set</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.ApiBase.shard_file_set" href="#pachyderm_sdk.api.pfs.ApiBase.shard_file_set">shard_file_set</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.ApiBase.check_storage" href="#pachyderm_sdk.api.pfs.ApiBase.check_storage">check_storage</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.ApiBase.put_cache" href="#pachyderm_sdk.api.pfs.ApiBase.put_cache">put_cache</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.ApiBase.get_cache" href="#pachyderm_sdk.api.pfs.ApiBase.get_cache">get_cache</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.ApiBase.clear_cache" href="#pachyderm_sdk.api.pfs.ApiBase.clear_cache">clear_cache</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.ApiBase.list_task" href="#pachyderm_sdk.api.pfs.ApiBase.list_task">list_task</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.ApiBase.egress" href="#pachyderm_sdk.api.pfs.ApiBase.egress">egress</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.ApiBase.create_project" href="#pachyderm_sdk.api.pfs.ApiBase.create_project">create_project</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.ApiBase.inspect_project" href="#pachyderm_sdk.api.pfs.ApiBase.inspect_project">inspect_project</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.ApiBase.list_project" href="#pachyderm_sdk.api.pfs.ApiBase.list_project">list_project</a></code></li>
-<li><code><a title="pachyderm_sdk.api.pfs.ApiBase.delete_project" href="#pachyderm_sdk.api.pfs.ApiBase.delete_project">delete_project</a></code></li>
 </ul>
 </li>
 </ul>

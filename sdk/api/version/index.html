@@ -60,6 +60,7 @@ class Version(betterproto.Message):
 
 
 class ApiStub:
+
     def __init__(self, channel: &#34;grpc.Channel&#34;):
         self.__rpc_get_version = channel.unary_unary(
             &#34;/versionpb_v2.API/GetVersion&#34;,
@@ -68,12 +69,14 @@ class ApiStub:
         )
 
     def get_version(self) -&gt; &#34;Version&#34;:
+
         request = betterproto_lib_google_protobuf.Empty()
 
         return self.__rpc_get_version(request)
 
 
 class ApiBase:
+
     def get_version(self, context: &#34;grpc.ServicerContext&#34;) -&gt; &#34;Version&#34;:
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details(&#34;Method not implemented!&#34;)
@@ -179,6 +182,7 @@ class Version(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class ApiStub:
+
     def __init__(self, channel: &#34;grpc.Channel&#34;):
         self.__rpc_get_version = channel.unary_unary(
             &#34;/versionpb_v2.API/GetVersion&#34;,
@@ -187,6 +191,7 @@ class Version(betterproto.Message):
         )
 
     def get_version(self) -&gt; &#34;Version&#34;:
+
         request = betterproto_lib_google_protobuf.Empty()
 
         return self.__rpc_get_version(request)</code></pre>
@@ -203,6 +208,7 @@ class Version(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def get_version(self) -&gt; &#34;Version&#34;:
+
     request = betterproto_lib_google_protobuf.Empty()
 
     return self.__rpc_get_version(request)</code></pre>
@@ -220,6 +226,7 @@ class Version(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class ApiBase:
+
     def get_version(self, context: &#34;grpc.ServicerContext&#34;) -&gt; &#34;Version&#34;:
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details(&#34;Method not implemented!&#34;)
