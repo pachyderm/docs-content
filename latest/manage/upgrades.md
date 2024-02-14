@@ -11,6 +11,10 @@ directory: true
 weight: 3
 ---
 
+{{%notice warning%}}
+The next minor release of {{%productName%}} (2.10) will no longer support Postgres versions older than **Postgres 15**. We recommend that you at least upgrade to Postgres 15 to ensure compatibility. If you encounter any issues, please let us know by filing a support ticket.
+{{%/notice%}}
+
 Learn how to upgrade {{% productName %}} to access new features and performance enhancements.
 
 ## Before You Start 
