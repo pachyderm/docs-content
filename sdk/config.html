@@ -30,8 +30,9 @@
 <pre><code class="python">&#34;&#34;&#34;Functionality for parsing Pachyderm config files.&#34;&#34;&#34;
 import json
 import os
+import uuid
 from base64 import b64decode
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
 from pathlib import Path
 from typing import Dict, Optional, Union
 
@@ -41,20 +42,65 @@ from .errors import ConfigError
 class ConfigFile:
     &#34;&#34;&#34;A parsed Pachyderm config file.&#34;&#34;&#34;
 
-    def __init__(self, config_file: Union[Path, str]):
+    def __init__(self, data: dict):
         &#34;&#34;&#34;
+        Parameters
+        ----------
+        data : dict (JSON)
+            The config file data. The only required fields are:
+            {
+              &#34;v2&#34;: {
+                &#34;active_context&#34;: ...,
+                &#34;contexts&#34;: {...}
+              }
+            }
+        &#34;&#34;&#34;
+        if (v2 := data.get(&#34;v2&#34;)) is None or not (
+            &#34;active_context&#34; in v2 and &#34;contexts&#34; in v2
+        ):
+            raise ValueError(
+                &#34;Missing required fields v2.active_context and/or v2.contexts.&#34;
+            )
+        self._config_file_data = data
+
+    @classmethod
+    def from_path(cls, config_file: Union[Path, str]) -&gt; &#34;ConfigFile&#34;:
+        &#34;&#34;&#34;Parse a Pachyderm config file from a local file.
+
         Parameters
         ----------
         config_file : str
             The path to the config file.
         &#34;&#34;&#34;
         config_file = Path(os.path.expanduser(config_file)).resolve()
-        self._config_file_data = json.loads(config_file.read_bytes())
+        return cls(data=json.loads(config_file.read_bytes()))
+
+    @classmethod
+    def new_with_context(cls, name: str, context: &#34;Context&#34;) -&gt; &#34;ConfigFile&#34;:
+        &#34;&#34;&#34;Create a new ConfigFile object from a single context.
+        This will also set this specified context as the active context.
+
+        Parameters
+        ----------
+        name : str
+            The name of the context.
+        context : Context
+            The context object.
+        &#34;&#34;&#34;
+        data = dict(
+            user_id=str(uuid.uuid4()).replace(&#34;-&#34;, &#34;&#34;),
+            v2=dict(
+                active_context=name,
+                contexts={name: asdict(context)},
+                metrics=True,
+            ),
+        )
+        return cls(data)
 
     @property
-    def user_id(self) -&gt; str:
+    def user_id(self) -&gt; Optional[str]:
         &#34;&#34;&#34;The user ID of the config file.&#34;&#34;&#34;
-        return self._config_file_data[&#34;user_id&#34;]
+        return self._config_file_data.get(&#34;user_id&#34;)
 
     @property
     def active_context(self) -&gt; &#34;Context&#34;:
@@ -75,6 +121,53 @@ class ConfigFile:
         if context_name not in contexts:
             raise ConfigError(f&#34;active enterprise context not found: {context_name}&#34;)
         return Context(**contexts[context_name])
+
+    def add_context(
+        self, name: str, context: &#34;Context&#34;, *, overwrite: bool = False
+    ) -&gt; None:
+        &#34;&#34;&#34;Add a context to the parsed config.
+        The context name must be unique, unless overwrite is True.
+
+        Parameters
+        ----------
+        name : str
+            The name of the context.
+        context : Context
+            The context object.
+        overwrite : bool (kwarg)
+            Whether to overwrite an existing context.
+        &#34;&#34;&#34;
+        contexts = self._config_file_data[&#34;v2&#34;][&#34;contexts&#34;]
+        if (name in contexts) and not overwrite:
+            raise ValueError(f&#39;context &#34;{name}&#34; already exists&#39;)
+        contexts[name] = asdict(context)
+
+    def set_active_context(self, name: str) -&gt; None:
+        &#34;&#34;&#34;Set the active context to the specified name.
+        The context must exist, else a ValueError is raise.
+
+        Parameters
+        ----------
+        name : str
+            The name of the context.
+        &#34;&#34;&#34;
+        contexts = self._config_file_data[&#34;v2&#34;][&#34;contexts&#34;]
+        if name not in contexts:
+            raise ValueError(f&#39;context &#34;{name}&#34; does not exist&#39;)
+        self._config_file_data[&#34;v2&#34;][&#34;active_context&#34;] = name
+
+    def write(self, config_file: Union[Path, str]) -&gt; None:
+        &#34;&#34;&#34;Write the current config data to the specified file.
+
+        Parameters
+        ----------
+        config_file : str
+            The path to the config file.
+        &#34;&#34;&#34;
+        config_file = Path(os.path.expanduser(config_file)).resolve()
+        with config_file.open(&#34;w&#34;) as file_out:
+            file_out.write(json.dumps(self._config_file_data, indent=2))
+            file_out.write(&#34;\n&#34;)
 
 
 @dataclass
@@ -150,14 +243,20 @@ class Context:
 <dl>
 <dt id="pachyderm_sdk.config.ConfigFile"><code class="flex name class">
 <span>class <span class="ident">ConfigFile</span></span>
-<span>(</span><span>config_file: Union[pathlib.Path, str])</span>
+<span>(</span><span>data: dict)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>A parsed Pachyderm config file.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
-<dt><strong><code>config_file</code></strong> :&ensp;<code>str</code></dt>
-<dd>The path to the config file.</dd>
+<dt><strong><code>data</code></strong> :&ensp;<code>dict (JSON)</code></dt>
+<dd>The config file data. The only required fields are:
+{
+"v2": {
+"active_context": &hellip;,
+"contexts": {&hellip;}
+}
+}</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -166,20 +265,65 @@ class Context:
 <pre><code class="python">class ConfigFile:
     &#34;&#34;&#34;A parsed Pachyderm config file.&#34;&#34;&#34;
 
-    def __init__(self, config_file: Union[Path, str]):
+    def __init__(self, data: dict):
         &#34;&#34;&#34;
+        Parameters
+        ----------
+        data : dict (JSON)
+            The config file data. The only required fields are:
+            {
+              &#34;v2&#34;: {
+                &#34;active_context&#34;: ...,
+                &#34;contexts&#34;: {...}
+              }
+            }
+        &#34;&#34;&#34;
+        if (v2 := data.get(&#34;v2&#34;)) is None or not (
+            &#34;active_context&#34; in v2 and &#34;contexts&#34; in v2
+        ):
+            raise ValueError(
+                &#34;Missing required fields v2.active_context and/or v2.contexts.&#34;
+            )
+        self._config_file_data = data
+
+    @classmethod
+    def from_path(cls, config_file: Union[Path, str]) -&gt; &#34;ConfigFile&#34;:
+        &#34;&#34;&#34;Parse a Pachyderm config file from a local file.
+
         Parameters
         ----------
         config_file : str
             The path to the config file.
         &#34;&#34;&#34;
         config_file = Path(os.path.expanduser(config_file)).resolve()
-        self._config_file_data = json.loads(config_file.read_bytes())
+        return cls(data=json.loads(config_file.read_bytes()))
+
+    @classmethod
+    def new_with_context(cls, name: str, context: &#34;Context&#34;) -&gt; &#34;ConfigFile&#34;:
+        &#34;&#34;&#34;Create a new ConfigFile object from a single context.
+        This will also set this specified context as the active context.
+
+        Parameters
+        ----------
+        name : str
+            The name of the context.
+        context : Context
+            The context object.
+        &#34;&#34;&#34;
+        data = dict(
+            user_id=str(uuid.uuid4()).replace(&#34;-&#34;, &#34;&#34;),
+            v2=dict(
+                active_context=name,
+                contexts={name: asdict(context)},
+                metrics=True,
+            ),
+        )
+        return cls(data)
 
     @property
-    def user_id(self) -&gt; str:
+    def user_id(self) -&gt; Optional[str]:
         &#34;&#34;&#34;The user ID of the config file.&#34;&#34;&#34;
-        return self._config_file_data[&#34;user_id&#34;]
+        return self._config_file_data.get(&#34;user_id&#34;)
 
     @property
     def active_context(self) -&gt; &#34;Context&#34;:
@@ -199,11 +343,128 @@ class Context:
         contexts = self._config_file_data[&#34;v2&#34;][&#34;contexts&#34;]
         if context_name not in contexts:
             raise ConfigError(f&#34;active enterprise context not found: {context_name}&#34;)
-        return Context(**contexts[context_name])</code></pre>
+        return Context(**contexts[context_name])
+
+    def add_context(
+        self, name: str, context: &#34;Context&#34;, *, overwrite: bool = False
+    ) -&gt; None:
+        &#34;&#34;&#34;Add a context to the parsed config.
+        The context name must be unique, unless overwrite is True.
+
+        Parameters
+        ----------
+        name : str
+            The name of the context.
+        context : Context
+            The context object.
+        overwrite : bool (kwarg)
+            Whether to overwrite an existing context.
+        &#34;&#34;&#34;
+        contexts = self._config_file_data[&#34;v2&#34;][&#34;contexts&#34;]
+        if (name in contexts) and not overwrite:
+            raise ValueError(f&#39;context &#34;{name}&#34; already exists&#39;)
+        contexts[name] = asdict(context)
+
+    def set_active_context(self, name: str) -&gt; None:
+        &#34;&#34;&#34;Set the active context to the specified name.
+        The context must exist, else a ValueError is raise.
+
+        Parameters
+        ----------
+        name : str
+            The name of the context.
+        &#34;&#34;&#34;
+        contexts = self._config_file_data[&#34;v2&#34;][&#34;contexts&#34;]
+        if name not in contexts:
+            raise ValueError(f&#39;context &#34;{name}&#34; does not exist&#39;)
+        self._config_file_data[&#34;v2&#34;][&#34;active_context&#34;] = name
+
+    def write(self, config_file: Union[Path, str]) -&gt; None:
+        &#34;&#34;&#34;Write the current config data to the specified file.
+
+        Parameters
+        ----------
+        config_file : str
+            The path to the config file.
+        &#34;&#34;&#34;
+        config_file = Path(os.path.expanduser(config_file)).resolve()
+        with config_file.open(&#34;w&#34;) as file_out:
+            file_out.write(json.dumps(self._config_file_data, indent=2))
+            file_out.write(&#34;\n&#34;)</code></pre>
 </details>
+<h3>Static methods</h3>
+<dl>
+<dt id="pachyderm_sdk.config.ConfigFile.from_path"><code class="name flex">
+<span>def <span class="ident">from_path</span></span>(<span>config_file: Union[pathlib.Path, str]) ‑> <a title="pachyderm_sdk.config.ConfigFile" href="#pachyderm_sdk.config.ConfigFile">ConfigFile</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Parse a Pachyderm config file from a local file.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>config_file</code></strong> :&ensp;<code>str</code></dt>
+<dd>The path to the config file.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def from_path(cls, config_file: Union[Path, str]) -&gt; &#34;ConfigFile&#34;:
+    &#34;&#34;&#34;Parse a Pachyderm config file from a local file.
+
+    Parameters
+    ----------
+    config_file : str
+        The path to the config file.
+    &#34;&#34;&#34;
+    config_file = Path(os.path.expanduser(config_file)).resolve()
+    return cls(data=json.loads(config_file.read_bytes()))</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.config.ConfigFile.new_with_context"><code class="name flex">
+<span>def <span class="ident">new_with_context</span></span>(<span>name: str, context: <a title="pachyderm_sdk.config.Context" href="#pachyderm_sdk.config.Context">Context</a>) ‑> <a title="pachyderm_sdk.config.ConfigFile" href="#pachyderm_sdk.config.ConfigFile">ConfigFile</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create a new ConfigFile object from a single context.
+This will also set this specified context as the active context.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>name</code></strong> :&ensp;<code>str</code></dt>
+<dd>The name of the context.</dd>
+<dt><strong><code>context</code></strong> :&ensp;<code><a title="pachyderm_sdk.config.Context" href="#pachyderm_sdk.config.Context">Context</a></code></dt>
+<dd>The context object.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def new_with_context(cls, name: str, context: &#34;Context&#34;) -&gt; &#34;ConfigFile&#34;:
+    &#34;&#34;&#34;Create a new ConfigFile object from a single context.
+    This will also set this specified context as the active context.
+
+    Parameters
+    ----------
+    name : str
+        The name of the context.
+    context : Context
+        The context object.
+    &#34;&#34;&#34;
+    data = dict(
+        user_id=str(uuid.uuid4()).replace(&#34;-&#34;, &#34;&#34;),
+        v2=dict(
+            active_context=name,
+            contexts={name: asdict(context)},
+            metrics=True,
+        ),
+    )
+    return cls(data)</code></pre>
+</details>
+</dd>
+</dl>
 <h3>Instance variables</h3>
 <dl>
-<dt id="pachyderm_sdk.config.ConfigFile.user_id"><code class="name">var <span class="ident">user_id</span> : str</code></dt>
+<dt id="pachyderm_sdk.config.ConfigFile.user_id"><code class="name">var <span class="ident">user_id</span> : Optional[str]</code></dt>
 <dd>
 <div class="desc"><p>The user ID of the config file.</p></div>
 <details class="source">
@@ -211,9 +472,9 @@ class Context:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def user_id(self) -&gt; str:
+def user_id(self) -&gt; Optional[str]:
     &#34;&#34;&#34;The user ID of the config file.&#34;&#34;&#34;
-    return self._config_file_data[&#34;user_id&#34;]</code></pre>
+    return self._config_file_data.get(&#34;user_id&#34;)</code></pre>
 </details>
 </dd>
 <dt id="pachyderm_sdk.config.ConfigFile.active_context"><code class="name">var <span class="ident">active_context</span> : <a title="pachyderm_sdk.config.Context" href="#pachyderm_sdk.config.Context">Context</a></code></dt>
@@ -250,6 +511,107 @@ def active_enterprise_context(self) -&gt; &#34;Context&#34;:
     if context_name not in contexts:
         raise ConfigError(f&#34;active enterprise context not found: {context_name}&#34;)
     return Context(**contexts[context_name])</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="pachyderm_sdk.config.ConfigFile.add_context"><code class="name flex">
+<span>def <span class="ident">add_context</span></span>(<span>self, name: str, context: <a title="pachyderm_sdk.config.Context" href="#pachyderm_sdk.config.Context">Context</a>, *, overwrite: bool = False) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Add a context to the parsed config.
+The context name must be unique, unless overwrite is True.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>name</code></strong> :&ensp;<code>str</code></dt>
+<dd>The name of the context.</dd>
+<dt><strong><code>context</code></strong> :&ensp;<code><a title="pachyderm_sdk.config.Context" href="#pachyderm_sdk.config.Context">Context</a></code></dt>
+<dd>The context object.</dd>
+<dt><strong><code>overwrite</code></strong> :&ensp;<code>bool (kwarg)</code></dt>
+<dd>Whether to overwrite an existing context.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_context(
+    self, name: str, context: &#34;Context&#34;, *, overwrite: bool = False
+) -&gt; None:
+    &#34;&#34;&#34;Add a context to the parsed config.
+    The context name must be unique, unless overwrite is True.
+
+    Parameters
+    ----------
+    name : str
+        The name of the context.
+    context : Context
+        The context object.
+    overwrite : bool (kwarg)
+        Whether to overwrite an existing context.
+    &#34;&#34;&#34;
+    contexts = self._config_file_data[&#34;v2&#34;][&#34;contexts&#34;]
+    if (name in contexts) and not overwrite:
+        raise ValueError(f&#39;context &#34;{name}&#34; already exists&#39;)
+    contexts[name] = asdict(context)</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.config.ConfigFile.set_active_context"><code class="name flex">
+<span>def <span class="ident">set_active_context</span></span>(<span>self, name: str) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Set the active context to the specified name.
+The context must exist, else a ValueError is raise.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>name</code></strong> :&ensp;<code>str</code></dt>
+<dd>The name of the context.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_active_context(self, name: str) -&gt; None:
+    &#34;&#34;&#34;Set the active context to the specified name.
+    The context must exist, else a ValueError is raise.
+
+    Parameters
+    ----------
+    name : str
+        The name of the context.
+    &#34;&#34;&#34;
+    contexts = self._config_file_data[&#34;v2&#34;][&#34;contexts&#34;]
+    if name not in contexts:
+        raise ValueError(f&#39;context &#34;{name}&#34; does not exist&#39;)
+    self._config_file_data[&#34;v2&#34;][&#34;active_context&#34;] = name</code></pre>
+</details>
+</dd>
+<dt id="pachyderm_sdk.config.ConfigFile.write"><code class="name flex">
+<span>def <span class="ident">write</span></span>(<span>self, config_file: Union[pathlib.Path, str]) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Write the current config data to the specified file.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>config_file</code></strong> :&ensp;<code>str</code></dt>
+<dd>The path to the config file.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def write(self, config_file: Union[Path, str]) -&gt; None:
+    &#34;&#34;&#34;Write the current config data to the specified file.
+
+    Parameters
+    ----------
+    config_file : str
+        The path to the config file.
+    &#34;&#34;&#34;
+    config_file = Path(os.path.expanduser(config_file)).resolve()
+    with config_file.open(&#34;w&#34;) as file_out:
+        file_out.write(json.dumps(self._config_file_data, indent=2))
+        file_out.write(&#34;\n&#34;)</code></pre>
 </details>
 </dd>
 </dl>
@@ -441,6 +803,11 @@ def server_cas_decoded(self) -&gt; Optional[bytes]:
 <li>
 <h4><code><a title="pachyderm_sdk.config.ConfigFile" href="#pachyderm_sdk.config.ConfigFile">ConfigFile</a></code></h4>
 <ul class="">
+<li><code><a title="pachyderm_sdk.config.ConfigFile.from_path" href="#pachyderm_sdk.config.ConfigFile.from_path">from_path</a></code></li>
+<li><code><a title="pachyderm_sdk.config.ConfigFile.new_with_context" href="#pachyderm_sdk.config.ConfigFile.new_with_context">new_with_context</a></code></li>
+<li><code><a title="pachyderm_sdk.config.ConfigFile.add_context" href="#pachyderm_sdk.config.ConfigFile.add_context">add_context</a></code></li>
+<li><code><a title="pachyderm_sdk.config.ConfigFile.set_active_context" href="#pachyderm_sdk.config.ConfigFile.set_active_context">set_active_context</a></code></li>
+<li><code><a title="pachyderm_sdk.config.ConfigFile.write" href="#pachyderm_sdk.config.ConfigFile.write">write</a></code></li>
 <li><code><a title="pachyderm_sdk.config.ConfigFile.user_id" href="#pachyderm_sdk.config.ConfigFile.user_id">user_id</a></code></li>
 <li><code><a title="pachyderm_sdk.config.ConfigFile.active_context" href="#pachyderm_sdk.config.ConfigFile.active_context">active_context</a></code></li>
 <li><code><a title="pachyderm_sdk.config.ConfigFile.active_enterprise_context" href="#pachyderm_sdk.config.ConfigFile.active_enterprise_context">active_enterprise_context</a></code></li>

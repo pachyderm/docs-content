@@ -1,5 +1,5 @@
 ---
-date: 2023-10-18T16:51:53-04:00
+date: 2024-02-13T16:12:03-05:00
 title: "pachctl delete defaults"
 description: "Learn about the pachctl delete defaults command"
 ---
@@ -10,20 +10,21 @@ Delete defaults.
 
 ### Synopsis
 
-Delete defaults.
+Delete cluster or project defaults.
 
 ```
-pachctl delete defaults [--cluster] [flags]
+pachctl delete defaults [--cluster | --project PROJECT] [flags]
 ```
 
 ### Options
 
 ```
-      --cluster      Delete cluster defaults.
-      --dry-run      Do not actually delete defaults.
-  -h, --help         help for defaults
-      --regenerate   Regenerate pipeline specs deleted (i.e., empty) defaults.
-      --reprocess    Reprocess regenerated pipelines.  Implies --regenerate
+      --cluster          Delete cluster defaults.
+      --dry-run          Do not actually delete defaults.
+  -h, --help             help for defaults
+      --project string   Delete project defaults. (default "video-to-frame-traces")
+      --regenerate       Regenerate pipeline specs deleted (i.e., empty) defaults.
+      --reprocess        Reprocess regenerated pipelines.  Implies --regenerate
 ```
 
 ### Options inherited from parent commands

@@ -1,5 +1,5 @@
 ---
-date: 2023-10-18T16:51:53-04:00
+date: 2024-02-13T16:12:03-05:00
 title: "pachctl config get active-context"
 description: "Learn about the pachctl config get active-context command"
 ---
@@ -24,7 +24,7 @@ pachctl config get active-context [flags]
 ### Examples
 
 ```
-pachctl config get active-context
+pachctl config get active-context}
 ```
 
 ### Options

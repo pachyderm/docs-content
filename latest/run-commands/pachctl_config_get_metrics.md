@@ -1,5 +1,5 @@
 ---
-date: 2023-10-18T16:51:53-04:00
+date: 2024-02-13T16:12:03-05:00
 title: "pachctl config get metrics"
 description: "Learn about the pachctl config get metrics command"
 ---
@@ -19,7 +19,7 @@ pachctl config get metrics [flags]
 ### Examples
 
 ```
-pachctl config get metrics
+pachctl config get metrics}
 ```
 
 ### Options

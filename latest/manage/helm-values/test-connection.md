@@ -17,9 +17,6 @@ The Test Connection section is used by {{% productName %}} to test the connectio
 
 ## Values
 
-The following section contains a series of tabs for commonly used configurations for this section of your values.yml Helm chart. 
-
-
 ```s
 testConnection:
   image:

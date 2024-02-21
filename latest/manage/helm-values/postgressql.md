@@ -24,32 +24,16 @@ See storage class details for your provider:
 
 ## Values 
 
-The following section contains a series of tabs for commonly used configurations for this section of your values.yml Helm chart. 
-
-{{< stack type="wizard">}}
-
-{{% wizardRow id="Options"%}}
-{{% wizardButton option="Production" state="active" %}}
-{{% wizardButton option="Personal Machine" %}}
-
-{{% /wizardRow %}}
-
-{{% wizardResults %}}
-
-{{% wizardResult val1="options/production" %}}
-```s
+```yaml
 postgresql:
-  enabled: false # if false, you must specify a PostgreSQL database server connection @ global.postgresql
-```
-{{% /wizardResult %}}
-
-{{% wizardResult val1="options/personal-machine" %}}
-
-
-```s
-postgresql:
-  enabled: true # if false, you must specify a PostgreSQL database server connection @ global.postgresql
+  # enabled controls whether to install postgres or not.
+  # If not using the built in Postgres, you must specify a Postgresql
+  # database server to connect to in global.postgresql
+  # The enabled value is watched by the 'condition' set on the Postgresql
+  # dependency in Chart.yaml
+  enabled: true
   image:
+    repository: pachyderm/postgresql
     tag: "13.3.0"
   # DEPRECATED from pachyderm 2.1.5
   initdbScripts:
@@ -61,8 +45,18 @@ postgresql:
         GRANT ALL PRIVILEGES ON DATABASE dex TO "$POSTGRES_USER";
       EOSQL
   fullnameOverride: postgres
-  persistence: # Specify the storage class for the postgresql Persistent Volume (PV)
-    storageClass: "" #  specifies the size of the volume to use for postgresql
+  persistence:
+    # Specify the storage class for the postgresql Persistent Volume (PV)
+    # See notes in Bitnami chart values.yaml file for more information.
+    # More info for setting up storage classes on various cloud providers:
+    # AWS: https://docs.aws.amazon.com/eks/latest/userguide/storage-classes.html
+    # GCP: https://cloud.google.com/compute/docs/disks/performance#disk_types
+    # Azure: https://docs.microsoft.com/en-us/azure/aks/concepts-storage#storage-classes
+    storageClass: ""
+    # storageSize specifies the size of the volume to use for postgresql
+    # Recommended Minimum Disk size for Microsoft/Azure: 256Gi  - 1,100 IOPS https://azure.microsoft.com/en-us/pricing/details/managed-disks/
+    # Recommended Minimum Disk size for Google/GCP: 50Gi        - 1,500 IOPS https://cloud.google.com/compute/docs/disks/performance
+    # Recommended Minimum Disk size for Amazon/AWS: 500Gi (GP2) - 1,500 IOPS https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html
     size: 10Gi
     labels:
       suite: pachyderm
@@ -75,8 +69,4 @@ postgresql:
     nodeSelector: {}
     tolerations: []
 ```
-{{% /wizardResult %}}
-
-{{% /wizardResults %}}
-{{</stack>}}
 

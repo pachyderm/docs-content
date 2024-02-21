@@ -1,5 +1,5 @@
 ---
-date: 2023-10-18T16:51:53-04:00
+date: 2024-02-13T16:12:03-05:00
 title: "pachctl restart datum"
 description: "Learn about the pachctl restart datum command"
 ---
@@ -12,7 +12,7 @@ Restart a stuck datum during a currently running job.
 
 This command restarts a stuck datum during a currently running job; it does not solve failed datums. 
  
-You can configure a job to skip failed datums via the transform.errCmd setting of your pipeline spec. 
+You can configure a job to skip failed datums via the transform.err_cmd setting of your pipeline spec. 
  
  To specify the project where the parent pipeline lives, use the `--project` flag 
 

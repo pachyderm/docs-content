@@ -49,7 +49,7 @@ The following guide does not cover how to create user pools in Auth0; once initi
 
 The following steps add the [OIDC](/{{%release%}}/manage/helm-values/oidc/) section to your Helm chart. When an upstream IdP is successfully added to the list, {{%productName%}}'s default [MockIdP](/{{%release%}}/set-up/connectors/mockidp) is disabled automatically. You can add multiple IdPs to `upstreamIDPs`.
 
-1. Navigate to your `values.yamls` file or obtain your current Helm `values.yaml` overrides:
+1. Navigate to your `values.yaml` file or obtain your current Helm `values.yaml` overrides:
    ```s
    helm get values pachyderm  > values.yaml
    ```

@@ -1,5 +1,5 @@
 ---
-date: 2023-10-18T16:51:53-04:00
+date: 2024-02-13T16:12:03-05:00
 title: "pachctl auth deactivate"
 description: "Learn about the pachctl auth deactivate command"
 ---
@@ -19,8 +19,7 @@ pachctl auth deactivate [flags]
 ### Examples
 
 ```
- pachctl auth deactivate 
- pachctl auth deactivate --enterprise
+ pachctl auth deactivate pachctl auth deactivate --enterprise
 ```
 
 ### Options

@@ -1,5 +1,5 @@
 ---
-date: 2023-10-18T16:51:53-04:00
+date: 2024-02-13T16:12:03-05:00
 title: "pachctl connect"
 description: "Learn about the pachctl connect command"
 ---
@@ -26,8 +26,7 @@ pachctl connect <address> [flags]
 ### Examples
 
 ```
- pachctl connect localhost:80 
- pachctl connect localhost:80 --alias my-private-cluster
+ pachctl connect localhost:80 pachctl connect localhost:80 --alias my-private-cluster
 ```
 
 ### Options

@@ -1,5 +1,5 @@
 ---
-date: 2023-10-18T16:51:53-04:00
+date: 2024-02-13T16:12:03-05:00
 title: "pachctl version"
 description: "Learn about the pachctl version command"
 ---
@@ -20,6 +20,7 @@ pachctl version [flags]
 
 ```
       --client-only      If set, only print pachctl's version, but don't make any RPCs to pachd. Useful if pachd is unavailable
+      --compare          If set, exit 1 if the server and client versions differ at all, or exit 0 if they are exactly the same.
       --enterprise       If set, 'pachctl version' will run on the active enterprise context.
   -h, --help             help for version
   -o, --output string    Output format when --raw is set: "json" or "yaml" (default "json")

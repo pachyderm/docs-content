@@ -109,6 +109,7 @@ class WebResource(betterproto.Message):
 
 
 class ApiStub:
+
     def __init__(self, channel: &#34;grpc.Channel&#34;):
         self.__rpc_inspect_cluster = channel.unary_unary(
             &#34;/admin_v2.API/InspectCluster&#34;,
@@ -122,6 +123,7 @@ class ApiStub:
         client_version: &#34;_version__.Version&#34; = None,
         current_project: &#34;_pfs__.Project&#34; = None
     ) -&gt; &#34;ClusterInfo&#34;:
+
         request = InspectClusterRequest()
         if client_version is not None:
             request.client_version = client_version
@@ -132,6 +134,7 @@ class ApiStub:
 
 
 class ApiBase:
+
     def inspect_cluster(
         self,
         client_version: &#34;_version__.Version&#34;,
@@ -346,6 +349,7 @@ in version of the server.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class ApiStub:
+
     def __init__(self, channel: &#34;grpc.Channel&#34;):
         self.__rpc_inspect_cluster = channel.unary_unary(
             &#34;/admin_v2.API/InspectCluster&#34;,
@@ -359,6 +363,7 @@ in version of the server.</p></div>
         client_version: &#34;_version__.Version&#34; = None,
         current_project: &#34;_pfs__.Project&#34; = None
     ) -&gt; &#34;ClusterInfo&#34;:
+
         request = InspectClusterRequest()
         if client_version is not None:
             request.client_version = client_version
@@ -388,6 +393,7 @@ in version of the server.</p></div>
     client_version: &#34;_version__.Version&#34; = None,
     current_project: &#34;_pfs__.Project&#34; = None
 ) -&gt; &#34;ClusterInfo&#34;:
+
     request = InspectClusterRequest()
     if client_version is not None:
         request.client_version = client_version
@@ -409,6 +415,7 @@ in version of the server.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class ApiBase:
+
     def inspect_cluster(
         self,
         client_version: &#34;_version__.Version&#34;,

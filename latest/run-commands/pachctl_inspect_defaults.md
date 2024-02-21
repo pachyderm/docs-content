@@ -1,5 +1,5 @@
 ---
-date: 2023-10-18T16:51:53-04:00
+date: 2024-02-13T16:12:03-05:00
 title: "pachctl inspect defaults"
 description: "Learn about the pachctl inspect defaults command"
 ---
@@ -19,8 +19,9 @@ pachctl inspect defaults [--cluster | --project PROJECT] [flags]
 ### Options
 
 ```
-      --cluster   Inspect cluster defaults.
-  -h, --help      help for defaults
+      --cluster          Inspect cluster defaults.
+  -h, --help             help for defaults
+      --project string   Inspect project defaults. (default "video-to-frame-traces")
 ```
 
 ### Options inherited from parent commands

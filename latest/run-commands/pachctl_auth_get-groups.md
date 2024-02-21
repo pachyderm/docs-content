@@ -1,5 +1,5 @@
 ---
-date: 2023-10-18T16:51:53-04:00
+date: 2024-02-13T16:12:03-05:00
 title: "pachctl auth get-groups"
 description: "Learn about the pachctl auth get-groups command"
 ---
@@ -19,9 +19,7 @@ pachctl auth get-groups [username] [flags]
 ### Examples
 
 ```
- pachctl auth get-groups 
- pachctl auth get-groups alan.watts@domain.com 
- pachctl auth get-groups alan.watts@domain.com --enterprise
+ pachctl auth get-groups pachctl auth get-groups alan.watts@domain.com pachctl auth get-groups alan.watts@domain.com --enterprise
 ```
 
 ### Options

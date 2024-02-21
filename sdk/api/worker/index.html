@@ -83,6 +83,7 @@ class NextDatumResponse(betterproto.Message):
 
 
 class WorkerStub:
+
     def __init__(self, channel: &#34;grpc.Channel&#34;):
         self.__rpc_status = channel.unary_unary(
             &#34;/pachyderm.worker.Worker/Status&#34;,
@@ -101,6 +102,7 @@ class WorkerStub:
         )
 
     def status(self) -&gt; &#34;_pps__.WorkerStatus&#34;:
+
         request = betterproto_lib_google_protobuf.Empty()
 
         return self.__rpc_status(request)
@@ -117,6 +119,7 @@ class WorkerStub:
         return self.__rpc_cancel(request)
 
     def next_datum(self, *, error: str = &#34;&#34;) -&gt; &#34;NextDatumResponse&#34;:
+
         request = NextDatumRequest()
         request.error = error
 
@@ -124,6 +127,7 @@ class WorkerStub:
 
 
 class WorkerBase:
+
     def status(self, context: &#34;grpc.ServicerContext&#34;) -&gt; &#34;_pps__.WorkerStatus&#34;:
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details(&#34;Method not implemented!&#34;)
@@ -325,6 +329,7 @@ class NextDatumResponse(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class WorkerStub:
+
     def __init__(self, channel: &#34;grpc.Channel&#34;):
         self.__rpc_status = channel.unary_unary(
             &#34;/pachyderm.worker.Worker/Status&#34;,
@@ -343,6 +348,7 @@ class NextDatumResponse(betterproto.Message):
         )
 
     def status(self) -&gt; &#34;_pps__.WorkerStatus&#34;:
+
         request = betterproto_lib_google_protobuf.Empty()
 
         return self.__rpc_status(request)
@@ -359,6 +365,7 @@ class NextDatumResponse(betterproto.Message):
         return self.__rpc_cancel(request)
 
     def next_datum(self, *, error: str = &#34;&#34;) -&gt; &#34;NextDatumResponse&#34;:
+
         request = NextDatumRequest()
         request.error = error
 
@@ -380,6 +387,7 @@ class NextDatumResponse(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def status(self) -&gt; &#34;_pps__.WorkerStatus&#34;:
+
     request = betterproto_lib_google_protobuf.Empty()
 
     return self.__rpc_status(request)</code></pre>
@@ -416,6 +424,7 @@ class NextDatumResponse(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def next_datum(self, *, error: str = &#34;&#34;) -&gt; &#34;NextDatumResponse&#34;:
+
     request = NextDatumRequest()
     request.error = error
 
@@ -434,6 +443,7 @@ class NextDatumResponse(betterproto.Message):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class WorkerBase:
+
     def status(self, context: &#34;grpc.ServicerContext&#34;) -&gt; &#34;_pps__.WorkerStatus&#34;:
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details(&#34;Method not implemented!&#34;)

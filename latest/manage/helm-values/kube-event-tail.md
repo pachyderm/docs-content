@@ -18,48 +18,16 @@ Kube Event Tail deploys a lightweight app that watches Kubernetes events and ech
 
 ## Values
 
-The following section contains a series of tabs for commonly used configurations for this section of your values.yml Helm chart. 
-
-{{< stack type="wizard">}}
-
-{{% wizardRow id="Options"%}}
-{{% wizardButton option="All Events" state="active" %}}
-{{% wizardButton option="Namespace Events" %}}
-{{% wizardButton option="Disabled" %}}
-
-{{% /wizardRow %}}
-
-{{% wizardResults  %}}
-{{% wizardResult val1="options/all-events" %}}
-
-```s
+```yaml
 kubeEventTail:
+  # Deploys a lightweight app that watches kubernetes events and echos them to logs.
   enabled: true
-  clusterScope: false # if true, watches just events in its namespace 
+  # clusterScope determines whether kube-event-tail should watch all events or just events in its namespace.
+  clusterScope: false
   image:
     repository: pachyderm/kube-event-tail
     pullPolicy: "IfNotPresent"
-    tag: "v0.0.6"
-  resources:
-    limits:
-      cpu: "1"
-      memory: 100Mi
-    requests:
-      cpu: 100m
-      memory: 45Mi 
-```
-{{% /wizardResult %}}
-
-{{% wizardResult val1="options/namespace-events" %}}
-
-```s
-kubeEventTail:
-  enabled: true
-  clusterScope: true # if true, watches just events in its namespace 
-  image:
-    repository: pachyderm/kube-event-tail
-    pullPolicy: "IfNotPresent"
-    tag: "v0.0.6"
+    tag: "v0.0.7"
   resources:
     limits:
       cpu: "1"
@@ -68,18 +36,4 @@ kubeEventTail:
       cpu: 100m
       memory: 45Mi
 ```
-
-{{% /wizardResult %}}
-
-{{% wizardResult val1="options/disabled" %}}
-
-```s
-kubeEventTail:
-  enabled: false
-```
-{{% /wizardResult %}}
-
-{{% /wizardResults %}}
-
-{{</stack>}}
 

@@ -1,5 +1,5 @@
 ---
-date: 2023-10-18T16:51:53-04:00
+date: 2024-02-13T16:12:03-05:00
 title: "pachctl put file"
 description: "Learn about the pachctl put file command"
 ---
@@ -25,8 +25,6 @@ Compression, Parallelization, Appends:
  To define the maximum number of files that can be uploaded in parallel, use the `-p` flag 
  To append to an existing file, use the `-a` flag 
 
-Other: 
- To enable progress bars, use the `-P` flag 
 
 
 ```
@@ -36,17 +34,16 @@ pachctl put file <repo>@<branch-or-commit>[:<path/to/file>] [flags]
 ### Examples
 
 ```
- pachctl put file repo@master-f image.png 
- pachctl put file repo@master:/logs/log-1.txt  
+ pachctl put file repo@master -f image.png 
  pachctl put file -r repo@master -f my-directory 
  pachctl put file -r repo@branch:/path -f my-directory 
+ pachctl put file -r repo@branch -f s3://my_bucket 
  pachctl put file repo@branch -f http://host/example.png 
- pachctl put file repo@branch:/dir -f http://host/example.png 
- pachctl put file repo@branch -r -f s3://my_bucket 
+ pachctl put file repo@branch:/dir/ -f http://host/example.png 
  pachctl put file repo@branch -i file 
  pachctl put file repo@branch -i http://host/path 
- pachctl put file repo@branch -f -untar dir.tar 
- pachctl put file repo@branch -f -c image.png 
+ pachctl put file --untar repo@branch -f dir.tar 
+ pachctl put file -c repo@branch -f image.png 
 
 ```
 
@@ -54,7 +51,7 @@ pachctl put file <repo>@<branch-or-commit>[:<path/to/file>] [flags]
 
 ```
   -a, --append              Specify file contents should be appended to existing content from previous commits or previous calls to 'pachctl put file' within this commit.
-      --compress            Specify data should be compressed during upload. This parameter might help you upload your uncompressed data, such as CSV files, to Pachyderm faster. Use 'compress' with caution, because if your data is already compressed, this parameter might slow down the upload speed instead of increasing.
+  -c, --compress            Specify data should be compressed during upload. This parameter might help you upload your uncompressed data, such as CSV files, to Pachyderm faster. Use 'compress' with caution, because if your data is already compressed, this parameter might slow down the upload speed instead of increasing.
   -f, --file strings        Specify the file to be put; it can be a local file or a URL. (default [-])
       --full-path           Specify entire path provided to -f should be the target filename in PFS; by default only the base of the path is used.
   -h, --help                help for file
