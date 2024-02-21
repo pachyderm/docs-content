@@ -1,7 +1,7 @@
 ---
 # metadata # 
-title:  Pause Pipelines
-description: Learn how to pause a pipeline in the console UI.
+title:  Pause/Restart Pipelines
+description: Learn how to pause and restart a pipeline in the console UI.
 date: 
 # taxonomy #
 tags: 
@@ -18,5 +18,6 @@ weight: 3
 4. Select a **Pipeline**.
 5. Select the **Pipeline Actions** dropdown.
 6. Choose **Pause Pipeline**.
+7. When ready to restart the pipeline, select the **Pipeline Actions** dropdown and choose **Restart Pipeline**.
 
 {{<youtube gNrDfFdV8TQ >}}
