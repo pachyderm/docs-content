@@ -8,11 +8,11 @@ tags:
 series:
 seriesPart:
 cascade:
-    latestPatch: 2.9.0
+    latestPatch: 2.9.2
     majorMinor: 2.9
     clientPython: 7.3
-    extensionJupyterLab: 2.9.0
-    mountServerBinary: 2.9.0
+    extensionJupyterLab: 2.9.2
+    mountServerBinary: 2.9.2
     release: latest  # used by sitemap.xml in themes folder
 alias: '/2.9.x'
 ---
