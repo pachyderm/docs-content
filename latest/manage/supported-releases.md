@@ -15,7 +15,7 @@ weight: 7
  
 ## Supported Releases
 
-{{% productName %}} supports the latest Generally Available (GA) release and the previous two minor GA releases. Releases three or more major and minor versions back are considered End of Life (EOL).
+{{% productName %}} supports the latest Generally Available (GA) release and the previous two minor GA releases. Releases three or more minor versions back are considered End of Life (EOL).
 
 ## Release Status by Version
 
