@@ -27,7 +27,7 @@ Check whether a subject has a permission on a resource
 
 ### SEE ALSO
 
-* [pachctl auth](../pachctl_auth)	 - Auth commands manage access to data in a Pachyderm cluster
-* [pachctl auth check project](../pachctl_auth_check_project)	 - Check the permissions a user has on a project
-* [pachctl auth check repo](../pachctl_auth_check_repo)	 - Check the permissions a user has on a repo
+* [pachctl auth](pachctl_auth)	 - Auth commands manage access to data in a Pachyderm cluster
+* [pachctl auth check project](pachctl_auth_check_project)	 - Check the permissions a user has on a project
+* [pachctl auth check repo](pachctl_auth_check_repo)	 - Check the permissions a user has on a repo
 

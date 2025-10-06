@@ -31,5 +31,5 @@ pachctl auth get cluster [flags]
 
 ### SEE ALSO
 
-* [pachctl auth get](../pachctl_auth_get)	 - Get the role bindings for a resource
+* [pachctl auth get](pachctl_auth_get)	 - Get the role bindings for a resource
 

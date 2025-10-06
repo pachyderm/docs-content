@@ -33,5 +33,5 @@ pachctl completion zsh [flags]
 
 ### SEE ALSO
 
-* [pachctl completion](../pachctl_completion)	 - Print or install terminal completion code.
+* [pachctl completion](pachctl_completion)	 - Print or install terminal completion code.
 

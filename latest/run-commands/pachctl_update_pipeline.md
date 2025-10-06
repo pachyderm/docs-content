@@ -59,5 +59,5 @@ pachctl update pipeline [flags]
 
 ### SEE ALSO
 
-* [pachctl update](../pachctl_update)	 - Change the properties of an existing Pachyderm resource.
+* [pachctl update](pachctl_update)	 - Change the properties of an existing Pachyderm resource.
 

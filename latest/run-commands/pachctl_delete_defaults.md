@@ -36,5 +36,5 @@ pachctl delete defaults [--cluster | --project PROJECT] [flags]
 
 ### SEE ALSO
 
-* [pachctl delete](../pachctl_delete)	 - Delete an existing Pachyderm resource.
+* [pachctl delete](pachctl_delete)	 - Delete an existing Pachyderm resource.
 

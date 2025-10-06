@@ -27,6 +27,6 @@ Check the status of pipelines within a project.
 
 ### SEE ALSO
 
-* [pachctl](../pachctl)	 - 
-* [pachctl check status](../pachctl_check_status)	 - Check the status of pipelines within a project.
+* [pachctl](pachctl)	 - 
+* [pachctl check status](pachctl_check_status)	 - Check the status of pipelines within a project.
 

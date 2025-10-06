@@ -27,8 +27,8 @@ Manually run a Pachyderm resource.
 
 ### SEE ALSO
 
-* [pachctl](../pachctl)	 - 
-* [pachctl run cron](../pachctl_run_cron)	 - Run an existing Pachyderm cron pipeline now
-* [pachctl run pfs-load-test](../pachctl_run_pfs-load-test)	 - Run a PFS load test.
-* [pachctl run pps-load-test](../pachctl_run_pps-load-test)	 - Run a PPS load test.
+* [pachctl](pachctl)	 - 
+* [pachctl run cron](pachctl_run_cron)	 - Run an existing Pachyderm cron pipeline now
+* [pachctl run pfs-load-test](pachctl_run_pfs-load-test)	 - Run a PFS load test.
+* [pachctl run pps-load-test](pachctl_run_pps-load-test)	 - Run a PPS load test.
 

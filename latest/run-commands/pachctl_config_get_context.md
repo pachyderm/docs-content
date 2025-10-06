@@ -37,5 +37,5 @@ pachctl config get context foo
 
 ### SEE ALSO
 
-* [pachctl config get](../pachctl_config_get)	 - Commands for getting pachyderm config values
+* [pachctl config get](pachctl_config_get)	 - Commands for getting pachyderm config values
 

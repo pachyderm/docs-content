@@ -31,5 +31,5 @@ pachctl idp list-client [flags]
 
 ### SEE ALSO
 
-* [pachctl idp](../pachctl_idp)	 - Commands to manage identity provider integrations
+* [pachctl idp](pachctl_idp)	 - Commands to manage identity provider integrations
 

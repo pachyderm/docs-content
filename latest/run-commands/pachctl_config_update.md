@@ -27,6 +27,6 @@ Commands for updating pachyderm config values
 
 ### SEE ALSO
 
-* [pachctl config](../pachctl_config)	 - Manages the pachyderm config.
-* [pachctl config update context](../pachctl_config_update_context)	 - Updates a context.
+* [pachctl config](pachctl_config)	 - Manages the pachyderm config.
+* [pachctl config update context](pachctl_config_update_context)	 - Updates a context.
 

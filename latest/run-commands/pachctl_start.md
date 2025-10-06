@@ -27,8 +27,8 @@ Start a Pachyderm resource.
 
 ### SEE ALSO
 
-* [pachctl](../pachctl)	 - 
-* [pachctl start commit](../pachctl_start_commit)	 - Start a new commit.
-* [pachctl start pipeline](../pachctl_start_pipeline)	 - Restart a stopped pipeline.
-* [pachctl start transaction](../pachctl_start_transaction)	 - Start a new transaction.
+* [pachctl](pachctl)	 - 
+* [pachctl start commit](pachctl_start_commit)	 - Start a new commit.
+* [pachctl start pipeline](pachctl_start_pipeline)	 - Restart a stopped pipeline.
+* [pachctl start transaction](pachctl_start_transaction)	 - Start a new transaction.
 

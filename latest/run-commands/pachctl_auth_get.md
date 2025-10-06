@@ -27,9 +27,9 @@ Get the role bindings for a resource
 
 ### SEE ALSO
 
-* [pachctl auth](../pachctl_auth)	 - Auth commands manage access to data in a Pachyderm cluster
-* [pachctl auth get cluster](../pachctl_auth_get_cluster)	 - Get the role bindings for the cluster
-* [pachctl auth get enterprise](../pachctl_auth_get_enterprise)	 - Get the role bindings for the enterprise server
-* [pachctl auth get project](../pachctl_auth_get_project)	 - Get the role bindings for a project
-* [pachctl auth get repo](../pachctl_auth_get_repo)	 - Get the role bindings for a repo.
+* [pachctl auth](pachctl_auth)	 - Auth commands manage access to data in a Pachyderm cluster
+* [pachctl auth get cluster](pachctl_auth_get_cluster)	 - Get the role bindings for the cluster
+* [pachctl auth get enterprise](pachctl_auth_get_enterprise)	 - Get the role bindings for the enterprise server
+* [pachctl auth get project](pachctl_auth_get_project)	 - Get the role bindings for a project
+* [pachctl auth get repo](pachctl_auth_get_repo)	 - Get the role bindings for a repo.
 

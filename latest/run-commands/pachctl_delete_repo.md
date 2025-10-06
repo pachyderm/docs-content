@@ -54,5 +54,5 @@ pachctl delete repo <repo> [flags]
 
 ### SEE ALSO
 
-* [pachctl delete](../pachctl_delete)	 - Delete an existing Pachyderm resource.
+* [pachctl delete](pachctl_delete)	 - Delete an existing Pachyderm resource.
 

@@ -66,5 +66,5 @@ pachctl logs [--pipeline=<pipeline>|--job=<pipeline>@<job>] [--datum=<datum>] [f
 
 ### SEE ALSO
 
-* [pachctl](../pachctl)	 - 
+* [pachctl](pachctl)	 - 
 

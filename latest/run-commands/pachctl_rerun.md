@@ -27,6 +27,6 @@ Manually rerun a Pachyderm resource.
 
 ### SEE ALSO
 
-* [pachctl](../pachctl)	 - 
-* [pachctl rerun pipeline](../pachctl_rerun_pipeline)	 - Rerun a pipeline.
+* [pachctl](pachctl)	 - 
+* [pachctl rerun pipeline](pachctl_rerun_pipeline)	 - Rerun a pipeline.
 

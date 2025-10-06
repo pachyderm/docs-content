@@ -45,5 +45,5 @@ pachctl wait job <job>|<pipeline>@<job> [flags]
 
 ### SEE ALSO
 
-* [pachctl wait](../pachctl_wait)	 - Wait for the side-effects of a Pachyderm resource to propagate.
+* [pachctl wait](pachctl_wait)	 - Wait for the side-effects of a Pachyderm resource to propagate.
 

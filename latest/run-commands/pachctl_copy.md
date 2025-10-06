@@ -27,6 +27,6 @@ Copy a Pachyderm resource.
 
 ### SEE ALSO
 
-* [pachctl](../pachctl)	 - 
-* [pachctl copy file](../pachctl_copy_file)	 - Copy files between pfs paths.
+* [pachctl](pachctl)	 - 
+* [pachctl copy file](pachctl_copy_file)	 - Copy files between pfs paths.
 

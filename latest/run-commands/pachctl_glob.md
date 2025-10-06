@@ -27,6 +27,6 @@ Print a list of Pachyderm resources matching a glob pattern.
 
 ### SEE ALSO
 
-* [pachctl](../pachctl)	 - 
-* [pachctl glob file](../pachctl_glob_file)	 - Return files that match a glob pattern in a commit.
+* [pachctl](pachctl)	 - 
+* [pachctl glob file](pachctl_glob_file)	 - Return files that match a glob pattern in a commit.
 

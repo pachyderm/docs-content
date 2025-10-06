@@ -27,6 +27,6 @@ Validate the specification of a Pachyderm resource.  Client-side only.
 
 ### SEE ALSO
 
-* [pachctl](../pachctl)	 - 
-* [pachctl validate pipeline](../pachctl_validate_pipeline)	 - Validate pipeline spec.
+* [pachctl](pachctl)	 - 
+* [pachctl validate pipeline](pachctl_validate_pipeline)	 - Validate pipeline spec.
 

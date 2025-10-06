@@ -52,5 +52,5 @@ pachctl diff file <new-repo>@<new-branch-or-commit>:<new-path> [<old-repo>@<old-
 
 ### SEE ALSO
 
-* [pachctl diff](../pachctl_diff)	 - Show the differences between two Pachyderm resources.
+* [pachctl diff](pachctl_diff)	 - Show the differences between two Pachyderm resources.
 

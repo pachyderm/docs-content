@@ -42,5 +42,5 @@ pachctl rerun pipeline <pipeline> [flags]
 
 ### SEE ALSO
 
-* [pachctl rerun](../pachctl_rerun)	 - Manually rerun a Pachyderm resource.
+* [pachctl rerun](pachctl_rerun)	 - Manually rerun a Pachyderm resource.
 

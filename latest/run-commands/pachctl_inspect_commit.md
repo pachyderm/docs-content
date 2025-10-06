@@ -49,5 +49,5 @@ pachctl inspect commit <repo>@<branch-or-commit> [flags]
 
 ### SEE ALSO
 
-* [pachctl inspect](../pachctl_inspect)	 - Show detailed information about a Pachyderm resource.
+* [pachctl inspect](pachctl_inspect)	 - Show detailed information about a Pachyderm resource.
 

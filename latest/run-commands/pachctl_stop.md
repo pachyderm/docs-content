@@ -27,8 +27,8 @@ Cancel an ongoing task.
 
 ### SEE ALSO
 
-* [pachctl](../pachctl)	 - 
-* [pachctl stop job](../pachctl_stop_job)	 - Stop a job.
-* [pachctl stop pipeline](../pachctl_stop_pipeline)	 - Stop a running pipeline.
-* [pachctl stop transaction](../pachctl_stop_transaction)	 - Stop modifying the current transaction.
+* [pachctl](pachctl)	 - 
+* [pachctl stop job](pachctl_stop_job)	 - Stop a job.
+* [pachctl stop pipeline](pachctl_stop_pipeline)	 - Stop a running pipeline.
+* [pachctl stop transaction](pachctl_stop_transaction)	 - Stop modifying the current transaction.
 

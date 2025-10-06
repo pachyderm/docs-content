@@ -37,5 +37,5 @@ pachctl auth set cluster [role1,role2 | none ] subject [flags]
 
 ### SEE ALSO
 
-* [pachctl auth set](../pachctl_auth_set)	 - Set the role bindings for a resource
+* [pachctl auth set](pachctl_auth_set)	 - Set the role bindings for a resource
 

@@ -46,5 +46,5 @@ pachctl create repo <repo> [flags]
 
 ### SEE ALSO
 
-* [pachctl create](../pachctl_create)	 - Create a new instance of a Pachyderm resource.
+* [pachctl create](pachctl_create)	 - Create a new instance of a Pachyderm resource.
 

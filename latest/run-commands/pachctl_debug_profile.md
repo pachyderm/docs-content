@@ -48,5 +48,5 @@ pachctl debug profile <profile> <file> [flags]
 
 ### SEE ALSO
 
-* [pachctl debug](../pachctl_debug)	 - Debug commands for analyzing a running cluster.
+* [pachctl debug](pachctl_debug)	 - Debug commands for analyzing a running cluster.
 

@@ -45,5 +45,5 @@ pachctl connect <address> [flags]
 
 ### SEE ALSO
 
-* [pachctl](../pachctl)	 - 
+* [pachctl](pachctl)	 - 
 

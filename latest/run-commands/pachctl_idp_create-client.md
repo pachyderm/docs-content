@@ -38,5 +38,5 @@ pachctl idp create-client --config settings.yaml
 
 ### SEE ALSO
 
-* [pachctl idp](../pachctl_idp)	 - Commands to manage identity provider integrations
+* [pachctl idp](pachctl_idp)	 - Commands to manage identity provider integrations
 

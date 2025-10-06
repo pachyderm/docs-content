@@ -27,7 +27,7 @@ Wait for the side-effects of a Pachyderm resource to propagate.
 
 ### SEE ALSO
 
-* [pachctl](../pachctl)	 - 
-* [pachctl wait commit](../pachctl_wait_commit)	 - Wait for the specified commit to finish and return it.
-* [pachctl wait job](../pachctl_wait_job)	 - Wait for a job to finish then return info about the job.
+* [pachctl](pachctl)	 - 
+* [pachctl wait commit](pachctl_wait_commit)	 - Wait for the specified commit to finish and return it.
+* [pachctl wait job](pachctl_wait_job)	 - Wait for a job to finish then return info about the job.
 

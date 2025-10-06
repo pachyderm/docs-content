@@ -42,5 +42,5 @@ pachctl check status [flags]
 
 ### SEE ALSO
 
-* [pachctl check](../pachctl_check)	 - Check the status of pipelines within a project.
+* [pachctl check](pachctl_check)	 - Check the status of pipelines within a project.
 

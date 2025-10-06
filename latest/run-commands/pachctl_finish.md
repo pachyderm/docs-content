@@ -27,7 +27,7 @@ Finish a Pachyderm resource.
 
 ### SEE ALSO
 
-* [pachctl](../pachctl)	 - 
-* [pachctl finish commit](../pachctl_finish_commit)	 - Finish a started commit.
-* [pachctl finish transaction](../pachctl_finish_transaction)	 - Execute and clear the currently active transaction.
+* [pachctl](pachctl)	 - 
+* [pachctl finish commit](pachctl_finish_commit)	 - Finish a started commit.
+* [pachctl finish transaction](pachctl_finish_transaction)	 - Execute and clear the currently active transaction.
 

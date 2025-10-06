@@ -33,5 +33,5 @@ pachctl auth set-config [flags]
 
 ### SEE ALSO
 
-* [pachctl auth](../pachctl_auth)	 - Auth commands manage access to data in a Pachyderm cluster
+* [pachctl auth](pachctl_auth)	 - Auth commands manage access to data in a Pachyderm cluster
 

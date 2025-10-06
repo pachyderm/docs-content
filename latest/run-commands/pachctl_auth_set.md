@@ -27,9 +27,9 @@ Set the role bindings for a resource
 
 ### SEE ALSO
 
-* [pachctl auth](../pachctl_auth)	 - Auth commands manage access to data in a Pachyderm cluster
-* [pachctl auth set cluster](../pachctl_auth_set_cluster)	 - Set the roles that a subject has on the cluster
-* [pachctl auth set enterprise](../pachctl_auth_set_enterprise)	 - Set the roles that a subject has on the enterprise server
-* [pachctl auth set project](../pachctl_auth_set_project)	 - Set the roles that a subject has on a project 
-* [pachctl auth set repo](../pachctl_auth_set_repo)	 - Set the roles that a subject has on repo
+* [pachctl auth](pachctl_auth)	 - Auth commands manage access to data in a Pachyderm cluster
+* [pachctl auth set cluster](pachctl_auth_set_cluster)	 - Set the roles that a subject has on the cluster
+* [pachctl auth set enterprise](pachctl_auth_set_enterprise)	 - Set the roles that a subject has on the enterprise server
+* [pachctl auth set project](pachctl_auth_set_project)	 - Set the roles that a subject has on a project 
+* [pachctl auth set repo](pachctl_auth_set_repo)	 - Set the roles that a subject has on repo
 

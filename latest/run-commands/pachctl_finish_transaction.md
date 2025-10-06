@@ -31,5 +31,5 @@ pachctl finish transaction [<transaction>] [flags]
 
 ### SEE ALSO
 
-* [pachctl finish](../pachctl_finish)	 - Finish a Pachyderm resource.
+* [pachctl finish](pachctl_finish)	 - Finish a Pachyderm resource.
 

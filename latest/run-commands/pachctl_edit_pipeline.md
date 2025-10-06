@@ -46,5 +46,5 @@ pachctl edit pipeline <pipeline> [flags]
 
 ### SEE ALSO
 
-* [pachctl edit](../pachctl_edit)	 - Edit the value of an existing Pachyderm resource.
+* [pachctl edit](pachctl_edit)	 - Edit the value of an existing Pachyderm resource.
 

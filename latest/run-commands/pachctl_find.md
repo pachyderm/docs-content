@@ -27,6 +27,6 @@ fInd a file addition, modification, or deletion in a commit.
 
 ### SEE ALSO
 
-* [pachctl](../pachctl)	 - 
-* [pachctl find commit](../pachctl_find_commit)	 - Find commits with reference to <filePath> within a branch starting from <repo@commitID>
+* [pachctl](pachctl)	 - 
+* [pachctl find commit](pachctl_find_commit)	 - Find commits with reference to <filePath> within a branch starting from <repo@commitID>
 

@@ -51,5 +51,5 @@ pachctl copy file <src-repo>@<src-branch-or-commit>:<src-path> <dst-repo>@<dst-b
 
 ### SEE ALSO
 
-* [pachctl copy](../pachctl_copy)	 - Copy a Pachyderm resource.
+* [pachctl copy](pachctl_copy)	 - Copy a Pachyderm resource.
 

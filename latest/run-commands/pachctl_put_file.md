@@ -72,5 +72,5 @@ pachctl put file <repo>@<branch-or-commit>[:<path/to/file>] [flags]
 
 ### SEE ALSO
 
-* [pachctl put](../pachctl_put)	 - Insert data into Pachyderm.
+* [pachctl put](pachctl_put)	 - Insert data into Pachyderm.
 

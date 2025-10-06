@@ -31,5 +31,5 @@ pachctl start transaction [flags]
 
 ### SEE ALSO
 
-* [pachctl start](../pachctl_start)	 - Start a Pachyderm resource.
+* [pachctl start](pachctl_start)	 - Start a Pachyderm resource.
 

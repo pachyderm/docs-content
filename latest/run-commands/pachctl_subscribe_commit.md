@@ -53,5 +53,5 @@ pachctl subscribe commit <repo>[@<branch>] [flags]
 
 ### SEE ALSO
 
-* [pachctl subscribe](../pachctl_subscribe)	 - Wait for notifications of changes to a Pachyderm resource.
+* [pachctl subscribe](pachctl_subscribe)	 - Wait for notifications of changes to a Pachyderm resource.
 

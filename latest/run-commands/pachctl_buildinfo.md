@@ -31,5 +31,5 @@ pachctl buildinfo [flags]
 
 ### SEE ALSO
 
-* [pachctl](../pachctl)	 - 
+* [pachctl](pachctl)	 - 
 
