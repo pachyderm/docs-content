@@ -108,8 +108,8 @@ Use meaningful link descriptions, such as the original article's title or a one-
 **Examples:**
 
 >
-    - See the [{{% productName %}} Technical Documentation Style Guide](../docs-style-guide)
-    - Use the [official {{% productName %}} style guide](../docs-style-guide).
+    - See the [{{% productName %}} Technical Documentation Style Guide](docs-style-guide)
+    - Use the [official {{% productName %}} style guide](docs-style-guide).
 
 ### Lists
 

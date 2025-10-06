@@ -15,7 +15,7 @@ from pachyderm_sdk import Client
 from pachyderm_sdk.api import pfs, pps
 ```
 
-The imports you'll need for future projects depend on the setup of your instance and the operations you want to perform; see the [API submodules](/sdk/api/) reference documentation for more information. 
+The imports you'll need for future projects depend on the setup of your instance and the operations you want to perform; see the [API submodules](../../../sdk/api/index.html) reference documentation for more information. 
 
 ## 2. Initiate the Client
 
@@ -26,7 +26,7 @@ version = client.get_version()
 print("Pachyderm Version:", version)
 ```
 
-See the [Client reference documentation](../sdk/#pachyderm_sdk.Client) for more information on how to configure and initiate the client in other ways, such as from a [PachD Address](../sdk/#pachyderm_sdk.Client.from_pachd_address) and from a [Config File](../sdk/#pachyderm_sdk.Client.from_config).
+See the [Client reference documentation](../../../sdk/index.html#pachyderm_sdk.Client) for more information on how to configure and initiate the client in other ways, such as from a [PachD Address](../../../sdk/index.html#pachyderm_sdk.Client.from_pachd_address) and from a [Config File](../../../sdk/index.html#pachyderm_sdk.Client.from_config).
 
 ## 3. Create a Project, Repo, & Branch
 
@@ -44,7 +44,7 @@ except Exception as e:
     exit(1)
 ```
 
-You'll first need to create a class instance for each resource you want to create. In this case, you'll create a [project](/sdk/api/pfs/#pachyderm_sdk.api.pfs.Project), [repo](/sdk/api/pfs/#pachyderm_sdk.api.pfs.Repo), and [branch](/sdk/api/pfs/#pachyderm_sdk.api.pfs.Branch). You'll then use the [create_project](../sdk/api/pfs/#pachyderm_sdk.api.pfs.ApiStub.create_project) and [create_repo](/sdk/api/pfs/#pachyderm_sdk.api.pfs.ApiStub.create_repo) methods to create the resources in your cluster.
+You'll first need to create a class instance for each resource you want to create. In this case, you'll create a [project](../../../sdk/api/pfs/index.html#pachyderm_sdk.api.pfs.Project), [repo](../../../sdk/api/pfs/index.html#pachyderm_sdk.api.pfs.Repo), and [branch](../../../sdk/api/pfs/index.html#pachyderm_sdk.api.pfs.Branch). You'll then use the [create_project](../../../sdk/api/pfs/index.html#pachyderm_sdk.api.pfs.ApiStub.create_project) and [create_repo](../../../sdk/api/pfs/index.html#pachyderm_sdk.api.pfs.ApiStub.create_repo) methods to create the resources in your cluster.
 
 ## 4. Commit Files 
 
@@ -59,7 +59,7 @@ except Exception as e:
     exit(1)
 ```
 
-You'll use the [commit](static/sdk/api/pfs/#pachyderm_sdk.api.pfs.Commit) class to create a commit in your repo. While the commit is open, you can access the [OpenCommit subclass](../sdk/api/pfs/extension.html#pachyderm_sdk.api.pfs.extension.OpenCommit) to perform file operations (put, copy, delete).  In this example, the [put_from_file](/sdk/api/pfs/extension.html#pachyderm_sdk.api.pfs.extension.OpenCommit.put_file_from_file) method is used.
+You'll use the [commit](../../../sdk/api/pfs/index.html#pachyderm_sdk.api.pfs.Commit) class to create a commit in your repo. While the commit is open, you can access the [OpenCommit subclass](../../../sdk/api/pfs/extension.html#pachyderm_sdk.api.pfs.extension.OpenCommit) to perform file operations (put, copy, delete).  In this example, the [put_from_file](../../../sdk/api/pfs/extension.html#pachyderm_sdk.api.pfs.extension.OpenCommit.put_file_from_file) method is used.
 
 ### Alternative Commit Methods
 
@@ -73,7 +73,7 @@ with client.pfs.commit(branch=branch) as commit:
     file = commit.put_file_from_bytes(path=f"/directory-b/filename-b.md", data=b"## raw data here \n this is a **markdown** sentence.")
 ```
 
-See the OpenCommit's [put_file_from_bytes](../sdk/api/pfs/extension.html#pachyderm_sdk.api.pfs.extension.OpenCommit.put_file_from_bytes) method for more details.
+See the OpenCommit's [put_file_from_bytes](../../../sdk/api/pfs/extension.html#pachyderm_sdk.api.pfs.extension.OpenCommit.put_file_from_bytes) method for more details.
 
 #### Commit From URL 
 
@@ -82,7 +82,7 @@ with client.pfs.commit(branch=branch) as commit:
 
     file = commit.put_file_from_url(path="/directory-c/locations.csv", url="https://edg.epa.gov/EPADataCommons/public/OA/EPA_SmartLocationDatabase_V3_Jan_2021_Final.csv")
 ```
-See the OpenCommit's [put_file_from_url](../sdk/api/pfs/extension.html#pachyderm_sdk.api.pfs.extension.OpenCommit.put_file_from_url) method for more details.
+See the OpenCommit's [put_file_from_url](../../../sdk/api/pfs/extension.html#pachyderm_sdk.api.pfs.extension.OpenCommit.put_file_from_url) method for more details.
 
 ## 5. Create a Pipeline
 
@@ -106,8 +106,8 @@ except Exception as e:
     exit(1)
 ```
 
-Up until this point, you have been working with the [`pfs` (Pachyderm File System)](../sdk/api/pfs/) submodule. Now you'll use the [`pps` (Pachyderm Pipeline System)](../sdk/api/pps/) submodule to create a pipeline.
+Up until this point, you have been working with the [`pfs` (Pachyderm File System)](../../../sdk/api/pfs/index.html) submodule. Now you'll use the [`pps` (Pachyderm Pipeline System)](../../../sdk/api/pps/index.html) submodule to create a pipeline.
 
-A  basic pipeline requires at least an [input](../sdk/api/pps/#pachyderm_sdk.api.pps.Input), [transform](../sdk/api/pps/#pachyderm_sdk.api.pps.Transform), and [pipeline](../sdk/api/pps/#pachyderm_sdk.api.pps.Pipeline) class instance. Once those classes have been defined, you can finally create the pipeline by using the [create_pipeline](../sdk/api/pps/#pachyderm_sdk.api.pps.ApiStub.create_pipeline) method.
+A  basic pipeline requires at least an [input](../../../sdk/api/pps/index.html#pachyderm_sdk.api.pps.Input), [transform](../../../sdk/api/pps/index.html#pachyderm_sdk.api.pps.Transform), and [pipeline](../../../sdk/api/pps/index.html#pachyderm_sdk.api.pps.Pipeline) class instance. Once those classes have been defined, you can finally create the pipeline by using the [create_pipeline](../../../sdk/api/pps/index.html#pachyderm_sdk.api.pps.ApiStub.create_pipeline) method.
 
-At this point, you can check the Console UI or use the `pachctl list pipelines` command to see the pipeline running. To add this functionality to your script, you can use the [list_pipeline](../sdk/api/pps/#pachyderm_sdk.api.pps.ApiStub.list_pipeline) method.
+At this point, you can check the Console UI or use the `pachctl list pipelines` command to see the pipeline running. To add this functionality to your script, you can use the [list_pipeline](../../../sdk/api/pps/index.html#pachyderm_sdk.api.pps.ApiStub.list_pipeline) method.

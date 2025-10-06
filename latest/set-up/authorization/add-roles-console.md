@@ -19,9 +19,9 @@ weight: 01
     - [Auth0](/{{%release%}}/set-up/connectors/auth0)
     - [Okta](/{{%release%}}/set-up/connectors/okta)
 - Review the [Roles & Permissions](/{{%release%}}/set-up/authorization/permissions).
-- Review the [User Types](/{{%release%}}/set-up/authorization/#authorization-rbac-users-types) 
+- Review the [User Types](/{{%release%}}/set-up/authorization/#users-types) 
 - Confirm you have the right role(s) to grant a user access to a given resource (e.g., you have the `projectOwner` role on a given project you wish to add other users to)
-- [Cluster-level admin roles](/{{%release%}}/set-up/authorization/permissions/#access-control-rbac-roles--permissions-admin-roles) are not currently implementable via Console
+- [Cluster-level admin roles](/{{%release%}}/set-up/authorization/permissions/#admin-roles) are not currently implementable via Console
 
 
 ## How to Assign Roles to a User 
@@ -34,7 +34,7 @@ Roles granted at the Project level are inherited by all repositories within that
 2. Scroll to a project you wish to add a user to.
 3. Select the ellipsis icon {{< figure src="/images/console/ellipses.svg" class="inline">}} > **Edit Project Roles**
     ![rbac](/images/console/rbac-project.png)
-4. Select a [User Type](/{{%release%}}/set-up/authorization/#authorization-rbac-users-types)  from the dropdown:
+4. Select a [User Type](/{{%release%}}/set-up/authorization/#users-types)  from the dropdown:
    - **user**: an individual by name or email address; requires that user's email address be registered or available to your [IdP](/{{%release%}}/set-up/connectors) (e.g., either explicitly listed or allowed via your email domain)
    - **group**: a group of users; requires that your [IdP](/{{%release%}}/set-up/connectors) supports groups tied to an email address
    - **robot**: a service account
@@ -63,7 +63,7 @@ Roles granted at the Repository level are not inherited by other repositories wi
 3. Select the repo (either from the DAG view or the List view).
 4. Select **Set Roles**.
    ![rbac](/images/console/rbac-repo.png)
-5.  Select a [User Type](/{{%release%}}/set-up/authorization/#authorization-rbac-users-types)  from the dropdown.
+5.  Select a [User Type](/{{%release%}}/set-up/authorization/#users-types)  from the dropdown.
 6. If not `allClusterUsers`, provide a name or email address.
 7. Select a [**Role**](/{{%release%}}/set-up/authorization/permissions) from the dropdown.
 8. Select **Add**.

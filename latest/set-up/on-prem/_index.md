@@ -73,11 +73,11 @@ pachd:
 
 To set up [Authentication](/{{%release%}}/set-up/connectors/), you must use the Enterprise version of {{%productName%}} and provide a valid license key. 
 
-We recommend that you [create a secret](/{{%release%}}/manage/secrets/#secrets-create-a-secret) and provide it on the Helm chart as the value to the attribute `pachd.enterpriseLicenseKeySecretName`. Once deployed, Pachyderm stores your provided Enterprise license as the platform secret `pachyderm-license` in the key `enterprise-license-key`.
+We recommend that you [create a secret](/{{%release%}}/manage/secrets/#create-a-secret) and provide it on the Helm chart as the value to the attribute `pachd.enterpriseLicenseKeySecretName`. Once deployed, Pachyderm stores your provided Enterprise license as the platform secret `pachyderm-license` in the key `enterprise-license-key`.
 
 
 {{%notice note%}}
-After deploying {{%productName%}}, you can [log in as the root user](/{{%release%}}/set-up/authorization/#authorization-activate-user-access-management) and begin to add users to certain resource types such as Projects and Repos. 
+After deploying {{%productName%}}, you can [log in as the root user](/{{%release%}}/set-up/authorization) and begin to add users to certain resource types such as Projects and Repos. 
 
 ```s
 pachctl auth set project <project-name> <role-name> user:<username@email.com>

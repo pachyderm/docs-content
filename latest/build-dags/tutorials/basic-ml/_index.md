@@ -159,7 +159,7 @@ The pipeline writes the output to a PFS repo (`/pfs/out/`) created with the same
 {{% wizardResults %}}
 {{% wizardResult val1="tool/pachctl-cli"%}}
 
-1. Download our first example data set, [housing-simplified-1.csv](housing-simplified-1.csv). 
+1. Download our first example data set, [housing-simplified-1.csv](/{{%release%}}/build-dags/tutorials/basic-ml/housing-simplified-1.csv). 
 2. Add the data to your repo. Processing begins automatically --- anytime you add new data, the pipeline will re-run.
 
    ```s
@@ -187,7 +187,7 @@ The pipeline writes the output to a PFS repo (`/pfs/out/`) created with the same
 {{% /wizardResult %}}
 {{% wizardResult val1="tool/console"%}}
 
-1. Download our first example data set, [housing-simplified-1.csv](housing-simplified-1.csv). 
+1. Download our first example data set, [housing-simplified-1.csv](/{{%release%}}/build-dags/tutorials/basic-ml/housing-simplified-1.csv). 
 2. Select the **housing_data** repo > **Upload Files**.
 3. Select **Browse Files**.
 4. Choose the `housing-simplified-1.csv` file.
@@ -241,7 +241,7 @@ Once the pipeline is completed, we can download the files that were created.
 When we inspect the learning curve, we can see that there is a large gap between the training score and the validation score. This typically indicates that our model could benefit from the addition of more data. 
 
 <p align="center">
-  <img width="400" height="350" src="images/learning_curve-1.png">
+  <img width="400" height="350" src="/{{%release%}}/build-dags/tutorials/basic-ml/images/learning_curve-1.png">
 </p>
 
 Now let's update our dataset with additional examples.
@@ -256,7 +256,7 @@ Now let's update our dataset with additional examples.
 {{% wizardResults %}}
 {{% wizardResult val1="tool/pachctl-cli"%}}
 
-1. Download our second example data set, [housing-simplified-2.csv](housing-simplified-2.csv).
+1. Download our second example data set, [housing-simplified-2.csv](/{{%release%}}/build-dags/tutorials/basic-ml/housing-simplified-2.csv).
 2. Add the data to your repo.
 
    ```s
@@ -266,7 +266,7 @@ Now let's update our dataset with additional examples.
 {{% /wizardResult %}}
 {{% wizardResult val1="tool/console"%}}
 
-1. Download our second example data set, [housing-simplified-2.csv](housing-simplified-2.csv).
+1. Download our second example data set, [housing-simplified-2.csv](/{{%release%}}/build-dags/tutorials/basic-ml/housing-simplified-2.csv).
 2. Add the data to your repo following the same steps as before. 
 
 {{% /wizardResult %}}
@@ -282,7 +282,7 @@ This is where {{% productName %}} truly starts to shine. The new commit of data 
 
 When the job is complete we can download the new files and see that our model has improved, given the new learning curve.
 <p align="center">
-  <img src="images/cv_reg_output-2.png">
+  <img src="/{{%release%}}/build-dags/tutorials/basic-ml/images/cv_reg_output-2.png">
 </p>
 
 ### 6. Inspect the Pipeline Lineage

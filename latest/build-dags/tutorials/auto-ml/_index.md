@@ -45,7 +45,7 @@ Our Docker image's [user code](/{{%release%}}/learn/glossary/user-code) for this
    ```s
    pachctl create repo csv-data
    ```
-4. Upload the [housing-simplified-1.csv](housing-simplified-1.csv) file to the repo.
+4. Upload the [housing-simplified-1.csv](/{{%release%}}/build-dags/tutorials/auto-ml/housing-simplified-1.csv) file to the repo.
    ```s
    pachctl put file csv_data@master:housing-simplified.csv -f /path/to/housing-simplified-1.csv
    ```
@@ -142,7 +142,7 @@ The model automatically starts training. Once complete, the trained model and ev
 {{% wizardResults %}}
 {{% wizardResult val1="tool/pachctl-cli"%}}
 
-Update the dataset using [housing-simplified-2.csv](housing-simplified-2.csv); {{% productName %}} retrains the model automatically.
+Update the dataset using [housing-simplified-2.csv](/{{%release%}}/build-dags/tutorials/auto-ml/housing-simplified-2.csv); {{% productName %}} retrains the model automatically.
 
 ```bash
 pachctl put file csv_data@master:housing-simplified.csv -f /path/to/housing-simplified-2.csv
@@ -151,7 +151,7 @@ pachctl put file csv_data@master:housing-simplified.csv -f /path/to/housing-simp
 
 {{% wizardResult val1="tool/console"%}}
 
-1. Download the data set, [housing-simplified-2.csv](housing-simplified-2.csv). 
+1. Download the data set, [housing-simplified-2.csv](/{{%release%}}/build-dags/tutorials/auto-ml/housing-simplified-2.csv). 
 2. Select the **regression** repo > **Upload Files**.
 3. Select **Browse Files**.
 4. Choose the `housing-simplified-1.csv` file.
