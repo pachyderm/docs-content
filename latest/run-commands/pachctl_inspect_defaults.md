@@ -33,5 +33,5 @@ pachctl inspect defaults [--cluster | --project PROJECT] [flags]
 
 ### SEE ALSO
 
-* [pachctl inspect](../pachctl_inspect)	 - Show detailed information about a Pachyderm resource.
+* [pachctl inspect](pachctl_inspect)	 - Show detailed information about a Pachyderm resource.
 

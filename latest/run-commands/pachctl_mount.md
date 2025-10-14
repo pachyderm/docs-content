@@ -35,5 +35,5 @@ pachctl mount <path/to/mount/point> [flags]
 
 ### SEE ALSO
 
-* [pachctl](../pachctl)	 - 
+* [pachctl](pachctl)	 - 
 

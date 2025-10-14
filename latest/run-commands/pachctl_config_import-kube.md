@@ -41,5 +41,5 @@ pachctl config import-kube <context> [flags]
 
 ### SEE ALSO
 
-* [pachctl config](../pachctl_config)	 - Manages the pachyderm config.
+* [pachctl config](pachctl_config)	 - Manages the pachyderm config.
 

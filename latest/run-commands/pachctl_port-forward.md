@@ -42,5 +42,5 @@ pachctl port-forward [flags]
 
 ### SEE ALSO
 
-* [pachctl](../pachctl)	 - 
+* [pachctl](pachctl)	 - 
 

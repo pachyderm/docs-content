@@ -37,5 +37,5 @@ pachctl version [flags]
 
 ### SEE ALSO
 
-* [pachctl](../pachctl)	 - 
+* [pachctl](pachctl)	 - 
 

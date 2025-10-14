@@ -32,5 +32,5 @@ pachctl shell [flags]
 
 ### SEE ALSO
 
-* [pachctl](../pachctl)	 - 
+* [pachctl](pachctl)	 - 
 

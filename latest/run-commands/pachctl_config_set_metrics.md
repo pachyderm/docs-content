@@ -37,5 +37,5 @@ pachctl config set metrics true
 
 ### SEE ALSO
 
-* [pachctl config set](../pachctl_config_set)	 - Commands for setting pachyderm config values
+* [pachctl config set](pachctl_config_set)	 - Commands for setting pachyderm config values
 

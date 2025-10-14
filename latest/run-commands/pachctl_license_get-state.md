@@ -31,5 +31,5 @@ pachctl license get-state [flags]
 
 ### SEE ALSO
 
-* [pachctl license](../pachctl_license)	 - License commmands manage the Enterprise License service
+* [pachctl license](pachctl_license)	 - License commmands manage the Enterprise License service
 

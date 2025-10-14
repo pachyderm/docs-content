@@ -41,5 +41,5 @@ pachctl draw pipeline [flags]
 
 ### SEE ALSO
 
-* [pachctl draw](../pachctl_draw)	 - Draw an ASCII representation of an existing Pachyderm resource.
+* [pachctl draw](pachctl_draw)	 - Draw an ASCII representation of an existing Pachyderm resource.
 

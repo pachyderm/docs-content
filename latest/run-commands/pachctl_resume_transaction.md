@@ -31,5 +31,5 @@ pachctl resume transaction <transaction> [flags]
 
 ### SEE ALSO
 
-* [pachctl resume](../pachctl_resume)	 - Resume a stopped task.
+* [pachctl resume](pachctl_resume)	 - Resume a stopped task.
 

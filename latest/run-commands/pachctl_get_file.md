@@ -61,5 +61,5 @@ pachctl get file <repo>@<branch-or-commit>:<path/in/pfs> [flags]
 
 ### SEE ALSO
 
-* [pachctl get](../pachctl_get)	 - Get the raw data represented by a Pachyderm resource.
+* [pachctl get](pachctl_get)	 - Get the raw data represented by a Pachyderm resource.
 

@@ -50,5 +50,5 @@ pachctl finish commit <repo>@<branch-or-commit> [flags]
 
 ### SEE ALSO
 
-* [pachctl finish](../pachctl_finish)	 - Finish a Pachyderm resource.
+* [pachctl finish](pachctl_finish)	 - Finish a Pachyderm resource.
 

@@ -44,5 +44,5 @@ pachctl config update context [<context>] [flags]
 
 ### SEE ALSO
 
-* [pachctl config update](../pachctl_config_update)	 - Commands for updating pachyderm config values
+* [pachctl config update](pachctl_config_update)	 - Commands for updating pachyderm config values
 

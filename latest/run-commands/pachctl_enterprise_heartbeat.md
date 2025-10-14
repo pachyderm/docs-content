@@ -34,5 +34,5 @@ pachctl enterprise heartbeat [flags]
 
 ### SEE ALSO
 
-* [pachctl enterprise](../pachctl_enterprise)	 - Enterprise commands enable Pachyderm Enterprise features
+* [pachctl enterprise](pachctl_enterprise)	 - Enterprise commands enable Pachyderm Enterprise features
 

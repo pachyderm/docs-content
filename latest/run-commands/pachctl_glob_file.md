@@ -46,5 +46,5 @@ pachctl glob file "<repo>@<branch-or-commit>:<pattern>" [flags]
 
 ### SEE ALSO
 
-* [pachctl glob](../pachctl_glob)	 - Print a list of Pachyderm resources matching a glob pattern.
+* [pachctl glob](pachctl_glob)	 - Print a list of Pachyderm resources matching a glob pattern.
 

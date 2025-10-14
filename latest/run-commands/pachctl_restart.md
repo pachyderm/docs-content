@@ -27,6 +27,6 @@ Cancel and restart an ongoing task.
 
 ### SEE ALSO
 
-* [pachctl](../pachctl)	 - 
-* [pachctl restart datum](../pachctl_restart_datum)	 - Restart a stuck datum during a currently running job.
+* [pachctl](pachctl)	 - 
+* [pachctl restart datum](pachctl_restart_datum)	 - Restart a stuck datum during a currently running job.
 

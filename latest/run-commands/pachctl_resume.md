@@ -27,6 +27,6 @@ Resume a stopped task.
 
 ### SEE ALSO
 
-* [pachctl](../pachctl)	 - 
-* [pachctl resume transaction](../pachctl_resume_transaction)	 - Set an existing transaction as active.
+* [pachctl](pachctl)	 - 
+* [pachctl resume transaction](pachctl_resume_transaction)	 - Set an existing transaction as active.
 

@@ -57,5 +57,5 @@ pachctl list pipeline [<pipeline>] [flags]
 
 ### SEE ALSO
 
-* [pachctl list](../pachctl_list)	 - Print a list of Pachyderm resources of a specific type.
+* [pachctl list](pachctl_list)	 - Print a list of Pachyderm resources of a specific type.
 

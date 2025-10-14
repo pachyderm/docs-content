@@ -27,7 +27,7 @@ Squash an existing Pachyderm resource.
 
 ### SEE ALSO
 
-* [pachctl](../pachctl)	 - 
-* [pachctl squash commit](../pachctl_squash_commit)	 - Squash the sub-commits of a commit.
-* [pachctl squash commitV2](../pachctl_squash_commitv2)	 - Squash a commit.
+* [pachctl](pachctl)	 - 
+* [pachctl squash commit](pachctl_squash_commit)	 - Squash the sub-commits of a commit.
+* [pachctl squash commitV2](pachctl_squash_commitv2)	 - Squash a commit.
 

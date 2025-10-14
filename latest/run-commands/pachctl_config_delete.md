@@ -27,6 +27,6 @@ Commands for deleting pachyderm config values
 
 ### SEE ALSO
 
-* [pachctl config](../pachctl_config)	 - Manages the pachyderm config.
-* [pachctl config delete context](../pachctl_config_delete_context)	 - Deletes a context.
+* [pachctl config](pachctl_config)	 - Manages the pachyderm config.
+* [pachctl config delete context](pachctl_config_delete_context)	 - Deletes a context.
 

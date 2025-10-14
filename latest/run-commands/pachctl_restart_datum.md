@@ -45,5 +45,5 @@ pachctl restart datum <pipeline>@<job> <datum-path1>,<datum-path2>,... [flags]
 
 ### SEE ALSO
 
-* [pachctl restart](../pachctl_restart)	 - Cancel and restart an ongoing task.
+* [pachctl restart](pachctl_restart)	 - Cancel and restart an ongoing task.
 

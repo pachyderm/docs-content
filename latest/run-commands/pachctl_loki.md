@@ -39,5 +39,5 @@ pachctl loki <query> [flags]
 
 ### SEE ALSO
 
-* [pachctl](../pachctl)	 - 
+* [pachctl](pachctl)	 - 
 

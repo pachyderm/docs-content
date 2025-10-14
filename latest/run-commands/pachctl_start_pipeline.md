@@ -40,5 +40,5 @@ pachctl start pipeline <pipeline> [flags]
 
 ### SEE ALSO
 
-* [pachctl start](../pachctl_start)	 - Start a Pachyderm resource.
+* [pachctl start](pachctl_start)	 - Start a Pachyderm resource.
 

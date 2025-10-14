@@ -50,5 +50,5 @@ pachctl run pps-load-test <spec-file>  [flags]
 
 ### SEE ALSO
 
-* [pachctl run](../pachctl_run)	 - Manually run a Pachyderm resource.
+* [pachctl run](pachctl_run)	 - Manually run a Pachyderm resource.
 

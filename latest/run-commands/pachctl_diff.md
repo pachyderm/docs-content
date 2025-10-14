@@ -27,6 +27,6 @@ Show the differences between two Pachyderm resources.
 
 ### SEE ALSO
 
-* [pachctl](../pachctl)	 - 
-* [pachctl diff file](../pachctl_diff_file)	 - Return a diff of two file trees stored in Pachyderm
+* [pachctl](pachctl)	 - 
+* [pachctl diff file](pachctl_diff_file)	 - Return a diff of two file trees stored in Pachyderm
 

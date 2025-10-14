@@ -47,5 +47,5 @@ pachctl inspect file <repo>@<branch-or-commit>:<path/in/pfs> [flags]
 
 ### SEE ALSO
 
-* [pachctl inspect](../pachctl_inspect)	 - Show detailed information about a Pachyderm resource.
+* [pachctl inspect](pachctl_inspect)	 - Show detailed information about a Pachyderm resource.
 

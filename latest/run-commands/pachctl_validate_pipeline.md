@@ -38,5 +38,5 @@ pachctl validate pipeline [flags]
 
 ### SEE ALSO
 
-* [pachctl validate](../pachctl_validate)	 - Validate the specification of a Pachyderm resource.
+* [pachctl validate](pachctl_validate)	 - Validate the specification of a Pachyderm resource.
 

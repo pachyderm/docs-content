@@ -27,9 +27,9 @@ Commands for getting pachyderm config values
 
 ### SEE ALSO
 
-* [pachctl config](../pachctl_config)	 - Manages the pachyderm config.
-* [pachctl config get active-context](../pachctl_config_get_active-context)	 - Gets the currently active context.
-* [pachctl config get active-enterprise-context](../pachctl_config_get_active-enterprise-context)	 - Gets the currently active enterprise context.
-* [pachctl config get context](../pachctl_config_get_context)	 - Gets a context.
-* [pachctl config get metrics](../pachctl_config_get_metrics)	 - Gets whether metrics are enabled.
+* [pachctl config](pachctl_config)	 - Manages the pachyderm config.
+* [pachctl config get active-context](pachctl_config_get_active-context)	 - Gets the currently active context.
+* [pachctl config get active-enterprise-context](pachctl_config_get_active-enterprise-context)	 - Gets the currently active enterprise context.
+* [pachctl config get context](pachctl_config_get_context)	 - Gets a context.
+* [pachctl config get metrics](pachctl_config_get_metrics)	 - Gets whether metrics are enabled.
 

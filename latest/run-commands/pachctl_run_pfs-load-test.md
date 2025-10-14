@@ -120,5 +120,5 @@ validator: {}
 
 ### SEE ALSO
 
-* [pachctl run](../pachctl_run)	 - Manually run a Pachyderm resource.
+* [pachctl run](pachctl_run)	 - Manually run a Pachyderm resource.
 

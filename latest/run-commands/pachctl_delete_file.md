@@ -43,5 +43,5 @@ pachctl delete file <repo>@<branch-or-commit>:<path/in/pfs> [flags]
 
 ### SEE ALSO
 
-* [pachctl delete](../pachctl_delete)	 - Delete an existing Pachyderm resource.
+* [pachctl delete](pachctl_delete)	 - Delete an existing Pachyderm resource.
 

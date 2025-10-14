@@ -26,7 +26,7 @@ Our Docker image's [user code](/{{%release%}}/learn/glossary/user-code) for this
 Each pipeline in this tutorial executes a Python script,  versions the artifacts (datasets, models, etc.), and gives you a full lineage of the model. Once it is set up, you can change, add, or remove data and Pachyderm will automatically keep everything up to date, creating data splits, computing data analysis metrics, and training the model. 
 
 <p align="center">
-  <img width="400" src="images/pipeline.png">
+  <img width="400" src="/{{%release%}}/build-dags/tutorials/multi-ml/images/pipeline.png">
 </p>
 
 ### 1. Create an Input Repo 
@@ -81,8 +81,8 @@ We'll deploy each stage in our ML process as a Pachyderm pipeline. Organizing ou
 #### 1. Data Analysis Pipeline
 The data analysis pipeline creates a pair plot and a correlation matrix showing the relationship between features. By seeing what features are positively or negatively correlated to the target value (or each other), it can helps us understand what features may be valuable to the model.
 <p align="center">
-  <img width="300" src="images/pairplot-1.png">
-  <img width="300" src="images/corr_matrix-1.png">
+  <img width="300" src="/{{%release%}}/build-dags/tutorials/multi-ml/images/pairplot-1.png">
+  <img width="300" src="/{{%release%}}/build-dags/tutorials/multi-ml/images/corr_matrix-1.png">
 </p>
 
 {{<stack type="wizard">}}
@@ -258,7 +258,7 @@ To train the regression model using scikit-learn. In our case, we will train a R
 
 After the model is trained we output some visualizations to evaluate its effectiveness of it using the learning curve and other statistics.
 <p align="center">
-  <img src="images/cv_reg_output-1.png">
+  <img src="/{{%release%}}/build-dags/tutorials/basic-ml/images/cv_reg_output-1.png">
 </p>
 
 {{<stack type="wizard">}}
@@ -352,7 +352,7 @@ After the model is trained we output some visualizations to evaluate its effecti
 {{% wizardResults %}}
 {{% wizardResult val1="tool/pachctl-cli"%}}
 
-1. Download our first example data set, [housing-simplified-1.csv](housing-simplified-1.csv). 
+1. Download our first example data set, [housing-simplified-1.csv](/{{%release%}}/build-dags/tutorials/multi-ml/housing-simplified-1.csv). 
 2. Add the data to your repo.
    ```s
    pachctl put file csv_data@master:housing-simplified.csv -f /path/to/housing-simplified-1.csv
@@ -361,7 +361,7 @@ After the model is trained we output some visualizations to evaluate its effecti
 
 {{% wizardResult val1="tool/console"%}}
 
-1. Download our first example data set, [housing-simplified-1.csv](housing-simplified-1.csv). 
+1. Download our first example data set, [housing-simplified-1.csv](/{{%release%}}/build-dags/tutorials/multi-ml/housing-simplified-1.csv). 
 2. Select the **csv_data** repo > **Upload Files**.
 3. Select **Browse Files**.
 4. Choose the `housing-simplified-1.csv` file.
@@ -413,7 +413,7 @@ Once the pipeline has finished, download the results.
 {{% wizardResults %}}
 {{% wizardResult val1="tool/pachctl-cli"%}}
 
-1. Download our second example data set, [housing-simplified-2.csv](housing-simplified-2.csv). 
+1. Download our second example data set, [housing-simplified-2.csv](/{{%release%}}/build-dags/tutorials/multi-ml/housing-simplified-2.csv). 
 2. Add the data to your repo.
    ```s
    pachctl put file csv_data@master:housing-simplified.csv -f /path/to/housing-simplified-2.csv

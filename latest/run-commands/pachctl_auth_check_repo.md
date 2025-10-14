@@ -38,5 +38,5 @@ pachctl auth check repo <repo> [<user>] [flags]
 
 ### SEE ALSO
 
-* [pachctl auth check](../pachctl_auth_check)	 - Check whether a subject has a permission on a resource
+* [pachctl auth check](pachctl_auth_check)	 - Check whether a subject has a permission on a resource
 

@@ -27,6 +27,6 @@ Wait for notifications of changes to a Pachyderm resource.
 
 ### SEE ALSO
 
-* [pachctl](../pachctl)	 - 
-* [pachctl subscribe commit](../pachctl_subscribe_commit)	 - Print commits as they are created (finished).
+* [pachctl](pachctl)	 - 
+* [pachctl subscribe commit](pachctl_subscribe_commit)	 - Print commits as they are created (finished).
 

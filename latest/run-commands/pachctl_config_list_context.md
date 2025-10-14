@@ -31,5 +31,5 @@ pachctl config list context [flags]
 
 ### SEE ALSO
 
-* [pachctl config list](../pachctl_config_list)	 - Commands for listing pachyderm config values
+* [pachctl config list](pachctl_config_list)	 - Commands for listing pachyderm config values
 

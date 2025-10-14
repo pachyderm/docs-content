@@ -27,7 +27,7 @@ Print or install terminal completion code.
 
 ### SEE ALSO
 
-* [pachctl](../pachctl)	 - 
-* [pachctl completion bash](../pachctl_completion_bash)	 - Print or install the bash completion code.
-* [pachctl completion zsh](../pachctl_completion_zsh)	 - Print or install the zsh completion code.
+* [pachctl](pachctl)	 - 
+* [pachctl completion bash](pachctl_completion_bash)	 - Print or install the bash completion code.
+* [pachctl completion zsh](pachctl_completion_zsh)	 - Print or install the zsh completion code.
 

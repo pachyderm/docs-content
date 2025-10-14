@@ -27,6 +27,6 @@ Insert data into Pachyderm.
 
 ### SEE ALSO
 
-* [pachctl](../pachctl)	 - 
-* [pachctl put file](../pachctl_put_file)	 - Put a file into the filesystem.
+* [pachctl](pachctl)	 - 
+* [pachctl put file](pachctl_put_file)	 - Put a file into the filesystem.
 

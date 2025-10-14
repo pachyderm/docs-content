@@ -27,6 +27,6 @@ Edit the value of an existing Pachyderm resource.
 
 ### SEE ALSO
 
-* [pachctl](../pachctl)	 - 
-* [pachctl edit pipeline](../pachctl_edit_pipeline)	 - Edit the manifest for a pipeline in your text editor.
+* [pachctl](pachctl)	 - 
+* [pachctl edit pipeline](pachctl_edit_pipeline)	 - Edit the manifest for a pipeline in your text editor.
 

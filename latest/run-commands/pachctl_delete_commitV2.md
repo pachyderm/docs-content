@@ -32,5 +32,5 @@ pachctl delete commitV2 <repo>@<branch-or-commit> [flags]
 
 ### SEE ALSO
 
-* [pachctl delete](../pachctl_delete)	 - Delete an existing Pachyderm resource.
+* [pachctl delete](pachctl_delete)	 - Delete an existing Pachyderm resource.
 

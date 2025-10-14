@@ -53,5 +53,5 @@ pachctl find commit <repo>@<branch-or-commit>:<path/in/pfs> [flags]
 
 ### SEE ALSO
 
-* [pachctl find](../pachctl_find)	 - Find a file addition, modification, or deletion in a commit.
+* [pachctl find](pachctl_find)	 - Find a file addition, modification, or deletion in a commit.
 

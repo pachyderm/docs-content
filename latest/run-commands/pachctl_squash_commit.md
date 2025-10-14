@@ -38,5 +38,5 @@ pachctl squash commit <commit-id> [flags]
 
 ### SEE ALSO
 
-* [pachctl squash](../pachctl_squash)	 - Squash an existing Pachyderm resource.
+* [pachctl squash](pachctl_squash)	 - Squash an existing Pachyderm resource.
 

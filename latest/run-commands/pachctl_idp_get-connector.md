@@ -31,5 +31,5 @@ pachctl idp get-connector <connector id> [flags]
 
 ### SEE ALSO
 
-* [pachctl idp](../pachctl_idp)	 - Commands to manage identity provider integrations
+* [pachctl idp](pachctl_idp)	 - Commands to manage identity provider integrations
 

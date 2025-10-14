@@ -40,5 +40,5 @@ pachctl run cron <pipeline> [flags]
 
 ### SEE ALSO
 
-* [pachctl run](../pachctl_run)	 - Manually run a Pachyderm resource.
+* [pachctl run](pachctl_run)	 - Manually run a Pachyderm resource.
 

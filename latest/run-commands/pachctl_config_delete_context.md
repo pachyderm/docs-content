@@ -31,5 +31,5 @@ pachctl config delete context <context> [flags]
 
 ### SEE ALSO
 
-* [pachctl config delete](../pachctl_config_delete)	 - Commands for deleting pachyderm config values
+* [pachctl config delete](pachctl_config_delete)	 - Commands for deleting pachyderm config values
 

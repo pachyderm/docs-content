@@ -27,6 +27,6 @@ Get the raw data represented by a Pachyderm resource.
 
 ### SEE ALSO
 
-* [pachctl](../pachctl)	 - 
-* [pachctl get file](../pachctl_get_file)	 - Return the contents of a file.
+* [pachctl](pachctl)	 - 
+* [pachctl get file](pachctl_get_file)	 - Return the contents of a file.
 

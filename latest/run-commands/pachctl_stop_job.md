@@ -33,5 +33,5 @@ pachctl stop job <pipeline>@<job> [flags]
 
 ### SEE ALSO
 
-* [pachctl stop](../pachctl_stop)	 - Cancel an ongoing task.
+* [pachctl stop](pachctl_stop)	 - Cancel an ongoing task.
 

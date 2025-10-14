@@ -49,5 +49,5 @@ pachctl list file <repo>@<branch-or-commit>[:<path/in/pfs>] [flags]
 
 ### SEE ALSO
 
-* [pachctl list](../pachctl_list)	 - Print a list of Pachyderm resources of a specific type.
+* [pachctl list](pachctl_list)	 - Print a list of Pachyderm resources of a specific type.
 

@@ -27,6 +27,6 @@ Commands for listing pachyderm config values
 
 ### SEE ALSO
 
-* [pachctl config](../pachctl_config)	 - Manages the pachyderm config.
-* [pachctl config list context](../pachctl_config_list_context)	 - Lists contexts.
+* [pachctl config](pachctl_config)	 - Manages the pachyderm config.
+* [pachctl config list context](pachctl_config_list_context)	 - Lists contexts.
 

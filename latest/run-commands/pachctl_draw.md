@@ -27,6 +27,6 @@ Draw an ASCII representation of an existing Pachyderm resource.
 
 ### SEE ALSO
 
-* [pachctl](../pachctl)	 - 
-* [pachctl draw pipeline](../pachctl_draw_pipeline)	 - Draw a DAG
+* [pachctl](pachctl)	 - 
+* [pachctl draw pipeline](pachctl_draw_pipeline)	 - Draw a DAG
 
